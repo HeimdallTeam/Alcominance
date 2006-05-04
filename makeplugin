@@ -1,0 +1,39 @@
+# makefile
+TMP_DIR = tmp/plg
+
+GCC=g++
+C_FLAGS= -D_LINUX -DBECHER_PLUGIN -I../Hoe3D/include -I../Hoe3D/utils/sdk -I../HoeGame
+
+TOOLKIT = GTK
+TOOLKIT_LOWERCASE = gtk
+TOOLKIT_VERSION = 2
+WX_RELEASE = 2.6
+WX_VERSION = $(WX_RELEASE).1
+WXLIBDIRNAME = /usr/local/lib
+WX_FLAGS = -D__WX$(TOOLKIT)__ $(__WXUNIV_DEFINE_p) \
+	$(__EXCEPTIONS_DEFINE_p) $(__RTTI_DEFINE_p) $(__THREAD_DEFINE_p) \
+-DWX_PRECOMP -DNO_GCC_PRAGMA -DGTK_NO_CHECK_CASTS -I/usr/local/lib/wx/include/gtk2-ansi-release-2.6 -I/usr/local/include/wx-2.6 -DXTHREADS -D_REENTRANT -DXUSE_MTSAFE_API -pthread -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/freetype2/config -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 
+LINK=g++
+L_FLAGS= -shared -fPIC -L/usr/X11R6/lib -L../Hoe3D/utils/sdk/ -L../HoeGame
+LINK_LIBRARIES = -lwx_gtk2_adv-2.6 -lhoeCore -lhoeUtils -lhoeLevel -lHoeGame
+
+OBJ_FILES = $(TMP_DIR)/plugin_editlevel.o $(TMP_DIR)/buildings.o $(TMP_DIR)/editor_tools.o \
+$(TMP_DIR)/level.o $(TMP_DIR)/plugin_resources.o \
+$(TMP_DIR)/plugin_map.o \
+$(TMP_DIR)/object.o \
+$(TMP_DIR)/elements.o \
+$(TMP_DIR)/infos.o
+
+all: $(TMP_DIR) $(OBJ_FILES)
+	$(LINK) $(L_FLAGS) -o ../HoeEditor/plugins/BecherMap.so $(OBJ_FILES) $(LINK_LIBRARIES)
+	
+$(TMP_DIR):
+	mkdir -p $(TMP_DIR) 
+#
+# Generic rules to build object files
+#
+
+$(TMP_DIR)/%.o:		src/%.cpp
+	$(GCC) $(C_FLAGS) $(WX_FLAGS) -c $< -o $@ 
+
+                                               

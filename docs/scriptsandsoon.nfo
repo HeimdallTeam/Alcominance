@@ -1,0 +1,36 @@
+vars:
+--------------------
+nastaveni hodnoty
+set jmeno hodnota
+
+vypsani hodnoty:
+pvar jmeno
+
+hodnoty v becheru->
+jmeno       default   popis
+-------------------------------------------
+tupouni:
+troll_speed 20f  rychlost pohybu tupounu v pixels/sec
+
+cukrovar:
+sugar_work  1f   kolik trtiny zpracuje 1 tupoun za 1 sec.
+sugar_max   50   velikost miniskladu, tedy trtina+cukr
+
+lihovar:
+dest_work  1f   kolik cukru zpracuje 1 tupoun za 1 sec.
+dest_max   50   velikost miniskladu, tedy cukr+lih
+
+farma:
+farm_rust 0.02f
+
+soubor init.lua
+nahrava se pri startu programu, obsahuje nastaveni souboru a resourcu
+po ukonceni skriptu se smaze, tzn. nesmi v nem byt nadefinovana zadna funkce ktera se bude pozdeji pouzivat
+AddFile(cesta k souboru)
+LoadResource(id, prikaz)
+LoadLang(cesta) (soubor s texty, kodovani v utf-8)
+
+soubor main.lua
+nahrava se pred startem kazde hry, obsahuje pravidla pro hru
+funkce pro obsluhu tlacitek
+pri vyberu objektu se pusti prislusna funkce napr. pri kliku na tovarnu se pusti funkce s nazvem s_tovarna

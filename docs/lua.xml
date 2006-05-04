@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<book xmlns="http://tempuri.org/lua2.xsd" lang="cs">
+	<bookinfo>
+		<title>Název Dokumentu</title>
+		<subtitle>Dokumentace LUA skriptování do Bechera</subtitle>
+		<author>
+			<firstname>Gejza'x</firstname>
+		</author>
+		<pubdate>zaří 2003</pubdate>
+		<abstract>
+			<para>Tady je odstavec</para>
+		</abstract>
+		<keywordset>
+			<keyword>DocBook</keyword>
+		</keywordset>
+		<abstract>
+			<para>Tady je druhej</para>
+		</abstract>
+	</bookinfo>
+</book>
+
+Funkce embednuté LUOU
+---------------------
+standartní funkce:
+printf(...)
+funkce napíše do konzole zadaný proměnný.
+ex: print("Hello world, from ",_VERSION,"!")
+
+info(...)
+To samé jako print, akorát že se informace objeví v informačním panelu
+ex: info("Game Saved")
+
+LoadFile(soubor)
+Zaregistruje soubor v souborovém systému Hoe
+ex: LoadFile("data/textures.hx")
+
+AddResource( id, loadstring)
+Nahraje do paměti resource ze souborů a přiřadí k němu id.
+viz: Hoe Resources
+ex: AddResource( 110, "model Factory")
+
+LoadLang(soubor)
+Nahraje do pamětí zvolený jazyk.
+viz: Jazyk v becheru
+ex: LoadLang("czech.lng")
+
+SetLoadProgress(procenta)
+Nastaví nahrávací progress. Má efekt pouze při nahrávání mapy. Interval 0-100
+ex:
+SetLoadProgress(51.3)
+AddResource( 110, "model Factory")
+SetLoadProgress(60.0)
+
+Hoe(string)
+Spustí příkaz v enginu.
+viz: Hoe console
+todo: predelat na konzoli
+ex: Hoe("hoeinfo")
+
+sprites func:
+SetSource(2001,4,4)
+
+
+CreateSprite(1,1,31,"studna")
+CreateSprite(2,2,32,"tupoun")
+CreateSprite(3,3,33,"chalupa")
+CreateSprite(4,0,34,"pomnik")
+CreateSprite(5,4,35,"sklad")
+
+AddToList(1000,1,3,4,5)
+
+
+ID
+--
+Lua komunikuje s becherem přes čísla id. Každej druh objektu se reprezentuje svým číslem. 
+Tahle čísla jsou zapsaná v souboru src/id.h, kde jsou v Cčkovským zápisu:
+#define <jméno ID>
+	<číslo id>
+Tenhle soubor lze do Luy vložit přes direktivu #include "src/id.h" a přeložit C++ preprocesorem, proto by v id.h nemělo
+být nic co neodstraní preprocesor.
+viz: Kompilace Luy
+ex:
+
+v id.h je:
+#define ID_FACTORY 110
+-----------------------
+#include "src/id.h"
+
+AddResource(ID_FACTORY, "model Factory")
+
+Skripty
+-------
+
+Lua a config
+------------
+@todo zatim nefunkcni
+Lua se může dotazovat na nastavení v config.ini
+při načítání stringu program nahradí všechny $[sekce:proměná] daným nastavením.
+ex:
+LoadFile("$[dir:data]/out.hx")
+
+
+ 
