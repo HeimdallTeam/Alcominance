@@ -38,7 +38,7 @@ int main(int argc,char * argv[])
 
 	try {
 
-	if (!app.Init())
+	if (!app.Init("Alcominance Game"))
 	{
 		app.HandleError();
 		return 0;
