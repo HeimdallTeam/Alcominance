@@ -77,7 +77,7 @@ Section "Game files"
   File "..\..\Hoe\bin\Hoe3Dd_GL.dll"
   File "..\..\Hoe\bin\Hoe3Dd_D3D9.dll"
   
-  File "..\tmp\config.ini"
+  File "..\becher.conf"
   File "..\a.sav" 
   
   SetOutPath "$INSTDIR\data"
