@@ -8,14 +8,15 @@ GCC=g++
 C_FLAGS= -D_LINUX -ggdb3 -I../Hoe/Hoe3D/include -I../Hoe/HoeGame
 LINK=g++
 L_FLAGS= -L/usr/X11R6/lib -L../Hoe/bin
-LINK_LIBRARIES = -ll -lHoeGame -llua -llualib -ldl -lX11 -lfl
+LINK_LIBRARIES = -ll -lHoeGame -llua -llualib -ldl -lbassmod -lX11 -lfl
 
 OBJ_FILES = $(TMP_DIR)/bechapp.o $(TMP_DIR)/buildings.o $(TMP_DIR)/main.o \
 $(TMP_DIR)/becher.o $(TMP_DIR)/game.o \
 $(TMP_DIR)/level.o $(TMP_DIR)/console.o $(TMP_DIR)/object.o $(TMP_DIR)/elements.o \
 $(TMP_DIR)/troll.o $(TMP_DIR)/jobs.o $(TMP_DIR)/panels.o $(TMP_DIR)/idlist.o \
 $(TMP_DIR)/map.o $(TMP_DIR)/config.o $(TMP_DIR)/obj_sugar.o $(TMP_DIR)/obj_farm.o \
- $(TMP_DIR)/obj_store.o  $(TMP_DIR)/obj_destilate.o
+ $(TMP_DIR)/obj_store.o  $(TMP_DIR)/obj_destilate.o $(TMP_DIR)/obj_shop.o \
+$(TMP_DIR)/obj_factory.o
 
 
 
@@ -30,7 +31,7 @@ $(OUTPUT_DIR):
 BUILD:		$(TMP_DIR) $(OUTPUT_DIR) $(OBJ_FILES) 
 	$(LINK) $(L_FLAGS) -o $(OUTPUT_BINARY) $(OBJ_FILES) $(LINK_LIBRARIES)
 editor:
-	make -f makeedit
+	make -f makeplugin
 
 clean:
 	rm -f $(OBJ_FILES) $(OUTPUT_BINARY)

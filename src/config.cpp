@@ -30,7 +30,7 @@ public:
 #endif
 };
 
-CVar BecherConfig::m_config("config_file", CONFIG_FILE, HoeGame::TVAR_SSTR);
+CVar BecherConfig::m_config("config_file", CONFIG_FILE, TVAR_SSTR);
 
 #ifdef _WIN32
 
@@ -114,11 +114,11 @@ void BecherConfig::ShowUsage(const char *usage)
 
 bool BecherConfig::Conf()
 {
-	if (!cont)
+	if (!m_continue)
 		return false;
 	Load(m_config.GetString());
 
-	return cont;
+	return m_continue;
 }
 
 #endif
