@@ -1,6 +1,6 @@
 
 #include "StdAfx.h"
-#include "../../HoeGame/hoe_config.h"
+#include "../../HoeGame/include/hoe_config.h"
 #ifdef _WIN32
 #include "resource.h"
 #endif
