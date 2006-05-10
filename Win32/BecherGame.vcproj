@@ -490,18 +490,22 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath="..\resource\logo.ico"
+		<Filter
+			Name="resource"
 			>
-		</File>
-		<File
-			RelativePath="..\resource\nsis.bmp"
-			>
-		</File>
-		<File
-			RelativePath="..\src\resource.h"
-			>
-		</File>
+			<File
+				RelativePath="..\resource\logo.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\nsis.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\resource.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

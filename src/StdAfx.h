@@ -79,4 +79,10 @@ typedef HoeGame::CVar CVar;
 
 #endif
 
+extern "C" {
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+}
+
 #endif // _STDAFX_H_

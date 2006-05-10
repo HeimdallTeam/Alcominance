@@ -157,26 +157,35 @@ function c_waterfarm()
  farm = true
 end
 
-function i_sugar(build)
- -- idiot pro cukrovar (prvni testovaci)
- -- musi umet znat sve zasoby
- -- musi vedet pocet delniku
- -- orentace ve vars
- -- priradit job
- -- nastavit job a vratit index dulezitosti
+function i_sugar(b)
+ print("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
+ if (b.sugar > (GetVar("sugar_max") - b.cane - b.sugar) ) then
+     job = { type = 3 }
+     return job    
+ end
+ if b.cane == 0 and b.cane_avail > 0 then
+     job = { type = 1 }
+     return job    
+ end 
  
- -- funkce pravidelne prochazi budovy a radi prace podle dulezitosti
- -- tupouni pak sami vykonavaji doporucenou praci
- -- GetSurState(build, type)
- -- GetNumWork(build)
- -- GetMax
- -- build.works
- -- build.sugar
-  -- build.max
+ if b.cane > (GetVar("sugar_max") / 2) then 
+     job = { type = 2 }
+     return job    
+ end 
+ 
+ if b.sugar > 10 then
+     job = { type = 3 }
+     return job    
+ end  
+  if b.cane_avail > 0 then
+     job = { type = 1 }
+     return job    
+ end 
+ 
+ return nil
 end
 
 function i_farm(bb)
-    print(bb.bb,"-",bb.cc)
 end
 
 

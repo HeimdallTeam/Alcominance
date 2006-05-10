@@ -6,11 +6,6 @@
 #include "obj_sugar.h"
 #include "obj_store.h"
 
-extern "C" {
-#include <lua.h>
-#include <lualib.h>
-#include <lauxlib.h>
-}
 
 static CVar v_numzpr("sugar_work", 1.f, 0);
 static HoeGame::CTimer t_numzpr(v_numzpr);
@@ -127,8 +122,6 @@ bool Sugar::Select()
 	return true;
 }
 
-
-
 bool Sugar::Idiot(Troll * t)
 {
 	// pokud neni trtina prinest trtinu
@@ -136,59 +129,35 @@ bool Sugar::Idiot(Troll * t)
 	// pokud je vice nez 90% trtiny a je volne misto tak pracuj
 	// pokud je cukru vice nez volneho mista pak odnest
 	// odmitnout
-	/*lua_getglobal(GetLua()->GetLua(), "i_farm");
-	lua_newtable(GetLua()->GetLua());
-	lua_pushinteger(GetLua()->GetLua(), 2);
-	lua_setfield(GetLua()->GetLua(),-2,"bb");
-	lua_pushinteger(GetLua()->GetLua(), 3);
-	lua_setfield(GetLua()->GetLua(),-2,"cc");
-	lua_resume(GetLua()->GetLua(),1);*/
-
-
+	// zjistit zdroj
+	int cane_avail = 0;
 	Store * s = FindStore();
-	if (!s)
+	if (s) cane_avail = s->GetStatus(EBS_Cane);
+
+	HoeGame::LuaFunc f(GetLua(), "i_sugar");
+	f.PushTable();
+	f.SetTableInteger("cane_avail", cane_avail);
+	f.SetTableInteger("cane", m_cane);
+	f.SetTableInteger("sugar", m_sugar);
+	f.Run(1);
+	if (f.IsNil(-1))
 	{
-		if (m_cane > 1 && m_worked.NumFree() > 1)
-		{
-			SetWork(t);
-			return true;
-		}
-		else return false;
+		f.Pop(1);
+		return false;
 	}
 
-	if (m_sugar >= (v_sklad.GetInt() - m_cane - m_sugar))
+	int r = f.GetTableInteger("type", -1);
+	f.Pop(1);
+	
+	switch (r)
 	{
-		SetOut(t,s);
-		return true;
-	}
-
-	if (m_cane == 0 && s->GetStatus(EBS_Cane) > 0)
-	{
+	case 1:
 		SetIn(t,s);
-		return true;			
-	}
-
-	if ((m_cane * 2 >= v_sklad.GetInt() && m_worked.num == 0) ||
-		(m_cane >= v_sklad.GetInt() * 0.9 && m_worked.NumFree() > 1))
-	{
+		return true;
+	case 2:
 		SetWork(t);
 		return true;
-	}
-
-	if (m_sugar > 10)
-	{
-		SetOut(t,s);
-		return true;
-	}
-
-	if ((v_sklad.GetInt()-m_cane-m_sugar)>0 && s->GetStatus(EBS_Cane) >0)
-	{
-		SetIn(t,s);
-		return true;			
-	}
-
-	if (m_sugar > 0)
-	{
+	case 3:
 		SetOut(t,s);
 		return true;
 	}

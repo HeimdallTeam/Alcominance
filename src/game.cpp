@@ -6,8 +6,30 @@
 #include "buildings.h"
 #include "obj_sugar.h"
 #include "troll.h"
+#include "../../HoeGame/include/hoe_benchmark.h"
 
 //HoeGame::OffsetLoop off[] = { MAKELONG(25,0), MAKELONG(26,0),MAKELONG(0,0), MAKELONG(1,0), 0xffffffff, 0xffffffff };
+
+void Test()
+{
+	HoeGame::LuaFunc f(GetLua(), "i_sugar");
+	f.PushTable();
+	f.SetTableInteger("cane_avail", 0);
+	f.SetTableInteger("cane", 10);
+	f.SetTableInteger("sugar", 10);
+	f.Run(1);
+	f.Pop(1);
+}
+
+void LuaBenchmark()
+{
+	const int num = 10000;
+	HoeGame::Bench b;
+	b.Start("Lua Idiot");
+	for (int i=0;i < num;i++)
+		Test();
+	b.End(num);
+}
 
 BecherGame::BecherGame()
 {
@@ -81,6 +103,9 @@ bool BecherGame::LoadLevel(const char * fpath)
 
 	if (!GetLua()->Load("scripts/main.lua",g_luaconst))
 		return false;
+
+	// benchamrk
+	// LuaBenchmark();
 
 	if (!m_level.LoadGame(fpath))
 		return false;

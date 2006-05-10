@@ -114,4 +114,3 @@ LoadResource(ID_TESTSOUND+2,"sound 'sound/penizky.wav'")
 
 LoadLang("resource/english.lng")
 
-
