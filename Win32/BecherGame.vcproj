@@ -212,10 +212,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\linux.ini"
-				>
-			</File>
-			<File
 				RelativePath="..\scripts\main.lua"
 				>
 			</File>
