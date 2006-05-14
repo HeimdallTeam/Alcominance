@@ -5,10 +5,10 @@ OUTPUT_BINARY = $(OUTPUT_DIR)/Becher
 
 CC=gcc
 GCC=g++
-C_FLAGS= -D_LINUX -ggdb3 -I../Hoe/Hoe3D/include -I../Hoe/HoeGame
+C_FLAGS= -D_LINUX -ggdb3 -I../Hoe/Hoe3D/include -I../Hoe/HoeGame/include
 LINK=g++
 L_FLAGS= -L/usr/X11R6/lib -L../Hoe/bin
-LINK_LIBRARIES = -ll -lHoeGame -llua -llualib -ldl -lbassmod -lX11 -lfl
+LINK_LIBRARIES = -ll -lHoeGame -llua -ldl -lbassmod -lX11 -lfl
 
 OBJ_FILES = $(TMP_DIR)/bechapp.o $(TMP_DIR)/buildings.o $(TMP_DIR)/main.o \
 $(TMP_DIR)/becher.o $(TMP_DIR)/game.o \
