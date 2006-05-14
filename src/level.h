@@ -46,16 +46,9 @@ protected:
 	BecherObject * m_select;
 
 	//
-	bool LoadGame(HoeFileReader &r);
+	bool LoadGame(BecherMapLoader &r);
 
 public:
-	struct SaveGameHeader
-	{
-		int id;
-		int ver;
-		unsigned int numobj;
-	};
-
 	BecherLevel();
 	void SelectObject(BecherObject* obj);
 	BecherObject * GetSelectedObject() { return m_select; }

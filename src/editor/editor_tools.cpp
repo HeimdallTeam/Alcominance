@@ -17,6 +17,7 @@ enum {
 	IDB_WATERHOLE,
 	IDB_STORE,
 	IDB_SHOP,
+	IDB_TROLL,
 };
 
 BEGIN_EVENT_TABLE(ToolObjects, wxChoicebook)
@@ -30,6 +31,7 @@ BEGIN_EVENT_TABLE(ToolObjects, wxChoicebook)
 	EVT_BUTTON(IDB_WATERHOLE,ToolObjects::OnClick)
 	EVT_BUTTON(IDB_STORE,ToolObjects::OnClick)
 	EVT_BUTTON(IDB_SHOP,ToolObjects::OnClick)
+	EVT_BUTTON(IDB_TROLL,ToolObjects::OnClick)
 END_EVENT_TABLE()
 
 #include "../../resource/maleikony/chaloupka.xpm"
@@ -73,6 +75,8 @@ ToolObjects::ToolObjects(wxWindow * parent,int width, int height) : wxChoicebook
 	b->SetToolTip( _("Bridge") );
 	b = new wxBitmapButton(p2,IDB_WATERHOLE,wxBitmap(studna_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Water Hole") );
+	b = new wxBitmapButton(p2,IDB_TROLL,wxBitmap(studna_xpm),BT_P(3,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Troll") );
 
 
 	AddPage(p,_("Buildings"));
@@ -120,6 +124,9 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 		break;
 	case IDB_SHOP:
 		type = EBO_Shop;
+		break;
+	case IDB_TROLL:
+		type = EBO_Troll;
 		break;
 	};
 

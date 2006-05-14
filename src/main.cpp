@@ -7,6 +7,8 @@
 
 using namespace HoeGame;
 
+HoeGame::CVar v_level("map", "maps/test1.bm", 0);
+
 #ifdef _WIN32
 bool Configure(HINSTANCE hInstance, LPSTR lpStr);
 #define CONF_PARAM hInstance, lpStr
@@ -48,13 +50,7 @@ int main(int argc,char * argv[])
 	if (!app.InitGame())
 		throw;
 
-	const char * lev = "data/maps/cukr.bm";
-#ifdef _WIN32
-	if (lpStr[0] != '\0')
-		lev = lpStr;
-#endif
-
-	GetBecher()->LoadLevel(lev);
+	GetBecher()->LoadLevel(v_level.GetString());
 	
 	app.Run();
 	// music destroy

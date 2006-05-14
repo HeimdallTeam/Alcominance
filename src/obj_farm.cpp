@@ -81,37 +81,36 @@ void Farm::AddToWork(Troll *t)
 
 bool Farm::Idiot(Troll *t)
 {
-	if (worked && t != worked)
+	Store * s = FindStore();
+
+	HoeGame::LuaFunc f(GetLua(), "i_farm");
+	f.PushTable();
+	// suroviny
+	f.SetTableInteger("works", this->worked ? 1:0);
+	f.SetTableInteger("works_free", this->worked ? 0:1);
+	f.Run(1);
+	if (f.IsNil(-1))
+	{
+		f.Pop(1);
 		return false;
-	worked = t;
-	Job job;
-	job.owner = this;
-	if (skliz)
-	{
-		job.type = Job::jtOdnes;
-		job.num = 10;
-		job.surtype = EBS_Cane;
-		//job.store;
-		for (int i=0;i < GetBecher()->GetLevel()->GetNumObj();i++)
-		{
-			BecherObject * bo = GetBecher()->GetLevel()->GetObj(i);
-			if (bo->GetType() != EBO_Store)
-				continue;
-			job.store = dynamic_cast<Store*>(bo);
-			// pokud je lepsi nez ten druhy
-		}
-		if (job.store)
-		{
-			t->SetJob(job);
-			return true;
-		}
 	}
-	else
+
+	int r = f.GetTableInteger("type", -1);
+	f.Pop(1);
+	
+	/*switch (r)
 	{
-		job.type = Job::jtWork;
-		t->SetJob(job);
+	case EBS_Cane:
+		SetIn(t,s);
 		return true;
-	}
+	case 2:
+		SetWork(t);
+		return true;
+	case 3:
+		SetOut(t,s);
+		return true;
+	}*/
+
 	return false;
 }
 

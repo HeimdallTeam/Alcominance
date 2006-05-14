@@ -208,7 +208,7 @@ void BecherEdit::OnOpenFile(wxCommandEvent &)
 			m_map = new EditorMap();
 		m_map->SetFilePath(dlg.GetPath());
 		HoeEditor::EditorFile file;
-		HoeFileReader r(&file, 0);
+		BecherMapLoader r(&file);
 		if (!file.OpenRead(dlg.GetPath()) || !m_map->Load( r, true))
 		{
 			wxLogMessage(_("Open map file %s failed."), dlg.GetPath().c_str());

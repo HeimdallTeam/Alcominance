@@ -31,6 +31,7 @@ public:
 };
 
 CVar BecherConfig::m_config("config_file", CONFIG_FILE, TVAR_SSTR);
+extern HoeGame::CVar v_level;
 
 #ifdef _WIN32
 
@@ -130,6 +131,12 @@ int BecherConfig::Arg(int argc, char *argv[])
 		ShowUsage("Becher [-c <config>]");
 		m_continue = false;
 		return argc;
+	}
+
+	// posledni
+	if (argc == 1)
+	{
+		v_level.Set(argv[0]);
 	}
 	return 1;
 }

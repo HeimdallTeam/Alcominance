@@ -20,6 +20,8 @@ Troll::~Troll()
 {
 }
 
+#ifndef BECHER_EDITOR
+
 void Troll::Update(const double t)
 {
 	switch (job.phase)
@@ -182,4 +184,7 @@ void Path::SetPosTo(BecherObject * bo)
 {
 	SetPosTo( bo->GetPosX(), bo->GetPosY());
 }
+
+
+#endif // BECHER_EDITOR
 

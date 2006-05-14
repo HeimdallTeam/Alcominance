@@ -110,7 +110,7 @@ bool BecherLevel::SaveGame(const char * path)
 		return false;
 	HoeFileWriter w(&file);
 
-	BecherLevel::SaveGameHeader head = {ID_BSAVE, ID_BECHERVER, GetNumObj()};
+	MapChunk head = {ID_BSAVE, ID_BECHERVER, GetNumObj()};
 	w.Write(&head, sizeof(head));
 
 	// save map info (ktera mapa)
@@ -135,11 +135,9 @@ bool BecherLevel::SaveGame(const char * path)
 	return true;
 }
 
-bool BecherLevel::LoadGame(HoeFileReader &r)
+bool BecherLevel::LoadGame(BecherMapLoader &r)
 {
-	BecherLevel::SaveGameHeader head;
-	r.Read(&head, sizeof(head));
-
+	int ver = r.Chunk().ver;
 	size_t sfn;
 	r.Read(&sfn, sizeof(sfn));
 	r.Read(m_filename, sfn);
@@ -147,12 +145,12 @@ bool BecherLevel::LoadGame(HoeFileReader &r)
 
 	HoeGame::HoeFile file;
 	file.Open(m_filename);
-	HoeFileReader rr(&file, 0);
+	BecherMapLoader rr(&file);
 	Load( rr, false);
 
 	// load timer and casch
-	m_cash.Load( head.ver, r);
-	m_timer.Load( head.ver, r);
+	m_cash.Load( ver, r);
+	m_timer.Load( ver, r);
 
 	float view[4];
 	r.Read(view, sizeof(view));
@@ -160,7 +158,8 @@ bool BecherLevel::LoadGame(HoeFileReader &r)
 	GetView()->SetAngle(view[2]);
 	GetView()->SetDistance(view[3]);
 
-	LoadObjects(r, head.numobj, head.ver);
+	r.ReadNext();
+	LoadObjects(r);
 
 	return true;
 }
@@ -174,17 +173,15 @@ bool BecherLevel::LoadGame(const char *path)
 		return false;
 	}
 
-	HoeFileReader r(&file, 0);
-	dword type;
-	r.Read(&type, sizeof(type));
-	r.Reset();
-	if (type == ID_BECHERFILE)
+	BecherMapLoader r(&file);
+	r.ReadNext();
+	if (r.Chunk().chunk == ID_BECHERFILE)
 	{
 		strncpy(m_filename, path, sizeof(m_filename));
 		if (!Load( r, true))
 			return false;		
 	}
-	else if (type == ID_BSAVE)
+	else if (r.Chunk().chunk == ID_BSAVE)
 	{
 		
 		if (!LoadGame(r))

@@ -37,13 +37,15 @@ struct JobEx : public Job
 class Troll : public BecherObject
 {
 	//bool MakeStep(Task * j, float step);
+#ifndef BECHER_EDITOR
 	JobEx job;
+#endif
 public:
 	Troll(IHoeScene * scn);
 	~Troll();
 
 	virtual EObjType GetType() { return EBO_Troll; }
-
+#ifndef BECHER_EDITOR
     virtual void Update(const double t);
 	virtual bool Select();
 	void StopWork();
@@ -52,8 +54,9 @@ public:
 	void NewJob();
 
 	Job::Type GetActJob() { return job.type; }
-}
-;
+#endif
+};
+
 
 
 #endif // _TUPON_H_

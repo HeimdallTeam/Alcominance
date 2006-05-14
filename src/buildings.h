@@ -22,6 +22,12 @@ template <int N> struct WorkT
 	}
 };
 
+/*
+ model projekt
+ nanosenej material
+
+*/
+
 enum WorkMode
 {
 	wmBuildIn,

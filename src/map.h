@@ -6,30 +6,48 @@ class BecherObject;
 
 #include "id.h"
 
-#define ID_BECHERFILE ('b' | 'm' << 8 | 'a' << 16 | 'p' << 24)
-#define ID_BECHERVER 3
+#define ID_CHUNK(a,b,c,d) ((a) | (b) << 8 | (c) << 16 | (d) << 24)
+#define ID_BECHERFILE ID_CHUNK('b','m','a','p')
+#define ID_BECHERVER 4
+
+struct MapChunk
+{
+	unsigned long chunk;
+	unsigned long ver;
+	unsigned long reserved;
+};
+
+class BecherMapLoader : public HoeFileReader
+{
+	MapChunk chunk;
+public:
+	BecherMapLoader(XHoeFile * f) : HoeFileReader(f, 0)
+	{
+		chunk.chunk = 0;
+	}
+	const MapChunk & Chunk() { return chunk; }
+	bool ReadNext() 
+	{
+		if (!this->Read(&chunk, sizeof(chunk)))
+			chunk.chunk = 0;
+		return chunk.chunk != 0;
+	}
+};
 
 class BecherMap : public HoeGame::Strategy::Map
 {
 protected:
-	struct FileHeader
-	{
-		unsigned long idfile;
-		unsigned long ver;
-		unsigned long numobjects;
-	};
-
 	// seznam objektu
 	BecherObject * m_obj[1000]; // todo
 	int m_numobj;
 	unsigned long m_lastid;
 
 	int FindObjIndex(BecherObject * bo);
-	bool LoadObjects(HoeFileReader & r, int numobj, int ver);
+	bool LoadObjects(BecherMapLoader & r);
 	bool SaveObjects(HoeFileWriter & w);
 public:
 	BecherMap();
-	bool Load(HoeFileReader & r, bool loadobj);
+	bool Load(BecherMapLoader & r, bool loadobj);
 	BecherObject * CreateObject(unsigned long type);
 	static EObjType GetObjectClass(EObjType type);
 	void AddObject(BecherObject * obj);

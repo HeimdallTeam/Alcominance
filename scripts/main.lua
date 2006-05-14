@@ -81,10 +81,13 @@ end
 
 function s_sklad()
  --info("Vybranej sklad")
+ ClearButtons()
+ AddButton(ID_STOPPRACI,"Najmout delnika", "c_najmout")
 end
 
 function s_tupoun()
-
+ ClearButtons()
+  AddButton(ID_CUKROVAR_ICO,"Build Sugar factory", "c_stavcukr")
 end
 
 --builds
@@ -158,27 +161,21 @@ function c_waterfarm()
 end
 
 function i_sugar(b)
- print("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
- if (b.sugar > (GetVar("sugar_max") - b.cane - b.sugar) ) then
+ -- print("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
+ -- pokud je nejaky cukr tak odnest
+ if (b.sugar > 0) then
      job = { type = 3 }
      return job    
  end
- if b.cane == 0 and b.cane_avail > 0 then
-     job = { type = 1 }
+ -- jestlize se trtina vejde tak trtina
+ if b.cane_avail > 0 and b.free > 0 then
+     job = { type = EBS_Cane }
      return job    
  end 
  
- if b.cane > (GetVar("sugar_max") / 2) then 
+ -- jestli je nejaka trtina tak zpracovat
+ if b.cane > 0 then 
      job = { type = 2 }
-     return job    
- end 
- 
- if b.sugar > 10 then
-     job = { type = 3 }
-     return job    
- end  
-  if b.cane_avail > 0 then
-     job = { type = 1 }
      return job    
  end 
  
@@ -186,6 +183,7 @@ function i_sugar(b)
 end
 
 function i_farm(bb)
+ return nil
 end
 
 

@@ -19,6 +19,15 @@ HoeGame::LuaPreprocess::IDConst g_luaconst[] = {
 	REG_ID(EBO_WaterHole)
 	REG_ID(EBO_Store)
 	REG_ID(EBO_Shop)
+	REG_ID(EBS_None)
+	REG_ID(EBS_Becher)
+	REG_ID(EBS_Stone)
+	REG_ID(EBS_Wood)
+	REG_ID(EBS_Water)
+	REG_ID(EBS_Herbe)
+	REG_ID(EBS_Sugar)
+	REG_ID(EBS_Alco)
+	REG_ID(EBS_Cane)
 	0, NULL,
 };
 

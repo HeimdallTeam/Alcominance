@@ -19,6 +19,10 @@ public:
 	void SetOut(Troll *t, Store *s );
 	void SetIn(Troll *t, Store * s);
 
+#ifdef BECHER_EDITOR
+	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
+#endif
+
 	DECLARE_BUILDING(EBO_Sugar)
 };
 

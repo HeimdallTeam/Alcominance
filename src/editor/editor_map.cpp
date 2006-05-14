@@ -49,7 +49,7 @@ bool EditorMap::SaveMap(const wxString &path)
 	}
 
 	// write nejakej header
-	EditorMap::FileHeader head = { ID_BECHERFILE, ID_BECHERVER, this->GetNumObj()};
+	MapChunk head = { ID_BECHERFILE, ID_BECHERVER, 0 };
 	file.Write(&head, sizeof(head));
 
 	// zakladni data (teren atd)

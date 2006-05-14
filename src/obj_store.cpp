@@ -12,8 +12,7 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STORE));
 	GetCtrl()->SetFlags(HOF_ADVSHOW);
-	m_stone = m_wood = m_sugar = m_water = m_becher = m_alcohol = 0;
-	m_cane = 10000;
+	m_stone = m_wood = m_sugar = m_water = m_becher = m_alcohol = m_cane = 0;
 }
 
 
@@ -57,28 +56,24 @@ void Store::AdvPaint(IHoePaint3D * h3)
 bool Store::Save(HoeFileWriter &w)
 {
 	BecherBuilding::Save(w);
-	/*
 	w.Write<int>(m_stone);
 	w.Write<int>(m_wood);
 	w.Write<int>(m_sugar);
 	w.Write<int>(m_water);
 	w.Write<int>(m_becher);
 	w.Write<int>(m_alcohol);
-	*/
 	return true;
 }
 
 bool Store::Load(int ver, HoeFileReader &r)
 {
 	BecherBuilding::Load(ver, r);
-	/*
 	m_stone = r.Read<int>();
 	m_wood = r.Read<int>();
 	m_sugar = r.Read<int>();
 	m_water = r.Read<int>();
 	m_becher = r.Read<int>();
 	m_alcohol = r.Read<int>();
-	*/
 	return true;
 }
 

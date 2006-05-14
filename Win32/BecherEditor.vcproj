@@ -255,6 +255,34 @@
 				RelativePath="..\src\object.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\src\troll.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="resource"
+			>
+			<File
+				RelativePath="..\src\editor\Editor.rc"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories="../../Common"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\resource\logo.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\src\editor\resource.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\src\becher.h"
@@ -267,19 +295,6 @@
 		<File
 			RelativePath="..\src\editor\editor.h"
 			>
-		</File>
-		<File
-			RelativePath="..\src\editor\Editor.rc"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCResourceCompilerTool"
-					AdditionalIncludeDirectories="../../Common"
-				/>
-			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\src\editor\editor_map.cpp"

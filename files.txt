@@ -17,6 +17,7 @@ data/stromy.hm
 data/Studna.hm
 data/ter.hm
 data/textures.hx
+data/dopln.hm
 #resources
 ID_FACTORY="model tovarna" ; Tovarna
 ID_INFO_RING="model info" ; Ring
@@ -32,4 +33,5 @@ ID_SHOP="model obchod" ; Obchod
 201="model strom_war3" ; Strom 1
 ID_WATERHOLE="model studna" ; Studna
 ID_MOST="model most" ; Most
+ID_TROLL="model olaf" ; Tupoun
 #end

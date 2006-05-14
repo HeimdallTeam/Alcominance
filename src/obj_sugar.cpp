@@ -136,9 +136,14 @@ bool Sugar::Idiot(Troll * t)
 
 	HoeGame::LuaFunc f(GetLua(), "i_sugar");
 	f.PushTable();
+	// suroviny
+	f.SetTableInteger("free", v_sklad.GetInt()-m_sugar-m_cane);
 	f.SetTableInteger("cane_avail", cane_avail);
 	f.SetTableInteger("cane", m_cane);
 	f.SetTableInteger("sugar", m_sugar);
+	// works
+	f.SetTableInteger("works", this->m_worked.num);
+	f.SetTableInteger("works_free", this->m_worked.NumFree());
 	f.Run(1);
 	if (f.IsNil(-1))
 	{
@@ -151,7 +156,7 @@ bool Sugar::Idiot(Troll * t)
 	
 	switch (r)
 	{
-	case 1:
+	case EBS_Cane:
 		SetIn(t,s);
 		return true;
 	case 2:
@@ -196,7 +201,21 @@ void Sugar::SetIn(Troll *t, Store * s)
 
 bool Sugar::Select()
 {
+	GetProp()->Begin(this);
+	GetProp()->AppendCategory(_("Store"));
+	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());
+	GetProp()->End();	
 	return true;
+}
+
+void Sugar::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+{
+	switch (id)
+	{
+	case 6:
+		v_sklad.Set((int)pi.GetLong());
+		break;
+	};
 }
 
 #endif

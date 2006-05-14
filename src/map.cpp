@@ -45,10 +45,8 @@ BecherObject * BecherMap::CreateObject(unsigned long type)
 		bo = new Store(m_scene);break;
 	case EBO_Shop:
 		bo = new Shop(m_scene);break;
-#ifndef BECHER_EDITOR
 	case EBO_Troll:
 		bo = new Troll(m_scene);break;
-#endif
 	default:
 		assert(!"Unknown becher object");
 	};
@@ -80,7 +78,7 @@ EObjType BecherMap::GetObjectClass(EObjType type)
 	return EBO_None;
 }
 
-bool BecherMap::Load(HoeFileReader & r, bool loadobj)
+bool BecherMap::Load(BecherMapLoader & r, bool loadobj)
 {
 	if (m_scene)
 	{
@@ -90,21 +88,25 @@ bool BecherMap::Load(HoeFileReader & r, bool loadobj)
 	this->Create(GetEngine()->CreateScene(HOETS_GRAPH));
 	this->m_numobj = 0;
 
-	BecherMap::FileHeader head;
-	r.Read(&head, sizeof(head));
-	if (head.idfile != ID_BECHERFILE)
+	if (r.Chunk().chunk == 0)
+		r.ReadNext();
+
+	if (r.Chunk().chunk != ID_BECHERFILE)
 	{
 		GetCon()->Printf("Bad format file");
 		return false;
 	}
-
-	if (head.ver > ID_BECHERVER)
+	if (r.Chunk().ver > ID_BECHERVER)
 	{
-		GetCon()->Printf("Version is too big (%d, req: %d). Update your executables.", head.ver, ID_BECHERVER);
+		GetCon()->Printf("Version is big (%d, req: %d). Update your executables.", r.Chunk(), ID_BECHERVER);
 		return false;
 	}
+	r.ReadNext();
 
-	IHoeMaterial * mat = this->GetScene()->GetSceneEnv()->GetMaterial("trava");
+	// nejdrive jsou globals
+
+	// pak mapa
+	/*IHoeMaterial * mat = this->GetScene()->GetSceneEnv()->GetMaterial("trava");
 	IHoeEnv::Poly * p = this->GetScene()->GetSceneEnv()->CreatePolygon(4);
 	const float sizev = 500;
 	float v[] = { -sizev, 0, -sizev, 0, 0,
@@ -115,19 +117,35 @@ bool BecherMap::Load(HoeFileReader & r, bool loadobj)
 	p->SetPos(v, sizeof(float)*5);
 	p->SetTex(v + 3, sizeof(float)*5);
 	p->SetMaterial(mat);
-	p->Release();
+	p->Release();*/
 
+	// nakonec objekty
+	// vsechno pres chunky
+
+
+	// musi byt az na konci !!!
+	if (r.Chunk().chunk != ID_CHUNK('O','b','j','s'))
+	{
+		GetCon()->Printf("Corupt file. chunk objs req");
+		return false;
+	}
 	if (loadobj)
 	{
-		LoadObjects(r, head.numobjects, head.ver);
+		LoadObjects(r);
 	}
 
+	// svetla
+	IHoeLight * l = m_scene->CreateLight();
+	l->SetPosition(0,0, 50);
+	l->SetColor(1,1,0.5f);
 
 	return true;
 }
 
-bool BecherMap::LoadObjects(HoeFileReader & r, int numobj, int ver)
+bool BecherMap::LoadObjects(BecherMapLoader & r)
 {
+	int numobj = r.Chunk().reserved;
+	int ver = r.Chunk().ver;
 	// read objects
 	for (int i=0;i < numobj;i++)
 	{
@@ -145,11 +163,11 @@ bool BecherMap::LoadObjects(HoeFileReader & r, int numobj, int ver)
 		bo->Show(true);
 		bo->Load(ver, r);
 		AddObject(bo);
-		//if (r.Read<dword>() != 123456789)
-		//{
-		//	GetCon()->Printf("Corupt file obj(%d)",i);
-		//	return false;
-		//}
+		if (r.Read<dword>() != 123456789)
+		{
+			GetCon()->Printf("Corupt file obj(%d)",i);
+			return false;
+		}
 	}
 
 	ComputeLastID();
@@ -159,6 +177,8 @@ bool BecherMap::LoadObjects(HoeFileReader & r, int numobj, int ver)
 
 bool BecherMap::SaveObjects(HoeFileWriter &w)
 {
+	MapChunk chobj = { ID_CHUNK('O','b','j','s'), 1, GetNumObj()};
+	w.Write(&chobj, sizeof(MapChunk));
 	for (int i=0;i < GetNumObj();i++)
 	{
 		BecherObject * bo = GetObj(i);
@@ -174,7 +194,7 @@ bool BecherMap::SaveObjects(HoeFileWriter &w)
 		s.advsize = (unsigned long)w.GetFile()->Tell() - s.advsize;
 		hw.Flush();
 		// write check
-		//w.Write<dword>(123456789);
+		w.Write<dword>(123456789);
 	}
 	return true;
 }
