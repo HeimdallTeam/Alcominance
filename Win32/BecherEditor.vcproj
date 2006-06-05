@@ -12,6 +12,9 @@
 		/>
 	</Platforms>
 	<ToolFiles>
+		<ToolFile
+			RelativePath="..\..\Common\tools.rules"
+		/>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
@@ -27,7 +30,13 @@
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
+				Name="Flex"
+			/>
+			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="HTML help"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -125,7 +134,13 @@
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
+				Name="Flex"
+			/>
+			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="HTML help"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -284,6 +299,39 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="help"
+			>
+			<File
+				RelativePath="..\editor\help\bechereditor.hhc"
+				>
+			</File>
+			<File
+				RelativePath="..\editor\help\bechereditor.hhk"
+				>
+			</File>
+			<File
+				RelativePath="..\editor\help\bechereditor.hhp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="HTML help"
+						AdditionalOptions=""
+						output="../BecherEditor.chm"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\help\bechereditor.html"
+				>
+			</File>
+			<File
+				RelativePath="..\editor\help\files.html"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\src\becher.h"
 			>
@@ -318,6 +366,14 @@
 		</File>
 		<File
 			RelativePath="..\src\editor\help.h"
+			>
+		</File>
+		<File
+			RelativePath="..\src\editor\map_properties.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\src\editor\map_properties.h"
 			>
 		</File>
 		<File

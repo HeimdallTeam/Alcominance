@@ -11,5 +11,14 @@ public:
 	DECLARE_EVENT_TABLE()
 };
 
+class TerrainObject : public wxPanel
+{
+public:
+	TerrainObject(wxWindow * parent,int width, int height);
+	//void OnClick(wxCommandEvent& event);
+
+	DECLARE_EVENT_TABLE()
+};
+
 #endif // _BECHER_EDITOR_TOOLS_H_
 

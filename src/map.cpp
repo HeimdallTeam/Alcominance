@@ -135,9 +135,9 @@ bool BecherMap::Load(BecherMapLoader & r, bool loadobj)
 	}
 
 	// svetla
-	IHoeLight * l = m_scene->CreateLight();
+	/*IHoeLight * l = m_scene->CreateLight(false);
 	l->SetPosition(0,0, 50);
-	l->SetColor(1,1,0.5f);
+	l->SetColor(1,1,0.5f);*/
 
 	return true;
 }

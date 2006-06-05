@@ -48,7 +48,8 @@ END_EVENT_TABLE()
 #define BT_SIZE wxSize(28,28)
 #define BT_P(x,y) wxPoint(28 * x + 6, 28 * y + 3)
 
-ToolObjects::ToolObjects(wxWindow * parent,int width, int height) : wxChoicebook(parent,wxID_ANY,wxDefaultPosition, wxSize(100,100))
+ToolObjects::ToolObjects(wxWindow * parent,int width, int height)
+	: wxChoicebook(parent,wxID_ANY,wxDefaultPosition, wxSize(width,height))
 {
 	wxWindow * p  = new wxWindow(this,-1);
 	wxButton * b = new wxBitmapButton(p,IDB_FACTORY,wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
@@ -134,5 +135,17 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 	//if (type != 0 && m_actmap)
 	//	m_actmap->NewSelectObject(type);
 	
+}
+
+////////////////////////////////////////////////////
+// terrain
+
+BEGIN_EVENT_TABLE(TerrainObject, wxPanel)
+    //EVT_BUTTON(IDB_SUGAR,ToolObjects::OnClick)
+END_EVENT_TABLE()
+
+TerrainObject::TerrainObject(wxWindow * parent,int width, int height)
+	: wxPanel(parent,wxID_ANY,wxDefaultPosition, wxSize(width,height))
+{
 }
 

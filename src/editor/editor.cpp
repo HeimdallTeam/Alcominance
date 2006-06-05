@@ -9,6 +9,7 @@
 #include "help.h"
 #include "../object.h"
 #include "../becher.h"
+#include "map_properties.h"
 
 IMPLEMENT_APP(BecherEditApp)
 
@@ -17,10 +18,12 @@ const char * EditorName = "BecherEditor";
 enum {
 	ID_SHOWRES = HoeEditor::ID_CUSTOMMENU_FIRST,
 	ID_OBJECT,
+	ID_MAPSETTINGS,
 };
 
 BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
 	EVT_MENU(ID_SHOWRES, BecherEdit::OnResMgr)
+	EVT_MENU(ID_MAPSETTINGS, BecherEdit::OnMapSettings)
 	EVT_MENU(HoeEditor::ID_NEW, BecherEdit::OnNewFile)
 	EVT_MENU(HoeEditor::ID_OPEN, BecherEdit::OnOpenFile)
 	EVT_MENU(HoeEditor::ID_SAVE, BecherEdit::OnSaveFile)
@@ -80,6 +83,8 @@ bool BecherEdit::Create(const wxString & title)
 	GetPanelMgr()->AddPanel(
 		new ToolObjects(GetPanelMgr(), 80, 50), _("Tools"), true, true);
 	GetPanelMgr()->AddPanel(
+		new TerrainObject(GetPanelMgr(), 80, 50), _("Terrain"), true, true);
+	GetPanelMgr()->AddPanel(
 		m_prop, _("Properties"), false, true);
 
 
@@ -119,11 +124,12 @@ void BecherEdit::OnInitMenu()
 	*/
 	// tools
 	wxMenu * m_menuTools = new wxMenu;
-#ifndef HOE_STATIC
-	m_menuTools->Append(HoeEditor::ID_ENGINE, _("&Load Engine...\tF10"), _("Load engine from library"));
-	m_menuTools->AppendSeparator();
-#endif
+	m_menuTools->Append(ID_MAPSETTINGS, _("&Map Settings..."), _("Set map parameters"));
 	m_menuTools->Append(ID_SHOWRES, _("&Resource Manager..."), _("Resource Manager"));
+#ifndef HOE_STATIC
+	m_menuTools->AppendSeparator();
+	m_menuTools->Append(HoeEditor::ID_ENGINE, _("&Load Engine...\tF10"), _("Load engine from library"));
+#endif
 
 	wxMenu * menuHelp = new wxMenu;
 	menuHelp->Append(HoeEditor::ID_ABOUT, _("&About..."), _("Show about"));
@@ -189,12 +195,22 @@ void BecherEdit::OnResMgr(wxCommandEvent &)
 	m_res.ShowDlg();
 }
 
+void BecherEdit::OnMapSettings(wxCommandEvent &)
+{
+	MapSettingsDialog dlg(this);
+	dlg.ShowModal();
+}
+
 void BecherEdit::OnNewFile(wxCommandEvent &)
 {
-	CloseMap();
-	m_map = new EditorMap();
-	m_map->CreateNew();
-	UpdateControls();
+	MapSettingsDialog dlg(this);
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		CloseMap();
+		m_map = new EditorMap();
+		m_map->CreateNew();
+		UpdateControls();
+	}
 }
 
 void BecherEdit::OnOpenFile(wxCommandEvent &)
@@ -341,7 +357,8 @@ void BecherEdit::MouseLeftDown(const int x, const int y, wxMouseEvent & e)
 
 void BecherEdit::MouseLeftUp(const int x, const int y, wxMouseEvent & e)
 {
-	m_map->m_lockobject = NULL;
+	if (m_map)
+		m_map->m_lockobject = NULL;
 }
 
 void BecherEdit::MouseRightDown(const int x, const int y, wxMouseEvent & e)

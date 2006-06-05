@@ -40,6 +40,7 @@ public:
 	bool Create(const wxString & title);
 	void OnNewObject(wxCommandEvent &);
 	void OnResMgr(wxCommandEvent &);
+	void OnMapSettings(wxCommandEvent &);
 	void OnNewFile(wxCommandEvent &);
 	void OnOpenFile(wxCommandEvent &);
 	void OnSaveFile(wxCommandEvent &);
