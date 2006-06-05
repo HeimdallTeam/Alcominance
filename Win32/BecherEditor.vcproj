@@ -319,7 +319,7 @@
 					<Tool
 						Name="HTML help"
 						AdditionalOptions=""
-						output="../BecherEditor.chm"
+						output="../../BecherEditor.chm"
 					/>
 				</FileConfiguration>
 			</File>

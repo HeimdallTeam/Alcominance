@@ -19,6 +19,7 @@ enum {
 	ID_SHOWRES = HoeEditor::ID_CUSTOMMENU_FIRST,
 	ID_OBJECT,
 	ID_MAPSETTINGS,
+	ID_HELP,
 };
 
 BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
@@ -29,6 +30,7 @@ BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
 	EVT_MENU(HoeEditor::ID_SAVE, BecherEdit::OnSaveFile)
 	EVT_MENU(HoeEditor::ID_SAVEAS, BecherEdit::OnSaveFile)
 	EVT_MENU(HoeEditor::ID_ABOUT, BecherEdit::OnAbout)
+	EVT_MENU(ID_HELP, BecherEdit::OnHelp)
 	EVT_MENU_RANGE(ID_OBJECT, ID_OBJECT + EBO_Max, BecherEdit::OnNewObject)
 
 END_EVENT_TABLE()
@@ -67,6 +69,19 @@ BecherEdit::~BecherEdit()
 
 bool BecherEdit::Create(const wxString & title)
 {
+
+	
+	wxImage::AddHandler(new wxGIFHandler);
+	// 
+	wxHelpControllerHelpProvider* provider = new wxHelpControllerHelpProvider;
+    wxHelpProvider::Set(provider);
+	provider->SetHelpController(&m_help);
+	if (!m_help.Initialize("doc"))
+	{
+		wxMessageBox(wxT("Error: Cannot initialize the help system."));
+		return false;
+	}
+
 	HoeEditor::LevelEditor::Create(title);
 
 	wxSplitterWindow * split = new wxSplitterWindow(this,10, wxDefaultPosition, wxDefaultSize,0);
@@ -75,7 +90,7 @@ bool BecherEdit::Create(const wxString & title)
 	// seradit do layoutu
 
 	this->m_leftpanel.Create(split, -1);
-	this->m_engview.Create(split, -1);
+	this->m_engview.Create(split, -1, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS);
 
 	split->SplitVertically(&m_leftpanel, &m_engview, 150);
 
@@ -132,6 +147,8 @@ void BecherEdit::OnInitMenu()
 #endif
 
 	wxMenu * menuHelp = new wxMenu;
+	menuHelp->Append(ID_HELP, _("&Help...\tF1"), _("Show help"));
+	menuHelp->AppendSeparator();
 	menuHelp->Append(HoeEditor::ID_ABOUT, _("&About..."), _("Show about"));
 
     // now append the freshly created menu to the menu bar...
@@ -277,6 +294,13 @@ nq:
 		SetTitle(m_map->GetTitle());
 }
 
+void BecherEdit::OnHelp(wxCommandEvent &)
+{
+	// help
+	//m_msHtmlHelp.KeywordSearch("neco");
+	m_help.DisplaySection(1);
+}
+
 void BecherEdit::OnAbout(wxCommandEvent &)
 {
 	AboutDlg dlg;
@@ -382,6 +406,56 @@ void BecherEdit::MouseWheel(wxMouseEvent & e)
 		else
 			m_map->GetView()->Rotate(e.GetWheelRotation() / 500.f);
 	}
+}
+
+void BecherEdit::KeyDown(wxKeyEvent& e)
+{
+	if (m_map)
+	{
+		if (e.ControlDown())
+		{
+			switch (e.GetKeyCode())
+			{
+			case WXK_LEFT:
+				m_map->GetView()->Rotate(0.1f);
+				break;
+			case WXK_RIGHT:
+				m_map->GetView()->Rotate(-0.1f);
+				break;
+			case WXK_UP:
+				m_map->GetView()->Zoom(-1.7f);
+				break;
+			case WXK_DOWN:
+				m_map->GetView()->Zoom(1.7f);
+				break;
+
+			};
+		}
+		else
+		{
+			switch (e.GetKeyCode())
+			{
+			case WXK_LEFT:
+				m_map->GetView()->Move(0,-1);
+				break;
+			case WXK_RIGHT:
+				m_map->GetView()->Move(0,1);
+				break;
+			case WXK_UP:
+				m_map->GetView()->Move(1,0);
+				break;
+			case WXK_DOWN:
+				m_map->GetView()->Move(-1,0);
+				break;
+
+			};
+		}			
+	}
+}
+
+void BecherEdit::KeyUp(wxKeyEvent& e)
+{
+
 }
 
 //////////////////////////////////

@@ -28,6 +28,7 @@ protected:
 	HoeEditor::PropertyGrid * m_prop;
 	HoeEditor::EngineView m_engview;
 	HoeEditor::PanelMgr m_leftpanel;
+	wxHelpController m_help;
 public:
 	BecherEdit();
 	virtual ~BecherEdit();
@@ -44,10 +45,11 @@ public:
 	void OnNewFile(wxCommandEvent &);
 	void OnOpenFile(wxCommandEvent &);
 	void OnSaveFile(wxCommandEvent &);
+	void OnHelp(wxCommandEvent &);
 	void OnAbout(wxCommandEvent &);
 
-	virtual void KeyDown(int code) {};
-	virtual void KeyUp(int code) {};
+	virtual void KeyDown(wxKeyEvent& event);
+	virtual void KeyUp(wxKeyEvent& event);
 	virtual void MouseLeftDown(const int x, const int y, wxMouseEvent & e);
 	virtual void MouseLeftUp(const int x, const int y, wxMouseEvent & e);
 	virtual void MouseRightDown(const int x, const int y, wxMouseEvent & e);
