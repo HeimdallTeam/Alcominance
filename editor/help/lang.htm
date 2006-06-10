@@ -1,0 +1,97 @@
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Microsoft Visual Studio 8.0">
+<TITLE></TITLE>
+</HEAD>
+<BODY>
+    <h1>
+        XINPUT_GAMEPAD</h1>
+    <p>
+        Describes the current state of the Xbox 360 Controller.
+    </p>
+    <pre class="syntax">
+<span style="background-color: silver">typedef struct _XINPUT_GAMEPAD { WORD wButtons;
+    BYTE bLeftTrigger; BYTE bRightTrigger; SHORT sThumbLX; SHORT sThumbLY; SHORT sThumbRX;
+    SHORT sThumbRY; } XINPUT_GAMEPAD, *PXINPUT_GAMEPAD;</span></pre>
+    <h4>
+        <a name="members"></a>Members</h4>
+    <dl>
+        <dt><b>wButtons</b> </dt>
+        <dd>
+            Bitmask of the device digital buttons, as follows. A set bit indicates that the
+            corresponding button is pressed.
+            <pre class="clsCode">
+<span style="color: #990000">#define XINPUT_GAMEPAD_DPAD_UP 0x00000001 #define XINPUT_GAMEPAD_DPAD_DOWN
+    0x00000002 #define XINPUT_GAMEPAD_DPAD_LEFT 0x00000004 #define XINPUT_GAMEPAD_DPAD_RIGHT
+    0x00000008 #define XINPUT_GAMEPAD_START 0x00000010 #define XINPUT_GAMEPAD_BACK 0x00000020
+    #define XINPUT_GAMEPAD_LEFT_THUMB 0x00000040 #define XINPUT_GAMEPAD_RIGHT_THUMB
+    0x00000080 #define XINPUT_GAMEPAD_LEFT_SHOULDER 0x0100 #define XINPUT_GAMEPAD_RIGHT_SHOULDER
+    0x0200 #define XINPUT_GAMEPAD_A 0x1000 #define XINPUT_GAMEPAD_B 0x2000 #define XINPUT_GAMEPAD_X
+    0x4000 #define XINPUT_GAMEPAD_Y 0x8000</span></pre>
+            <p>
+                Bits that are set but not defined above are reserved, and their state is undefined.</p>
+        </dd>
+        <dt><b>bLeftTrigger</b> </dt>
+        <dd>
+            The current value of the left trigger analog control. The value is between 0 and
+            255.
+        </dd>
+        <dt><b>bRightTrigger</b> </dt>
+        <dd>
+            The current value of the right trigger analog control. The value is between 0 and
+            255.
+        </dd>
+        <dt><b>sThumbLX</b> </dt>
+        <dd>
+            Left thumbstick x-axis value. Each of the thumbstick axis members is a signed value
+            between -32768 and 32767 describing the position of the thumbstick. A value of 0
+            is centered. Negative values signify down or to the left. Positive values signify
+            up or to the right. The constants XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE or XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE
+            can be used as a positive and negative value to filter a thumbstick input.
+        </dd>
+        <dt><b>sThumbLY</b> </dt>
+        <dd>
+            Left thumbstick y-axis value. The value is between -32768 and 32767.
+        </dd>
+        <dt><b>sThumbRX</b> </dt>
+        <dd>
+            Right thumbstick x-axis value. The value is between -32768 and 32767.
+        </dd>
+        <dt><b>sThumbRY</b> </dt>
+        <dd>
+            Right thumbstick y-axis value. The value is between -32768 and 32767.</dd></dl>
+    <h4>
+        <a name="remarks"></a>Remarks</h4>
+    <p>
+        This structure is used by the <a href="XINPUT_STATE.htm">XINPUT_STATE</a> structure
+        when polling for changes in the state of the controller.</p>
+    <p>
+        The specific mapping of button to game function varies depending on the game type.</p>
+    <p>
+        The constant XINPUT_GAMEPAD_TRIGGER_THRESHOLD may be used as the value which <b>bLeftTrigger</b>
+        and <b>bRightTrigger</b> must be greater than to register as pressed. This is optional,
+        but often desirable. Xbox 360 Controller buttons do not manifest crosstalk.</p>
+    <h4>
+        <a name="requirements"></a>Requirements</h4>
+    <p class="clsInfo">
+        <b>Header: </b>Declared in XInput.h.
+    </p>
+    <h4>
+        <a name="seealso"></a>See Also</h4>
+    <p>
+        <a href="dx9_xinput_reference_structures.htm">XInput Structures</a> | <a href="XInputGetState.htm">
+            XInputGetState</a>, <a href="XINPUT_STATE.htm">XINPUT_STATE</a></p>
+    <div id="footer" class="footer">
+        <br />
+        <p class="special" style="margin-top: 0px; margin-bottom: 0px; text-align: center">
+            <a href="mailto:dxsdkdoc@microsoft.com?body=Topic ID:XINPUT_GAMEPAD%0D%0A%0D%0AThe DirectX documentation team appreciates your feedback! You can have a great impact on DirectX customers and end users worldwide! Please provide any suggestions you may have for the documentation, such as corrections or helpful information you think ought to be included. If you have more general questions not directly related to the documentation, please visit the MSDN DirectX Developer site instead at http://msdn.microsoft.com/directx &#9;&#9;%0D%0A%0D%0AYour comments on this topic:&subject=DirectX Docs Feedback:XINPUT_GAMEPAD">
+                Feedback? Please provide us with your comments on this topic.</a><br />
+            <a href="http://msdn.microsoft.com/directx/">For more help, visit the DirectX Developer
+                Center</a></p>
+        <br />
+        © 2005 Microsoft Corporation. All rights reserved.</div>
+
+
+
+</BODY>
+</HTML>

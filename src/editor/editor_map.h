@@ -12,7 +12,7 @@ class EditorMap : public BecherMap
 protected:
 	BecherObject * m_createobject;
 	wxString m_mapfilepath;
-	IHoeEnv::HeightMapSurface * terrain;
+	IHoeEnv::HeightMapSurface * m_terrain;
 public:
 	BecherObject * m_lockobject;
 	EditorMap()
@@ -21,7 +21,7 @@ public:
 		s_actmap = this;
 		m_createobject = NULL;
 		m_lockobject = NULL;
-		terrain = NULL;
+		m_terrain = NULL;
 	}
 	~EditorMap()
 	{
@@ -41,6 +41,7 @@ public:
 	void SetFilePath(const wxString &path);
 	wxString GetFilePath();
 	wxString GetTitle();
+	IHoeEnv::HeightMapSurface * GetTerrain() { return m_terrain; };
 };
 
 #endif // _BECHER_EDITOR_MAP_H_

@@ -14,8 +14,8 @@ void EditorMap::CreateNew()
 	GetEngine()->SetActiveScene(m_scene);
 	HoeGetRef(GetEngine())->SetBackgroundColor(0xffb060ff);
 	m_mapfilepath = wxT("");
-	terrain = m_scene->GetSceneEnv()->CreateHeightMapSurface();
-	terrain->LoadHeight(100,100,4,NULL);
+	m_terrain = m_scene->GetSceneEnv()->CreateHeightMapSurface();
+	m_terrain->GenerateHeight(5,5,5);
 
 }
 

@@ -1,11 +1,32 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
-<HTML><HEAD></HEAD><BODY>
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
 <OBJECT type="text/site properties">
-<param name="FrameName" value="right">
+	<param name="FrameName" value="right">
 </OBJECT>
 <UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="bechereditor.html"><param name="Name" value="_11"></OBJECT>
- </LI>
- <LI><OBJECT type="text/sitemap"><param name="Local" value="bechereditor.html"><param name="Name" value="hjk"></OBJECT>
- </LI>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="AddFile">
+		<param name="Name" value="Untitled: c:\work\BecherGame\editor\help\lf_addfile.htm">
+		<param name="Local" value="lf_addfile.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="init.lua">
+		<param name="Name" value="Untitled: c:\work\BecherGame\editor\help\init_skript.htm">
+		<param name="Local" value="init_skript.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="LoadLang">
+		<param name="Name" value="Untitled: c:\work\BecherGame\editor\help\lf_loadlang.htm">
+		<param name="Local" value="lf_loadlang.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="LoadResource">
+		<param name="Name" value="Untitled: c:\work\BecherGame\editor\help\lf_loadresource.htm">
+		<param name="Local" value="lf_loadresource.htm">
+		</OBJECT>
 </UL>
+</BODY></HTML>

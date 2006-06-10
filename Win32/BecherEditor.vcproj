@@ -331,6 +331,40 @@
 				RelativePath="..\editor\help\files.html"
 				>
 			</File>
+			<File
+				RelativePath="..\editor\help\init_skript.htm"
+				DeploymentContent="true"
+				>
+			</File>
+			<File
+				RelativePath="..\editor\help\lang.htm"
+				DeploymentContent="true"
+				>
+			</File>
+			<File
+				RelativePath="..\editor\help\script.htm"
+				DeploymentContent="true"
+				>
+			</File>
+			<Filter
+				Name="lua_functions"
+				>
+				<File
+					RelativePath="..\editor\help\lf_addfile.htm"
+					DeploymentContent="true"
+					>
+				</File>
+				<File
+					RelativePath="..\editor\help\lf_loadlang.htm"
+					DeploymentContent="true"
+					>
+				</File>
+				<File
+					RelativePath="..\editor\help\lf_loadresource.htm"
+					DeploymentContent="true"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="..\src\becher.h"

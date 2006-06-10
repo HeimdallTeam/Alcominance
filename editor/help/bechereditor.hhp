@@ -1,21 +1,26 @@
 [OPTIONS]
-Compatibility=1.1
-Full-text search=Yes
-Compiled file=../../BecherEditor.chm
+#include HTMLDefines.h
+;Auto Index=Yes
+Compatibility=1.1 or later
+Compiled file=..\..\BecherEditor.chm
 Contents file=bechereditor.hhc
 Default Window=main
 Default topic=bechereditor.html
+Display compile progress=No
+Full-text search=Yes
 Index file=bechereditor.hhk
-;Auto Index=Yes
-Language=0x405 Czech
-Create CHI file=NO
-Title=BecherEditor
+Language=0x405 Èeština
 
-[WINDOWS]
-main="BecherEditor","bechereditor.hhc","bechereditor.hhk","bechereditor.html","bechereditor.html",,,,,0x23520,,0x387e,,,,,,,,0
 
 [FILES]
+script.htm
 bechereditor.html
+files.html
+init_skript.htm
+lang.htm
+lf_addfile.htm
+lf_loadlang.htm
+lf_loadresource.htm
 
-[MAP]
-#include HTMLDefines.h
+[INFOTYPES]
+

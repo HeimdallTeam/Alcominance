@@ -141,11 +141,24 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 // terrain
 
 BEGIN_EVENT_TABLE(TerrainObject, wxPanel)
-    //EVT_BUTTON(IDB_SUGAR,ToolObjects::OnClick)
+    EVT_BUTTON(IDB_FACTORY,TerrainObject::OnClick)
 END_EVENT_TABLE()
 
 TerrainObject::TerrainObject(wxWindow * parent,int width, int height)
 	: wxPanel(parent,wxID_ANY,wxDefaultPosition, wxSize(width,height))
 {
+	wxButton * b = new wxBitmapButton(this,IDB_FACTORY,wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Factory") );
+
+}
+
+void TerrainObject::OnClick(wxCommandEvent& event)
+{
+	if (!EditorMap::Get())
+	{
+		wxMessageBox(_("First must create map."));
+		return;
+	}
+	EditorMap::Get()->GetTerrain()->MoveHeight(0,0,20,5);
 }
 

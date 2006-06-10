@@ -20,6 +20,7 @@ enum {
 	ID_OBJECT,
 	ID_MAPSETTINGS,
 	ID_HELP,
+	ID_ENGINECON,
 };
 
 BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
@@ -141,8 +142,9 @@ void BecherEdit::OnInitMenu()
 	wxMenu * m_menuTools = new wxMenu;
 	m_menuTools->Append(ID_MAPSETTINGS, _("&Map Settings..."), _("Set map parameters"));
 	m_menuTools->Append(ID_SHOWRES, _("&Resource Manager..."), _("Resource Manager"));
-#ifndef HOE_STATIC
 	m_menuTools->AppendSeparator();
+	m_menuTools->Append(ID_ENGINECON, _("&Show Console...\tF11"), _("Show Engine Console"));
+#ifndef HOE_STATIC
 	m_menuTools->Append(HoeEditor::ID_ENGINE, _("&Load Engine...\tF10"), _("Load engine from library"));
 #endif
 
