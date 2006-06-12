@@ -159,6 +159,6 @@ void TerrainObject::OnClick(wxCommandEvent& event)
 		wxMessageBox(_("First must create map."));
 		return;
 	}
-	EditorMap::Get()->GetTerrain()->MoveHeight(0,0,100,5);
+	EditorMap::Get()->GetTerrain()->MoveHeight(0,0,50,-5);
 }
 

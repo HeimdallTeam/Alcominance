@@ -16,7 +16,7 @@ void EditorMap::CreateNew()
 	m_mapfilepath = wxT("");
 	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
 	m_terrain->SetSize(3000.f, 3000.f);
-	m_terrain->GenerateHeight(100,100);
+	m_terrain->GenerateHeight(50,50);
 
 }
 
