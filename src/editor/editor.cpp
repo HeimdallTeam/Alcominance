@@ -21,6 +21,7 @@ enum {
 	ID_MAPSETTINGS,
 	ID_HELP,
 	ID_ENGINECON,
+	ID_TERRAINWIRE,
 };
 
 BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
@@ -31,6 +32,7 @@ BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
 	EVT_MENU(HoeEditor::ID_SAVE, BecherEdit::OnSaveFile)
 	EVT_MENU(HoeEditor::ID_SAVEAS, BecherEdit::OnSaveFile)
 	EVT_MENU(HoeEditor::ID_ABOUT, BecherEdit::OnAbout)
+	EVT_MENU(ID_TERRAINWIRE, BecherEdit::OnTerrainWireFrame)
 	EVT_MENU(ID_HELP, BecherEdit::OnHelp)
 	EVT_MENU_RANGE(ID_OBJECT, ID_OBJECT + EBO_Max, BecherEdit::OnNewObject)
 
@@ -129,9 +131,11 @@ void BecherEdit::OnInitMenu()
 	wxMenu * menuView = new wxMenu;
 	menuView->Append(HoeEditor::ID_SHOWLOG, _("Show &Log...\tF2"), _("Show log dialog."));
 	/*menuView->Append(ID_VIEWENGINE, _("&Engine"), _("Show engine view."));
-	menuView->Append(ID_VIEWCODE, _("&Code Editor"), _("Show code editor."));
-	menuView->AppendSeparator();*/
+	menuView->Append(ID_VIEWCODE, _("&Code Editor"), _("Show code editor."));*/
 	menuView->AppendCheckItem(HoeEditor::ID_VIEWFULLSCREEN, _("F&ull Screen\tF12"), _("Switch to fullscreen."));
+	menuView->AppendSeparator();
+	menuView->AppendCheckItem(ID_TERRAINWIRE, _("Terrain Wireframe\tCtrl+W"), _("Switch terrain in wireframe."));
+
 	/*menuView->AppendSeparator();
 	// advanced
 	wxMenu * menuAdvanced = new wxMenu;
@@ -308,6 +312,12 @@ void BecherEdit::OnAbout(wxCommandEvent &)
 	AboutDlg dlg;
 	dlg.Create(this,-1,"About");
 	dlg.ShowModal();
+}
+
+void BecherEdit::OnTerrainWireFrame(wxCommandEvent &)
+{
+	if (m_map)
+		m_map->GetTerrain()->ShowWireframe(m_menu->IsChecked(ID_TERRAINWIRE));
 }
 
 void BecherEdit::OnNewObject(wxCommandEvent &)

@@ -47,6 +47,7 @@ public:
 	void OnSaveFile(wxCommandEvent &);
 	void OnHelp(wxCommandEvent &);
 	void OnAbout(wxCommandEvent &);
+	void OnTerrainWireFrame(wxCommandEvent &);
 
 	virtual void KeyDown(wxKeyEvent& event);
 	virtual void KeyUp(wxKeyEvent& event);
