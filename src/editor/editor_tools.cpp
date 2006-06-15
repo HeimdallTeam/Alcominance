@@ -48,8 +48,8 @@ END_EVENT_TABLE()
 #define BT_SIZE wxSize(28,28)
 #define BT_P(x,y) wxPoint(28 * x + 6, 28 * y + 3)
 
-ToolObjects::ToolObjects(wxWindow * parent,int width, int height)
-	: wxChoicebook(parent,wxID_ANY,wxDefaultPosition, wxSize(width,height))
+ToolObjects::ToolObjects(wxWindow * parent)
+	: wxChoicebook(parent,wxID_ANY,wxDefaultPosition, wxSize(80,50))
 {
 	wxWindow * p  = new wxWindow(this,-1);
 	wxButton * b = new wxBitmapButton(p,IDB_FACTORY,wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
@@ -144,12 +144,13 @@ BEGIN_EVENT_TABLE(TerrainObject, wxPanel)
     EVT_BUTTON(IDB_FACTORY,TerrainObject::OnClick)
 END_EVENT_TABLE()
 
-TerrainObject::TerrainObject(wxWindow * parent,int width, int height)
-	: wxPanel(parent,wxID_ANY,wxDefaultPosition, wxSize(width,height))
+TerrainObject::TerrainObject(wxWindow * parent)
+	: wxPanel(parent,wxID_ANY,wxDefaultPosition, wxSize(80,250))
 {
 	wxButton * b = new wxBitmapButton(this,IDB_FACTORY,wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Factory") );
 
+	
 }
 
 void TerrainObject::OnClick(wxCommandEvent& event)

@@ -1,0 +1,300 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Becher\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2006-06-15 13:06+0100\n"
+"Last-Translator: Gejza <gejza@gejza.net>\n"
+"Language-Team: Heimdall\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: src\n"
+"X-Poedit-SearchPath-1: src/editor\n"
+
+#: src/obj_factory.cpp:116
+msgid "Testing"
+msgstr ""
+
+#: src/obj_factory.cpp:117
+msgid "test"
+msgstr ""
+
+#: src/obj_store.cpp:190
+msgid "Materials"
+msgstr ""
+
+#: src/obj_store.cpp:191
+msgid "Wood"
+msgstr "Dřevo"
+
+#: src/obj_store.cpp:192
+msgid "Stone"
+msgstr "Šutry"
+
+#: src/obj_store.cpp:193
+msgid "Water"
+msgstr "Voda"
+
+#: src/obj_store.cpp:194
+#: src/editor/editor_tools.cpp:64
+msgid "Sugar"
+msgstr "Cukrovar"
+
+#: src/obj_store.cpp:195
+msgid "Alcohol"
+msgstr "Líh"
+
+#: src/obj_store.cpp:196
+msgid "Bechers"
+msgstr "Becherovky"
+
+#: src/obj_store.cpp:197
+#: src/obj_sugar.cpp:205
+#: src/editor/editor_tools.cpp:66
+msgid "Store"
+msgstr "Sklad"
+
+#: src/obj_store.cpp:198
+#: src/obj_sugar.cpp:206
+msgid "Limit"
+msgstr ""
+
+#: src/editor/editor.cpp:104
+msgid "Tools"
+msgstr "Nástroje"
+
+#: src/editor/editor.cpp:106
+msgid "Terrain"
+msgstr "Terén"
+
+#: src/editor/editor.cpp:108
+msgid "Properties"
+msgstr "Vlastnosti"
+
+#: src/editor/editor.cpp:124
+msgid "&New...\tCtrl+N"
+msgstr "&Nový...\tCtrl+N"
+
+#: src/editor/editor.cpp:124
+msgid "Creates a new file or project."
+msgstr ""
+
+#: src/editor/editor.cpp:125
+msgid "&Open...\tCtrl+O"
+msgstr "&Otevřít...\tCtrl+O"
+
+#: src/editor/editor.cpp:125
+msgid "Open an existing file."
+msgstr ""
+
+#: src/editor/editor.cpp:127
+msgid "&Save\tCtrl+S"
+msgstr "&Uložit\tCtrl+S"
+
+#: src/editor/editor.cpp:127
+#: src/editor/editor.cpp:128
+msgid "Save file."
+msgstr ""
+
+#: src/editor/editor.cpp:128
+msgid "Save &As..."
+msgstr "Uložit j&ako..."
+
+#: src/editor/editor.cpp:130
+msgid "E&xit\tAlt-F4"
+msgstr "&Konec\tAlt-F4"
+
+#: src/editor/editor.cpp:130
+msgid "Quit this program"
+msgstr ""
+
+#: src/editor/editor.cpp:134
+msgid "Show &Log...\tF2"
+msgstr ""
+
+#: src/editor/editor.cpp:134
+msgid "Show log dialog."
+msgstr ""
+
+#: src/editor/editor.cpp:137
+msgid "F&ull Screen\tF12"
+msgstr ""
+
+#: src/editor/editor.cpp:137
+msgid "Switch to fullscreen."
+msgstr ""
+
+#: src/editor/editor.cpp:139
+msgid "Terrain Wireframe\tCtrl+W"
+msgstr ""
+
+#: src/editor/editor.cpp:139
+msgid "Switch terrain in wireframe."
+msgstr ""
+
+#: src/editor/editor.cpp:149
+msgid "&Map Settings..."
+msgstr ""
+
+#: src/editor/editor.cpp:149
+msgid "Set map parameters"
+msgstr ""
+
+#: src/editor/editor.cpp:150
+msgid "&Terrain Textures..."
+msgstr ""
+
+#: src/editor/editor.cpp:150
+msgid "Terrain textures editor."
+msgstr ""
+
+#: src/editor/editor.cpp:151
+msgid "&Resource Manager..."
+msgstr ""
+
+#: src/editor/editor.cpp:151
+msgid "Resource Manager"
+msgstr ""
+
+#: src/editor/editor.cpp:153
+msgid "&Show Console...\tF11"
+msgstr ""
+
+#: src/editor/editor.cpp:153
+msgid "Show Engine Console"
+msgstr ""
+
+#: src/editor/editor.cpp:155
+msgid "&Load Engine...\tF10"
+msgstr ""
+
+#: src/editor/editor.cpp:155
+msgid "Load engine from library"
+msgstr ""
+
+#: src/editor/editor.cpp:159
+msgid "&Help...\tF1"
+msgstr "&Nápověda...\tF1"
+
+#: src/editor/editor.cpp:159
+msgid "Show help"
+msgstr ""
+
+#: src/editor/editor.cpp:161
+msgid "&About..."
+msgstr "&O Programu..."
+
+#: src/editor/editor.cpp:161
+msgid "Show about"
+msgstr ""
+
+#: src/editor/editor.cpp:165
+#, fuzzy
+msgid "&File"
+msgstr "Soubory"
+
+#: src/editor/editor.cpp:166
+msgid "&View"
+msgstr "Zobrazit"
+
+#: src/editor/editor.cpp:167
+msgid "&Tools"
+msgstr ""
+
+#: src/editor/editor.cpp:168
+msgid "&Help"
+msgstr "Nápověda"
+
+#: src/editor/editor.cpp:244
+msgid "Choose a map file..."
+msgstr ""
+
+#: src/editor/editor.cpp:245
+msgid "Becher Map(*.bm)|*.bm|All Files(*.*)|*.*"
+msgstr ""
+
+#: src/editor/editor.cpp:256
+#, c-format
+msgid "Open map file %s failed."
+msgstr ""
+
+#: src/editor/editor.cpp:278
+msgid "Save map file..."
+msgstr ""
+
+#: src/editor/editor.cpp:279
+msgid "Becher Map(*.bm)|*.bm"
+msgstr ""
+
+#: src/editor/editor.cpp:287
+#, c-format
+msgid "File %s exist, overwrite?"
+msgstr ""
+
+#: src/editor/editor.cpp:288
+msgid "Question"
+msgstr ""
+
+#: src/editor/editor_map.cpp:51
+#, c-format
+msgid "Failed open file %s for writing."
+msgstr ""
+
+#: src/editor/editor_tools.cpp:56
+#: src/editor/editor_tools.cpp:151
+msgid "Factory"
+msgstr "Továrna"
+
+#: src/editor/editor_tools.cpp:58
+msgid "Chalupa"
+msgstr ""
+
+#: src/editor/editor_tools.cpp:60
+msgid "Farma"
+msgstr ""
+
+#: src/editor/editor_tools.cpp:62
+msgid "Destilate"
+msgstr "Lihovar"
+
+#: src/editor/editor_tools.cpp:68
+msgid "Shop"
+msgstr "Obchod"
+
+#: src/editor/editor_tools.cpp:74
+msgid "Strom"
+msgstr ""
+
+#: src/editor/editor_tools.cpp:76
+msgid "Bridge"
+msgstr "Most"
+
+#: src/editor/editor_tools.cpp:78
+msgid "Water Hole"
+msgstr "Studna"
+
+#: src/editor/editor_tools.cpp:80
+msgid "Troll"
+msgstr "Tupoun"
+
+#: src/editor/editor_tools.cpp:83
+msgid "Buildings"
+msgstr "Budovy"
+
+#: src/editor/editor_tools.cpp:84
+msgid "Map elements"
+msgstr "Objekty mapy"
+
+#: src/editor/editor_tools.cpp:92
+#: src/editor/editor_tools.cpp:160
+msgid "First must create map."
+msgstr "Nejdřív prosím vytvoř mapu."
+
+#: src/editor/map_properties.cpp:9
+msgid "Map Settings"
+msgstr ""
+

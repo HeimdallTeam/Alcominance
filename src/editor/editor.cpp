@@ -22,6 +22,7 @@ enum {
 	ID_HELP,
 	ID_ENGINECON,
 	ID_TERRAINWIRE,
+	ID_TERRAINTEX,
 };
 
 BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
@@ -34,6 +35,7 @@ BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
 	EVT_MENU(HoeEditor::ID_ABOUT, BecherEdit::OnAbout)
 	EVT_MENU(ID_TERRAINWIRE, BecherEdit::OnTerrainWireFrame)
 	EVT_MENU(ID_HELP, BecherEdit::OnHelp)
+
 	EVT_MENU_RANGE(ID_OBJECT, ID_OBJECT + EBO_Max, BecherEdit::OnNewObject)
 
 END_EVENT_TABLE()
@@ -41,6 +43,14 @@ END_EVENT_TABLE()
 
 HoeEditor::BaseEditor * BecherEditApp::CreateEditor()
 {
+	// load lang
+	m_locale.Init(wxLANGUAGE_CZECH);
+	wxLocale::AddCatalogLookupPathPrefix("resource");
+	wxLocale::AddCatalogLookupPathPrefix("../Hoe/HoeEditor/lang");
+
+	m_locale.AddCatalog("editor_cs");
+	m_locale.AddCatalog("cs_CZ");
+
 	BecherEdit * e = new BecherEdit();
 	e->Create("Becher Editor");
 
@@ -99,9 +109,9 @@ bool BecherEdit::Create(const wxString & title)
 
 	m_prop = new HoeEditor::PropertyGrid(GetPanelMgr());
 	GetPanelMgr()->AddPanel(
-		new ToolObjects(GetPanelMgr(), 80, 50), _("Tools"), true, true);
+		new ToolObjects(GetPanelMgr()), _("Tools"), true, true);
 	GetPanelMgr()->AddPanel(
-		new TerrainObject(GetPanelMgr(), 80, 50), _("Terrain"), true, true);
+		new TerrainObject(GetPanelMgr()), _("Terrain"), true, true);
 	GetPanelMgr()->AddPanel(
 		m_prop, _("Properties"), false, true);
 
@@ -145,6 +155,7 @@ void BecherEdit::OnInitMenu()
 	// tools
 	wxMenu * m_menuTools = new wxMenu;
 	m_menuTools->Append(ID_MAPSETTINGS, _("&Map Settings..."), _("Set map parameters"));
+	m_menuTools->Append(ID_TERRAINTEX, _("&Terrain Textures..."), _("Terrain textures editor."));
 	m_menuTools->Append(ID_SHOWRES, _("&Resource Manager..."), _("Resource Manager"));
 	m_menuTools->AppendSeparator();
 	m_menuTools->Append(ID_ENGINECON, _("&Show Console...\tF11"), _("Show Engine Console"));

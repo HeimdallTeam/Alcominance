@@ -69,6 +69,7 @@ public:
 class BecherEditApp : public HoeEditor::App
 {
 	wxSplashScreen *m_splash;
+	wxLocale m_locale;
 public:
 	virtual HoeEditor::BaseEditor * CreateEditor();
 	virtual void OnPostInit();

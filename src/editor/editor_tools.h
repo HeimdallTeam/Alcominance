@@ -5,7 +5,7 @@
 class ToolObjects : public wxChoicebook
 {
 public:
-	ToolObjects(wxWindow * parent,int width, int height);
+	ToolObjects(wxWindow * parent);
 	void OnClick(wxCommandEvent& event);
 
 	DECLARE_EVENT_TABLE()
@@ -14,7 +14,7 @@ public:
 class TerrainObject : public wxPanel
 {
 public:
-	TerrainObject(wxWindow * parent,int width, int height);
+	TerrainObject(wxWindow * parent);
 	void OnClick(wxCommandEvent& event);
 
 	DECLARE_EVENT_TABLE()
