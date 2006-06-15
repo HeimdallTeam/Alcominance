@@ -1,8 +1,8 @@
 # makefile
-TMP_DIR = tmp/plg
+TMP_DIR = tmp/ed
 
 GCC=g++
-C_FLAGS= -D_LINUX -DBECHER_PLUGIN -I../Hoe3D/include -I../Hoe3D/utils/sdk -I../HoeGame
+C_FLAGS= -D_LINUX -DBECHER_EDITOR -I../Hoe/Hoe3D/include -I../Hoe/HoeEditor/include -I../Hoe/HoeGame/include
 
 TOOLKIT = GTK
 TOOLKIT_LOWERCASE = gtk
@@ -14,18 +14,29 @@ WX_FLAGS = -D__WX$(TOOLKIT)__ $(__WXUNIV_DEFINE_p) \
 	$(__EXCEPTIONS_DEFINE_p) $(__RTTI_DEFINE_p) $(__THREAD_DEFINE_p) \
 -DWX_PRECOMP -DNO_GCC_PRAGMA -DGTK_NO_CHECK_CASTS -I/usr/local/lib/wx/include/gtk2-ansi-release-2.6 -I/usr/local/include/wx-2.6 -DXTHREADS -D_REENTRANT -DXUSE_MTSAFE_API -pthread -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/atk-1.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/freetype2/config -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D_LARGEFILE_SOURCE=1 
 LINK=g++
-L_FLAGS= -shared -fPIC -L/usr/X11R6/lib -L../Hoe3D/utils/sdk/ -L../HoeGame
-LINK_LIBRARIES = -lwx_gtk2_adv-2.6 -lhoeCore -lhoeUtils -lhoeLevel -lHoeGame
+L_FLAGS= -L/usr/X11R6/lib -L../Hoe/bin
+LINK_LIBRARIES = -lwx_base-2.6 -lwx_gtk2_html-2.6 -lwx_gtk2_propgrid-2.6 -lwx_gtk2_adv-2.6 -lHoeUtils -lHoeEditor -lHoeGame -llua
 
-OBJ_FILES = $(TMP_DIR)/plugin_editlevel.o $(TMP_DIR)/buildings.o $(TMP_DIR)/editor_tools.o \
-$(TMP_DIR)/level.o $(TMP_DIR)/plugin_resources.o \
-$(TMP_DIR)/plugin_map.o \
+
+OBJ_FILES = $(TMP_DIR)/editor_tools.o \
 $(TMP_DIR)/object.o \
 $(TMP_DIR)/elements.o \
-$(TMP_DIR)/infos.o
+$(TMP_DIR)/editor.o \
+$(TMP_DIR)/editor_map.o \
+$(TMP_DIR)/map_properties.o \
+$(TMP_DIR)/map.o \
+$(TMP_DIR)/obj_factory.o \
+$(TMP_DIR)/obj_farm.o \
+$(TMP_DIR)/obj_shop.o \
+$(TMP_DIR)/obj_store.o \
+$(TMP_DIR)/obj_sugar.o \
+$(TMP_DIR)/troll.o \
+$(TMP_DIR)/obj_destilate.o \
+$(TMP_DIR)/buildings.o \
+../Hoe/HoeUtils/lib/utils.o
 
 all: $(TMP_DIR) $(OBJ_FILES)
-	$(LINK) $(L_FLAGS) -o ../HoeEditor/plugins/BecherMap.so $(OBJ_FILES) $(LINK_LIBRARIES)
+	$(LINK) $(L_FLAGS) -o Editor $(OBJ_FILES) $(LINK_LIBRARIES)
 	
 $(TMP_DIR):
 	mkdir -p $(TMP_DIR) 
@@ -36,4 +47,6 @@ $(TMP_DIR):
 $(TMP_DIR)/%.o:		src/%.cpp
 	$(GCC) $(C_FLAGS) $(WX_FLAGS) -c $< -o $@ 
 
-                                               
+ $(TMP_DIR)/%.o:		src/editor/%.cpp
+	$(GCC) $(C_FLAGS) $(WX_FLAGS) -c $< -o $@ 
+                                              

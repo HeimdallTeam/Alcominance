@@ -84,17 +84,17 @@ bool BecherEdit::Create(const wxString & title)
 {
 
 	
-	wxImage::AddHandler(new wxGIFHandler);
+/*	wxImage::AddHandler(new wxGIFHandler);
 	// 
 	wxHelpControllerHelpProvider* provider = new wxHelpControllerHelpProvider;
     wxHelpProvider::Set(provider);
 	provider->SetHelpController(&m_help);
-	if (!m_help.Initialize("doc"))
+	if (!m_help.Initialize("BecherEditor"))
 	{
 		wxMessageBox(wxT("Error: Cannot initialize the help system."));
 		return false;
 	}
-
+*/
 	HoeEditor::LevelEditor::Create(title);
 
 	wxSplitterWindow * split = new wxSplitterWindow(this,10, wxDefaultPosition, wxDefaultSize,0);

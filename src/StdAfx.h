@@ -51,7 +51,6 @@ typedef HoeGame::CVar CVar;
 #include <list>
 
 #ifdef BECHER_EDITOR
-#define wxUSE_MS_HTML_HELP 1
 
 // wxwindows
 #include <wx/wxprec.h>
