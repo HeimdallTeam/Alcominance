@@ -35,6 +35,7 @@ BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
 	EVT_MENU(HoeEditor::ID_ABOUT, BecherEdit::OnAbout)
 	EVT_MENU(ID_TERRAINWIRE, BecherEdit::OnTerrainWireFrame)
 	EVT_MENU(ID_HELP, BecherEdit::OnHelp)
+	EVT_MENU(ID_TERRAINTEX, BecherEdit::OnTerrainTextures)
 
 	EVT_MENU_RANGE(ID_OBJECT, ID_OBJECT + EBO_Max, BecherEdit::OnNewObject)
 
@@ -320,8 +321,7 @@ void BecherEdit::OnHelp(wxCommandEvent &)
 
 void BecherEdit::OnAbout(wxCommandEvent &)
 {
-	AboutDlg dlg;
-	dlg.Create(this,-1,"About");
+	AboutDlg dlg(this);
 	dlg.ShowModal();
 }
 
@@ -329,6 +329,13 @@ void BecherEdit::OnTerrainWireFrame(wxCommandEvent &)
 {
 	if (m_map)
 		m_map->GetTerrain()->ShowWireframe(m_menu->IsChecked(ID_TERRAINWIRE));
+}
+
+void BecherEdit::OnTerrainTextures(wxCommandEvent &)
+{
+	// textures dialog
+	TexturesDialog dlg(this);
+	dlg.ShowModal();
 }
 
 void BecherEdit::OnNewObject(wxCommandEvent &)

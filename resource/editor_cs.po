@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Becher\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2006-06-15 13:06+0100\n"
+"PO-Revision-Date: 2006-06-15 21:26+0100\n"
 "Last-Translator: Gejza <gejza@gejza.net>\n"
 "Language-Team: Heimdall\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr ""
 
 #: src/obj_store.cpp:190
 msgid "Materials"
-msgstr ""
+msgstr "Materiály"
 
 #: src/obj_store.cpp:191
 msgid "Wood"
@@ -61,181 +61,181 @@ msgstr "Sklad"
 #: src/obj_store.cpp:198
 #: src/obj_sugar.cpp:206
 msgid "Limit"
-msgstr ""
+msgstr "Limit"
 
-#: src/editor/editor.cpp:104
+#: src/editor/editor.cpp:112
 msgid "Tools"
 msgstr "Nástroje"
 
-#: src/editor/editor.cpp:106
+#: src/editor/editor.cpp:114
+#: src/editor/editor_tools.cpp:150
 msgid "Terrain"
 msgstr "Terén"
 
-#: src/editor/editor.cpp:108
+#: src/editor/editor.cpp:116
 msgid "Properties"
 msgstr "Vlastnosti"
 
-#: src/editor/editor.cpp:124
+#: src/editor/editor.cpp:132
 msgid "&New...\tCtrl+N"
 msgstr "&Nový...\tCtrl+N"
 
-#: src/editor/editor.cpp:124
+#: src/editor/editor.cpp:132
 msgid "Creates a new file or project."
 msgstr ""
 
-#: src/editor/editor.cpp:125
+#: src/editor/editor.cpp:133
 msgid "&Open...\tCtrl+O"
 msgstr "&Otevřít...\tCtrl+O"
 
-#: src/editor/editor.cpp:125
+#: src/editor/editor.cpp:133
 msgid "Open an existing file."
-msgstr ""
+msgstr "Otevřít existující soubor."
 
-#: src/editor/editor.cpp:127
+#: src/editor/editor.cpp:135
 msgid "&Save\tCtrl+S"
 msgstr "&Uložit\tCtrl+S"
 
-#: src/editor/editor.cpp:127
-#: src/editor/editor.cpp:128
+#: src/editor/editor.cpp:135
+#: src/editor/editor.cpp:136
 msgid "Save file."
-msgstr ""
+msgstr "Uložit soubor"
 
-#: src/editor/editor.cpp:128
+#: src/editor/editor.cpp:136
 msgid "Save &As..."
 msgstr "Uložit j&ako..."
 
-#: src/editor/editor.cpp:130
+#: src/editor/editor.cpp:138
 msgid "E&xit\tAlt-F4"
 msgstr "&Konec\tAlt-F4"
 
-#: src/editor/editor.cpp:130
+#: src/editor/editor.cpp:138
 msgid "Quit this program"
 msgstr ""
 
-#: src/editor/editor.cpp:134
+#: src/editor/editor.cpp:142
 msgid "Show &Log...\tF2"
 msgstr ""
 
-#: src/editor/editor.cpp:134
+#: src/editor/editor.cpp:142
 msgid "Show log dialog."
-msgstr ""
+msgstr "Zobrazit log."
 
-#: src/editor/editor.cpp:137
+#: src/editor/editor.cpp:145
 msgid "F&ull Screen\tF12"
-msgstr ""
+msgstr "&Celá obrazovka\tF12"
 
-#: src/editor/editor.cpp:137
+#: src/editor/editor.cpp:145
 msgid "Switch to fullscreen."
-msgstr ""
+msgstr "Přepnout na celou obrazovku."
 
-#: src/editor/editor.cpp:139
+#: src/editor/editor.cpp:147
 msgid "Terrain Wireframe\tCtrl+W"
-msgstr ""
+msgstr "Terén dráťák\tCtrl+W"
 
-#: src/editor/editor.cpp:139
+#: src/editor/editor.cpp:147
 msgid "Switch terrain in wireframe."
 msgstr ""
 
-#: src/editor/editor.cpp:149
+#: src/editor/editor.cpp:157
 msgid "&Map Settings..."
 msgstr ""
 
-#: src/editor/editor.cpp:149
+#: src/editor/editor.cpp:157
 msgid "Set map parameters"
 msgstr ""
 
-#: src/editor/editor.cpp:150
+#: src/editor/editor.cpp:158
 msgid "&Terrain Textures..."
 msgstr ""
 
-#: src/editor/editor.cpp:150
+#: src/editor/editor.cpp:158
 msgid "Terrain textures editor."
 msgstr ""
 
-#: src/editor/editor.cpp:151
+#: src/editor/editor.cpp:159
 msgid "&Resource Manager..."
 msgstr ""
 
-#: src/editor/editor.cpp:151
+#: src/editor/editor.cpp:159
 msgid "Resource Manager"
 msgstr ""
 
-#: src/editor/editor.cpp:153
+#: src/editor/editor.cpp:161
 msgid "&Show Console...\tF11"
 msgstr ""
 
-#: src/editor/editor.cpp:153
+#: src/editor/editor.cpp:161
 msgid "Show Engine Console"
 msgstr ""
 
-#: src/editor/editor.cpp:155
+#: src/editor/editor.cpp:163
 msgid "&Load Engine...\tF10"
 msgstr ""
 
-#: src/editor/editor.cpp:155
+#: src/editor/editor.cpp:163
 msgid "Load engine from library"
 msgstr ""
 
-#: src/editor/editor.cpp:159
+#: src/editor/editor.cpp:167
 msgid "&Help...\tF1"
 msgstr "&Nápověda...\tF1"
 
-#: src/editor/editor.cpp:159
+#: src/editor/editor.cpp:167
 msgid "Show help"
 msgstr ""
 
-#: src/editor/editor.cpp:161
+#: src/editor/editor.cpp:169
 msgid "&About..."
 msgstr "&O Programu..."
 
-#: src/editor/editor.cpp:161
+#: src/editor/editor.cpp:169
 msgid "Show about"
 msgstr ""
 
-#: src/editor/editor.cpp:165
-#, fuzzy
+#: src/editor/editor.cpp:173
 msgid "&File"
-msgstr "Soubory"
+msgstr "Soubor"
 
-#: src/editor/editor.cpp:166
+#: src/editor/editor.cpp:174
 msgid "&View"
 msgstr "Zobrazit"
 
-#: src/editor/editor.cpp:167
+#: src/editor/editor.cpp:175
 msgid "&Tools"
-msgstr ""
+msgstr "&Nástroje"
 
-#: src/editor/editor.cpp:168
+#: src/editor/editor.cpp:176
 msgid "&Help"
 msgstr "Nápověda"
 
-#: src/editor/editor.cpp:244
+#: src/editor/editor.cpp:252
 msgid "Choose a map file..."
 msgstr ""
 
-#: src/editor/editor.cpp:245
+#: src/editor/editor.cpp:253
 msgid "Becher Map(*.bm)|*.bm|All Files(*.*)|*.*"
-msgstr ""
+msgstr "Map bechera (*.bm)|*.bm|Všechny soubory(*.*)|*.*"
 
-#: src/editor/editor.cpp:256
+#: src/editor/editor.cpp:264
 #, c-format
 msgid "Open map file %s failed."
 msgstr ""
 
-#: src/editor/editor.cpp:278
+#: src/editor/editor.cpp:286
 msgid "Save map file..."
 msgstr ""
 
-#: src/editor/editor.cpp:279
-msgid "Becher Map(*.bm)|*.bm"
-msgstr ""
-
 #: src/editor/editor.cpp:287
+msgid "Becher Map(*.bm)|*.bm"
+msgstr "Mapa bechera(*.bm)|*.bm"
+
+#: src/editor/editor.cpp:295
 #, c-format
 msgid "File %s exist, overwrite?"
-msgstr ""
+msgstr "Soubor %s existuje, přepsat?"
 
-#: src/editor/editor.cpp:288
+#: src/editor/editor.cpp:296
 msgid "Question"
 msgstr ""
 
@@ -245,7 +245,6 @@ msgid "Failed open file %s for writing."
 msgstr ""
 
 #: src/editor/editor_tools.cpp:56
-#: src/editor/editor_tools.cpp:151
 msgid "Factory"
 msgstr "Továrna"
 
@@ -290,9 +289,13 @@ msgid "Map elements"
 msgstr "Objekty mapy"
 
 #: src/editor/editor_tools.cpp:92
-#: src/editor/editor_tools.cpp:160
+#: src/editor/editor_tools.cpp:168
 msgid "First must create map."
 msgstr "Nejdřív prosím vytvoř mapu."
+
+#: src/editor/editor_tools.cpp:157
+msgid "Textures"
+msgstr "Textury"
 
 #: src/editor/map_properties.cpp:9
 msgid "Map Settings"

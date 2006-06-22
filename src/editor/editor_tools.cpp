@@ -147,10 +147,19 @@ END_EVENT_TABLE()
 TerrainObject::TerrainObject(wxWindow * parent)
 	: wxPanel(parent,wxID_ANY,wxDefaultPosition, wxSize(80,250))
 {
-	wxButton * b = new wxBitmapButton(this,IDB_FACTORY,wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
-	b->SetToolTip( _("Factory") );
+	wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
+	topsizer->Add( new wxStaticBox(this, -1, _("Terrain"), wxPoint(10,10),
+                wxSize(140,80)));
+                //long style = 0,
+                //const wxString& name = wxStaticBoxNameStr)
+	//wxButton * b = new wxBitmapButton(this,IDB_FACTORY,wxBitmap(tovarna_xpm),wxPoint(0,0),BT_SIZE/*,BS_FLAT*/);
+	//b->SetToolTip( _("Factory") );
 
-	
+	topsizer->Add( new wxStaticBox(this, -1, _("Textures"), wxPoint(10,100),
+                wxSize(140,80)));//,
+                //long style = 0,
+                //const wxString& name = wxStaticBoxNameStr)
+
 }
 
 void TerrainObject::OnClick(wxCommandEvent& event)
@@ -162,4 +171,35 @@ void TerrainObject::OnClick(wxCommandEvent& event)
 	}
 	EditorMap::Get()->GetTerrain()->MoveHeight(0,0,50,-5);
 }
+
+////////////////////////////////////////////////////////////
+TexturesDialog::TexturesDialog(wxWindow * parent)
+{
+	// zatim nefunkcni, je dulezity a nejdriv konfigu
+	SetExtraStyle(wxDIALOG_EX_CONTEXTHELP|wxWS_EX_VALIDATE_RECURSIVELY);
+
+    Create(parent, wxID_ANY, _("Textures"), wxDefaultPosition, wxSize(400,400));
+    //CreateButtons(wxOK|wxCANCEL);
+	
+	m_list = new wxListCtrl(this, wxID_ANY, wxPoint(10,10), wxSize(375,150), wxLC_REPORT);
+    wxListItem itemCol;
+    itemCol.SetText(_("Name"));
+    m_list->InsertColumn(0, itemCol);
+
+    itemCol.SetText(_("ID"));
+    m_list->InsertColumn(1, itemCol);
+
+    itemCol.SetText(_("Command"));
+    m_list->InsertColumn(2, itemCol);
+    m_list->SetColumnWidth( 0, 150 );
+    m_list->SetColumnWidth( 1, 50 );
+    m_list->SetColumnWidth( 2, 20 );
+
+	// textura
+	// tlacitko add a delete
+	// tlacitko ok
+	// misto pro upravu textury
+	// picture
+}
+
 

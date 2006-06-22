@@ -5,6 +5,7 @@
 class AboutDlg : public wxDialog
 {
 public:
+	AboutDlg(wxWindow * parent);
 };
 
 #endif // _BECHER_EDITOR_HELP_H_

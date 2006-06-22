@@ -20,9 +20,21 @@ public:
 	virtual wxString FindId(int id);
 };
 
+class TerrainTexture
+{
+public:
+
+};
+
+class TerrainTextures
+{
+public:
+};
+
 class BecherEdit : public HoeEditor::LevelEditor
 {
 protected:
+	TerrainTextures m_tex;
 	BecherResources m_res;
 	EditorMap *m_map;
 	HoeEditor::PropertyGrid * m_prop;
@@ -48,6 +60,7 @@ public:
 	void OnHelp(wxCommandEvent &);
 	void OnAbout(wxCommandEvent &);
 	void OnTerrainWireFrame(wxCommandEvent &);
+	void OnTerrainTextures(wxCommandEvent &);
 
 	virtual void KeyDown(wxKeyEvent& event);
 	virtual void KeyUp(wxKeyEvent& event);
