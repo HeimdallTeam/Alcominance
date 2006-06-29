@@ -72,6 +72,7 @@ typedef HoeGame::CVar CVar;
 #include <wx/filesys.h>
 #include <wx/fs_zip.h>
 #include <wx/html/helpctrl.h>
+#include <wx/spinctrl.h>
 
 #include <he/app.h>
 #include <he/editor.h>

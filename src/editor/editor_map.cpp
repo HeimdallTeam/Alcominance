@@ -15,9 +15,9 @@ void EditorMap::CreateNew()
 	HoeGetRef(GetEngine())->SetBackgroundColor(0xffb060ff);
 	m_mapfilepath = wxT("");
 	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
-	m_terrain->SetSize(100.f, 100.f);
-	m_terrain->GenerateHeight(1,1);
-
+	m_terrain->SetTexture(0, "ter_war3", 8, 4);
+	m_terrain->Create(300.f, 300.f,20,20);
+	// textures
 }
 
 void EditorMap::AddNewObject(unsigned long type)

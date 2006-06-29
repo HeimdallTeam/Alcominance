@@ -20,7 +20,7 @@ class MapSettingsDialog : public wxPropertySheetDialog
     wxListBox* m_listfiles;
     wxListCtrl* m_listresources;*/
 public:
-	MapSettingsDialog(wxWindow* win);
+	MapSettingsDialog(wxWindow* win, bool new_map);
 
 	//DECLARE_EVENT_TABLE()
 };

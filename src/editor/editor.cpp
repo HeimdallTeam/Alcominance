@@ -232,13 +232,13 @@ void BecherEdit::OnResMgr(wxCommandEvent &)
 
 void BecherEdit::OnMapSettings(wxCommandEvent &)
 {
-	MapSettingsDialog dlg(this);
+	MapSettingsDialog dlg(this, false);
 	dlg.ShowModal();
 }
 
 void BecherEdit::OnNewFile(wxCommandEvent &)
 {
-	MapSettingsDialog dlg(this);
+	MapSettingsDialog dlg(this,true);
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		CloseMap();

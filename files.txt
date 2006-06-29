@@ -18,6 +18,7 @@ data/Studna.hm
 data/ter.hm
 data/textures.hx
 data/dopln.hm
+data/ter.hx
 #resources
 ID_FACTORY="model tovarna" ; Tovarna
 ID_INFO_RING="model info" ; Ring
