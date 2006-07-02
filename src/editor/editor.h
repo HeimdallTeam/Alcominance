@@ -10,6 +10,7 @@
 #define _BECHER_EDITOR_H_
 
 class EditorMap;
+class EditorTool;
 
 class BecherResources : public HoeEditor::Resources
 {
@@ -31,12 +32,48 @@ class TerrainTextures
 public:
 };
 
+class ToolObjects : public wxChoicebook
+{
+public:
+	ToolObjects(wxWindow * parent);
+	void OnClick(wxCommandEvent& event);
+
+	DECLARE_EVENT_TABLE()
+};
+
+class TerrainObject : public wxPanel
+{
+public:
+	TerrainObject(wxWindow * parent);
+	void OnClick(wxCommandEvent& event);
+
+	DECLARE_EVENT_TABLE()
+};
+
+class TexturesConfig
+{
+public:
+	bool Load(wxString path);
+	virtual void AddTexture(wxString name, wxString texture, uint w, uint h) = 0;
+	virtual void AddTextureField(wxString name, wxString texture, uint w, uint h) = 0;
+};
+
+class TexturesDialog : public wxDialog
+{
+protected:
+	wxListCtrl * m_list;
+public:
+	TexturesDialog(wxWindow * parent);
+};
+
 class BecherEdit : public HoeEditor::LevelEditor
 {
+	static BecherEdit * s_actinstance;
 protected:
 	TerrainTextures m_tex;
 	BecherResources m_res;
 	EditorMap *m_map;
+	EditorTool * m_tool;
 	HoeEditor::PropertyGrid * m_prop;
 	HoeEditor::EngineView m_engview;
 	HoeEditor::PanelMgr m_leftpanel;
@@ -44,6 +81,10 @@ protected:
 public:
 	BecherEdit();
 	virtual ~BecherEdit();
+	static inline BecherEdit * Get() { assert(s_actinstance); return s_actinstance; }
+	EditorMap * GetActMap() { return m_map; }
+	bool IsMapLoaded() { return m_map != NULL; }
+
 	virtual void OnInitMenu();
 	virtual XHoeFS * GetFS() { return &m_res; }
 	HoeEditor::PropertyGrid * GetProp() { return m_prop; }
@@ -75,6 +116,8 @@ public:
 
 	void CloseMap();
 	void UpdateControls();
+
+	void SetTool(EditorTool * tool);
 
     DECLARE_EVENT_TABLE()
 };

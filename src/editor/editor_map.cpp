@@ -6,40 +6,16 @@
 #include "editor_map.h"
 //#include "plugin_editlevel.h"
 
-EditorMap * EditorMap::s_actmap = NULL;
-
 void EditorMap::CreateNew()
 {
 	this->Create(GetEngine()->CreateScene(HOETS_GRAPH));
 	GetEngine()->SetActiveScene(m_scene);
 	HoeGetRef(GetEngine())->SetBackgroundColor(0xffb060ff);
 	m_mapfilepath = wxT("");
-	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
-	m_terrain->SetTexture(0, "ter_war3", 8, 4);
-	m_terrain->Create(300.f, 300.f,20,20);
+	m_terrain.Set(m_scene->GetSceneEnv()->CreateGridSurface());
+	m_terrain.Get()->SetTexture(0, "ter_war3", 8, 4);
+	m_terrain.Get()->Create(300.f, 300.f,20,20);
 	// textures
-}
-
-void EditorMap::AddNewObject(unsigned long type)
-{
-	SAFE_DELETE(m_createobject);
-
-	m_createobject = CreateObject(type);
-	m_createobject->Show(false);
-	//m_createobject->SetPosition(0,0,0);
-	//m_createobject->SetOrientation(0,1,0,rand());
-}
-
-void EditorMap::LeaveObject()
-{
-	SAFE_DELETE(m_createobject);
-}
-
-void EditorMap::BuildObject()
-{
-	AddObject(m_createobject);
-	m_createobject->Select();
-	m_createobject = NULL;
 }
 
 bool EditorMap::SaveMap(const wxString &path)

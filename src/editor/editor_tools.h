@@ -2,40 +2,24 @@
 #ifndef _BECHER_EDITOR_TOOLS_H_
 #define _BECHER_EDITOR_TOOLS_H_
 
-class ToolObjects : public wxChoicebook
+class EditorTool
 {
 public:
-	ToolObjects(wxWindow * parent);
-	void OnClick(wxCommandEvent& event);
-
-	DECLARE_EVENT_TABLE()
+	virtual ~EditorTool() {}
+	/**
+	* Funkce ktera zaridi aby se nastroj "vypnul" a automaticky se smaze
+	*/
+	virtual void Exit() { delete this; }
 };
 
-class TerrainObject : public wxPanel
+class ToolSelect : public EditorTool
 {
-public:
-	TerrainObject(wxWindow * parent);
-	void OnClick(wxCommandEvent& event);
-
-	DECLARE_EVENT_TABLE()
 };
 
-//////////////////////////////////////////
-// provizorne
-class TexturesConfig
+class ToolCreateObject : public EditorTool
 {
 public:
-	bool Load(wxString path);
-	virtual void AddTexture(wxString name, wxString texture, uint w, uint h) = 0;
-	virtual void AddTextureField(wxString name, wxString texture, uint w, uint h) = 0;
-};
-
-class TexturesDialog : public wxDialog
-{
-protected:
-	wxListCtrl * m_list;
-public:
-	TexturesDialog(wxWindow * parent);
+	ToolCreateObject(long type);
 };
 
 #endif // _BECHER_EDITOR_TOOLS_H_
