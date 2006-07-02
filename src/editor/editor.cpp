@@ -280,6 +280,7 @@ BecherEdit::BecherEdit()
 	assert(s_actinstance == NULL);
 	s_actinstance = this;
 	m_map = NULL;
+	m_tool = NULL;
 }
 
 BecherEdit::~BecherEdit()
@@ -565,89 +566,58 @@ void BecherEdit::CloseMap()
 /////////////////////////////////////
 void BecherEdit::MouseEnter(int absX, int absY)
 {
-	if (m_map && m_map->GetCreatedObject())
-	{
-		float sx,sy;
-		m_map->GetCreatedObject()->Show(true);
-		if (m_map->GetView()->GetPick(absX,absY,&sx,&sy))
-				m_map->GetCreatedObject()->SetPosition(sx,sy); 
-	}
+	if (m_tool)
+		m_tool->Enter(absX, absY);
 }
 
 void BecherEdit::MouseLeave()
 {
-	if (m_map && m_map->GetCreatedObject())
-	{
-		m_map->GetCreatedObject()->Show(false);
-		//m_map set pos
-	}
+	if (m_tool)
+		m_tool->Leave();
 }
 
 void BecherEdit::MouseMove(int relX, int relY, int absX, int absY, const wxMouseEvent & ev)
 {
-	float sx,sy;
-	if (m_map && m_map->GetCreatedObject())
-	{
-		
-		if (m_map->GetView()->GetPick(absX,absY,&sx,&sy))
-			m_map->GetCreatedObject()->SetPosition(sx,sy); 
-	}
-	else if (m_map && m_map->m_lockobject)
-	{
-		if (m_map->GetView()->GetPick(absX,absY,&sx,&sy))
-			m_map->m_lockobject->SetPosition(sx,sy); 
-
-	}
+	if (m_tool)
+		m_tool->Move(relX, relY, absX, absY, ev);
 }
 
 void BecherEdit::MouseLeftDown(const int x, const int y, wxMouseEvent & e)
 {
-	if (m_map)
-	{
-		if (m_map->IsBuildMode())
-			m_map->BuildObject();
-		else if (e.ControlDown())
-		{
-			m_map->m_lockobject = m_map->GetObject(x,y);
-		}
-		else
-		{
-			IHoeEnv::GridSurface::TGridDesc desc;
-			m_map->GetTerrain()->Get()->GetGridDesc(0,0,&desc);
-			desc.x1 = (desc.x1+1)%8;
-			m_map->GetTerrain()->Get()->SetGridDesc(0,0,&desc);
-			//m_map->SelectObject(x,y);
-		}
-	}
+	if (m_tool)
+		m_tool->LeftDown(x,y,e);
 }
 
 void BecherEdit::MouseLeftUp(const int x, const int y, wxMouseEvent & e)
 {
-	if (m_map)
-		m_map->m_lockobject = NULL;
+	if (m_tool)
+		m_tool->LeftUp(x,y,e);
 }
 
 void BecherEdit::MouseRightDown(const int x, const int y, wxMouseEvent & e)
 {
-	if (m_map)
-		m_map->LeaveObject();
+	if (m_tool)
+		m_tool->RightDown(x,y,e);
 }
 
 void BecherEdit::MouseWheel(wxMouseEvent & e)
 {
 	if (m_map)
 	{
-		if (e.ControlDown())
+		if (e.ControlDown() && m_tool)
 		{
-			BecherObject * o = m_map->GetObject(e.GetX(),e.GetY());
+			/*BecherObject * o = m_map->GetObject(e.GetX(),e.GetY());
 			if (o)
 				o->SetAngle(o->GetAngle() + e.GetWheelRotation() / 500.f);
+				*/
+			m_tool->Wheel(e);
 		}
 		else if (e.ShiftDown())
 			m_map->GetView()->Zoom(e.GetWheelRotation() / 250.f);
 		else
 			m_map->GetView()->Rotate(e.GetWheelRotation() / 500.f);
 	}
+		
 }
 
 void BecherEdit::KeyDown(wxKeyEvent& e)
@@ -704,7 +674,10 @@ void BecherEdit::SetTool(EditorTool *tool)
 {
 	if (m_tool)
 		m_tool->Exit();
-	m_tool = tool;
+	if (tool)
+		m_tool = tool;
+	else
+		m_tool = new ToolSelect();
 }
 
 //////////////////////////////////

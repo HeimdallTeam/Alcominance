@@ -4,8 +4,6 @@
 
 #include "../map.h"
 
-class BecherObject;
-
 class EditorTerrain
 {
 protected:
