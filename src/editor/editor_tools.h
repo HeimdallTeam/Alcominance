@@ -51,5 +51,13 @@ public:
 	virtual void Leave();
 };
 
+class ToolTerrain : public EditorTool
+{
+public:
+	virtual void LeftDown(const int x, const int y, wxMouseEvent & e);
+	virtual void RightDown(const int x, const int y, wxMouseEvent & e);
+
+};
+
 #endif // _BECHER_EDITOR_TOOLS_H_
 

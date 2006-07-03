@@ -105,3 +105,18 @@ void ToolCreateObject::Wheel(wxMouseEvent &e)
 	m_obj->SetAngle(m_obj->GetAngle() + e.GetWheelRotation() / 500.f);
 }
 
+//////////////////////////////////////////////////////
+// ToolTerrain
+void ToolTerrain::LeftDown(const int x, const int y, wxMouseEvent &e)
+{
+	IHoeEnv::GridSurface::TGridDesc desc;
+	BecherEdit::Get()->GetActMap()->GetTerrain()->Get()->GetGridDesc(0,0,&desc);
+	desc.x1 = (desc.x1+1)%8;
+	BecherEdit::Get()->GetActMap()->GetTerrain()->Get()->SetGridDesc(0,0,&desc);
+}
+
+void ToolTerrain::RightDown(const int x, const int y, wxMouseEvent &e)
+{
+	BecherEdit::Get()->SetTool(NULL);
+}
+

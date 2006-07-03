@@ -85,6 +85,8 @@ END_EVENT_TABLE()
 #include "../../resource/maleikony/tovarna.xpm"
 #include "../../resource/maleikony/most.xpm"
 
+
+
 #define BT_SIZE wxSize(28,28)
 #define BT_P(x,y) wxPoint(28 * x + 6, 28 * y + 3)
 
@@ -186,8 +188,12 @@ TerrainObject::TerrainObject(wxWindow * parent)
 	: wxPanel(parent,wxID_ANY,wxDefaultPosition, wxSize(80,250))
 {
 	wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
-	topsizer->Add( new wxStaticBox(this, -1, _("Terrain"), wxPoint(10,10),
-                wxSize(140,80)));
+	wxStaticBox * sb = new wxStaticBox(this, -1, _("Terrain"), wxPoint(10,10),
+                wxSize(140,80));
+	topsizer->Add( sb);
+
+	wxButton * b = new wxBitmapButton(sb,IDB_FACTORY,wxBitmap(tovarna_xpm),wxPoint(0,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Factory") );
                 //long style = 0,
                 //const wxString& name = wxStaticBoxNameStr)
 	//wxButton * b = new wxBitmapButton(this,IDB_FACTORY,wxBitmap(tovarna_xpm),wxPoint(0,0),BT_SIZE/*,BS_FLAT*/);
@@ -207,6 +213,7 @@ void TerrainObject::OnClick(wxCommandEvent& event)
 		wxMessageBox(_("First must create map."));
 		return;
 	}
+	BecherEdit::Get()->SetTool(new ToolTerrain());
 	//EditorMap::Get()->GetTerrain()->MoveHeight(0,0,50,-5);
 }
 
