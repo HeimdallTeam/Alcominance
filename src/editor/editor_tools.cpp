@@ -18,11 +18,6 @@ void ToolSelect::LeftDown(const int x, const int y, wxMouseEvent &e)
 	{
 		assert(BecherEdit::Get()->GetActMap());
 		BecherEdit::Get()->GetActMap()->SelectObject(x,y);
-		/*IHoeEnv::GridSurface::TGridDesc desc;
-		m_map->GetTerrain()->Get()->GetGridDesc(0,0,&desc);
-		desc.x1 = (desc.x1+1)%8;
-		m_map->GetTerrain()->Get()->SetGridDesc(0,0,&desc);*/
-		//m_map->SelectObject(x,y);
 	}
 }
 
@@ -77,7 +72,7 @@ void ToolCreateObject::Move(int relX, int relY, int absX, int absY, const wxMous
 	SetPos( absX, absY);
 }
 
-void ToolCreateObject::LeftDown(const int x, const int y, wxMouseEvent &e)
+void ToolCreateObject::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	SetPos(x,y);
 	BecherEdit::Get()->GetActMap()->AddObject(m_obj);
@@ -88,35 +83,44 @@ void ToolCreateObject::LeftDown(const int x, const int y, wxMouseEvent &e)
 	BecherEdit::Get()->SetTool(NULL);
 }
 
-void ToolCreateObject::LeftUp(const int x, const int y, wxMouseEvent &e)
+void ToolCreateObject::LeftUp(const int x, const int y, const wxMouseEvent &e)
 {
 	/*if (m_map)
 		m_map->m_lockobject = NULL;
 	*/
 }
 
-void ToolCreateObject::RightDown(const int x, const int y, wxMouseEvent &e)
+void ToolCreateObject::RightDown(const int x, const int y, const wxMouseEvent &e)
 {
 	BecherEdit::Get()->SetTool(NULL);
 }
 
-void ToolCreateObject::Wheel(wxMouseEvent &e)
+void ToolCreateObject::Wheel( const wxMouseEvent &e)
 {
 	m_obj->SetAngle(m_obj->GetAngle() + e.GetWheelRotation() / 500.f);
 }
 
 //////////////////////////////////////////////////////
 // ToolTerrain
-void ToolTerrain::LeftDown(const int x, const int y, wxMouseEvent &e)
+void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	IHoeEnv::GridSurface::TGridDesc desc;
-	BecherEdit::Get()->GetActMap()->GetTerrain()->Get()->GetGridDesc(0,0,&desc);
+	BecherEdit::Get()->GetActMap()->GetTerrain()->GetGridDesc(0,0,&desc);
 	desc.x1 = (desc.x1+1)%8;
-	BecherEdit::Get()->GetActMap()->GetTerrain()->Get()->SetGridDesc(0,0,&desc);
+	BecherEdit::Get()->GetActMap()->GetTerrain()->SetGridDesc(0,0,&desc);
 }
 
-void ToolTerrain::RightDown(const int x, const int y, wxMouseEvent &e)
+void ToolTerrain::RightDown(const int x, const int y, const wxMouseEvent &e)
 {
 	BecherEdit::Get()->SetTool(NULL);
+}
+
+void ToolTerrain::Wheel(const wxMouseEvent &e)
+{
+	IHoeEnv::GridSurface::TGridDesc desc;
+	BecherEdit::Get()->GetActMap()->GetTerrain()->GetGridDesc(0,0,&desc);
+	desc.ori1 = (desc.ori1+(e.GetWheelRotation() > 0 ? 1:3))%4;
+	BecherEdit::Get()->GetActMap()->GetTerrain()->SetGridDesc(0,0,&desc);
+
 }
 

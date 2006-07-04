@@ -37,6 +37,7 @@ BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
 	EVT_MENU(ID_TERRAINWIRE, BecherEdit::OnTerrainWireFrame)
 	EVT_MENU(ID_HELP, BecherEdit::OnHelp)
 	EVT_MENU(ID_TERRAINTEX, BecherEdit::OnTerrainTextures)
+	//EVT_MENU(ID_SHOWINFO, BecherEdit::OnShowInfo)
 
 	EVT_MENU_RANGE(ID_OBJECT, ID_OBJECT + EBO_Max, BecherEdit::OnNewObject)
 
@@ -474,9 +475,7 @@ void BecherEdit::OnOpenFile(wxCommandEvent &)
 		if (m_map == NULL)
 			m_map = new EditorMap();
 		m_map->SetFilePath(dlg.GetPath());
-		HoeEditor::EditorFile file;
-		BecherMapLoader r(&file);
-		if (!file.OpenRead(dlg.GetPath()) || !m_map->Load( r, true))
+		if (!m_map->LoadMap(dlg.GetPath()))
 		{
 			wxLogMessage(_("Open map file %s failed."), dlg.GetPath().c_str());
 			CloseMap();
@@ -544,7 +543,7 @@ void BecherEdit::OnAbout(wxCommandEvent &)
 void BecherEdit::OnTerrainWireFrame(wxCommandEvent &)
 {
 	if (m_map)
-		m_map->GetTerrain()->Get()->ShowWireframe(m_menu->IsChecked(ID_TERRAINWIRE));
+		m_map->GetTerrain()->ShowWireframe(m_menu->IsChecked(ID_TERRAINWIRE));
 }
 
 void BecherEdit::OnTerrainTextures(wxCommandEvent &)

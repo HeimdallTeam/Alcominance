@@ -45,9 +45,15 @@ protected:
 	int FindObjIndex(BecherObject * bo);
 	bool LoadObjects(BecherMapLoader & r);
 	bool SaveObjects(HoeFileWriter & w);
+
+	// teren
+	IHoeEnv::GridSurface * m_terrain;
 public:
 	BecherMap();
 	bool Load(BecherMapLoader & r, bool loadobj);
+	IHoeScene * CreateScene();
+	IHoeScene * GetScene() { return m_scene; }
+
 	BecherObject * CreateObject(unsigned long type);
 	static EObjType GetObjectClass(EObjType type);
 	void AddObject(BecherObject * obj);
@@ -56,9 +62,10 @@ public:
 	int GetNumObj() { return m_numobj; }
 	BecherObject * GetObj(int index) { assert(index >= 0 && index < m_numobj); return m_obj[index];}
 	BecherObject * GetObject(const int x, const int y);
-	IHoeScene * GetScene() { return m_scene; }
+
 	unsigned long GenObjectID() { return ++m_lastid; }
 	void ComputeLastID();
+	IHoeEnv::GridSurface * GetTerrain() { return m_terrain; };
 public:
 	// najde objekt podle id
 	BecherObject * GetObjFromID(unsigned long id);

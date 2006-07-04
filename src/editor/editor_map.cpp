@@ -8,14 +8,26 @@
 
 void EditorMap::CreateNew()
 {
-	this->Create(GetEngine()->CreateScene(HOETS_GRAPH));
+	CreateScene();
 	GetEngine()->SetActiveScene(m_scene);
-	HoeGetRef(GetEngine())->SetBackgroundColor(0xffb060ff);
 	m_mapfilepath = wxT("");
-	m_terrain.Set(m_scene->GetSceneEnv()->CreateGridSurface());
-	m_terrain.Get()->SetTexture(0, "ter_war3", 8, 4);
-	m_terrain.Get()->Create(300.f, 300.f,20,20);
+	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
+	m_terrain->SetTexture(0, "ter_war3", 8, 4);
+	m_terrain->Create(300.f, 300.f,20,20);
 	// textures
+}
+
+bool EditorMap::LoadMap(const wxString &path)
+{
+	HoeEditor::EditorFile file;
+	if (!file.OpenRead(path))
+		return false;
+	BecherMapLoader r(&file);
+	CreateScene();
+	GetEngine()->SetActiveScene(m_scene);
+	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
+	m_terrain->SetTexture(0, "ter_war3", 8, 4);
+	return Load( r, true);
 }
 
 bool EditorMap::SaveMap(const wxString &path)
@@ -33,7 +45,9 @@ bool EditorMap::SaveMap(const wxString &path)
 	file.Write(&head, sizeof(head));
 
 	// zakladni data (teren atd)
-	
+	MapChunk terr = { ID_CHUNK('t','e','r','r'), 0, 0 };
+	file.Write(&terr, sizeof(terr));
+	m_terrain->Dump(&file);
 
 	// objekty
 	HoeFileWriter w(&file);

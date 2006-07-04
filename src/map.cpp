@@ -17,6 +17,7 @@ BecherMap::BecherMap()
 {
 	m_numobj = 0;
 	m_lastid = 0;
+	m_terrain = NULL;
 }
 
 BecherObject * BecherMap::CreateObject(unsigned long type)
@@ -78,7 +79,7 @@ EObjType BecherMap::GetObjectClass(EObjType type)
 	return EBO_None;
 }
 
-bool BecherMap::Load(BecherMapLoader & r, bool loadobj)
+IHoeScene * BecherMap::CreateScene()
 {
 	if (m_scene)
 	{
@@ -86,6 +87,12 @@ bool BecherMap::Load(BecherMapLoader & r, bool loadobj)
 		m_scene = NULL;
 	}
 	this->Create(GetEngine()->CreateScene(HOETS_GRAPH));
+	HoeGetRef(GetEngine())->SetBackgroundColor(0xffb060ff);
+	return m_scene;
+}
+
+bool BecherMap::Load(BecherMapLoader & r, bool loadobj)
+{
 	this->m_numobj = 0;
 
 	if (r.Chunk().chunk == 0)
@@ -103,6 +110,17 @@ bool BecherMap::Load(BecherMapLoader & r, bool loadobj)
 	}
 	r.ReadNext();
 
+	while (r.Chunk().chunk != ID_CHUNK('O','b','j','s'))
+	{
+		switch (r.Chunk().chunk)
+		{
+		case ID_CHUNK('t','e','r','r'):
+			// nejdriv textury terena..
+			m_terrain->LoadDump(&r);
+		};
+		if (!r.ReadNext())
+			break;;
+	}
 	// nejdrive jsou globals
 
 	// pak mapa
