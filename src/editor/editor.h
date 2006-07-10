@@ -21,13 +21,28 @@ public:
 	virtual wxString FindId(int id);
 };
 
-class TerrainTexture
+struct TTerrainTexture
 {
-public:
+	enum {
+		Muzeserotovat,
+		levanahore,
+		pravanahore,
+		levadole,
+		pravadole,
 
+	};
+	wxString name;
+	wxString desc;
+	uint x;
+	uint y;
+	bool down;
+	bool up;
+	dword pic[32];
 };
 
-class TerrainTextures
+WX_DECLARE_OBJARRAY(TTerrainTexture, ArrayTextures);
+
+class TerrainTextures : public ArrayTextures
 {
 public:
 };
@@ -118,6 +133,8 @@ public:
 	void UpdateControls();
 
 	void SetTool(EditorTool * tool);
+
+	void SetStatus(const wxString & str);
 
     DECLARE_EVENT_TABLE()
 };

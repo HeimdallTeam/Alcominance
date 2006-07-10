@@ -8,12 +8,32 @@
 
 void EditorMap::CreateNew()
 {
+	m_numX = 4;
+	m_numY = 4;
+	m_sizeX = 80.f;
+	m_sizeY = 80.f;
+	m_distX = m_sizeX / m_numX;
+	m_distY = m_sizeY / m_numY;
 	CreateScene();
 	GetEngine()->SetActiveScene(m_scene);
 	m_mapfilepath = wxT("");
 	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
-	m_terrain->SetTexture(0, "ter_war3", 8, 4);
-	m_terrain->Create(300.f, 300.f,20,20);
+	m_terrain->SetTexture(0, "trava", 4, 4);
+	m_terrain->SetTexture(1, "ter_war3", 8, 4);
+	m_terrain->Create(m_sizeX, m_sizeY,m_numX,m_numY);
+
+	// vytvorit
+	for (uint x=0;x < 4;x++)
+	for (uint y=0;y < 4;y++)
+	{
+		IHoeEnv::GridSurface::TGridDesc desc;
+		m_terrain->GetGridDesc(x,y,&desc);
+		desc.x2 = x;
+		desc.y2 = y;
+		desc.tex2 = 1;
+		m_terrain->SetGridDesc(x,y,&desc);
+	}
+
 	// textures
 }
 
@@ -26,7 +46,8 @@ bool EditorMap::LoadMap(const wxString &path)
 	CreateScene();
 	GetEngine()->SetActiveScene(m_scene);
 	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
-	m_terrain->SetTexture(0, "ter_war3", 8, 4);
+	m_terrain->SetTexture(0, "trava", 4, 4);
+	m_terrain->SetTexture(1, "ter_war3", 8, 4);
 	return Load( r, true);
 }
 

@@ -49,6 +49,14 @@ protected:
 	// teren
 	IHoeEnv::GridSurface * m_terrain;
 public:
+	/*!!! dat mimo public */
+	uint m_numX;
+	uint m_numY;
+	float m_sizeX;
+	float m_sizeY;
+	float m_distX;
+	float m_distY;
+
 	BecherMap();
 	bool Load(BecherMapLoader & r, bool loadobj);
 	IHoeScene * CreateScene();

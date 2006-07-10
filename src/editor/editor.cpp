@@ -11,7 +11,11 @@
 #include "../becher.h"
 #include "map_properties.h"
 
+#include <wx/arrimpl.cpp>
+
 IMPLEMENT_APP(BecherEditApp)
+
+WX_DEFINE_OBJARRAY(ArrayTextures);
 
 const char * EditorName = "BecherEditor";
 
@@ -684,6 +688,11 @@ void BecherEdit::SetTool(EditorTool *tool)
 		m_tool = tool;
 	else
 		m_tool = new ToolSelect();
+}
+
+void BecherEdit::SetStatus(const wxString &str)
+{
+	SetStatusText(str, 0);
 }
 
 //////////////////////////////////

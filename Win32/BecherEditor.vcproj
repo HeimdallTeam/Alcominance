@@ -30,13 +30,16 @@
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
-				Name="Flex"
+				Name="HTML help"
+			/>
+			<Tool
+				Name="NASM"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
 			/>
 			<Tool
-				Name="HTML help"
+				Name="Flex"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -134,13 +137,16 @@
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
-				Name="Flex"
+				Name="HTML help"
+			/>
+			<Tool
+				Name="NASM"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
 			/>
 			<Tool
-				Name="HTML help"
+				Name="Flex"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -373,6 +379,14 @@
 		<File
 			RelativePath="..\src\editor\editor.cpp"
 			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					GeneratePreprocessedFile="0"
+				/>
+			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\src\editor\editor.h"
