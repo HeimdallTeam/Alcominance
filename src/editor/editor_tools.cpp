@@ -23,12 +23,18 @@ void ToolSelect::LeftDown(const int x, const int y, wxMouseEvent &e)
 
 //////////////////////////////////////////////////////
 // ToolCreateObject
-ToolCreateObject::ToolCreateObject(long type)
+ToolCreateObject::ToolCreateObject(long type, bool repeat, bool randori)
 {
 	m_type = type;
+	m_repeat = repeat;
+	m_rand = randori;
 	// vytvorit m_obj
 	m_obj = BecherEdit::Get()->GetActMap()->CreateObject(type);
 	m_obj->Show(false);
+	if (m_rand)
+	{
+		m_obj->SetAngle((rand() % 628) * 0.01f);
+	}
 }
 
 ToolCreateObject::~ToolCreateObject()
@@ -76,11 +82,22 @@ void ToolCreateObject::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	SetPos(x,y);
 	BecherEdit::Get()->GetActMap()->AddObject(m_obj);
-	m_obj = NULL;
-	/*m_obj = BecherEdit::Get()->GetActMap()->CreateObject(m_type);
-	m_obj->Show(true);
-	SetPos(x,y);*/
-	BecherEdit::Get()->SetTool(NULL);
+	if (m_repeat)
+	{
+		m_obj = BecherEdit::Get()->GetActMap()->CreateObject(m_type);
+		m_obj->Show(true);
+		SetPos(x,y);
+		if (m_rand)
+		{
+			m_obj->SetAngle((rand() % 628) * 0.01f);
+		}
+	}
+	else
+	{
+		m_obj = NULL;
+		BecherEdit::Get()->SetTool(NULL);
+	}
+
 }
 
 void ToolCreateObject::LeftUp(const int x, const int y, const wxMouseEvent &e)
@@ -102,6 +119,11 @@ void ToolCreateObject::Wheel( const wxMouseEvent &e)
 
 //////////////////////////////////////////////////////
 // ToolTerrain
+ToolTerrain::ToolTerrain(byte set)
+{
+	m_set = set;
+}
+
 void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	float sx,sy;
@@ -115,7 +137,7 @@ void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
 		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
 		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
 		m.GetTerrain()->GetGridDesc(nx,ny,&desc);
-		//desc.tex2 = desc.tex2 == 0xff ? 1:0xff;
+		desc.tex2 = m_set;
 		m.GetTerrain()->SetGridDesc(nx,ny,&desc);
 	}
 }

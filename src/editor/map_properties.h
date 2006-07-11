@@ -9,6 +9,8 @@
 #ifndef _MAP_PROPERTIES_H_
 #define _MAP_PROPERTIES_H_
 
+class EditorMap;
+
 class MapSettingsDialog : public wxPropertySheetDialog
 {
 	/*wxTextCtrl* m_becherdir;
@@ -19,12 +21,16 @@ class MapSettingsDialog : public wxPropertySheetDialog
     wxButton* m_removeres;
     wxListBox* m_listfiles;
     wxListCtrl* m_listresources;*/
+	wxSpinCtrl * m_sba;
+	wxSpinCtrl * m_sbb;
+	wxSpinCtrl * m_sbc;
+	wxSpinCtrl * m_sbd;
+	bool m_edit;
 public:
 	MapSettingsDialog(wxWindow* win, bool new_map);
-
+	void ApplyChanges(EditorMap * map);
 	//DECLARE_EVENT_TABLE()
 };
-
 
 #endif // _MAP_PROPERTIES_H_
 

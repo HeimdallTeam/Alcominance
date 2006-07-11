@@ -8,10 +8,10 @@
 
 void EditorMap::CreateNew()
 {
-	m_numX = 4;
-	m_numY = 4;
-	m_sizeX = 80.f;
-	m_sizeY = 80.f;
+	m_numX = 20;
+	m_numY = 20;
+	m_sizeX = 400.f;
+	m_sizeY = 400.f;
 	m_distX = m_sizeX / m_numX;
 	m_distY = m_sizeY / m_numY;
 	CreateScene();
@@ -20,17 +20,23 @@ void EditorMap::CreateNew()
 	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
 	m_terrain->SetTexture(0, "trava", 4, 4);
 	m_terrain->SetTexture(1, "ter_war3", 8, 4);
+	m_terrain->SetTexture(2, "City_Dirt", 8, 4);
+	m_terrain->SetTexture(3, "City_SquareTiles", 4, 4);
+	m_terrain->SetTexture(4, "Cliff1", 4, 4);
+	m_terrain->SetTexture(5, "Concrete", 4, 4);
+	m_terrain->SetTexture(6, "MetalPlateCliff", 4, 4);
+	m_terrain->SetTexture(7, "MetalPlateTiles", 4, 4);
 	m_terrain->Create(m_sizeX, m_sizeY,m_numX,m_numY);
 
 	// vytvorit
-	for (uint x=0;x < 4;x++)
-	for (uint y=0;y < 4;y++)
+	for (uint x=0;x < m_numX;x++)
+	for (uint y=0;y < m_numY;y++)
 	{
 		IHoeEnv::GridSurface::TGridDesc desc;
 		m_terrain->GetGridDesc(x,y,&desc);
-		desc.x2 = x;
-		desc.y2 = y;
-		desc.tex2 = 1;
+		desc.x2 = 0;
+		desc.y2 = 0;
+		desc.tex2 = 0xff;
 		m_terrain->SetGridDesc(x,y,&desc);
 	}
 
@@ -105,6 +111,48 @@ wxString EditorMap::GetFilePath()
 wxString EditorMap::GetTitle()
 {
 	return this->m_mapfilepath;
+}
+
+void EditorMap::Resize(int top, int bottom, int left, int right)
+{
+	// ulozeni stareho
+	IHoeEnv::GridSurface::TGridDesc * desc = new IHoeEnv::GridSurface::TGridDesc[m_numX*m_numY];
+	for (uint y=0;y < m_numY;y++)
+		for (uint x=0;x < m_numX;x++)
+			m_terrain->GetGridDesc(x,y, desc + m_numX * y + x);
+	
+	const uint nx = left + right + m_numX;
+	const uint ny = top + bottom + m_numY;
+	const float posx = (nx - m_numX) * m_distX;
+	const float posy = (ny - m_numY) * m_distY;
+	m_sizeX += posx; m_sizeY += posy;
+
+	m_terrain->Create(m_sizeX, m_sizeY, nx, ny);
+	for (uint y=0;y < ny;y++)
+		for (uint x=0;x < nx;x++)
+		{
+			const uint px = left + x;
+			const uint py = top + y;
+			if (px >= 0 && px < m_numX && py >= 0 && py < m_numY)
+				m_terrain->SetGridDesc(x,y, desc + m_numX * py + px);
+			else
+			{
+				IHoeEnv::GridSurface::TGridDesc d;
+				memset(&d, 0, sizeof d);
+				d.tex2 = 1;
+				m_terrain->SetGridDesc(x,y, &d);
+			}
+		}
+	m_numX = nx;
+	m_numY = ny;
+	delete [] desc;
+
+	// posunout vsechny na spravne misto
+	for (int i=0;i<GetNumObj();i++)
+	{
+		BecherObject & o = *GetObj(i);
+		o.SetPosition(o.GetPosX()-posx*0.5f, o.GetPosY()-posy*0.5f);
+	}
 }
 
 

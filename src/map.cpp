@@ -117,6 +117,10 @@ bool BecherMap::Load(BecherMapLoader & r, bool loadobj)
 		case ID_CHUNK('t','e','r','r'):
 			// nejdriv textury terena..
 			m_terrain->LoadDump(&r);
+			m_terrain->GetDesc(&m_sizeX,&m_sizeY, &m_numX, &m_numY);
+			m_distX = m_sizeX / m_numX;
+			m_distY = m_sizeY / m_numY;
+			break;
 		};
 		if (!r.ReadNext())
 			break;;

@@ -36,8 +36,10 @@ class ToolCreateObject : public EditorTool
 protected:
 	BecherObject * m_obj;
 	long m_type;
+	bool m_repeat;
+	bool m_rand;
 public:
-	ToolCreateObject(long type);
+	ToolCreateObject(long type, bool repeat, bool randori);
 	virtual ~ToolCreateObject();
 	void SetPos(int absX, int absY);
 
@@ -53,7 +55,9 @@ public:
 
 class ToolTerrain : public EditorTool
 {
+	byte m_set;
 public:
+	ToolTerrain(byte set);
 	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
 	virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
 	virtual void Wheel( const wxMouseEvent & e);

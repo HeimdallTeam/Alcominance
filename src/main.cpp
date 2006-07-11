@@ -7,7 +7,7 @@
 
 using namespace HoeGame;
 
-HoeGame::CVar v_level("map", "maps/test1.bm", 0);
+HoeGame::CVar v_level("map", "test.bm", 0);
 
 #ifdef _WIN32
 bool Configure(HINSTANCE hInstance, LPSTR lpStr);

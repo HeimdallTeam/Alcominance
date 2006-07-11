@@ -23,6 +23,7 @@ public:
 	void SetFilePath(const wxString &path);
 	wxString GetFilePath();
 	wxString GetTitle();
+	void Resize(int top, int bottom, int left, int right);
 };
 
 #endif // _BECHER_EDITOR_MAP_H_

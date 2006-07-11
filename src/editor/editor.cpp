@@ -60,6 +60,9 @@ enum {
 	IDB_STORE,
 	IDB_SHOP,
 	IDB_TROLL,
+// textures
+	IDB_NOTEX,
+	IDB_TEX1,
 };
 
 
@@ -141,6 +144,8 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 	}
 
 	unsigned long type = 0;
+	bool rep = false;
+	bool rnd = false;
 	switch (event.GetId())
 	{
 	case IDB_SUGAR:
@@ -157,6 +162,8 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 		break;
 	case IDB_STROM:
 		type = EBO_Tree;
+		rep = true;
+		rnd = true;
 		break;
 	case IDB_DESTILATE:
 		type = EBO_Destilate;
@@ -178,7 +185,7 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 		break;
 	};
 
-	ToolCreateObject * t = new ToolCreateObject(type);
+	ToolCreateObject * t = new ToolCreateObject(type,rep,rnd);
 	BecherEdit::Get()->SetTool(t);
 }
 
@@ -186,7 +193,14 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 // terrain
 
 BEGIN_EVENT_TABLE(TerrainObject, wxPanel)
-    EVT_BUTTON(IDB_FACTORY,TerrainObject::OnClick)
+	EVT_BUTTON(IDB_NOTEX, TerrainObject::OnClick)
+	EVT_BUTTON(IDB_TEX1, TerrainObject::OnClick)
+	EVT_BUTTON(IDB_TEX1+1, TerrainObject::OnClick)
+	EVT_BUTTON(IDB_TEX1+2, TerrainObject::OnClick)
+	EVT_BUTTON(IDB_TEX1+3, TerrainObject::OnClick)
+	EVT_BUTTON(IDB_TEX1+4, TerrainObject::OnClick)
+	EVT_BUTTON(IDB_TEX1+5, TerrainObject::OnClick)
+	EVT_BUTTON(IDB_TEX1+6, TerrainObject::OnClick)
 END_EVENT_TABLE()
 
 TerrainObject::TerrainObject(wxWindow * parent)
@@ -197,8 +211,16 @@ TerrainObject::TerrainObject(wxWindow * parent)
                 wxSize(140,80));
 	topsizer->Add( sb);
 
-	wxButton * b = new wxBitmapButton(sb,IDB_FACTORY,wxBitmap(tovarna_xpm),wxPoint(0,0),BT_SIZE/*,BS_FLAT*/);
-	b->SetToolTip( _("Factory") );
+	wxButton * b = new wxBitmapButton(sb,IDB_NOTEX,wxBitmap(tovarna_xpm),wxPoint(0,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Empty terrain") );
+	b = new wxBitmapButton(sb,IDB_TEX1,wxBitmap(tovarna_xpm),wxPoint(28,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Trava") );
+	b = new wxBitmapButton(sb,IDB_TEX1+1,wxBitmap(tovarna_xpm),wxPoint(28*2,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+2,wxBitmap(tovarna_xpm),wxPoint(28*3,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+3,wxBitmap(tovarna_xpm),wxPoint(28*4,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+4,wxBitmap(tovarna_xpm),wxPoint(28*5,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+5,wxBitmap(tovarna_xpm),wxPoint(28*0,28),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+6,wxBitmap(tovarna_xpm),wxPoint(28*1,28),BT_SIZE/*,BS_FLAT*/);
                 //long style = 0,
                 //const wxString& name = wxStaticBoxNameStr)
 	//wxButton * b = new wxBitmapButton(this,IDB_FACTORY,wxBitmap(tovarna_xpm),wxPoint(0,0),BT_SIZE/*,BS_FLAT*/);
@@ -211,14 +233,40 @@ TerrainObject::TerrainObject(wxWindow * parent)
 
 }
 
-void TerrainObject::OnClick(wxCommandEvent& event)
+void TerrainObject::OnClick(wxCommandEvent& e)
 {
 	if (!BecherEdit::Get()->IsMapLoaded())
 	{
 		wxMessageBox(_("First must create map."));
 		return;
 	}
-	BecherEdit::Get()->SetTool(new ToolTerrain());
+	byte id = 0xff;
+	switch (e.GetId())
+	{
+	case IDB_TEX1:
+		id = 1;
+		break;
+	case IDB_TEX1+1:
+		id = 2;
+		break;
+	case IDB_TEX1+2:
+		id = 3;
+		break;
+	case IDB_TEX1+3:
+		id = 4;
+		break;
+	case IDB_TEX1+4:
+		id = 5;
+		break;
+	case IDB_TEX1+5:
+		id = 6;
+		break;
+	case IDB_TEX1+6:
+		id = 7;
+		break;
+
+	};
+	BecherEdit::Get()->SetTool(new ToolTerrain(id));
 	//EditorMap::Get()->GetTerrain()->MoveHeight(0,0,50,-5);
 }
 
@@ -454,7 +502,10 @@ void BecherEdit::OnResMgr(wxCommandEvent &)
 void BecherEdit::OnMapSettings(wxCommandEvent &)
 {
 	MapSettingsDialog dlg(this, false);
-	dlg.ShowModal();
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		dlg.ApplyChanges(m_map);
+	}
 }
 
 void BecherEdit::OnNewFile(wxCommandEvent &)
