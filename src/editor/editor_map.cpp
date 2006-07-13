@@ -8,10 +8,10 @@
 
 void EditorMap::CreateNew()
 {
-	m_numX = 20;
-	m_numY = 20;
-	m_sizeX = 400.f;
-	m_sizeY = 400.f;
+	m_numX = 10;
+	m_numY = 10;
+	m_sizeX = m_numX * 20.f;
+	m_sizeY = m_numY * 20.f;
 	m_distX = m_sizeX / m_numX;
 	m_distY = m_sizeY / m_numY;
 	CreateScene();

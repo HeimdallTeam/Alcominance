@@ -15,10 +15,10 @@ data/sklad.hm
 data/staveniste.hm
 data/stromy.hm
 data/Studna.hm
-data/ter.hm
 data/textures.hx
 data/dopln.hm
 data/ter.hx
+data/terrain.hm
 #resources
 ID_FACTORY="model tovarna" ; Tovarna
 ID_INFO_RING="model info" ; Ring
