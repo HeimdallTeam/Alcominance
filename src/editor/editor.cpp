@@ -27,6 +27,8 @@ enum {
 	ID_HELP,
 	ID_ENGINECON,
 	ID_TERRAINWIRE,
+	ID_OBJECTSWIRE,
+	ID_OBJECTSHIDE,
 	ID_TERRAINTEX,
 };
 
@@ -38,7 +40,7 @@ BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
 	EVT_MENU(HoeEditor::ID_SAVE, BecherEdit::OnSaveFile)
 	EVT_MENU(HoeEditor::ID_SAVEAS, BecherEdit::OnSaveFile)
 	EVT_MENU(HoeEditor::ID_ABOUT, BecherEdit::OnAbout)
-	EVT_MENU(ID_TERRAINWIRE, BecherEdit::OnTerrainWireFrame)
+	EVT_MENU(ID_TERRAINWIRE, BecherEdit::OnWireFrame)
 	EVT_MENU(ID_HELP, BecherEdit::OnHelp)
 	EVT_MENU(ID_TERRAINTEX, BecherEdit::OnTerrainTextures)
 	//EVT_MENU(ID_SHOWINFO, BecherEdit::OnShowInfo)
@@ -203,6 +205,14 @@ BEGIN_EVENT_TABLE(TerrainObject, wxPanel)
 	EVT_BUTTON(IDB_TEX1+6, TerrainObject::OnClick)
 END_EVENT_TABLE()
 
+#include "../../resource/maleikony/trava.xpm"
+#include "../../resource/maleikony/City_Dirt.xpm"
+#include "../../resource/maleikony/City_SquareTiles.xpm"
+#include "../../resource/maleikony/Cliff1.xpm"
+#include "../../resource/maleikony/Concrete.xpm"
+#include "../../resource/maleikony/MetalPlateCliff.xpm"
+#include "../../resource/maleikony/MetalPlateTiles.xpm"
+
 TerrainObject::TerrainObject(wxWindow * parent)
 	: wxPanel(parent,wxID_ANY,wxDefaultPosition, wxSize(80,250))
 {
@@ -211,23 +221,28 @@ TerrainObject::TerrainObject(wxWindow * parent)
                 wxSize(140,80));
 	topsizer->Add( sb);
 
-	wxButton * b = new wxBitmapButton(sb,IDB_NOTEX,wxBitmap(tovarna_xpm),wxPoint(0,0),BT_SIZE/*,BS_FLAT*/);
+	sb = new wxStaticBox(this, -1, _("Textures"), wxPoint(10,100),
+                wxSize(140,80));
+
+#undef BT_P
+#define BT_P(x,y) wxPoint(28 * x + 12, 28 * y + 12)
+
+	wxButton * b = new wxBitmapButton(sb,IDB_NOTEX,wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Empty terrain") );
-	b = new wxBitmapButton(sb,IDB_TEX1,wxBitmap(tovarna_xpm),wxPoint(28,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1,wxBitmap(trava_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Trava") );
-	b = new wxBitmapButton(sb,IDB_TEX1+1,wxBitmap(tovarna_xpm),wxPoint(28*2,0),BT_SIZE/*,BS_FLAT*/);
-	b = new wxBitmapButton(sb,IDB_TEX1+2,wxBitmap(tovarna_xpm),wxPoint(28*3,0),BT_SIZE/*,BS_FLAT*/);
-	b = new wxBitmapButton(sb,IDB_TEX1+3,wxBitmap(tovarna_xpm),wxPoint(28*4,0),BT_SIZE/*,BS_FLAT*/);
-	b = new wxBitmapButton(sb,IDB_TEX1+4,wxBitmap(tovarna_xpm),wxPoint(28*5,0),BT_SIZE/*,BS_FLAT*/);
-	b = new wxBitmapButton(sb,IDB_TEX1+5,wxBitmap(tovarna_xpm),wxPoint(28*0,28),BT_SIZE/*,BS_FLAT*/);
-	b = new wxBitmapButton(sb,IDB_TEX1+6,wxBitmap(tovarna_xpm),wxPoint(28*1,28),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+1,wxBitmap(City_Dirt_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+2,wxBitmap(City_SquareTiles_xpm),BT_P(3,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+3,wxBitmap(Cliff1_xpm),BT_P(0,1),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+4,wxBitmap(Concrete_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+5,wxBitmap(MetalPlateCliff_xpm),BT_P(2,1),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_TEX1+6,wxBitmap(MetalPlateTiles_xpm),BT_P(3,1),BT_SIZE/*,BS_FLAT*/);
                 //long style = 0,
                 //const wxString& name = wxStaticBoxNameStr)
 	//wxButton * b = new wxBitmapButton(this,IDB_FACTORY,wxBitmap(tovarna_xpm),wxPoint(0,0),BT_SIZE/*,BS_FLAT*/);
 	//b->SetToolTip( _("Factory") );
 
-	topsizer->Add( new wxStaticBox(this, -1, _("Textures"), wxPoint(10,100),
-                wxSize(140,80)));//,
+	topsizer->Add( sb);//,
                 //long style = 0,
                 //const wxString& name = wxStaticBoxNameStr)
 
@@ -595,7 +610,7 @@ void BecherEdit::OnAbout(wxCommandEvent &)
 	dlg.ShowModal();
 }
 
-void BecherEdit::OnTerrainWireFrame(wxCommandEvent &)
+void BecherEdit::OnWireFrame(wxCommandEvent &)
 {
 	if (m_map)
 		m_map->GetTerrain()->ShowWireframe(m_menu->IsChecked(ID_TERRAINWIRE));

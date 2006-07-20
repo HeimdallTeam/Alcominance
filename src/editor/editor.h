@@ -115,7 +115,7 @@ public:
 	void OnSaveFile(wxCommandEvent &);
 	void OnHelp(wxCommandEvent &);
 	void OnAbout(wxCommandEvent &);
-	void OnTerrainWireFrame(wxCommandEvent &);
+	void OnWireFrame(wxCommandEvent &);
 	void OnTerrainTextures(wxCommandEvent &);
 
 	virtual void KeyDown(wxKeyEvent& event);
