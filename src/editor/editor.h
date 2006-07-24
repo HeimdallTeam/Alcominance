@@ -115,7 +115,7 @@ public:
 	void OnSaveFile(wxCommandEvent &);
 	void OnHelp(wxCommandEvent &);
 	void OnAbout(wxCommandEvent &);
-	void OnWireFrame(wxCommandEvent &);
+	void OnTypeShow(wxCommandEvent &);
 	void OnTerrainTextures(wxCommandEvent &);
 
 	virtual void KeyDown(wxKeyEvent& event);
@@ -137,6 +137,9 @@ public:
 	void SetStatus(const wxString & str);
 
     DECLARE_EVENT_TABLE()
+protected:
+	// updejt menu
+	void MenuUpdate(bool maploaded);
 };
 
 class BecherEditApp : public HoeEditor::App

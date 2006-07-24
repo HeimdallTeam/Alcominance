@@ -27,8 +27,11 @@ enum {
 	ID_HELP,
 	ID_ENGINECON,
 	ID_TERRAINWIRE,
+	ID_OBJECTS,
 	ID_OBJECTSWIRE,
 	ID_OBJECTSHIDE,
+	ID_OBJECTSFULL,
+	ID_SYSOBJECTS,
 	ID_TERRAINTEX,
 };
 
@@ -40,7 +43,11 @@ BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
 	EVT_MENU(HoeEditor::ID_SAVE, BecherEdit::OnSaveFile)
 	EVT_MENU(HoeEditor::ID_SAVEAS, BecherEdit::OnSaveFile)
 	EVT_MENU(HoeEditor::ID_ABOUT, BecherEdit::OnAbout)
-	EVT_MENU(ID_TERRAINWIRE, BecherEdit::OnWireFrame)
+	EVT_MENU(ID_TERRAINWIRE, BecherEdit::OnTypeShow)
+	EVT_MENU(ID_OBJECTSWIRE, BecherEdit::OnTypeShow)
+	EVT_MENU(ID_OBJECTSHIDE, BecherEdit::OnTypeShow)
+	EVT_MENU(ID_OBJECTSFULL, BecherEdit::OnTypeShow)
+	EVT_MENU(ID_SYSOBJECTS, BecherEdit::OnTypeShow)
 	EVT_MENU(ID_HELP, BecherEdit::OnHelp)
 	EVT_MENU(ID_TERRAINTEX, BecherEdit::OnTerrainTextures)
 	//EVT_MENU(ID_SHOWINFO, BecherEdit::OnShowInfo)
@@ -62,6 +69,8 @@ enum {
 	IDB_STORE,
 	IDB_SHOP,
 	IDB_TROLL,
+// system
+	IDB_SOUND,
 // textures
 	IDB_NOTEX,
 	IDB_TEX1,
@@ -80,6 +89,8 @@ BEGIN_EVENT_TABLE(ToolObjects, wxChoicebook)
 	EVT_BUTTON(IDB_STORE,ToolObjects::OnClick)
 	EVT_BUTTON(IDB_SHOP,ToolObjects::OnClick)
 	EVT_BUTTON(IDB_TROLL,ToolObjects::OnClick)
+
+	// system
 END_EVENT_TABLE()
 
 // gfx
@@ -94,7 +105,8 @@ END_EVENT_TABLE()
 #include "../../resource/maleikony/studna.xpm"
 #include "../../resource/maleikony/tovarna.xpm"
 #include "../../resource/maleikony/most.xpm"
-
+// system
+#include "../../resource/maleikony/sound.xpm"
 
 
 #define BT_SIZE wxSize(28,28)
@@ -109,7 +121,7 @@ ToolObjects::ToolObjects(wxWindow * parent)
 	b = new wxBitmapButton(p,IDB_BABA,wxBitmap(chaloupka_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Chalupa") );
 	b = new wxBitmapButton(p,IDB_FARM,wxBitmap(farma_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
-	b->SetToolTip( _("Farma") );
+	b->SetToolTip( _("Farm") );
 	b = new wxBitmapButton(p,IDB_DESTILATE,wxBitmap(lihovar_xpm),BT_P(3,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Destilate") );
 	b = new wxBitmapButton(p,IDB_SUGAR,wxBitmap(cukrovar_xpm),BT_P(4,0),BT_SIZE/*,BS_FLAT*/);
@@ -131,9 +143,13 @@ ToolObjects::ToolObjects(wxWindow * parent)
 	b = new wxBitmapButton(p2,IDB_TROLL,wxBitmap(studna_xpm),BT_P(3,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Troll") );
 
+	wxWindow * p3  = new wxWindow(this,-1);
+	b = new wxBitmapButton(p3,IDB_SOUND,wxBitmap(Sound_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Sound instance") );
 
 	AddPage(p,_("Buildings"));
 	AddPage(p2,_("Map elements"));
+	AddPage(p3,_("System tools"));
 
 }
 
@@ -429,8 +445,17 @@ void BecherEdit::OnInitMenu()
 	menuView->Append(ID_VIEWCODE, _("&Code Editor"), _("Show code editor."));*/
 	menuView->AppendCheckItem(HoeEditor::ID_VIEWFULLSCREEN, _("F&ull Screen\tF12"), _("Switch to fullscreen."));
 	menuView->AppendSeparator();
-	menuView->AppendCheckItem(ID_TERRAINWIRE, _("Terrain Wireframe\tCtrl+W"), _("Switch terrain in wireframe."));
+	// menu voleb zobrazeni
 
+	menuView->AppendCheckItem(ID_TERRAINWIRE, _("Terrain Wireframe\tCtrl+W"), _("Switch terrain in wireframe."));
+	wxMenu * omenu = new wxMenu;
+	omenu->AppendRadioItem(ID_OBJECTSWIRE, _("Wire"), _("Show wireframe objects."));
+	omenu->AppendRadioItem(ID_OBJECTSHIDE, _("Hidden"), _("Hide objects."));
+	omenu->AppendRadioItem(ID_OBJECTSFULL, _("Full"), _("Show normaly."));
+	menuView->Append(ID_OBJECTS, _("Objects"), omenu, _("Show objects."));
+	menuView->AppendCheckItem(ID_SYSOBJECTS, _("System objects"), _("Show system objects."));
+
+	omenu->Check(ID_OBJECTSFULL, true);
 	/*menuView->AppendSeparator();
 	// advanced
 	wxMenu * menuAdvanced = new wxMenu;
@@ -463,7 +488,18 @@ void BecherEdit::OnInitMenu()
     // ... and attach this menu bar to the frame
     SetMenuBar(m_menu); 
 
+	MenuUpdate(false);
+}
 
+// updejt menu
+void BecherEdit::MenuUpdate(bool maploaded)
+{
+	m_menu->Enable(HoeEditor::ID_SAVE, maploaded);
+	m_menu->Enable(HoeEditor::ID_SAVEAS, maploaded);
+	m_menu->Enable(ID_TERRAINWIRE, maploaded);
+	m_menu->Enable(ID_OBJECTS, maploaded);
+	m_menu->Enable(ID_SYSOBJECTS, maploaded);
+	m_menu->Enable(ID_MAPSETTINGS, maploaded);
 }
 
 HoeGame::ResourceMgr * g_resmgr = NULL;
@@ -532,6 +568,7 @@ void BecherEdit::OnNewFile(wxCommandEvent &)
 		m_map = new EditorMap();
 		m_map->CreateNew();
 		UpdateControls();
+		MenuUpdate(true);
 	}
 }
 
@@ -549,6 +586,7 @@ void BecherEdit::OnOpenFile(wxCommandEvent &)
 		{
 			wxLogMessage(_("Open map file %s failed."), dlg.GetPath().c_str());
 			CloseMap();
+			MenuUpdate(false);
 		}
 		else
 		{
@@ -556,6 +594,7 @@ void BecherEdit::OnOpenFile(wxCommandEvent &)
 			SetTitle(m_map->GetTitle());
 			GetEngine()->SetActiveScene(m_map->GetScene());
 			HoeGetRef(GetEngine())->SetBackgroundColor(0xffb060ff);
+			MenuUpdate(true);
 		}
 	}
 	
@@ -610,7 +649,7 @@ void BecherEdit::OnAbout(wxCommandEvent &)
 	dlg.ShowModal();
 }
 
-void BecherEdit::OnWireFrame(wxCommandEvent &)
+void BecherEdit::OnTypeShow(wxCommandEvent &)
 {
 	if (m_map)
 		m_map->GetTerrain()->ShowWireframe(m_menu->IsChecked(ID_TERRAINWIRE));
