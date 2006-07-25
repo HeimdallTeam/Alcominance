@@ -10,7 +10,7 @@
 
 print("Hello world, from ",_VERSION,"!")
 
-hoe("showfps")
+hoe("hidefps")
 --hoe("wireframe 1")
 
 --files 
