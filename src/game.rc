@@ -132,7 +132,6 @@ END
 // Bitmap
 //
 
-IDB_BITMAP1             BITMAP                  "C:\\work\\BecherGame\\resource\\nsis.bmp"
 #endif    // Czech resources
 /////////////////////////////////////////////////////////////////////////////
 
