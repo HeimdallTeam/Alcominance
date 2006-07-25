@@ -195,11 +195,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="HoeUtils.lib HoeGame.lib HoeEditor.lib wxbase26.lib wxmsw26_core.lib wxmsw26_adv.lib wxmsw26_propgrid.lib wxbase26_xml.lib wxmsw26_stc.lib wxexpat.lib rpcrt4.lib comctl32.lib User32.lib Gdi32.lib"
+				AdditionalDependencies="HoeUtils.lib HoeGame.lib HoeEditor.lib Lua5.1.lib wxbase26.lib wxmsw26_core.lib wxmsw26_adv.lib wxmsw26_propgrid.lib wxbase26_xml.lib wxmsw26_stc.lib wxexpat.lib rpcrt4.lib comctl32.lib User32.lib Gdi32.lib"
 				OutputFile="../BecherEditor.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../../Hoe/bin;../../../Common\wx_lib;"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd"
 				ProgramDatabaseFile=".\Release/BecherMap.pdb"
 				ImportLibrary=".\Release/BecherMap.lib"
 				TargetMachine="1"
