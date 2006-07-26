@@ -8,8 +8,8 @@
 
 void EditorMap::CreateNew()
 {
-	m_numX = 10;
-	m_numY = 10;
+	m_numX = 4;
+	m_numY = 4;
 	m_sizeX = m_numX * 20.f;
 	m_sizeY = m_numY * 20.f;
 	m_distX = m_sizeX / m_numX;
@@ -40,6 +40,7 @@ void EditorMap::CreateNew()
 		m_terrain->SetGridDesc(x,y,&desc);
 	}
 
+	m_terrain->Load();
 	// textures
 }
 

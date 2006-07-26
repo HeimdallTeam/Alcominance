@@ -140,6 +140,7 @@ void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
 		m.GetTerrain()->GetGridDesc(nx,ny,&desc);
 		desc.tex2 = m_set;
 		m.GetTerrain()->SetGridDesc(nx,ny,&desc);
+		m.GetTerrain()->Load();
 	}
 }
 

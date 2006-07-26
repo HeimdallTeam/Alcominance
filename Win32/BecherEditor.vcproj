@@ -335,6 +335,11 @@
 				>
 			</File>
 			<File
+				RelativePath="..\editor\help\control.htm"
+				DeploymentContent="true"
+				>
+			</File>
+			<File
 				RelativePath="..\editor\help\files.html"
 				>
 			</File>
