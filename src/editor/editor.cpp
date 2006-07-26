@@ -564,9 +564,11 @@ void BecherEdit::OnNewFile(wxCommandEvent &)
 	MapSettingsDialog dlg(this,true);
 	if (dlg.ShowModal() == wxID_OK)
 	{
+        // zjisti z dlg velikost
+           
 		CloseMap();
 		m_map = new EditorMap();
-		m_map->CreateNew();
+		m_map->CreateNew(dlg.m_width->GetValue(),dlg.m_height->GetValue());
 		UpdateControls();
 		MenuUpdate(true);
 	}

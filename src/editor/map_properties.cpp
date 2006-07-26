@@ -14,18 +14,18 @@ MapSettingsDialog::MapSettingsDialog(wxWindow* win, bool new_map)
 	// page terrain
 	wxBookCtrlBase* notebook = GetBookCtrl();
 	wxPanel* panel_g = new wxPanel(notebook, wxID_ANY);
-	wxSpinCtrl * sbx = new wxSpinCtrl(panel_g, -1,"64", wxPoint(20,20),wxSize(50,20));
-	sbx->SetRange(8,256);
-	sbx->SetValue(64);
+	m_width = new wxSpinCtrl(panel_g, -1,"64", wxPoint(20,20),wxSize(50,20));
+	m_width->SetRange(8,256);
+	m_width->SetValue(64);
 	if (m_edit)
-		sbx->Disable();
-	sbx->SetToolTip(_("Map grid width."));
-	wxSpinCtrl * sby = new wxSpinCtrl(panel_g, -1,"64", wxPoint(80,20),wxSize(50,20));
-	sby->SetRange(8,256);
-	sby->SetValue(64);
+		m_width->Disable();
+	m_width->SetToolTip(_("Map grid width."));
+	m_height = new wxSpinCtrl(panel_g, -1,"64", wxPoint(80,20),wxSize(50,20));
+	m_height->SetRange(8,256);
+	m_height->SetValue(64);
 	if (m_edit)
-		sby->Disable();
-	sby->SetToolTip(_("Map grid height."));
+		m_height->Disable();
+	m_height->SetToolTip(_("Map grid height."));
 
 	// page script
 	wxPanel* panel_s = new wxPanel(notebook, wxID_ANY);

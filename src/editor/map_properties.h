@@ -25,8 +25,12 @@ class MapSettingsDialog : public wxPropertySheetDialog
 	wxSpinCtrl * m_sbb;
 	wxSpinCtrl * m_sbc;
 	wxSpinCtrl * m_sbd;
+
 	bool m_edit;
 public:
+	wxSpinCtrl * m_width;
+	wxSpinCtrl * m_height;
+
 	MapSettingsDialog(wxWindow* win, bool new_map);
 	void ApplyChanges(EditorMap * map);
 	//DECLARE_EVENT_TABLE()

@@ -6,10 +6,12 @@
 #include "editor_map.h"
 //#include "plugin_editlevel.h"
 
-void EditorMap::CreateNew()
+void EditorMap::CreateNew(uint sizeX, uint sizeY)
 {
-	m_numX = 4;
-	m_numY = 4;
+
+	m_numX = sizeX;
+	m_numY = sizeY;
+
 	m_sizeX = m_numX * 20.f;
 	m_sizeY = m_numY * 20.f;
 	m_distX = m_sizeX / m_numX;
@@ -33,7 +35,7 @@ void EditorMap::CreateNew()
 	for (uint y=0;y < m_numY;y++)
 	{
 		IHoeEnv::GridSurface::TGridDesc desc;
-		m_terrain->GetGridDesc(x,y,&desc);
+		m_terrain->GetGridDesc(x,y,&desc);		
 		desc.x2 = 0;
 		desc.y2 = 0;
 		desc.tex2 = 0xff;

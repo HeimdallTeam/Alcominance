@@ -15,7 +15,7 @@ public:
 	~EditorMap()
 	{
 	}
-	void CreateNew();
+	void CreateNew(uint sizeX, uint sizeY);
 	bool LoadMap(const wxString &path);
 	bool SaveMap();
 	bool SaveMap(const wxString &path);

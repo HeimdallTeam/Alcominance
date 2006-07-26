@@ -181,6 +181,7 @@ void ToolTerrain::Wheel(const wxMouseEvent &e)
 		desc.x2 = d / 4;
 		desc.y2 = d % 4;
 		m.GetTerrain()->SetGridDesc(nx,ny,&desc);
+        m.GetTerrain()->Load();
 	}
 
 }
