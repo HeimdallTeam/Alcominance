@@ -728,7 +728,7 @@ void BecherEdit::MouseWheel(wxMouseEvent & e)
 			m_tool->Wheel(e);
 		}
 		else if (e.ShiftDown())
-			m_map->GetView()->Zoom(e.GetWheelRotation() / 250.f);
+			m_map->GetView()->Zoom(e.GetWheelRotation() / 50.f);
 		else
 			m_map->GetView()->Rotate(e.GetWheelRotation() / 500.f);
 	}

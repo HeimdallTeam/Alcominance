@@ -82,7 +82,7 @@ void ToolCreateObject::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	SetPos(x,y);
 	BecherEdit::Get()->GetActMap()->AddObject(m_obj);
-	if (m_repeat)
+	if (m_repeat || e.ControlDown())
 	{
 		m_obj = BecherEdit::Get()->GetActMap()->CreateObject(m_type);
 		m_obj->Show(true);
@@ -114,7 +114,8 @@ void ToolCreateObject::RightDown(const int x, const int y, const wxMouseEvent &e
 
 void ToolCreateObject::Wheel( const wxMouseEvent &e)
 {
-	m_obj->SetAngle(m_obj->GetAngle() + e.GetWheelRotation() / 500.f);
+    if (e.ControlDown())
+        m_obj->SetAngle(m_obj->GetAngle() + e.GetWheelRotation() / 500.f);
 }
 
 //////////////////////////////////////////////////////
