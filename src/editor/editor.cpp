@@ -488,18 +488,25 @@ void BecherEdit::OnInitMenu()
     // ... and attach this menu bar to the frame
     SetMenuBar(m_menu); 
 
-	MenuUpdate(false);
+	MenuUpdate();
 }
 
 // updejt menu
-void BecherEdit::MenuUpdate(bool maploaded)
+void BecherEdit::MenuUpdate()
 {
-	m_menu->Enable(HoeEditor::ID_SAVE, maploaded);
-	m_menu->Enable(HoeEditor::ID_SAVEAS, maploaded);
-	m_menu->Enable(ID_TERRAINWIRE, maploaded);
-	m_menu->Enable(ID_OBJECTS, maploaded);
-	m_menu->Enable(ID_SYSOBJECTS, maploaded);
-	m_menu->Enable(ID_MAPSETTINGS, maploaded);
+	if (m_menu)
+	{
+		// engine
+		m_menu->Enable(HoeEditor::ID_NEW, this->GetEngineView()->IsLoaded());
+		m_menu->Enable(HoeEditor::ID_OPEN, this->GetEngineView()->IsLoaded());
+		// map
+		m_menu->Enable(HoeEditor::ID_SAVE, m_map != NULL);
+		m_menu->Enable(HoeEditor::ID_SAVEAS, m_map != NULL);
+		m_menu->Enable(ID_TERRAINWIRE, m_map != NULL);
+		m_menu->Enable(ID_OBJECTS, m_map != NULL);
+		m_menu->Enable(ID_SYSOBJECTS, m_map != NULL);
+		m_menu->Enable(ID_MAPSETTINGS, m_map != NULL);
+	}
 }
 
 HoeGame::ResourceMgr * g_resmgr = NULL;
@@ -570,7 +577,7 @@ void BecherEdit::OnNewFile(wxCommandEvent &)
 		m_map = new EditorMap();
 		m_map->CreateNew(dlg.m_width->GetValue(),dlg.m_height->GetValue());
 		UpdateControls();
-		MenuUpdate(true);
+		MenuUpdate();
 	}
 }
 
@@ -588,7 +595,7 @@ void BecherEdit::OnOpenFile(wxCommandEvent &)
 		{
 			wxLogMessage(_("Open map file %s failed."), dlg.GetPath().c_str());
 			CloseMap();
-			MenuUpdate(false);
+			MenuUpdate();
 		}
 		else
 		{
@@ -596,7 +603,7 @@ void BecherEdit::OnOpenFile(wxCommandEvent &)
 			SetTitle(m_map->GetTitle());
 			GetEngine()->SetActiveScene(m_map->GetScene());
 			HoeGetRef(GetEngine())->SetBackgroundColor(0xffb060ff);
-			MenuUpdate(true);
+			MenuUpdate();
 		}
 	}
 	

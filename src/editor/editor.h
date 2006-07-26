@@ -139,7 +139,7 @@ public:
     DECLARE_EVENT_TABLE()
 protected:
 	// updejt menu
-	void MenuUpdate(bool maploaded);
+	virtual void MenuUpdate();
 };
 
 class BecherEditApp : public HoeEditor::App
