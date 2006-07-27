@@ -9,14 +9,14 @@ private:
         void* value;
     } Item;
     
-    Item* head;
+    Item* head, tail;
     
 public:
     LinkedList();
     ~LinkedList();
 
     add(void* value);
-    remove(item* item);
+    remove(Item* item);
 };
 
 /**
