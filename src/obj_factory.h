@@ -16,8 +16,8 @@ protected:
 	uint m_becher;
 public:
 	Factory(IHoeScene * scn);
-	virtual bool Save(HoeFileWriter &w);
-	virtual bool Load(int ver, HoeFileReader &r);
+	virtual bool Save(BecherGameSave &w);
+	virtual bool Load(BecherGameLoad &r);
 	virtual void AdvPaint(IHoePaint3D * h3);
 
 	DECLARE_BUILDING(EBO_Factory)

@@ -1,11 +1,17 @@
 
 #include "StdAfx.h"
-#include "buildings.h"
 #include "becher.h"
+#include "buildings.h"
 #include "id.h"
 #include "game.h"
 #include "troll.h"
 #include "obj_store.h"
+
+ResourceItem::ResourceItem(ESurType type)
+{
+	type = m_type;
+	m_actual = 0;
+}
 
 /////////////////////////////////////////////////////////
 BecherBuilding::BecherBuilding(IHoeScene * scn) : BecherObject(scn)
@@ -26,12 +32,12 @@ bool BecherBuilding::StartBuilding(int gold, int wood, int stone)
 
 #endif
 
-bool BecherBuilding::Save(HoeFileWriter &w)
+bool BecherBuilding::Save(BecherGameSave &w)
 {
 	return true;
 }
 
-bool BecherBuilding::Load(int ver, HoeFileReader &r)
+bool BecherBuilding::Load(BecherGameLoad &r)
 {
 	return true;
 }

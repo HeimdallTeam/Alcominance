@@ -15,15 +15,15 @@ Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn)
 }
 
 
-bool Factory::Save(HoeFileWriter &w)
+bool Factory::Save(BecherGameSave &w)
 {
 	return BecherBuilding::Save(w);
 	//return 0;
 }
 
-bool Factory::Load(int ver, HoeFileReader &r)
+bool Factory::Load(BecherGameLoad &r)
 {
-	return BecherBuilding::Load(ver, r);
+	return BecherBuilding::Load(r);
 }
 
 void Factory::AdvPaint(IHoePaint3D * h3)

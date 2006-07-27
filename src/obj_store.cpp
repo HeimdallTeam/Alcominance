@@ -8,11 +8,12 @@
 float getheight(IHoeModel * m);
 
 ////////////////////////////////////////////////////////////
-Store::Store(IHoeScene * scn) : BecherBuilding(scn)
+Store::Store(IHoeScene * scn) : BecherBuilding(scn), 
+	m_stone(EBS_Stone), m_wood(EBS_Wood), m_sugar(EBS_Sugar), m_water(EBS_Water),
+	m_becher(EBS_Becher), m_alcohol(EBS_Alco), m_cane(EBS_Cane)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STORE));
 	GetCtrl()->SetFlags(HOF_ADVSHOW);
-	m_stone = m_wood = m_sugar = m_water = m_becher = m_alcohol = m_cane = 0;
 }
 
 
@@ -53,33 +54,33 @@ void Store::AdvPaint(IHoePaint3D * h3)
 
 }
 
-bool Store::Save(HoeFileWriter &w)
+bool Store::Save(BecherGameSave &w)
 {
 	BecherBuilding::Save(w);
-	w.Write<int>(m_stone);
-	w.Write<int>(m_wood);
-	w.Write<int>(m_sugar);
-	w.Write<int>(m_water);
-	w.Write<int>(m_becher);
-	w.Write<int>(m_alcohol);
+	w.Write(m_stone);
+	w.Write(m_wood);
+	w.Write(m_sugar);
+	w.Write(m_water);
+	w.Write(m_becher);
+	w.Write(m_alcohol);
 	return true;
 }
 
-bool Store::Load(int ver, HoeFileReader &r)
+bool Store::Load(BecherGameLoad &r)
 {
-	BecherBuilding::Load(ver, r);
-	m_stone = r.Read<int>();
-	m_wood = r.Read<int>();
-	m_sugar = r.Read<int>();
-	m_water = r.Read<int>();
-	m_becher = r.Read<int>();
-	m_alcohol = r.Read<int>();
+	BecherBuilding::Load(r);
+	r.ReadRI(m_stone);
+	r.ReadRI(m_wood);
+	r.ReadRI(m_sugar);
+	r.ReadRI(m_water);
+	r.ReadRI(m_becher);
+	r.ReadRI(m_alcohol);
 	return true;
 }
 
 #ifndef BECHER_EDITOR
 
-int * Store::EBSToPointer(ESurType type)
+ResourceItem * Store::EBSToPointer(ESurType type)
 {
 	switch (type)
 	{
@@ -105,14 +106,14 @@ int * Store::EBSToPointer(ESurType type)
 
 int Store::AddSur(ESurType type, int s)
 {
-	(*EBSToPointer(type))  += s;
+	EBSToPointer(type)->Add(s);
 	return 0;
 }
 
 int Store::GetSur(ESurType type, int req, bool upln)
 {
-	int * s = EBSToPointer(type);
-	if (req <= *s)
+	/*ResourceItem * s = EBSToPointer(type);
+	if (req <= s-)
 	{
 		*s -= req;
 		return req;
@@ -126,7 +127,8 @@ int Store::GetSur(ESurType type, int req, bool upln)
 	else
 	{
 		return 0;
-	}
+	}*/
+	return 0;
 }
 
 void Store::Update(const double t)
@@ -135,7 +137,7 @@ void Store::Update(const double t)
 
 int Store::GetStatus(ESurType type)
 {
-	return *EBSToPointer(type);
+	return 0;//*EBSToPointer(type);
 }
 
 bool Store::Idiot(Troll *t)
@@ -188,12 +190,12 @@ bool Store::Select()
 {
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Materials"));
-	GetProp()->AppendLong(0, _("Wood"), m_wood);
-	GetProp()->AppendLong(1, _("Stone"), m_stone);
-	GetProp()->AppendLong(2, _("Water"), m_water);
-	GetProp()->AppendLong(3, _("Sugar"), m_sugar);
-	GetProp()->AppendLong(4, _("Alcohol"), m_alcohol);
-	GetProp()->AppendLong(5, _("Bechers"), m_becher);
+	GetProp()->AppendLong(0, _("Wood"), m_wood.GetNum());
+	GetProp()->AppendLong(1, _("Stone"), m_stone.GetNum());
+	GetProp()->AppendLong(2, _("Water"), m_water.GetNum());
+	GetProp()->AppendLong(3, _("Sugar"), m_sugar.GetNum());
+	GetProp()->AppendLong(4, _("Alcohol"), m_alcohol.GetNum());
+	GetProp()->AppendLong(5, _("Bechers"), m_becher.GetNum());
 	GetProp()->AppendCategory(_("Store"));
 	GetProp()->AppendLong(6, _("Limit"), 100);
 	GetProp()->End();	
@@ -205,22 +207,22 @@ void Store::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 	switch (id)
 	{
 	case 0:
-		m_wood = pi.GetLong();
+		m_wood.SetNum(pi.GetLong());
 		break;
 	case 1:
-		m_stone = pi.GetLong();
+		m_stone.SetNum(pi.GetLong());
 		break;
 	case 2:
-		m_water = pi.GetLong();
+		m_water.SetNum(pi.GetLong());
 		break;
 	case 3:
-		m_sugar = pi.GetLong();
+		m_sugar.SetNum(pi.GetLong());
 		break;
 	case 4:
-		m_alcohol = pi.GetLong();
+		m_alcohol.SetNum(pi.GetLong());
 		break;
 	case 5:
-		m_becher = pi.GetLong();
+		m_becher.SetNum(pi.GetLong());
 		break;
 	};
 }

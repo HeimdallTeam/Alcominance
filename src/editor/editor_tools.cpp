@@ -1,8 +1,8 @@
 
 #include "../StdAfx.h"
+#include "../becher.h"
 #include "editor_tools.h"
 #include "../buildings.h"
-#include "../becher.h"
 #include "editor_map.h"
 #include "editor.h"
 

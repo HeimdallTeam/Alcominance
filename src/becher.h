@@ -4,6 +4,7 @@
 
 //#include "troll.h"
 #include "console.h"
+#include "utils.h"
 
 extern HoeGame::ResourceMgr * g_resmgr;
 inline HoeGame::ResourceMgr * GetResMgr()

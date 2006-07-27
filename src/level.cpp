@@ -1,9 +1,9 @@
 
 #include "StdAfx.h"
+#include "becher.h"
 #include "buildings.h"
 #include "elements.h"
 #include "level.h"
-#include "becher.h"
 #include "game.h"
 #include "troll.h"
 

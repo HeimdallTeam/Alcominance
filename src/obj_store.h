@@ -7,19 +7,19 @@
 class Store : public BecherBuilding
 {
 protected:
-	int m_stone;
-	int m_wood;
-	int m_sugar;
-	int m_water;
-	int m_becher;
-	int m_alcohol;
-	int m_cane;
-	int * EBSToPointer(ESurType type);
+	ResourceItem m_stone;
+	ResourceItem m_wood;
+	ResourceItem m_sugar;
+	ResourceItem m_water;
+	ResourceItem m_becher;
+	ResourceItem m_alcohol;
+	ResourceItem m_cane;
+	ResourceItem * EBSToPointer(ESurType type);
 public:
 	Store(IHoeScene * scn);
 	//virtual ~Store();
-	virtual bool Save(HoeFileWriter &w);
-	virtual bool Load(int ver, HoeFileReader &r);
+	virtual bool Save(BecherGameSave &w);
+	virtual bool Load(BecherGameLoad &r);
 
 	int GetStatus(ESurType type);
 

@@ -281,6 +281,10 @@
 				RelativePath="..\src\troll.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\src\utils.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="resource"
