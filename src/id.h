@@ -49,6 +49,7 @@ enum EObjType
 enum ESurType
 {
 	EBS_None = 0,
+    EBS_Work,
 	EBS_Becher,
 	EBS_Stone,
 	EBS_Wood,
@@ -58,6 +59,11 @@ enum ESurType
 	EBS_Alco,
 	EBS_Cane,
 	EBS_Unknown,
+};
+
+enum ESurCriterion{
+    EBSC_Distance = 0,
+    EBSC_Priority,
 };
 
 extern HoeGame::LuaPreprocess::IDConst g_luaconst[];

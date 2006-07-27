@@ -61,12 +61,14 @@ private:
     /** TODO predelat pole spojaku na pole poli */
     LinkedList* resLists;
     int resCount;
-
+    static CRR* this_;
 public:
     CRR(int resCount);
     ~CRR();
     void addResource(ResourceItem* item);
     LinkedList* getResources(ESurType resourceType);
+    LinkedList* getResources(LinkedList* list, ESurCriterion criterion);
+    LUA_FUNCTION(l_getResources);
 };
 
 

@@ -114,6 +114,7 @@ CRR::CRR(int resCount){
     
     this->resCount = resCount;
     resLists = new LinkedList[resCount];
+    this_=this;
 }
 
 CRR::~CRR(){
@@ -144,10 +145,10 @@ void CRR::addResource(ResourceItem* item){
 }
 
 /**
- * Vrati zdroje (suroviny) daneho typu.
+ * Vrati zdroje (suroviny) daneho typu podle kriteria.
  */
 LinkedList* CRR::getResources(ESurType resourceType){
-
+    
     int n;
     for(n=0; n<resCount; n++){
 
@@ -157,7 +158,88 @@ LinkedList* CRR::getResources(ESurType resourceType){
             return &resLists[n];
         }
     }
-    
-    //typ neexistuje
     return NULL;
+}
+
+/**
+ * Vybere zdroje podle kriteria (priority/distance).
+ * @param list seznam zdroju ze kterych se vybira
+ */
+LinkedList* CRR::getResources(LinkedList* list, ESurCriterion criterion){
+    
+    LinkedList* resList=new LinkedList();
+    
+    if(list==NULL || list->isEmpty()) return resList;
+
+    list->start();
+    
+    ResourceItem* resource = (ResourceItem*) list->next();
+    int minValue;
+    if(criterion==EBSC_Priority){
+        minValue=resource->GetPriority();
+    }
+    /*
+    if(criterion==EBSC_Distance){
+        minValue=resource->GetDistance(pos (troll));
+    }
+    */
+
+    int value;
+    while(list->hasNext()){
+
+        resource = (ResourceItem*) list->next();
+        if(criterion==EBSC_Priority) value=resource->GetPriority();
+//      if(criterion==EBSC_Distance) value=resource->GetDistance();
+
+        if(value<minValue){
+            minValue=value;
+        }            
+    }
+
+    list->start();
+    while(list->hasNext()){
+
+        resource = (ResourceItem*) list->next();
+        if(criterion==EBSC_Priority) value=resource->GetPriority();
+//      if(criterion==EBSC_Distance) value=resource->GetDistance();
+
+        if(value==minValue) resList->add(resource);
+    }
+
+    return resList;
+}
+
+/**
+ * Vrati zdroje (suroviny) daneho typu podle kriteria.
+ * @param ESurType typ - typ suroviny (int)
+ * @param ESurCriterion criterion1 - primarni kriterium vyberu suroviny - distance/priority (int)
+ * @param ESurCriterion criterion2 - sekundarni kriterium vyberu suroviny - distance/priority (int)
+ */
+int CRR::l_getResources(lua_State * L){
+
+    HoeGame::LuaParam lp(L);
+
+    ESurType type;
+    ESurCriterion criterion1, criterion2;
+
+    if(lp.GetNumParam()!=2 && lp.GetNumParam()!=3) lp.Error("nespravny pocet parametru (2 nebo 3)");
+    if(!lp.IsNum(-1)) lp.Error("nespravny typ parametru 1 (ESurType)");
+    if(!lp.IsNum(-2)) lp.Error("nespravny typ parametru 2 (ESurCriterion)");
+
+    type = (ESurType) lp.GetNum(-1);
+    criterion1 = (ESurCriterion) lp.GetNum(-2);
+    if(lp.GetNumParam()==3){
+        if(!lp.IsNum(-3)) lp.Error("nespravny typ parametru 3 (ESurCriterion)");
+        criterion2 = (ESurCriterion) lp.GetNum(-3);
+    }
+    
+    LinkedList* res1 = this_->getResources(type);
+    
+    LinkedList* res2 = this_->getResources(res1, criterion1);
+    LinkedList* res3 = this_->getResources(res2, criterion2);
+
+    //@todo vrati prvni nalezeny (muze jich byt vice)
+    res3->start();
+    lp.PushPointer(res3->next());
+    return 1;
 }
