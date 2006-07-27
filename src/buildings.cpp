@@ -11,6 +11,8 @@ ResourceItem::ResourceItem(ESurType type)
 {
 	type = m_type;
 	m_actual = 0;
+	if (type == EBS_Cane)
+		m_actual = 100;
 }
 
 /////////////////////////////////////////////////////////

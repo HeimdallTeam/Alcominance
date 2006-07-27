@@ -30,6 +30,8 @@ end
 function s_cukr()
  ClearButtons()
  AddButton(ID_STOPPRACI,2, "c_najmout")
+ print("cukr ",ID_TESTSOUND)
+ PlaySound(ID_TESTSOUND)
 end
 
 function s_lihovar()
@@ -143,9 +145,11 @@ function c_bottles()
 end
 function c_destil()
 end
+
 function c_weathercast()
  AddCash(-53)
 end
+
 function c_firefix()
  AddCash(100)
  PlaySound(ID_TESTSOUND+2)
@@ -161,7 +165,7 @@ function c_waterfarm()
 end
 
 function i_sugar(b)
- -- print("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
+ print("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
  -- pokud je nejaky cukr tak odnest
  if (b.sugar > 0) then
      job = { type = 3 }

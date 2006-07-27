@@ -55,10 +55,10 @@ public:
  * Central Register of Resource
  * Centralni registr zdroju (surovin) slouzi ...
  */
-class CRR{
+class CRR {
 
 private:
-    /** TODO predelat pole spojaku na spojak spojaku */
+    /** TODO predelat pole spojaku na pole poli */
     LinkedList* resLists;
     int resCount;
 

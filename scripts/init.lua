@@ -110,7 +110,7 @@ LoadResource(ID_ZAVLAZOVANI,"picture up_zavlazovani")
 --LoadResource(ID_CAMPAIGNSTART,"picture campaignstart")
 
 LoadResource(ID_TESTSOUND+1,"sound 'sound/kukacka-timeout.WAV'")
-LoadResource(ID_TESTSOUND,"sound 'sound/klik.wav'")
+LoadResource(ID_TESTSOUND,"sound 'sound/datel1.wav'")
 LoadResource(ID_TESTSOUND+2,"sound 'sound/penizky.wav'")
 --resources-end
 
