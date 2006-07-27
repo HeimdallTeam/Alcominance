@@ -6,17 +6,19 @@ class LinkedList{
 private:
     struct item{
         item* next;
-        void* value;
+        void* value;        
     } Item;
     
-    Item* head, tail;
+    Item *head, *tail;
     
 public:
     LinkedList();
     ~LinkedList();
 
-    add(void* value);
-    remove(Item* item);
+    void add(void* value);
+    void remove(Item* item);
+    bool isEmpty();
+    Item* getHead();
 };
 
 /**
@@ -33,7 +35,7 @@ public:
     CRR();
     ~CRR();
     void addResource(ResourceItem* item);
-    LinkedList getResource(resourceType);
+    LinkedList* getResources(resourceType);
 };
 
 

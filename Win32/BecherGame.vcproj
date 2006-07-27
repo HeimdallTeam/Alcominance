@@ -292,6 +292,14 @@
 			Name="game"
 			>
 			<File
+				RelativePath="..\src\crr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\crr.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\game.cpp"
 				>
 			</File>
