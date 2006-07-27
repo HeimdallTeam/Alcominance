@@ -559,7 +559,8 @@ void BecherEdit::OnResMgr(wxCommandEvent &)
 
 void BecherEdit::OnMapSettings(wxCommandEvent &)
 {
-	MapSettingsDialog dlg(this, false);
+	assert(m_map);
+	MapSettingsDialog dlg(this, m_map);
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		dlg.ApplyChanges(m_map);
@@ -568,7 +569,7 @@ void BecherEdit::OnMapSettings(wxCommandEvent &)
 
 void BecherEdit::OnNewFile(wxCommandEvent &)
 {
-	MapSettingsDialog dlg(this,true);
+	MapSettingsDialog dlg(this,NULL);
 	if (dlg.ShowModal() == wxID_OK)
 	{
         // zjisti z dlg velikost

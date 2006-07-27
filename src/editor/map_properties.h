@@ -19,21 +19,35 @@ class MapSettingsDialog : public wxPropertySheetDialog
     wxButton* m_remove;
     wxButton* m_addres;
     wxButton* m_removeres;
-    wxListBox* m_listfiles;
     wxListCtrl* m_listresources;*/
 	wxSpinCtrl * m_sba;
 	wxSpinCtrl * m_sbb;
 	wxSpinCtrl * m_sbc;
 	wxSpinCtrl * m_sbd;
 
+	// scripts
+    wxListBox* m_scripts;
+	wxTextCtrl* m_saddtext;
+	wxButton * m_sadd;
+	wxButton * m_sremove;
+	wxButton * m_snext;
+	wxButton * m_sprev;
 	bool m_edit;
 public:
 	wxSpinCtrl * m_width;
 	wxSpinCtrl * m_height;
 
-	MapSettingsDialog(wxWindow* win, bool new_map);
+	MapSettingsDialog(wxWindow* win, EditorMap * map);
+	void OnAdd(wxCommandEvent& event);
+	void OnRemove(wxCommandEvent& event);
+	void AddScriptFile(wxString file);
+	void OnMoveScript(wxCommandEvent& event);
+	void UpdateButtons();
+	void OnUpdateButtons(wxCommandEvent& event);
+
 	void ApplyChanges(EditorMap * map);
-	//DECLARE_EVENT_TABLE()
+	
+	DECLARE_EVENT_TABLE()
 };
 
 #endif // _MAP_PROPERTIES_H_

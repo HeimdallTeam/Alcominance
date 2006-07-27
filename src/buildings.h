@@ -10,11 +10,14 @@ protected:
 	ESurType m_type;
 	uint m_max;
 	uint m_actual;
+	int m_priority;
 public:
 	ResourceItem(ESurType type);
 	inline ESurType GetType() { return m_type; }
 	inline uint GetNum() { return m_actual; }
 	inline void SetNum(uint num) { m_actual = num; }
+	inline int GetPriority() { return m_priority; }
+	inline void SetPriority(int p) { m_priority = p; }
 	void Register();
 	void Unregister();
 	void Add(uint s) {}
