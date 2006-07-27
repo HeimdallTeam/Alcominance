@@ -1,14 +1,16 @@
 #include "StdAfx.h"
+#include "utils.h"
+#include "becher.h"
 #include "crr.h"
 
 LinkedList::LinkedList(){
-    head=tail=NULL;
+    head=actual=tail=NULL;
 }
 
 LinkedList::~LinkedList(){
 
-    Item* actual = head;
-    Item* next;
+    item* actual = head;
+    item* next;
     
     while(actual != NULL){
         next = actual->next;
@@ -18,42 +20,92 @@ LinkedList::~LinkedList(){
 }
 
 /**
+ * 
+ */
+bool LinkedList::isEmpty(){
+    return head==NULL ? true : false;
+}
+
+/**
+ * Nastavi prochazeni(pomoci next() a hasNext()) na pocatek.
+ */
+void LinkedList::start(){
+    actual = head;
+}
+
+/**
+ * Test na existenci nasledujiciho prvku. Pouziti pri prochazeni.
+ */
+bool LinkedList::hasNext(){
+
+    if(isEmpty()) return false;
+    if(actual==head) return true;
+    return actual->next == NULL ? false : true;
+}
+
+/**
+ * Vrati hodnotu dalsiho prvku. Pouziti pri prochazeni.
+ */
+void* LinkedList::next(){
+    
+    if(actual != head) actual = actual->next;
+    return actual->value;
+}
+
+/**
+ * Vrati hlavicku (pocatek) spojoveho seznamu.
+ */
+LinkedList::item* LinkedList::getHead(){
+    return head;
+}
+
+/**
+ * Vrati hlavicku (pocatek) spojoveho seznamu.
+ */
+LinkedList::item* LinkedList::getActual(){
+    return actual;
+}
+
+/**
  * Prida hodnotu do spojoveho seznamu.
  */
 void LinkedList::add(void* value){
 
     if(head == NULL){
-        head = new Item;
+        head = new item;
         head->value=value;
         head->next=NULL;
         tail=head;
     }else{
-        tail->next = new Item;
+        tail->next = new item;
         tail=tail->next;
         tail->value=value;
         tail->next=NULL;
     }
 }
 
-
 /** TODO odebirani prvku (podle prvku nebo jeho hodnoty? opakovani) */
-void LinkedList::remove(Item* item){
+void LinkedList::remove(void* value){
     
+    item* previous = NULL;
+    item* next;
+
+    start();
+    while(hasNext()){
+
+        void* actualValue = next();
+        item* actual = getActual();
+        if(actualValue==value){
+            if(previous != NULL) previous->next=next;
+            else head=next;
+
+            delete(actual);
+        }
+        previous=actual;
+    }
 }
 
-/**
- * 
- */
-bool LinkedList::isEmpty(){
-    return head==null ? true : false;
-}
 
-/**
- * Vrati hlavicku (pocatek) spojoveho seznamu.
- */
-Item* LinkedList::getHead(){
-    return head;
-}
 
 /**
  * Zalozi registr zdroju pro urcity pocet typu zdroju.
@@ -75,10 +127,12 @@ CRR::~CRR(){
  */
 void CRR::addResource(ResourceItem* item){
 
-    for(int n=0; n<resCount; n++){
+    int n;
+    for(n=0; n<resCount; n++){
 
-        if(resLists[n].isEmpty()) break;
-        if(resLists[n].getHead().getValue().getType() == item.getType()){
+        if(resLists[n].isEmpty()) break;        
+        resLists[n].start();
+        if(((ResourceItem*) resLists[n].next())->GetType() == item->GetType()){
             //typ existuje
             resLists[n].add(item);
             return;
@@ -93,15 +147,18 @@ void CRR::addResource(ResourceItem* item){
 /**
  * Vrati zdroje (suroviny) daneho typu.
  */
-LinkedList* CRR::getResources(resourceType){
+LinkedList* CRR::getResources(ESurType resourceType){
 
-    for(int n=0; n<resCount; n++){
-        if(resLists[n].getHead().getValue().getType() == resourceType){
-            return resLists[n];
+    int n;
+    for(n=0; n<resCount; n++){
+
+        if(resLists[n].isEmpty()) break;
+        resLists[n].start();
+        if(((ResourceItem*) resLists[n].next())->GetType() == resourceType){
+            return &resLists[n];
         }
     }
-    if(n==resCount){
-        //typ neexistuje
-        retun NULL;
-    }
+    
+    //typ neexistuje
+    return NULL;
 }
