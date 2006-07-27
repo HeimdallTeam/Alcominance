@@ -4,6 +4,8 @@
 #include "becher.h"
 #include "game.h"
 
+HoeGame::CVar v_level("map", "test.bm", 0);
+
 class BecherLogo : public HoeGame::Scene
 {
 	IHoeFont * font;
@@ -71,6 +73,31 @@ void BechApp::OnUpdate(float dtime)
 {
 	if (scene)
 		scene->Update(dtime);
+}
+
+int BechApp::RunGame()
+{
+	BEGIN_TRY
+	if (!Init("Alcominance Game"))
+	{
+		HandleError();
+		return 0;
+	}
+	// init game
+	if (!InitGame())
+		throw;
+
+	GetBecher()->LoadLevel(v_level.GetString());
+	
+	Run();
+	// music destroy
+	GetBecher()->Destroy();
+	DestroyEngine();
+
+	END_TRY(DestroyEngine(); HandleError(); )
+
+	Destroy();
+	return 0;
 }
 
 

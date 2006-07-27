@@ -11,6 +11,7 @@ public:
 	bool InitGame();
 	virtual void OnUpdate(float dtime);
 	void SetScene(HoeGame::Scene * scn);
+	int RunGame();
 };
 
 #endif // _BECHER_APP_H_

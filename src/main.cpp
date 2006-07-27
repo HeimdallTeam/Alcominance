@@ -7,8 +7,6 @@
 
 using namespace HoeGame;
 
-HoeGame::CVar v_level("map", "test.bm", 0);
-
 #ifdef _WIN32
 bool Configure(HINSTANCE hInstance, LPSTR lpStr);
 #define CONF_PARAM hInstance, lpStr
@@ -27,6 +25,7 @@ int main(int argc,char * argv[])
 #endif
 
 	BGConsole con;
+
 	con.SetFileLogging("becher.log");
 	g_con = &con;
 	con.Con_Print("***********************");
@@ -37,35 +36,7 @@ int main(int argc,char * argv[])
 		return 0;
 
 	BechApp app(hInstance,&con);
-
-	try {
-
-	if (!app.Init("Alcominance Game"))
-	{
-		app.HandleError();
-		return 0;
-	}
-
-	// init game
-	if (!app.InitGame())
-		throw;
-
-	GetBecher()->LoadLevel(v_level.GetString());
-	
-	app.Run();
-	// music destroy
-	GetBecher()->Destroy();
-	app.DestroyEngine();
-
-	} catch (const char *)
-	{
-		app.DestroyEngine();
-		app.HandleError();
-	}
-
-	app.Destroy();
-
-	return 0;
+	return app.RunGame();
 }
 
 

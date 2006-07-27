@@ -82,7 +82,7 @@ function s_korenarka()
 end
 
 function s_sklad()
- --info("Vybranej sklad")
+ info("Vybranej sklad")
  ClearButtons()
  AddButton(ID_STOPPRACI,"Najmout delnika", "c_najmout")
 end
