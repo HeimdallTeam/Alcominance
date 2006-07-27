@@ -101,7 +101,17 @@ bool BecherGame::LoadLevel(const char * fpath)
 {
 	CloseLevel();
 
+	// vymazat luu
+
 	if (!GetLua()->Load("scripts/main.lua",g_luaconst))
+		return false;
+	if (!GetLua()->Load("scripts/sugar.lua",g_luaconst))
+		return false;
+	if (!GetLua()->Load("scripts/alco.lua",g_luaconst))
+		return false;
+	if (!GetLua()->Load("scripts/store.lua",g_luaconst))
+		return false;
+	if (!GetLua()->Load("scripts/factory.lua",g_luaconst))
 		return false;
 
 	// benchamrk

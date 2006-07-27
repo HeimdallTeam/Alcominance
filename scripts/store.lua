@@ -1,0 +1,1 @@
+-- funkce pro sklad

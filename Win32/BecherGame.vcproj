@@ -192,6 +192,10 @@
 			Name="scripts"
 			>
 			<File
+				RelativePath="..\scripts\alco.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\becher.conf"
 				>
 			</File>
@@ -204,6 +208,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\scripts\factory.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\scripts\id.txt"
 				>
 			</File>
@@ -213,6 +221,14 @@
 			</File>
 			<File
 				RelativePath="..\scripts\main.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\scripts\store.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\scripts\sugar.lua"
 				>
 			</File>
 		</Filter>
