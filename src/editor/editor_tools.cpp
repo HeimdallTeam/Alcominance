@@ -5,10 +5,11 @@
 #include "../buildings.h"
 #include "editor_map.h"
 #include "editor.h"
+#include "../sysobjs.h"
 
 //////////////////////////////////////////////////////
 // ToolSelect
-void ToolSelect::LeftDown(const int x, const int y, wxMouseEvent &e)
+void ToolSelect::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	if (e.ControlDown())
 	{
@@ -23,17 +24,26 @@ void ToolSelect::LeftDown(const int x, const int y, wxMouseEvent &e)
 
 //////////////////////////////////////////////////////
 // ToolCreateObject
-ToolCreateObject::ToolCreateObject(long type, bool repeat, bool randori)
+ToolCreateObject::ToolCreateObject(EObjType type, bool repeat, bool randori)
 {
 	m_type = type;
 	m_repeat = repeat;
 	m_rand = randori;
 	// vytvorit m_obj
-	m_obj = BecherEdit::Get()->GetActMap()->CreateObject(type);
-	m_obj->Show(false);
-	if (m_rand)
+	if (type < EBO_Max)
 	{
-		m_obj->SetAngle((rand() % 628) * 0.01f);
+		m_obj = BecherEdit::Get()->GetActMap()->CreateObject(type);
+		m_obj->Show(false);
+		if (m_rand)
+		{
+			m_obj->SetAngle((rand() % 628) * 0.01f);
+		}
+	}
+	else
+	{
+		// pouze v editoru je zvuk jako becherobject (kvuli zobrazovani)
+		m_obj = BecherEdit::Get()->GetActMap()->CreateSystemObject(type);
+		m_obj->Show(false);
 	}
 }
 

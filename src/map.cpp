@@ -91,7 +91,7 @@ IHoeScene * BecherMap::CreateScene()
 	return m_scene;
 }
 
-bool BecherMap::Load(BecherMapLoader & r, bool loadobj)
+bool BecherMap::Load(BecherGameLoad & r, bool loadobj)
 {
 	this->m_numobj = 0;
 
@@ -164,7 +164,7 @@ bool BecherMap::Load(BecherMapLoader & r, bool loadobj)
 	return true;
 }
 
-bool BecherMap::LoadObjects(BecherMapLoader & r)
+bool BecherMap::LoadObjects(BecherGameLoad & r)
 {
 	int numobj = r.Chunk().reserved;
 	int ver = r.Chunk().ver;
@@ -183,7 +183,7 @@ bool BecherMap::LoadObjects(BecherMapLoader & r)
 		bo->SetAngle(s.angle);
 		bo->SetPosition(s.x, s.y);
 		bo->Show(true);
-		bo->Load(ver, r);
+		bo->Load(r);
 		AddObject(bo);
 		if (r.Read<dword>() != 123456789)
 		{
@@ -197,7 +197,7 @@ bool BecherMap::LoadObjects(BecherMapLoader & r)
 	return true;
 }
 
-bool BecherMap::SaveObjects(HoeFileWriter &w)
+bool BecherMap::SaveObjects(BecherGameSave &w)
 {
 	MapChunk chobj = { ID_CHUNK('O','b','j','s'), 1, GetNumObj()};
 	w.Write(&chobj, sizeof(MapChunk));
@@ -216,7 +216,7 @@ bool BecherMap::SaveObjects(HoeFileWriter &w)
 		s.advsize = (unsigned long)w.GetFile()->Tell() - s.advsize;
 		hw.Flush();
 		// write check
-		w.Write<dword>(123456789);
+		w.WriteValue<dword>(123456789);
 	}
 	return true;
 }

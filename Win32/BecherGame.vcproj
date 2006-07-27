@@ -196,10 +196,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\becher.conf"
-				>
-			</File>
-			<File
 				RelativePath="..\resource\czech.lng"
 				>
 			</File>
@@ -407,6 +403,14 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\src\sysobjs.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\sysobjs.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\troll.cpp"
 					>
 				</File>
@@ -538,6 +542,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\becher.conf"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

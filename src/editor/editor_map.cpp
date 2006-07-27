@@ -5,6 +5,7 @@
 //#include "elements.h"
 #include "editor_map.h"
 //#include "plugin_editlevel.h"
+#include "../sysobjs.h"
 
 void EditorMap::CreateNew(uint sizeX, uint sizeY)
 {
@@ -51,7 +52,7 @@ bool EditorMap::LoadMap(const wxString &path)
 	HoeEditor::EditorFile file;
 	if (!file.OpenRead(path))
 		return false;
-	BecherMapLoader r(&file);
+	BecherGameLoad r(&file);
 	CreateScene();
 	GetEngine()->SetActiveScene(m_scene);
 	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
@@ -76,17 +77,15 @@ bool EditorMap::SaveMap(const wxString &path)
 		return false;
 	}
 
-	// write nejakej header
-	MapChunk head = { ID_BECHERFILE, ID_BECHERVER, 0 };
-	file.Write(&head, sizeof(head));
+	BecherGameSave w(&file);
 
-	// zakladni data (teren atd)
-	MapChunk terr = { ID_CHUNK('t','e','r','r'), 0, 0 };
-	file.Write(&terr, sizeof(terr));
-	m_terrain->Dump(&file);
+	// write nejakej header
+	w.WriteChunk(ID_BECHERFILE, ID_BECHERVER);
+
+	w.WriteChunk(ID_CHUNK('t','e','r','r'), 0);
+	m_terrain->Dump(&w);
 
 	// objekty
-	HoeFileWriter w(&file);
 	SaveObjects(w);
 
 	return true;
@@ -164,6 +163,18 @@ void EditorMap::Resize(int top, int bottom, int left, int right)
 	}
 }
 
+BecherSystemObject * EditorMap::CreateSystemObject(EObjType type)
+{
+	switch (type)
+	{
+	case EBS_Sound:
+		return new SystemObjectSound(m_scene);
+	default:
+		assert(!"Unknown becher object");
+	};
+
+	return NULL;
+}
 
 
 

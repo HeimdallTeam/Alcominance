@@ -278,6 +278,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\sysobjs.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\troll.cpp"
 				>
 			</File>

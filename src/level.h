@@ -46,7 +46,7 @@ protected:
 	BecherObject * m_select;
 
 	//
-	bool LoadGame(BecherMapLoader &r);
+	bool LoadGame(BecherGameLoad &r);
 
 public:
 	BecherLevel();

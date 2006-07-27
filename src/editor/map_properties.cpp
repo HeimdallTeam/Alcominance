@@ -1,5 +1,6 @@
 
 #include "../StdAfx.h"
+#include "../becher.h"
 #include "map_properties.h"
 #include "editor_map.h"
 

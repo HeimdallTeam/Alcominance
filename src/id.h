@@ -43,7 +43,11 @@ enum EObjType
 
 // class
 	EBC_Building = 100,
-	EBC_Max
+	EBC_Max,
+
+	// system
+	EBS_Sound = 1000,
+	EBS_Max
 };
 
 enum ESurType

@@ -32,8 +32,8 @@ public:
 	BecherObject(IHoeScene * scn);
 	virtual EObjType GetType() = 0; 
 
-	virtual bool Save(HoeFileWriter &w);
-	virtual bool Load(int ver, HoeFileReader &r);
+	virtual bool Save(BecherGameSave &w);
+	virtual bool Load(BecherGameLoad &r);
 
 	void SetAngle(float angle);
 	float GetAngle() { return m_angle; }

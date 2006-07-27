@@ -16,12 +16,12 @@ void BecherObject::SetAngle(float angle)
 	GetCtrl()->SetOrientation(0,1,0,m_angle);
 }
 
-bool BecherObject::Save(HoeFileWriter &w)
+bool BecherObject::Save(BecherGameSave &w)
 {
 	return true;
 }
 
-bool BecherObject::Load(int ver, HoeFileReader &r)
+bool BecherObject::Load(BecherGameLoad &r)
 {
 	return true;
 }

@@ -10,7 +10,7 @@ public:
 	EditorTool() {}
 	virtual ~EditorTool() {}
 
-	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e) {}
+	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e) = 0;
 	virtual void LeftUp(const int x, const int y, const wxMouseEvent & e) {}
 	virtual void RightDown(const int x, const int y, const wxMouseEvent & e) {}
 	virtual void RightUp(const int x, const int y, const wxMouseEvent & e) {}
@@ -28,8 +28,10 @@ public:
 class ToolSelect : public EditorTool
 {
 public:
-	virtual void LeftDown(const int x, const int y, wxMouseEvent & e);
+	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
 };
+
+enum EObjType;
 
 class ToolCreateObject : public EditorTool
 {
@@ -39,7 +41,7 @@ protected:
 	bool m_repeat;
 	bool m_rand;
 public:
-	ToolCreateObject(long type, bool repeat, bool randori);
+	ToolCreateObject(EObjType type, bool repeat, bool randori);
 	virtual ~ToolCreateObject();
 	void SetPos(int absX, int absY);
 

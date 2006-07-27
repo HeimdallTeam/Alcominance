@@ -108,7 +108,7 @@ bool BecherLevel::SaveGame(const char * path)
 	HoeGame::HoeFile file;
 	if (!file.Open(path, hftWrite))
 		return false;
-	HoeFileWriter w(&file);
+	BecherGameSave w(&file);
 
 	MapChunk head = {ID_BSAVE, ID_BECHERVER, GetNumObj()};
 	w.Write(&head, sizeof(head));
@@ -135,7 +135,7 @@ bool BecherLevel::SaveGame(const char * path)
 	return true;
 }
 
-bool BecherLevel::LoadGame(BecherMapLoader &r)
+bool BecherLevel::LoadGame(BecherGameLoad &r)
 {
 	int ver = r.Chunk().ver;
 	size_t sfn;
@@ -145,7 +145,7 @@ bool BecherLevel::LoadGame(BecherMapLoader &r)
 
 	HoeGame::HoeFile file;
 	file.Open(m_filename);
-	BecherMapLoader rr(&file);
+	BecherGameLoad rr(&file);
 	Load( rr, false);
 
 	// load timer and casch
@@ -184,7 +184,7 @@ bool BecherLevel::LoadGame(const char *path)
 		return false;
 	}
 
-	BecherMapLoader r(&file);
+	BecherGameLoad r(&file);
 	r.ReadNext();
 	if (r.Chunk().chunk == ID_BECHERFILE)
 	{

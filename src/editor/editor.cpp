@@ -1,5 +1,6 @@
 
 #include "../StdAfx.h"
+#include "../becher.h"
 //#include "../../resource/logo.xpm"
 #include "editor_tools.h"
 //#include "plugin_map.h"
@@ -8,7 +9,6 @@
 #include "editor.h"
 #include "help.h"
 #include "../object.h"
-#include "../becher.h"
 #include "map_properties.h"
 
 #include <wx/arrimpl.cpp>
@@ -91,6 +91,7 @@ BEGIN_EVENT_TABLE(ToolObjects, wxChoicebook)
 	EVT_BUTTON(IDB_TROLL,ToolObjects::OnClick)
 
 	// system
+	EVT_BUTTON(IDB_SOUND,ToolObjects::OnClick)
 END_EVENT_TABLE()
 
 // gfx
@@ -161,7 +162,7 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 		return;
 	}
 
-	unsigned long type = 0;
+	EObjType type = EBO_Max;
 	bool rep = false;
 	bool rnd = false;
 	switch (event.GetId())
@@ -200,6 +201,9 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 		break;
 	case IDB_TROLL:
 		type = EBO_Troll;
+		break;
+	case IDB_SOUND:
+		type = EBS_Sound;
 		break;
 	};
 

@@ -16,6 +16,7 @@ public:
 	{
 	}
 	void CreateNew(uint sizeX, uint sizeY);
+	BecherSystemObject * CreateSystemObject(EObjType type);
 	bool LoadMap(const wxString &path);
 	bool SaveMap();
 	bool SaveMap(const wxString &path);

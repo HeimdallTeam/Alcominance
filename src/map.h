@@ -3,36 +3,9 @@
 #define _BECHER_MAP_H_
 
 class BecherObject;
+class BecherSystemObject;
 
 #include "id.h"
-
-#define ID_CHUNK(a,b,c,d) ((a) | (b) << 8 | (c) << 16 | (d) << 24)
-#define ID_BECHERFILE ID_CHUNK('b','m','a','p')
-#define ID_BECHERVER 4
-
-struct MapChunk
-{
-	unsigned long chunk;
-	unsigned long ver;
-	unsigned long reserved;
-};
-
-class BecherMapLoader : public HoeFileReader
-{
-	MapChunk chunk;
-public:
-	BecherMapLoader(XHoeFile * f) : HoeFileReader(f, 0)
-	{
-		chunk.chunk = 0;
-	}
-	const MapChunk & Chunk() { return chunk; }
-	bool ReadNext() 
-	{
-		if (!this->Read(&chunk, sizeof(chunk)))
-			chunk.chunk = 0;
-		return chunk.chunk != 0;
-	}
-};
 
 class BecherMap : public HoeGame::Strategy::Map
 {
@@ -42,9 +15,12 @@ protected:
 	int m_numobj;
 	unsigned long m_lastid;
 
+	// systemove objekty
+	
+
 	int FindObjIndex(BecherObject * bo);
-	bool LoadObjects(BecherMapLoader & r);
-	bool SaveObjects(HoeFileWriter & w);
+	bool LoadObjects(BecherGameLoad & r);
+	bool SaveObjects(BecherGameSave & w);
 
 	// teren
 	IHoeEnv::GridSurface * m_terrain;
@@ -58,7 +34,7 @@ public:
 	float m_distY;
 
 	BecherMap();
-	bool Load(BecherMapLoader & r, bool loadobj);
+	bool Load(BecherGameLoad & r, bool loadobj);
 	IHoeScene * CreateScene();
 	IHoeScene * GetScene() { return m_scene; }
 
