@@ -87,8 +87,7 @@ void LinkedList::add(void* value){
 /** TODO odebirani prvku (podle prvku nebo jeho hodnoty? opakovani) */
 void LinkedList::remove(void* value){
     
-    item* previous = NULL;
-    item* next;
+    item* previous = NULL;    
 
     start();
     while(hasNext()){
@@ -96,8 +95,8 @@ void LinkedList::remove(void* value){
         void* actualValue = next();
         item* actual = getActual();
         if(actualValue==value){
-            if(previous != NULL) previous->next=next;
-            else head=next;
+            if(previous != NULL) previous->next=actual->next;
+            else head=actual->next;
 
             delete(actual);
         }
