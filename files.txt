@@ -19,6 +19,7 @@ data/textures.hx
 data/dopln.hm
 data/ter.hx
 data/terrain.hm
+data/drevorubec.hm
 #resources
 ID_FACTORY="model tovarna" ; Tovarna
 ID_INFO_RING="model info" ; Ring
@@ -35,4 +36,5 @@ ID_SHOP="model obchod" ; Obchod
 ID_WATERHOLE="model studna" ; Studna
 ID_MOST="model most" ; Most
 ID_TROLL="model olaf" ; Tupoun
+ID_SAW="model drevorubec" ; Pila
 #end

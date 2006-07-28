@@ -262,6 +262,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\obj_saw.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\obj_shop.cpp"
 				>
 			</File>

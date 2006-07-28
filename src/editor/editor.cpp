@@ -69,6 +69,7 @@ enum {
 	IDB_STORE,
 	IDB_SHOP,
 	IDB_TROLL,
+	IDB_SAW,
 // system
 	IDB_SOUND,
 // textures
@@ -89,7 +90,7 @@ BEGIN_EVENT_TABLE(ToolObjects, wxChoicebook)
 	EVT_BUTTON(IDB_STORE,ToolObjects::OnClick)
 	EVT_BUTTON(IDB_SHOP,ToolObjects::OnClick)
 	EVT_BUTTON(IDB_TROLL,ToolObjects::OnClick)
-
+	EVT_BUTTON(IDB_SAW,ToolObjects::OnClick)
 	// system
 	EVT_BUTTON(IDB_SOUND,ToolObjects::OnClick)
 END_EVENT_TABLE()
@@ -131,6 +132,8 @@ ToolObjects::ToolObjects(wxWindow * parent)
 	b->SetToolTip( _("Store") );
 	b = new wxBitmapButton(p,IDB_SHOP,wxBitmap(obchod_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Shop") );
+	b = new wxBitmapButton(p,IDB_SAW,wxBitmap(farma_xpm),BT_P(2,1),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Saw") );
 
 
 	//b->SetForegroundColour(*wxBLUE);
@@ -201,6 +204,9 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 		break;
 	case IDB_TROLL:
 		type = EBO_Troll;
+		break;
+	case IDB_SAW:
+		type = EBO_Saw;
 		break;
 	case IDB_SOUND:
 		type = EBS_Sound;

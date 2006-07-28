@@ -39,6 +39,7 @@ enum EObjType
 	EBO_WaterHole,
 	EBO_Store,
 	EBO_Shop,
+	EBO_Saw,
 	EBO_Max,
 
 // class

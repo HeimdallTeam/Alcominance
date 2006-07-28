@@ -8,6 +8,7 @@
 	ADD_EDGEID(ID_STORE, 150) // sklad
 	ADD_EDGEID(ID_FARM, 160) // farma
 	ADD_ID(ID_FARM_POLE)
+	ADD_EDGEID(ID_SAW, 170) // farma
 	ADD_EDGEID(ID_SHOP, 190)// obchod
 	ADD_EDGEID(ID_STROM, 200)
 	// minimalne 5 mist na typy stromu

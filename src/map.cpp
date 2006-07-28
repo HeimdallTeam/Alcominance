@@ -11,6 +11,7 @@
 #include "obj_factory.h"
 #include "obj_destilate.h"
 #include "obj_farm.h"
+#include "obj_saw.h"
 #include "map.h"
 #include "sysobjs.h"
 
@@ -50,6 +51,8 @@ BecherObject * BecherMap::CreateObject(EObjType type)
 		bo = new Shop(m_scene);break;
 	case EBO_Troll:
 		bo = new Troll(m_scene);break;
+	case EBO_Saw:
+		bo = new Saw(m_scene);break;
 	default:
 		assert(!"Unknown becher object");
 	};
@@ -82,6 +85,7 @@ EObjType BecherMap::GetObjectClass(EObjType type)
 	case EBO_Destilate:
 	case EBO_Store:
 	case EBO_Shop:
+	case EBO_Saw:
 		return EBC_Building;
 	case EBO_Bridge:
 	case EBO_WaterHole:
