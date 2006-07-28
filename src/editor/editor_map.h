@@ -16,7 +16,6 @@ public:
 	{
 	}
 	void CreateNew(uint sizeX, uint sizeY);
-	BecherSystemObject * CreateSystemObject(EObjType type);
 	bool LoadMap(const wxString &path);
 	bool SaveMap();
 	bool SaveMap(const wxString &path);
@@ -25,6 +24,8 @@ public:
 	wxString GetFilePath();
 	wxString GetTitle();
 	void Resize(int top, int bottom, int left, int right);
+	void ShowSystemObjects(bool show);
+	void ShowObjects(bool show, bool wire);
 };
 
 #endif // _BECHER_EDITOR_MAP_H_

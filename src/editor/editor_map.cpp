@@ -7,6 +7,7 @@
 //#include "plugin_editlevel.h"
 #include "../sysobjs.h"
 
+
 void EditorMap::CreateNew(uint sizeX, uint sizeY)
 {
 
@@ -86,7 +87,15 @@ bool EditorMap::SaveMap(const wxString &path)
 	m_terrain->Dump(&w);
 	w.WriteChunkEnd();
 
-	// ulozit dalsi info
+	// ulozit systemove objekty
+	for (int i=0;i < m_numsysobj;i++)
+	{
+		// uklada se jen typ
+		w.WriteChunk(ID_CHUNK('s','y','s','o'), 1);
+		w.WriteValue<dword>(m_sysobj[i]->GetType());
+		m_sysobj[i]->Save(w);
+		w.WriteChunkEnd();
+	}
 
 	// objekty
 	SaveAllObjects(w);
@@ -168,18 +177,25 @@ void EditorMap::Resize(int top, int bottom, int left, int right)
 	}
 }
 
-BecherSystemObject * EditorMap::CreateSystemObject(EObjType type)
+void EditorMap::ShowSystemObjects(bool show)
 {
-	switch (type)
-	{
-	case EBS_Sound:
-		return new SystemObjectSound(m_scene);
-	default:
-		assert(!"Unknown becher object");
-	};
-
-	return NULL;
+	// prolezt a zapnout, nebo vypnout
+	for (int i=0;i<m_numsysobj;i++)
+		m_sysobj[i]->Show(show);
 }
+
+void EditorMap::ShowObjects(bool show, bool wire)
+{
+	for (int i=0;i<m_numobj;i++)
+	{
+		m_obj[i]->Show(show);
+		if (wire)
+			m_obj[i]->GetCtrl()->SetFlags(HOF_WIRE);
+		else
+			m_obj[i]->GetCtrl()->UnsetFlags(HOF_WIRE);
+	}
+}
+
 
 
 

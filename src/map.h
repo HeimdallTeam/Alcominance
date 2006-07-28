@@ -43,6 +43,7 @@ public:
 	IHoeScene * GetScene() { return m_scene; }
 
 	BecherObject * CreateObject(EObjType type);
+	BecherSystemObject * CreateSystemObject(EObjType type);
 	static EObjType GetObjectClass(EObjType type);
 	void AddObject(BecherObject * obj);
 	void AddSystemObject(BecherSystemObject * obj);

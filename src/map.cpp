@@ -12,6 +12,7 @@
 #include "obj_destilate.h"
 #include "obj_farm.h"
 #include "map.h"
+#include "sysobjs.h"
 
 BecherMap::BecherMap()
 {
@@ -57,6 +58,19 @@ BecherObject * BecherMap::CreateObject(EObjType type)
 	return bo;
 }
 
+BecherSystemObject * BecherMap::CreateSystemObject(EObjType type)
+{
+	switch (type)
+	{
+	case EBS_Sound:
+		return new SystemObjectSound(m_scene);
+	default:
+		assert(!"Unknown becher object");
+	};
+
+	return NULL;
+}
+
 EObjType BecherMap::GetObjectClass(EObjType type)
 {
 	switch (type)
@@ -74,6 +88,8 @@ EObjType BecherMap::GetObjectClass(EObjType type)
 	case EBO_Troll:
 	case EBO_Tree:
 		return type;
+	case EBS_Sound:
+		return EBC_System;
 	default:
 		assert(!"Unknown becher object");
 	};
@@ -126,10 +142,14 @@ bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 			m_distX = m_sizeX / m_numX;
 			m_distY = m_sizeY / m_numY;
 			break;
-		case ID_CHUNK('s','o','b','j'):		// system object
-			
-
-			break;
+		case ID_CHUNK('s','y','s','o'):	
+			{ // system object
+			//
+			dword type = r.Read<dword>();
+			BecherSystemObject * bs = CreateSystemObject((EObjType)type);
+			bs->Load(r);
+			AddSystemObject(bs);
+			} break;
 		case ID_CHUNK('o','b','j',' '):
 			if (!savegame)
 			{

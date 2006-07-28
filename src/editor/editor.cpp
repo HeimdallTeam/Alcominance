@@ -460,6 +460,7 @@ void BecherEdit::OnInitMenu()
 	menuView->AppendCheckItem(ID_SYSOBJECTS, _("System objects"), _("Show system objects."));
 
 	omenu->Check(ID_OBJECTSFULL, true);
+	menuView->Check(ID_SYSOBJECTS, true);
 	/*menuView->AppendSeparator();
 	// advanced
 	wxMenu * menuAdvanced = new wxMenu;
@@ -666,7 +667,19 @@ void BecherEdit::OnAbout(wxCommandEvent &)
 void BecherEdit::OnTypeShow(wxCommandEvent &)
 {
 	if (m_map)
+	{
 		m_map->GetTerrain()->ShowWireframe(m_menu->IsChecked(ID_TERRAINWIRE));
+		if (m_menu->IsChecked(ID_OBJECTSHIDE))
+			m_map->ShowObjects(false, false);
+		else if (m_menu->IsChecked(ID_OBJECTSWIRE))
+			m_map->ShowObjects(true, true);
+		else if (m_menu->IsChecked(ID_OBJECTSFULL))
+			m_map->ShowObjects(true, false);
+		// zobrazit, hiddnout systemove objekty
+		m_map->ShowSystemObjects(m_menu->IsChecked(ID_SYSOBJECTS));
+
+	}
+
 }
 
 void BecherEdit::OnTerrainTextures(wxCommandEvent &)

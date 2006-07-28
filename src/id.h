@@ -43,6 +43,7 @@ enum EObjType
 
 // class
 	EBC_Building = 100,
+	EBC_System,
 	EBC_Max,
 
 	// system

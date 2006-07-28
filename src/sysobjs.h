@@ -28,8 +28,8 @@ class SystemObjectSound : public BecherSystemObject
 public:
 	SystemObjectSound(IHoeScene * scn);
 	virtual EObjType GetType() { return EBS_Sound; }
-	virtual bool Save(BecherGameSave &w) { return true; }
-	virtual bool Load(BecherGameLoad &r) { return true; }
+	virtual bool Save(BecherGameSave &w);
+	virtual bool Load(BecherGameLoad &r);
 	static IHoeModel * GetModelForSound();
 #ifdef BECHER_EDITOR
 	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);

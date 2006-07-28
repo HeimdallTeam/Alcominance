@@ -10,9 +10,36 @@ SystemObjectSound::SystemObjectSound(IHoeScene * scn) : BecherSystemObject(scn)
 #endif
 }
 
+
+bool SystemObjectSound::Load(BecherGameLoad &r)
+{
+	float x,y;
+	x = r.Read<float>();
+	y = r.Read<float>();
+#ifdef BECHER_EDITOR
+	this->SetPosition(x,y);
+	this->Show(true);
+#endif
+	return true;
+}
+
 #ifndef BECHER_EDITOR
 
+bool SystemObjectSound::Save(BecherGameSave &w)
+{
+	assert(!"this code not run");
+	return true;
+}
+
 #else
+
+bool SystemObjectSound::Save(BecherGameSave &w)
+{
+	// ulozit pozici
+	w.WriteValue<float>(this->GetPosX());
+	w.WriteValue<float>(this->GetPosY());
+	return true;
+}
 
 IHoeModel * SystemObjectSound::GetModelForSound()
 {
