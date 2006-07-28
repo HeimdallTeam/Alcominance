@@ -37,7 +37,7 @@ class ToolCreateObject : public EditorTool
 {
 protected:
 	BecherObject * m_obj;
-	long m_type;
+	EObjType m_type;
 	bool m_repeat;
 	bool m_rand;
 public:

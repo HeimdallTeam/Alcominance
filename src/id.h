@@ -47,8 +47,11 @@ enum EObjType
 
 	// system
 	EBS_Sound = 1000,
-	EBS_Max
+	EBS_Max,
 };
+
+#define assert_obj(n) assert(n > EBO_None && n < EBO_Max)
+#define assert_sysobj(n) assert(n >= EBS_Sound)
 
 enum ESurType
 {

@@ -13,7 +13,7 @@ struct TObjectSaveStruct
 	float x;
 	float y;
 	float angle;
-	unsigned long advsize;
+	unsigned long reserved;
 };
 
 class BecherObject : public HoeGame::Strategy::StgObject

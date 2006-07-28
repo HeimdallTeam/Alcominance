@@ -10,35 +10,8 @@
 
 farm = farm or false
 
-function s_tovarna()
- ClearButtons()
- AddButton(ID_NEWTROLL,2, "c_addtroll")
- AddButton(ID_PROPUST,"You want save some salary?", "c_release")
- AddButton(ID_AGROINZENYR,"Even Stupids can earn some degree", "c_agroeng")
- AddButton(ID_KOLEJOVYDOPRAVNIK,"Railway speeds up production", "c_railway")
- AddButton(ID_DESTILATOR,"Doubles efficiency of destilation", "c_destil")
- AddButton(ID_PREDPOVED,"Want some weather cast?", "c_weathercast")
- AddButton(ID_KOTEL,"Fix the holes for better efficiency", "c_firefix")
- AddButton(ID_STOPPRACI,"Stop the hard work", "c_workstop")
- PlaySound(ID_TESTSOUND+1)
-end
-
 function c_najmout()
  AddTroll(true);
-end
-
-function s_cukr()
- ClearButtons()
- AddButton(ID_STOPPRACI,2, "c_najmout")
- print("cukr ",ID_TESTSOUND)
- PlaySound(ID_TESTSOUND)
-end
-
-function s_lihovar()
- ClearButtons()
- AddButton(ID_STOPPRACI,2, "c_najmout")
- AddButton(ID_LAHVARNA,"People pay more for nice bottles", "c_bottles")
-
 end
 
 function s_studna()
@@ -81,21 +54,12 @@ function s_korenarka()
  ClearButtons()
 end
 
-function s_sklad()
- info("Vybranej sklad")
- ClearButtons()
- AddButton(ID_STOPPRACI,"Najmout delnika", "c_najmout")
-end
-
 function s_tupoun()
  ClearButtons()
   AddButton(ID_CUKROVAR_ICO,"Build Sugar factory", "c_stavcukr")
 end
 
 --builds
-function c_stavcukr()
-  SetBuilding(EBO_Sugar,1000,10,0)
-end
 
 function c_stavfarma()
  SetBuilding(EBO_Farm,15,0,0)
@@ -103,21 +67,15 @@ end
 function c_stavkorenarka()
  SetBuilding(EBO_HerbeWoman,10,0,0)
 end
-function c_stavlihovar()
- SetBuilding(EBO_Destilate,10,10,0)
-end
+
 function c_stavobchod()
  SetBuilding(EBO_Shop,5,15,20)
 end
-function c_stavsklad()
- SetBuilding(EBO_Store,5,0,5)
-end
+
 function c_stavstudna()
  SetBuilding(EBO_WaterHole,5,5,0)
 end
-function c_stavtovarna()
- SetBuilding(EBO_Factory,100,100,100)
-end
+
 function c_stavkamen()
 end
 function c_stavuhli()
@@ -162,28 +120,6 @@ end
 function c_waterfarm()
  SetVar("troll_speed", 100)
  farm = true
-end
-
-function i_sugar(b)
- print("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
- -- pokud je nejaky cukr tak odnest
- if (b.sugar > 0) then
-     job = { type = 3 }
-     return job    
- end
- -- jestlize se trtina vejde tak trtina
- if b.cane_avail > 0 and b.free > 0 then
-     job = { type = EBS_Cane }
-     return job    
- end 
- 
- -- jestli je nejaka trtina tak zpracovat
- if b.cane > 0 then 
-     job = { type = 2 }
-     return job    
- end 
- 
- return nil
 end
 
 function i_farm(bb)

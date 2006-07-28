@@ -130,7 +130,7 @@ bool BecherLevel::SaveGame(const char * path)
 	w.Write(view, sizeof(view));
 
 	// save objects
-	SaveObjects(w);
+	SaveAllObjects(w);
 
 	return true;
 }
@@ -146,7 +146,7 @@ bool BecherLevel::LoadGame(BecherGameLoad &r)
 	HoeGame::HoeFile file;
 	file.Open(m_filename);
 	BecherGameLoad rr(&file);
-	Load( rr, false);
+	Load( rr, true);
 
 	// load timer and casch
 	m_cash.Load( ver, r);
@@ -159,7 +159,8 @@ bool BecherLevel::LoadGame(BecherGameLoad &r)
 	GetView()->SetDistance(view[3]);
 
 	r.ReadNext();
-	LoadObjects(r);
+	//LoadObjects(r);
+	assert(0);
 
 	return true;
 }
@@ -185,21 +186,20 @@ bool BecherLevel::LoadGame(const char *path)
 	}
 
 	BecherGameLoad r(&file);
-	r.ReadNext();
-	if (r.Chunk().chunk == ID_BECHERFILE)
+	if (!r.ReadHeader())
+		return false;
+	if (!r.IsSaveGame())
 	{
 		strncpy(m_filename, path, sizeof(m_filename));
-		if (!Load( r, true))
+		if (!Load( r, false))
 			return false;		
 	}
-	else if (r.Chunk().chunk == ID_BSAVE)
+	else 
 	{
-		
 		if (!LoadGame(r))
 			return false;
 	}
-	else
-		return false;
+
 	return true;
 }
 

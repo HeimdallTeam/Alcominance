@@ -259,7 +259,8 @@ void BecherGame::AddBuildObject(unsigned long id, int gold, int wood, int stone)
 		return;
 	}
 
-	BecherObject * bo = m_level.CreateObject(id);
+	assert_obj(id);
+	BecherObject * bo = m_level.CreateObject((EObjType)id);
 	m_level.SetBuildObject( bo, gold, wood, stone);
 }
 

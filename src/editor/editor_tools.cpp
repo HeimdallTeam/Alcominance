@@ -91,10 +91,17 @@ void ToolCreateObject::Move(int relX, int relY, int absX, int absY, const wxMous
 void ToolCreateObject::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	SetPos(x,y);
-	BecherEdit::Get()->GetActMap()->AddObject(m_obj);
+	if (m_type < EBO_Max)
+		BecherEdit::Get()->GetActMap()->AddObject(m_obj);
+	else
+		BecherEdit::Get()->GetActMap()->AddSystemObject(reinterpret_cast<BecherSystemObject*>(m_obj));
+
 	if (m_repeat || e.ControlDown())
 	{
-		m_obj = BecherEdit::Get()->GetActMap()->CreateObject(m_type);
+		if (m_type < EBO_Max)
+			m_obj = BecherEdit::Get()->GetActMap()->CreateObject(m_type);
+		else
+			m_obj = BecherEdit::Get()->GetActMap()->CreateSystemObject(m_type);
 		m_obj->Show(true);
 		SetPos(x,y);
 		if (m_rand)

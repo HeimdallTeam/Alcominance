@@ -5,8 +5,14 @@
 
 SystemObjectSound::SystemObjectSound(IHoeScene * scn) : BecherSystemObject(scn) 
 {
+#ifdef BECHER_EDITOR
 	SetModel(GetModelForSound());
+#endif
 }
+
+#ifndef BECHER_EDITOR
+
+#else
 
 IHoeModel * SystemObjectSound::GetModelForSound()
 {
@@ -18,7 +24,6 @@ IHoeModel * SystemObjectSound::GetModelForSound()
 	return mod;
 }
 
-#ifdef BECHER_EDITOR 
 bool SystemObjectSound::Select()
 {
 	GetProp()->Begin(this);

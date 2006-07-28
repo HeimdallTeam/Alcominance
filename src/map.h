@@ -13,17 +13,21 @@ protected:
 	// seznam objektu
 	BecherObject * m_obj[1000]; // todo
 	int m_numobj;
+	BecherSystemObject * m_sysobj[100]; ///< @todo zmenit styl
+	int m_numsysobj;
 	unsigned long m_lastid;
 
 	// systemove objekty
 	
 
 	int FindObjIndex(BecherObject * bo);
-	bool LoadObjects(BecherGameLoad & r);
-	bool SaveObjects(BecherGameSave & w);
 
 	// teren
 	IHoeEnv::GridSurface * m_terrain;
+
+	// nahravani a ukladani
+	bool LoadObject(BecherGameLoad & r);
+	bool SaveAllObjects(BecherGameSave & w);
 public:
 	/*!!! dat mimo public */
 	uint m_numX;
@@ -34,13 +38,14 @@ public:
 	float m_distY;
 
 	BecherMap();
-	bool Load(BecherGameLoad & r, bool loadobj);
+	bool Load(BecherGameLoad & r, bool savegame);
 	IHoeScene * CreateScene();
 	IHoeScene * GetScene() { return m_scene; }
 
-	BecherObject * CreateObject(unsigned long type);
+	BecherObject * CreateObject(EObjType type);
 	static EObjType GetObjectClass(EObjType type);
 	void AddObject(BecherObject * obj);
+	void AddSystemObject(BecherSystemObject * obj);
 	void DeleteObject(BecherObject * obj);
 	void DeleteObject(int index);
 	int GetNumObj() { return m_numobj; }

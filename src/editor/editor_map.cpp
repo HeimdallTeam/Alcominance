@@ -64,7 +64,7 @@ bool EditorMap::LoadMap(const wxString &path)
 	m_terrain->SetTexture(5, "Concrete", 4, 4);
 	m_terrain->SetTexture(6, "MetalPlateCliff", 4, 4);
 	m_terrain->SetTexture(7, "MetalPlateTiles", 4, 4);
-	return Load( r, true);
+	return Load( r, false);
 }
 
 bool EditorMap::SaveMap(const wxString &path)
@@ -84,9 +84,14 @@ bool EditorMap::SaveMap(const wxString &path)
 
 	w.WriteChunk(ID_CHUNK('t','e','r','r'), 0);
 	m_terrain->Dump(&w);
+	w.WriteChunkEnd();
+
+	// ulozit dalsi info
 
 	// objekty
-	SaveObjects(w);
+	SaveAllObjects(w);
+
+	w.WriteChunk(ID_CHUNK('e','n','d',' '), 0);
 
 	return true;
 }

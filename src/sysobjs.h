@@ -4,6 +4,7 @@
 
 #include "object.h"
 
+#ifdef BECHER_EDITOR
 class BecherSystemObject : public BecherObject
 {
 public:
@@ -11,6 +12,16 @@ public:
 	virtual bool Save(BecherGameSave &w) { return true; }
 	virtual bool Load(BecherGameLoad &r) { return true; }
 };
+#else
+class BecherSystemObject
+{
+public:
+	BecherSystemObject(IHoeScene * scn) {}
+	virtual bool Save(BecherGameSave &w) { return true; }
+	virtual bool Load(BecherGameLoad &r) { return true; }
+};
+#endif
+
 
 class SystemObjectSound : public BecherSystemObject
 {

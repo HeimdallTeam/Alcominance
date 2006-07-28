@@ -104,7 +104,7 @@ void LinkedList::remove(void* value){
     }
 }
 
-
+CRR* CRR::this_ = NULL;
 
 /**
  * Zalozi registr zdroju pro urcity pocet typu zdroju.
@@ -217,6 +217,7 @@ LinkedList* CRR::getResources(LinkedList* list, ESurCriterion criterion){
  */
 int CRR::l_getResources(lua_State * L){
 
+	assert(this_);
     HoeGame::LuaParam lp(L);
 
     ESurType type;
