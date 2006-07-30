@@ -55,15 +55,27 @@ public:
 	virtual void Leave();
 };
 
+class ToolTex : public EditorTool
+{
+	byte m_set;
+public:
+	ToolTex(byte set);
+	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
+	virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
+	virtual void Wheel( const wxMouseEvent & e);
+	virtual void Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev);
+
+};
+
 class ToolTerrain : public EditorTool
 {
 	byte m_set;
 public:
 	ToolTerrain(byte set);
 	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
-	virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
-	virtual void Wheel( const wxMouseEvent & e);
-	virtual void Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev);
+	//virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
+	//virtual void Wheel( const wxMouseEvent & e);
+	//virtual void Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev);
 
 };
 

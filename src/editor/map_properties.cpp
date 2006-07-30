@@ -34,13 +34,13 @@ MapSettingsDialog::MapSettingsDialog(wxWindow* win, EditorMap * map)
 	wxBookCtrlBase* notebook = GetBookCtrl();
 	wxPanel* panel_g = new wxPanel(notebook, wxID_ANY);
 	m_width = new wxSpinCtrl(panel_g, -1,"64", wxPoint(20,20),wxSize(50,20));
-	m_width->SetRange(8,256);
+	m_width->SetRange(4,500);
 	m_width->SetValue(map ? map->m_numX: 64);
 	if (m_edit)
 		m_width->Disable();
 	m_width->SetToolTip(_("Map grid width."));
 	m_height = new wxSpinCtrl(panel_g, -1,"64", wxPoint(80,20),wxSize(50,20));
-	m_height->SetRange(8,256);
+	m_height->SetRange(4,500);
 	m_height->SetValue(map ? map->m_numY: 64);
 	if (m_edit)
 		m_height->Disable();

@@ -145,6 +145,9 @@ bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 			m_terrain->GetDesc(&m_sizeX,&m_sizeY, &m_numX, &m_numY);
 			m_distX = m_sizeX / m_numX;
 			m_distY = m_sizeY / m_numY;
+#ifndef BECHER_EDITOR
+			m_terrain->ReleaseData();
+#endif
 			break;
 		case ID_CHUNK('s','y','s','o'):	
 			{ // system object

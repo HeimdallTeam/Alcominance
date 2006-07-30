@@ -136,13 +136,13 @@ void ToolCreateObject::Wheel( const wxMouseEvent &e)
 }
 
 //////////////////////////////////////////////////////
-// ToolTerrain
-ToolTerrain::ToolTerrain(byte set)
+// ToolTex
+ToolTex::ToolTex(byte set)
 {
 	m_set = set;
 }
 
-void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
+void ToolTex::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	float sx,sy;
 	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(x,y,&sx,&sy))
@@ -161,12 +161,12 @@ void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
 	}
 }
 
-void ToolTerrain::RightDown(const int x, const int y, const wxMouseEvent &e)
+void ToolTex::RightDown(const int x, const int y, const wxMouseEvent &e)
 {
 	BecherEdit::Get()->SetTool(NULL);
 }
 
-void ToolTerrain::Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev)
+void ToolTex::Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev)
 {
 	float sx,sy;
 	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(absX,absY,&sx,&sy))
@@ -180,7 +180,7 @@ void ToolTerrain::Move(int relX, int relY, int absX, int absY, const wxMouseEven
 	}
 }
 
-void ToolTerrain::Wheel(const wxMouseEvent &e)
+void ToolTex::Wheel(const wxMouseEvent &e)
 {
 	float sx,sy;
 	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(e.GetX(),e.GetY(),&sx,&sy))
@@ -201,5 +201,25 @@ void ToolTerrain::Wheel(const wxMouseEvent &e)
         m.GetTerrain()->Load();
 	}
 
+}
+
+//////////////////////////////////////////////////////
+// ToolTerrain
+ToolTerrain::ToolTerrain(byte set)
+{
+	m_set = set;
+}
+
+void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
+{
+	float sx,sy;
+	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(x,y,&sx,&sy))
+	{
+		EditorMap & m = *BecherEdit::Get()->GetActMap();
+		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
+		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
+		m.GetTerrain()->SetGridModel(nx, ny, 1, 0.f);
+		m.GetTerrain()->Load();
+	}
 }
 

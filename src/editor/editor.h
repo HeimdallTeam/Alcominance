@@ -60,7 +60,8 @@ class TerrainObject : public wxPanel
 {
 public:
 	TerrainObject(wxWindow * parent);
-	void OnClick(wxCommandEvent& event);
+	void OnTexturesClick(wxCommandEvent& event);
+	void OnTerrainClick(wxCommandEvent& event);
 
 	DECLARE_EVENT_TABLE()
 };

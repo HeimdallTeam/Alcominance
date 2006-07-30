@@ -75,6 +75,7 @@ enum {
 // textures
 	IDB_NOTEX,
 	IDB_TEX1,
+	IDB_TERR = IDB_TEX1 + 50
 };
 
 
@@ -221,14 +222,15 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 // terrain
 
 BEGIN_EVENT_TABLE(TerrainObject, wxPanel)
-	EVT_BUTTON(IDB_NOTEX, TerrainObject::OnClick)
-	EVT_BUTTON(IDB_TEX1, TerrainObject::OnClick)
-	EVT_BUTTON(IDB_TEX1+1, TerrainObject::OnClick)
-	EVT_BUTTON(IDB_TEX1+2, TerrainObject::OnClick)
-	EVT_BUTTON(IDB_TEX1+3, TerrainObject::OnClick)
-	EVT_BUTTON(IDB_TEX1+4, TerrainObject::OnClick)
-	EVT_BUTTON(IDB_TEX1+5, TerrainObject::OnClick)
-	EVT_BUTTON(IDB_TEX1+6, TerrainObject::OnClick)
+	EVT_BUTTON(IDB_NOTEX, TerrainObject::OnTexturesClick)
+	EVT_BUTTON(IDB_TEX1, TerrainObject::OnTexturesClick)
+	EVT_BUTTON(IDB_TEX1+1, TerrainObject::OnTexturesClick)
+	EVT_BUTTON(IDB_TEX1+2, TerrainObject::OnTexturesClick)
+	EVT_BUTTON(IDB_TEX1+3, TerrainObject::OnTexturesClick)
+	EVT_BUTTON(IDB_TEX1+4, TerrainObject::OnTexturesClick)
+	EVT_BUTTON(IDB_TEX1+5, TerrainObject::OnTexturesClick)
+	EVT_BUTTON(IDB_TEX1+6, TerrainObject::OnTexturesClick)
+	EVT_BUTTON(IDB_TERR, TerrainObject::OnTerrainClick)
 END_EVENT_TABLE()
 
 #include "../../resource/maleikony/trava.xpm"
@@ -242,18 +244,20 @@ END_EVENT_TABLE()
 TerrainObject::TerrainObject(wxWindow * parent)
 	: wxPanel(parent,wxID_ANY,wxDefaultPosition, wxSize(80,250))
 {
+#undef BT_P
+#define BT_P(x,y) wxPoint(28 * x + 12, 28 * y + 15)
+
+	wxButton * b;
 	wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
 	wxStaticBox * sb = new wxStaticBox(this, -1, _("Terrain"), wxPoint(10,10),
                 wxSize(140,80));
+	b = new wxBitmapButton(sb,IDB_TERR,wxBitmap(cukrovar_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Test") );
 	topsizer->Add( sb);
 
 	sb = new wxStaticBox(this, -1, _("Textures"), wxPoint(10,100),
                 wxSize(140,80));
-
-#undef BT_P
-#define BT_P(x,y) wxPoint(28 * x + 12, 28 * y + 12)
-
-	wxButton * b = new wxBitmapButton(sb,IDB_NOTEX,wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(sb,IDB_NOTEX,wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Empty terrain") );
 	b = new wxBitmapButton(sb,IDB_TEX1,wxBitmap(trava_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Trava") );
@@ -274,7 +278,7 @@ TerrainObject::TerrainObject(wxWindow * parent)
 
 }
 
-void TerrainObject::OnClick(wxCommandEvent& e)
+void TerrainObject::OnTexturesClick(wxCommandEvent& e)
 {
 	if (!BecherEdit::Get()->IsMapLoaded())
 	{
@@ -307,7 +311,28 @@ void TerrainObject::OnClick(wxCommandEvent& e)
 		break;
 
 	};
-	BecherEdit::Get()->SetTool(new ToolTerrain(id));
+	BecherEdit::Get()->SetTool(new ToolTex(id));
+	//EditorMap::Get()->GetTerrain()->MoveHeight(0,0,50,-5);
+}
+
+void TerrainObject::OnTerrainClick(wxCommandEvent& e)
+{
+	if (!BecherEdit::Get()->IsMapLoaded())
+	{
+		wxMessageBox(_("First must create map."));
+		return;
+	}
+	/*byte id = 0xff;
+	switch (e.GetId())
+	{
+	case IDB_TEX1:
+		id = 1;
+		break;
+
+	};*/
+	// pokus o nasazeni modelu
+	BecherEdit::Get()->SetTool(new ToolTerrain(0));
+	//BecherEdit::Get()->SetTool();
 	//EditorMap::Get()->GetTerrain()->MoveHeight(0,0,50,-5);
 }
 
