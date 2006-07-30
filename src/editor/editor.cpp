@@ -331,7 +331,7 @@ void TerrainObject::OnTerrainClick(wxCommandEvent& e)
 
 	};*/
 	// pokus o nasazeni modelu
-	BecherEdit::Get()->SetTool(new ToolTerrain(0));
+	BecherEdit::Get()->SetTool(new ToolTerrain());
 	//BecherEdit::Get()->SetTool();
 	//EditorMap::Get()->GetTerrain()->MoveHeight(0,0,50,-5);
 }
@@ -786,12 +786,14 @@ void BecherEdit::MouseWheel(wxMouseEvent & e)
 			m_tool->Wheel(e);
 		}
 		else if (e.ShiftDown())
-			m_map->GetView()->Zoom(e.GetWheelRotation() / 50.f);
+			m_map->GetView()->Zoom(e.GetWheelRotation() / 20.f);
 		else
-			m_map->GetView()->Rotate(e.GetWheelRotation() / 500.f);
+			m_map->GetView()->Rotate(e.GetWheelRotation() / 400.f);
 	}
 		
 }
+
+const float move_speed = 8.f;
 
 void BecherEdit::KeyDown(wxKeyEvent& e)
 {
@@ -808,10 +810,10 @@ void BecherEdit::KeyDown(wxKeyEvent& e)
 				m_map->GetView()->Rotate(-0.1f);
 				break;
 			case WXK_UP:
-				m_map->GetView()->Zoom(-1.7f);
+				m_map->GetView()->Zoom(-3.7f);
 				break;
 			case WXK_DOWN:
-				m_map->GetView()->Zoom(1.7f);
+				m_map->GetView()->Zoom(3.7f);
 				break;
 
 			};
@@ -821,16 +823,16 @@ void BecherEdit::KeyDown(wxKeyEvent& e)
 			switch (e.GetKeyCode())
 			{
 			case WXK_LEFT:
-				m_map->GetView()->Move(0,-1);
+				m_map->GetView()->Move(0,-move_speed);
 				break;
 			case WXK_RIGHT:
-				m_map->GetView()->Move(0,1);
+				m_map->GetView()->Move(0,move_speed);
 				break;
 			case WXK_UP:
-				m_map->GetView()->Move(1,0);
+				m_map->GetView()->Move(move_speed,0);
 				break;
 			case WXK_DOWN:
-				m_map->GetView()->Move(-1,0);
+				m_map->GetView()->Move(-move_speed,0);
 				break;
 
 			};

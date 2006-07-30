@@ -205,9 +205,8 @@ void ToolTex::Wheel(const wxMouseEvent &e)
 
 //////////////////////////////////////////////////////
 // ToolTerrain
-ToolTerrain::ToolTerrain(byte set)
+ToolTerrain::ToolTerrain()
 {
-	m_set = set;
 }
 
 void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
@@ -216,10 +215,16 @@ void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
 	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(x,y,&sx,&sy))
 	{
 		EditorMap & m = *BecherEdit::Get()->GetActMap();
-		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
-		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
-		m.GetTerrain()->SetGridModel(nx, ny, 1, 0.f);
+		//const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
+		//const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
+		// nastavit spravne vysku
+
+		//m.GetTerrain()->SetGridPlane(nx, ny, 0.f, -1,1,1,-1);
+		m.GetTerrain()->MoveHeight(sx,sy,3.f, 30.f);
 		m.GetTerrain()->Load();
 	}
 }
 
+void ToolTerrain::LeftUp(const int x, const int y, const wxMouseEvent &e)
+{
+}
