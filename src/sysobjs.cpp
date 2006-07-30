@@ -17,7 +17,7 @@ bool SystemObjectSound::Load(BecherGameLoad &r)
 	x = r.Read<float>();
 	y = r.Read<float>();
 #ifdef BECHER_EDITOR
-	this->SetPosition(x,y);
+	this->SetPosition(x,y,0);
 	this->Show(true);
 #endif
 	return true;

@@ -173,7 +173,7 @@ void EditorMap::Resize(int top, int bottom, int left, int right)
 	for (int i=0;i<GetNumObj();i++)
 	{
 		BecherObject & o = *GetObj(i);
-		o.SetPosition(o.GetPosX()-posx*0.5f, o.GetPosY()-posy*0.5f);
+		o.SetPosition(o.GetPosX()-posx*0.5f, o.GetPosY()-posy*0.5f,0);
 	}
 }
 

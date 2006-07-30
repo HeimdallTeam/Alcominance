@@ -75,7 +75,8 @@ enum {
 // textures
 	IDB_NOTEX,
 	IDB_TEX1,
-	IDB_TERR = IDB_TEX1 + 50
+	IDB_TERR = IDB_TEX1 + 50,
+	IDB_TERR2,
 };
 
 
@@ -231,6 +232,7 @@ BEGIN_EVENT_TABLE(TerrainObject, wxPanel)
 	EVT_BUTTON(IDB_TEX1+5, TerrainObject::OnTexturesClick)
 	EVT_BUTTON(IDB_TEX1+6, TerrainObject::OnTexturesClick)
 	EVT_BUTTON(IDB_TERR, TerrainObject::OnTerrainClick)
+	EVT_BUTTON(IDB_TERR2, TerrainObject::OnTerrainClick)
 END_EVENT_TABLE()
 
 #include "../../resource/maleikony/trava.xpm"
@@ -253,6 +255,8 @@ TerrainObject::TerrainObject(wxWindow * parent)
                 wxSize(140,80));
 	b = new wxBitmapButton(sb,IDB_TERR,wxBitmap(cukrovar_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Test") );
+	b = new wxBitmapButton(sb,IDB_TERR2,wxBitmap(cukrovar_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Test 2") );
 	topsizer->Add( sb);
 
 	sb = new wxStaticBox(this, -1, _("Textures"), wxPoint(10,100),
@@ -322,16 +326,18 @@ void TerrainObject::OnTerrainClick(wxCommandEvent& e)
 		wxMessageBox(_("First must create map."));
 		return;
 	}
-	/*byte id = 0xff;
 	switch (e.GetId())
 	{
-	case IDB_TEX1:
-		id = 1;
+	case IDB_TERR:
+		BecherEdit::Get()->SetTool(new ToolTerrain());
+		break;
+	case IDB_TERR2:
+		BecherEdit::Get()->SetTool(new ToolTerrainExp());
 		break;
 
-	};*/
+	};
 	// pokus o nasazeni modelu
-	BecherEdit::Get()->SetTool(new ToolTerrain());
+	
 	//BecherEdit::Get()->SetTool();
 	//EditorMap::Get()->GetTerrain()->MoveHeight(0,0,50,-5);
 }

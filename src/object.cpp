@@ -26,12 +26,12 @@ bool BecherObject::Load(BecherGameLoad &r)
 	return true;
 }
 
-void BecherObject::SetPosition(const float x, const float y)
+void BecherObject::SetPosition(const float x, const float y, const float h)
 {
 	assert(GetCtrl());
 	posX = x;
 	posY = y;
-	GetCtrl()->SetPosition(x, 0, y);
+	GetCtrl()->SetPosition(x, h, y);
 }
 
 void BecherObject::SetProperty(const char * prop, const char * value)

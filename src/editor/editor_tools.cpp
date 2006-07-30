@@ -56,7 +56,8 @@ void ToolCreateObject::SetPos(int absX, int absY)
 {
 	float sx,sy;
 	BecherEdit::Get()->GetActMap()->GetView()->GetPick(absX,absY,&sx,&sy);
-	m_obj->SetPosition(sx,sy); 
+
+	m_obj->SetPosition(sx,sy,BecherEdit::Get()->GetActMap()->GetScene()->GetScenePhysics()->GetHeight(sx,sy)); 
 }
 
 void ToolCreateObject::Enter(int absX, int absY)
@@ -227,4 +228,82 @@ void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
 
 void ToolTerrain::LeftUp(const int x, const int y, const wxMouseEvent &e)
 {
+}
+
+void ToolTerrain::Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev)
+{
+	float sx,sy;
+	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(absX,absY,&sx,&sy))
+	{
+		EditorMap & m = *BecherEdit::Get()->GetActMap();
+		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
+		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
+		wxString str;
+		str.Printf("x: %f y: %f nx: %d ny: %d h:%f", sx, sy, nx, ny, m.GetScene()->GetScenePhysics()->GetHeight(sx,sy));
+		BecherEdit::Get()->SetStatus(str);
+	}
+}
+//////////////////////////////////////////////////////
+// ToolTex
+ToolTerrainExp::ToolTerrainExp()
+{
+}
+
+void ToolTerrainExp::LeftDown(const int x, const int y, const wxMouseEvent &e)
+{
+	float sx,sy;
+	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(x,y,&sx,&sy))
+	{
+		EditorMap & m = *BecherEdit::Get()->GetActMap();
+		IHoeEnv::GridSurface::TGridDesc desc;
+		// 300 / 20
+		//const uint nx = (uint)((sx+(m.m_sizeX+m.m_distX)*0.5f)/(m.m_distX));
+		//const uint ny = (uint)((sy+(m.m_sizeY+m.m_distY)*0.5f)/(m.m_distY));
+		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
+		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
+		m.GetTerrain()->SetGridModel(nx,ny, 0.f, 0);
+		m.GetTerrain()->Load();
+	}
+}
+
+void ToolTerrainExp::RightDown(const int x, const int y, const wxMouseEvent &e)
+{
+	BecherEdit::Get()->SetTool(NULL);
+}
+
+void ToolTerrainExp::Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev)
+{
+	float sx,sy;
+	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(absX,absY,&sx,&sy))
+	{
+		EditorMap & m = *BecherEdit::Get()->GetActMap();
+		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
+		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
+		wxString str;
+		str.Printf("x: %f y: %f nx: %d ny: %d", sx, sy, nx, ny);
+		BecherEdit::Get()->SetStatus(str);
+	}
+}
+
+void ToolTerrainExp::Wheel(const wxMouseEvent &e)
+{
+	float sx,sy;
+	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(e.GetX(),e.GetY(),&sx,&sy))
+	{
+		EditorMap & m = *BecherEdit::Get()->GetActMap();
+		//const uint nx = (uint)((sx+(m.m_sizeX+m.m_distX)*0.5f)/(m.m_distX));
+		//const uint ny = (uint)((sy+(m.m_sizeY+m.m_distY)*0.5f)/(m.m_distY));
+		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
+		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
+		/*IHoeEnv::GridSurface::TGridDesc desc;
+		m.GetTerrain()->GetGridDesc(nx,ny,&desc);
+		int d = desc.x2 * 4 + desc.y2;
+		d += e.GetWheelRotation() > 0 ? 31:1;
+		d = d % 32;
+		desc.x2 = d / 4;
+		desc.y2 = d % 4;
+		m.GetTerrain()->SetGridDesc(nx,ny,&desc);*/
+        //m.GetTerrain()->Load();
+	}
+
 }

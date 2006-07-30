@@ -197,7 +197,7 @@ bool BecherMap::LoadObject(BecherGameLoad & r)
 	}
 	bo->id = s.id;
 	bo->SetAngle(s.angle);
-	bo->SetPosition(s.x, s.y);
+	bo->SetPosition(s.x, s.y,m_scene->GetScenePhysics()->GetHeight(s.x,s.y));
 	bo->Show(true);
 	bo->Load(r);
 	AddObject(bo);
