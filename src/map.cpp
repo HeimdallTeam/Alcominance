@@ -112,6 +112,23 @@ IHoeScene * BecherMap::CreateScene()
 	return m_scene;
 }
 
+bool BecherMap::SetTerrainData()
+{
+	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
+	m_terrain->SetTexture(0, "trava", 4, 4);
+	m_terrain->SetTexture(1, "ter_war3", 8, 4);
+	m_terrain->SetTexture(2, "City_Dirt", 8, 4);
+	m_terrain->SetTexture(3, "City_SquareTiles", 4, 4);
+	m_terrain->SetTexture(4, "Cliff1", 4, 4);
+	m_terrain->SetTexture(5, "Concrete", 4, 4);
+	m_terrain->SetTexture(6, "MetalPlateCliff", 4, 4);
+	m_terrain->SetTexture(7, "MetalPlateTiles", 4, 4);
+
+	m_terrain->SetTexture(10, "utes_tex", 1, 1);
+
+	return true;
+}
+
 bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 {
 	this->m_numobj = 0;

@@ -26,6 +26,7 @@ public:
 	void Resize(int top, int bottom, int left, int right);
 	void ShowSystemObjects(bool show);
 	void ShowObjects(bool show, bool wire);
+	void ModelHeightUpdate();
 };
 
 #endif // _BECHER_EDITOR_MAP_H_

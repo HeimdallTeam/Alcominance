@@ -12,7 +12,7 @@ public:
 
 	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e) = 0;
 	virtual void LeftUp(const int x, const int y, const wxMouseEvent & e) {}
-	virtual void RightDown(const int x, const int y, const wxMouseEvent & e) {}
+	virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
 	virtual void RightUp(const int x, const int y, const wxMouseEvent & e) {}
 	virtual void Wheel(const wxMouseEvent & e) {}
 	virtual void Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev) {}
@@ -27,7 +27,10 @@ public:
 
 class ToolSelect : public EditorTool
 {
+protected:
+	BecherObject * m_obj;
 public:
+	ToolSelect();
 	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
 };
 
@@ -47,8 +50,8 @@ public:
 
 	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
 	virtual void LeftUp(const int x, const int y, const wxMouseEvent & e);
-	virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
-	virtual void RightUp(const int x, const int y, const wxMouseEvent & e) {};
+	//virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
+	//virtual void RightUp(const int x, const int y, const wxMouseEvent & e) {};
 	virtual void Wheel(const wxMouseEvent & e);
 	virtual void Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev);
 	virtual void Enter(int absX, int absY);
@@ -72,8 +75,11 @@ class ToolTerrain : public EditorTool
 	bool lock;
 	int lockx;
 	int locky;
+	float m_size;
+	float m_radius;
 public:
-	ToolTerrain();
+	ToolTerrain(float size, float radius);
+	virtual ~ToolTerrain();
 	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
 	virtual void LeftUp(const int x, const int y, const wxMouseEvent & e);
 	//virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
@@ -86,6 +92,7 @@ class ToolTerrainExp : public EditorTool
 {
 public:
 	ToolTerrainExp();
+	virtual ~ToolTerrainExp();
 	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
 	virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
 	virtual void Wheel( const wxMouseEvent & e);

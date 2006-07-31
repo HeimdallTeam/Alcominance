@@ -7,8 +7,17 @@
 #include "editor.h"
 #include "../sysobjs.h"
 
+void EditorTool::RightDown(const int x, const int y, const wxMouseEvent &e)
+{
+	BecherEdit::Get()->SetTool(NULL);
+}
+
 //////////////////////////////////////////////////////
 // ToolSelect
+ToolSelect::ToolSelect()
+{
+}
+
 void ToolSelect::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	if (e.ControlDown())
@@ -125,11 +134,6 @@ void ToolCreateObject::LeftUp(const int x, const int y, const wxMouseEvent &e)
 	*/
 }
 
-void ToolCreateObject::RightDown(const int x, const int y, const wxMouseEvent &e)
-{
-	BecherEdit::Get()->SetTool(NULL);
-}
-
 void ToolCreateObject::Wheel( const wxMouseEvent &e)
 {
     if (e.ControlDown())
@@ -206,8 +210,15 @@ void ToolTex::Wheel(const wxMouseEvent &e)
 
 //////////////////////////////////////////////////////
 // ToolTerrain
-ToolTerrain::ToolTerrain()
+ToolTerrain::ToolTerrain(float size, float radius)
 {
+	m_size = size;
+	m_radius = radius;
+}
+
+ToolTerrain::~ToolTerrain()
+{
+	BecherEdit::Get()->GetActMap()->ModelHeightUpdate();
 }
 
 void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
@@ -221,7 +232,7 @@ void ToolTerrain::LeftDown(const int x, const int y, const wxMouseEvent &e)
 		// nastavit spravne vysku
 
 		//m.GetTerrain()->SetGridPlane(nx, ny, 0.f, -1,1,1,-1);
-		m.GetTerrain()->MoveHeight(sx,sy,3.f, 30.f);
+		m.GetTerrain()->MoveHeight(sx,sy,m_size, m_radius);
 		m.GetTerrain()->Load();
 	}
 }
@@ -249,19 +260,29 @@ ToolTerrainExp::ToolTerrainExp()
 {
 }
 
+ToolTerrainExp::~ToolTerrainExp()
+{
+	BecherEdit::Get()->GetActMap()->ModelHeightUpdate();
+}
+
 void ToolTerrainExp::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	float sx,sy;
 	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(x,y,&sx,&sy))
 	{
 		EditorMap & m = *BecherEdit::Get()->GetActMap();
-		IHoeEnv::GridSurface::TGridDesc desc;
 		// 300 / 20
 		//const uint nx = (uint)((sx+(m.m_sizeX+m.m_distX)*0.5f)/(m.m_distX));
 		//const uint ny = (uint)((sy+(m.m_sizeY+m.m_distY)*0.5f)/(m.m_distY));
 		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
 		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
 		m.GetTerrain()->SetGridModel(nx,ny, 0.f, 0);
+		IHoeEnv::GridSurface::TGridDesc desc;
+		m.GetTerrain()->GetGridDesc(nx,ny,&desc);
+		desc.tex2 = 10;
+		desc.x2 = 0;
+		desc.y2 = 0;
+		m.GetTerrain()->SetGridDesc(nx,ny,&desc);
 		m.GetTerrain()->Load();
 	}
 }

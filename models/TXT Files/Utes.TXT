@@ -2,13 +2,6 @@
 // Gejza'x	
 // "Utes_exp.max" - Mon Jul 31 22:07:26 2006
 
-// Mat: Standard
-Material _01_-_Default
-	Diffuse = { 0.588235, 0.588235, 0.588235}
-	Ambient = { 0.588235, 0.588235, 0.588235}
-	Specular = { 0.900000, 0.900000, 0.900000}
-~Material
-
 Stream s__1[xyz|normal|tex2]
 	-0.308819, 8.127392, 0.411870;	0.287240, 0.949250, 0.128132;	 0.289479, 0.322452
 	-6.804399, 8.289388, -10.026140;	0.167128, 0.981931, -0.088765;	 0.373988, 0.317269
@@ -417,3 +410,42 @@ Index i__8
 	3, 20, 19
 ~Index
 
+Model m1
+ streams s__1
+ indices i__1
+~Model
+
+Model m2
+ streams s__2
+ indices i__2
+~Model
+
+Model m3
+ streams s__3
+ indices i__3
+~Model
+
+Model m4
+ streams s__4
+ indices i__4
+~Model
+
+Model m5
+ streams s__5
+ indices i__5
+~Model
+
+Model m6
+ streams s__6
+ indices i__6
+~Model
+
+Model m7
+ streams s__7
+ indices i__7
+~Model
+
+Model m0
+ streams s__8
+ indices i__8
+~Model

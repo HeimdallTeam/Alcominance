@@ -75,8 +75,9 @@ enum {
 // textures
 	IDB_NOTEX,
 	IDB_TEX1,
-	IDB_TERR = IDB_TEX1 + 50,
-	IDB_TERR2,
+	IDB_TERRUP = IDB_TEX1 + 50,
+	IDB_TERRDOWN,
+	IDB_TERRPREV,
 };
 
 
@@ -231,8 +232,9 @@ BEGIN_EVENT_TABLE(TerrainObject, wxPanel)
 	EVT_BUTTON(IDB_TEX1+4, TerrainObject::OnTexturesClick)
 	EVT_BUTTON(IDB_TEX1+5, TerrainObject::OnTexturesClick)
 	EVT_BUTTON(IDB_TEX1+6, TerrainObject::OnTexturesClick)
-	EVT_BUTTON(IDB_TERR, TerrainObject::OnTerrainClick)
-	EVT_BUTTON(IDB_TERR2, TerrainObject::OnTerrainClick)
+	EVT_BUTTON(IDB_TERRUP, TerrainObject::OnTerrainClick)
+	EVT_BUTTON(IDB_TERRDOWN, TerrainObject::OnTerrainClick)
+	EVT_BUTTON(IDB_TERRPREV, TerrainObject::OnTerrainClick)
 END_EVENT_TABLE()
 
 #include "../../resource/maleikony/trava.xpm"
@@ -242,6 +244,11 @@ END_EVENT_TABLE()
 #include "../../resource/maleikony/Concrete.xpm"
 #include "../../resource/maleikony/MetalPlateCliff.xpm"
 #include "../../resource/maleikony/MetalPlateTiles.xpm"
+
+#include "../../resource/maleikony/e_terrup.xpm"
+#include "../../resource/maleikony/e_terrdown.xpm"
+#include "../../resource/maleikony/e_terrprevis.xpm"
+
 
 TerrainObject::TerrainObject(wxWindow * parent)
 	: wxPanel(parent,wxID_ANY,wxDefaultPosition, wxSize(80,250))
@@ -253,10 +260,12 @@ TerrainObject::TerrainObject(wxWindow * parent)
 	wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
 	wxStaticBox * sb = new wxStaticBox(this, -1, _("Terrain"), wxPoint(10,10),
                 wxSize(140,80));
-	b = new wxBitmapButton(sb,IDB_TERR,wxBitmap(cukrovar_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
-	b->SetToolTip( _("Test") );
-	b = new wxBitmapButton(sb,IDB_TERR2,wxBitmap(cukrovar_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
-	b->SetToolTip( _("Test 2") );
+	b = new wxBitmapButton(sb,IDB_TERRDOWN,wxBitmap(e_terrdown_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Terrain down") );
+	b = new wxBitmapButton(sb,IDB_TERRUP,wxBitmap(e_terrup_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Terrain up") );
+	b = new wxBitmapButton(sb,IDB_TERRPREV,wxBitmap(e_terrprevis_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Terrain") );
 	topsizer->Add( sb);
 
 	sb = new wxStaticBox(this, -1, _("Textures"), wxPoint(10,100),
@@ -328,10 +337,13 @@ void TerrainObject::OnTerrainClick(wxCommandEvent& e)
 	}
 	switch (e.GetId())
 	{
-	case IDB_TERR:
-		BecherEdit::Get()->SetTool(new ToolTerrain());
+	case IDB_TERRUP:
+		BecherEdit::Get()->SetTool(new ToolTerrain(3.f,30.f));
 		break;
-	case IDB_TERR2:
+	case IDB_TERRDOWN:
+		BecherEdit::Get()->SetTool(new ToolTerrain(-3.f,30.f));
+		break;
+	case IDB_TERRPREV:
 		BecherEdit::Get()->SetTool(new ToolTerrainExp());
 		break;
 

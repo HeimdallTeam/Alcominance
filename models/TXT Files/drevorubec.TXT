@@ -3,11 +3,9 @@
 // "Drevorubec_exp.max" - Mon Jul 31 15:12:12 2006
 
 // Mat: Standard
-Material _01_-_Default
-	Diffuse = { 0.588235, 0.588235, 0.588235}
-	Ambient = { 0.588235, 0.588235, 0.588235}
-	Specular = { 0.900000, 0.900000, 0.900000}
-~Material
+Material m_dum
+ Texture = "drevorubec"
+~Material 
 
 Stream s_dum[xyz|normal|tex2]
 	12.948100, 0.391272, 19.176210;	0.312931, 0.939190, 0.141406;	 0.962790, 0.568793
@@ -1258,3 +1256,8 @@ Index i_dum
 	739, 737, 731
 ~Index
 
+Model drevorubec
+ streams s_dum
+ indices i_dum
+ materials m_dum
+~Model

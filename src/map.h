@@ -56,6 +56,7 @@ public:
 	unsigned long GenObjectID() { return ++m_lastid; }
 	void ComputeLastID();
 	IHoeEnv::GridSurface * GetTerrain() { return m_terrain; };
+	bool SetTerrainData();
 public:
 	// najde objekt podle id
 	BecherObject * GetObjFromID(unsigned long id);

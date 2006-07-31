@@ -21,15 +21,7 @@ void EditorMap::CreateNew(uint sizeX, uint sizeY)
 	CreateScene();
 	GetEngine()->SetActiveScene(m_scene);
 	m_mapfilepath = wxT("");
-	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
-	m_terrain->SetTexture(0, "trava", 4, 4);
-	m_terrain->SetTexture(1, "ter_war3", 8, 4);
-	m_terrain->SetTexture(2, "City_Dirt", 8, 4);
-	m_terrain->SetTexture(3, "City_SquareTiles", 4, 4);
-	m_terrain->SetTexture(4, "Cliff1", 4, 4);
-	m_terrain->SetTexture(5, "Concrete", 4, 4);
-	m_terrain->SetTexture(6, "MetalPlateCliff", 4, 4);
-	m_terrain->SetTexture(7, "MetalPlateTiles", 4, 4);
+	SetTerrainData();
 	m_terrain->Create(m_sizeX, m_sizeY,m_numX,m_numY);
 
 	// vytvorit
@@ -56,15 +48,7 @@ bool EditorMap::LoadMap(const wxString &path)
 	BecherGameLoad r(&file);
 	CreateScene();
 	GetEngine()->SetActiveScene(m_scene);
-	m_terrain = m_scene->GetSceneEnv()->CreateGridSurface();
-	m_terrain->SetTexture(0, "trava", 4, 4);
-	m_terrain->SetTexture(1, "ter_war3", 8, 4);
-	m_terrain->SetTexture(2, "City_Dirt", 8, 4);
-	m_terrain->SetTexture(3, "City_SquareTiles", 4, 4);
-	m_terrain->SetTexture(4, "Cliff1", 4, 4);
-	m_terrain->SetTexture(5, "Concrete", 4, 4);
-	m_terrain->SetTexture(6, "MetalPlateCliff", 4, 4);
-	m_terrain->SetTexture(7, "MetalPlateTiles", 4, 4);
+	SetTerrainData();
 	return Load( r, false);
 }
 
@@ -196,6 +180,22 @@ void EditorMap::ShowObjects(bool show, bool wire)
 	}
 }
 
+void EditorMap::ModelHeightUpdate()
+{
+	int i;
+	for (i=0;i<m_numobj;i++)
+	{
+		const float x = m_obj[i]->GetPosX();
+		const float y = m_obj[i]->GetPosY();
+		m_obj[i]->SetPosition(x,y,m_scene->GetScenePhysics()->GetHeight(x,y));
+	}	
+	for (i=0;i<m_numsysobj;i++)
+	{
+		const float x = m_sysobj[i]->GetPosX();
+		const float y = m_sysobj[i]->GetPosY();
+		m_sysobj[i]->SetPosition(x,y,m_scene->GetScenePhysics()->GetHeight(x,y));
+	}
+}
 
 
 
