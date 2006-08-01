@@ -161,6 +161,7 @@ bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 
 	while (r.Chunk().chunk != ID_CHUNK('e','n','d',' '))
 	{
+		size_t st = r.GetFile()->Tell();
 		switch (r.Chunk().chunk)
 		{
 		case ID_CHUNK('t','e','r','r'):
@@ -170,7 +171,7 @@ bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 			m_distX = m_sizeX / m_numX;
 			m_distY = m_sizeY / m_numY;
 #ifndef BECHER_EDITOR
-			m_terrain->ReleaseData();
+			//m_terrain->ReleaseData();
 #endif
 			break;
 		case ID_CHUNK('s','y','s','o'):	
@@ -195,7 +196,7 @@ bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 			break;
 		};
 		// musi byt zakonceny chunkem
-		if (r.Read<dword>() != 123456789)
+		if (r.GetFile()->Tell() != st + r.Chunk().size || r.Read<dword>() != 123456789)
 		{
 			GetCon()->Printf("Error:Corupt file...");
 			return false;
