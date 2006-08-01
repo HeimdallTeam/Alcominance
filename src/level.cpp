@@ -31,7 +31,7 @@ void BecherLevel::MouseUpdate(float x, float y)
 		float X,Y;
 		m_build->Show(true);
 		if (GetView()->GetPick(x,y,&X,&Y))
-			m_build->SetPosition(X,Y);
+			m_build->SetPosition(X,Y,0);
 	}
 	else // show select
 	{
@@ -75,7 +75,7 @@ void BecherLevel::MouseLeftDown(float x, float y)
 		if (GetView()->GetPick(x,y,&X,&Y))
 		{
 			// build
-			m_build->SetPosition(X,Y);
+			m_build->SetPosition(X,Y,0);
 			assert(GetObjectClass(m_build->GetType()));
 			if (dynamic_cast<BecherBuilding*>(m_build)->StartBuilding(m_buildgold, m_buildwood, m_buildstone))
 			{
@@ -168,7 +168,7 @@ bool BecherLevel::LoadGame(BecherGameLoad &r)
 bool BecherLevel::LoadGame(const char *path)
 {
 	Create(CreateScene());
-	CreateTerrain()
+	SetTerrainData();
 
 	HoeGame::HoeFile file;
 	if (!file.Open(path))

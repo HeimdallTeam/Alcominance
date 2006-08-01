@@ -147,7 +147,7 @@ bool JobEx::Step(Troll * t, const float time)
 	float puvY = posY;
 	finish = path.GetNextPos(time, posX,posY);
 	t->SetAngle(-atan2f(posX-puvX,posY-puvY));
-	t->SetPosition( posX, posY);
+	t->SetPosition( posX, posY, 0);
 	return finish;
 }
 

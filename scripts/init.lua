@@ -34,6 +34,7 @@ AddFile("data/pic.hx")
 AddFile("data/czech.hx")
 AddFile("data/dopln.hm")
 AddFile("data/ter.hx")
+AddFile("data/utes.hm")
 AddFile("hud.hx")
 --files-end
 --resources

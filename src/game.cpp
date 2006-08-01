@@ -274,7 +274,7 @@ int BecherGame::l_AddTroll(lua_State * L)
 			if (GetBecher()->m_level.GetSelectedObject())
 			{
 				Troll * t = (Troll*)GetBecher()->m_level.CreateObject(EBO_Troll);
-				t->SetPosition(-400, -400);
+				t->SetPosition(-400, -400, 0);
 				GetBecher()->m_level.AddObject(t);
 				BecherObject * b = GetBecher()->m_level.GetSelectedObject();
 				dynamic_cast<BecherBuilding*>(b)->Idiot(t);
