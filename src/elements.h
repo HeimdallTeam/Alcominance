@@ -24,17 +24,25 @@ public:
 	// nastaveni typu 1-5
 	void SetTypeModel(int type);
 	int GetTypeModel() { return param.type; }
-	virtual void LoadAdv(int ver, unsigned long size, HoeFileReader * stream);
-	virtual int SaveAdv(void ** buff, unsigned long * size);
+
+#ifdef BECHER_EDITOR
+	virtual bool Select();
+	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
+#endif
 
 	DECLARE_BASEOBJECT(EBO_Tree)
 };
 
 class Bridge : public BecherObject
 {
+	float m_height;
 public:
 	Bridge(IHoeScene * scn);
 	virtual EObjType GetClass() { return EBO_Bridge; }
+#ifdef BECHER_EDITOR
+	virtual bool Select();
+	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
+#endif
 
 	DECLARE_BASEOBJECT(EBO_Bridge)
 };

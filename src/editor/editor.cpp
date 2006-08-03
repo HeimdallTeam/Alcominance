@@ -110,6 +110,7 @@ END_EVENT_TABLE()
 #include "../../resource/maleikony/studna.xpm"
 #include "../../resource/maleikony/tovarna.xpm"
 #include "../../resource/maleikony/most.xpm"
+#include "../../resource/maleikony/drevorubec.xpm"
 // system
 #include "../../resource/maleikony/sound.xpm"
 
@@ -135,7 +136,7 @@ ToolObjects::ToolObjects(wxWindow * parent)
 	b->SetToolTip( _("Store") );
 	b = new wxBitmapButton(p,IDB_SHOP,wxBitmap(obchod_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Shop") );
-	b = new wxBitmapButton(p,IDB_SAW,wxBitmap(farma_xpm),BT_P(2,1),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p,IDB_SAW,wxBitmap(drevorubec_xpm),BT_P(2,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Saw") );
 
 
@@ -482,14 +483,20 @@ bool BecherEdit::Create(const wxString & title)
 void BecherEdit::OnInitMenu()
 {
     // file
-    wxMenu * m_menuFile = new wxMenu;
-	m_menuFile->Append(HoeEditor::ID_NEW, _("&New...\tCtrl+N"), _("Creates a new file or project."));
-	m_menuFile->Append(HoeEditor::ID_OPEN, _("&Open...\tCtrl+O"), _("Open an existing file."));
-	m_menuFile->AppendSeparator();
-	m_menuFile->Append(HoeEditor::ID_SAVE, _("&Save\tCtrl+S"), _("Save file."));
-	m_menuFile->Append(HoeEditor::ID_SAVEAS, _("Save &As..."), _("Save file."));
-	m_menuFile->AppendSeparator();
-	m_menuFile->Append(HoeEditor::ID_QUIT, _("E&xit\tAlt-F4"), _("Quit this program")); 
+    wxMenu * menuFile = new wxMenu;
+	menuFile->Append(HoeEditor::ID_NEW, _("&New...\tCtrl+N"), _("Creates a new file or project."));
+	menuFile->Append(HoeEditor::ID_OPEN, _("&Open...\tCtrl+O"), _("Open an existing file."));
+	menuFile->AppendSeparator();
+	menuFile->Append(HoeEditor::ID_SAVE, _("&Save\tCtrl+S"), _("Save file."));
+	menuFile->Append(HoeEditor::ID_SAVEAS, _("Save &As..."), _("Save file."));
+	menuFile->AppendSeparator();
+	menuFile->Append(HoeEditor::ID_QUIT, _("E&xit\tAlt-F4"), _("Quit this program")); 
+
+	// edit
+    /*wxMenu * menuEdit = new wxMenu;
+	menuEdit->Append(wxID_ANY, _("Undo\tCtrl+Z"), _("Undo last action."));
+	menuEdit->Append(wxID_ANY, _("Redo\tCtrl+Y"), _("Redo last action."));
+	*/
 
 	// view
 	wxMenu * menuView = new wxMenu;
@@ -517,14 +524,14 @@ void BecherEdit::OnInitMenu()
     menuView->Append(-1, _("Ad&vanced"), menuAdvanced);
 	*/
 	// tools
-	wxMenu * m_menuTools = new wxMenu;
-	m_menuTools->Append(ID_MAPSETTINGS, _("&Map Settings..."), _("Set map parameters"));
-	m_menuTools->Append(ID_TERRAINTEX, _("&Terrain Textures..."), _("Terrain textures editor."));
-	m_menuTools->Append(ID_SHOWRES, _("&Resource Manager..."), _("Resource Manager"));
-	m_menuTools->AppendSeparator();
-	m_menuTools->Append(ID_ENGINECON, _("&Show Console...\tF11"), _("Show Engine Console"));
+	wxMenu * menuTools = new wxMenu;
+	menuTools->Append(ID_MAPSETTINGS, _("&Map Settings..."), _("Set map parameters"));
+	menuTools->Append(ID_TERRAINTEX, _("&Terrain Textures..."), _("Terrain textures editor."));
+	menuTools->Append(ID_SHOWRES, _("&Resource Manager..."), _("Resource Manager"));
+	menuTools->AppendSeparator();
+	menuTools->Append(ID_ENGINECON, _("&Show Console...\tF11"), _("Show Engine Console"));
 #ifndef HOE_STATIC
-	m_menuTools->Append(HoeEditor::ID_ENGINE, _("&Load Engine...\tF10"), _("Load engine from library"));
+	menuTools->Append(HoeEditor::ID_ENGINE, _("&Load Engine...\tF10"), _("Load engine from library"));
 #endif
 
 	wxMenu * menuHelp = new wxMenu;
@@ -534,9 +541,10 @@ void BecherEdit::OnInitMenu()
 
     // now append the freshly created menu to the menu bar...
     m_menu = new wxMenuBar(/*wxMB_DOCKABLE*/);
-    m_menu->Append(m_menuFile, _("&File"));
+    m_menu->Append(menuFile, _("&File"));
+    //m_menu->Append(menuEdit, _("&Edit"));
 	m_menu->Append(menuView, _("&View"));
-	m_menu->Append(m_menuTools, _("&Tools"));
+	m_menu->Append(menuTools, _("&Tools"));
 	m_menu->Append(menuHelp, _("&Help"));
 
     // ... and attach this menu bar to the frame

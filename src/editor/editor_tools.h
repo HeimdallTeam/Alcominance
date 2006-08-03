@@ -4,6 +4,12 @@
 
 class BecherObject;
 
+////////////////////////////////////////////////////////////////////////
+class BecherUndoAction : public HoeEditor::UndoAction
+{
+public:
+};
+
 class EditorTool
 {
 public:
@@ -36,6 +42,12 @@ public:
 
 enum EObjType;
 
+/* protiakce na vytvoreni objektu; undo - smazani; redo - znovuvytvoreni */
+class UndoCreate : public BecherUndoAction
+{
+public:
+};
+
 class ToolCreateObject : public EditorTool
 {
 protected:
@@ -49,7 +61,6 @@ public:
 	void SetPos(int absX, int absY);
 
 	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
-	virtual void LeftUp(const int x, const int y, const wxMouseEvent & e);
 	//virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
 	//virtual void RightUp(const int x, const int y, const wxMouseEvent & e) {};
 	virtual void Wheel(const wxMouseEvent & e);

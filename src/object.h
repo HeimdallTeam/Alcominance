@@ -49,8 +49,10 @@ public:
 
 	virtual bool Select() { return false; }
 	virtual void Unselect() { }
-
-	void SetPosition(const float x, const float y, const float h);
+#ifdef BECHER_EDITOR
+	virtual 
+#endif
+		void SetPosition(const float x, const float y, const float h);
 	inline const float GetPosX() const { return posX; }  
 	inline const float GetPosY() const { return posY; }  
 

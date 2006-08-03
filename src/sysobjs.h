@@ -25,6 +25,7 @@ public:
 
 class SystemObjectSound : public BecherSystemObject
 {
+	IHoeLight * light;
 public:
 	SystemObjectSound(IHoeScene * scn);
 	virtual EObjType GetType() { return EBS_Sound; }
@@ -34,6 +35,7 @@ public:
 #ifdef BECHER_EDITOR
 	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
 	virtual bool Select();
+	virtual void SetPosition(const float x, const float y, const float h);
 #endif
 };
 

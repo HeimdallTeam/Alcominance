@@ -94,6 +94,7 @@ protected:
 	HoeEditor::EngineView m_engview;
 	HoeEditor::PanelMgr m_leftpanel;
 	wxHelpController m_help;
+	HoeEditor::UndoList m_undo;
 public:
 	BecherEdit();
 	virtual ~BecherEdit();
@@ -136,6 +137,8 @@ public:
 	void SetTool(EditorTool * tool);
 
 	void SetStatus(const wxString & str);
+
+	void AddUndo(HoeEditor::UndoAction * action);
 
     DECLARE_EVENT_TABLE()
 protected:

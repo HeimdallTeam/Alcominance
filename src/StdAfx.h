@@ -81,6 +81,7 @@ typedef HoeGame::CVar CVar;
 #include <he/properties.h>
 #include <he/resources.h>
 #include <he/utils.h>
+#include <he/undolist.h>
 
 #endif
 

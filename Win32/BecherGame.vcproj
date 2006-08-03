@@ -519,6 +519,10 @@
 			Name="docs"
 			>
 			<File
+				RelativePath="..\docs\ChangeLog.txt"
+				>
+			</File>
+			<File
 				RelativePath="..\docs\lua.xml"
 				>
 			</File>

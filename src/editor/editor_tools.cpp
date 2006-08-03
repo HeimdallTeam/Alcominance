@@ -125,13 +125,8 @@ void ToolCreateObject::LeftDown(const int x, const int y, const wxMouseEvent &e)
 		BecherEdit::Get()->SetTool(NULL);
 	}
 
-}
-
-void ToolCreateObject::LeftUp(const int x, const int y, const wxMouseEvent &e)
-{
-	/*if (m_map)
-		m_map->m_lockobject = NULL;
-	*/
+	// undo action
+	//BecherEdit::Get()->AddUndo(new UndoCreate());
 }
 
 void ToolCreateObject::Wheel( const wxMouseEvent &e)

@@ -7,6 +7,9 @@ SystemObjectSound::SystemObjectSound(IHoeScene * scn) : BecherSystemObject(scn)
 {
 #ifdef BECHER_EDITOR
 	SetModel(GetModelForSound());
+	light = scn->CreateLight(false);
+	light->SetColor(1,1,1);
+	light->SetPosition(0,20,0);
 #endif
 }
 
@@ -23,6 +26,7 @@ bool SystemObjectSound::Load(BecherGameLoad &r)
 	return true;
 }
 
+
 #ifndef BECHER_EDITOR
 
 bool SystemObjectSound::Save(BecherGameSave &w)
@@ -32,6 +36,12 @@ bool SystemObjectSound::Save(BecherGameSave &w)
 }
 
 #else
+void SystemObjectSound::SetPosition(const float x, const float y, const float h)
+{
+	//light->SetPosition(x,h+20,y);
+	light->SetPosition(0,-1,0);
+	BecherObject::SetPosition(x,y,h);
+}
 
 bool SystemObjectSound::Save(BecherGameSave &w)
 {
