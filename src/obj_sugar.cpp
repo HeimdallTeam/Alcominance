@@ -124,12 +124,8 @@ bool Sugar::Select()
 
 bool Sugar::Idiot(Troll * t)
 {
-	// pokud neni trtina prinest trtinu
-	// jestli neni pracujici a je vice nez 50% trtiny tak pracovat
-	// pokud je vice nez 90% trtiny a je volne misto tak pracuj
-	// pokud je cukru vice nez volneho mista pak odnest
-	// odmitnout
-	// zjistit zdroj
+	// zjistit pripadny zdroj pro suroviny
+	// 
 	int cane_avail = 0;
 	Store * s = FindStore();
 	if (s) cane_avail = s->GetStatus(EBS_Cane);

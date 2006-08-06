@@ -13,12 +13,11 @@ end
 
 
 function i_sugar(b)
+ -- tady pujde hlavne o to vychytat kdy nosit a kdy pracovat
+ -- jako vstup je struktura se informacema o budove
+ 
  print("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
  -- pokud je nejaky cukr tak odnest
- if (b.sugar > 0) then
-     job = { type = 3 }
-     return job    
- end
  -- jestlize se trtina vejde tak trtina
  if b.cane_avail > 0 and b.free > 0 then
      job = { type = EBS_Cane }

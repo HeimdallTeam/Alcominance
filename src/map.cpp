@@ -126,10 +126,11 @@ bool BecherMap::SetTerrainData()
 
 	m_terrain->SetTexture(10, "utes_tex", 1, 1);
 
-	for (int i=0;i < 8;i++)
+	for (int i=0;i < 12;i++)
 	{	
-		char s[3] = "m0";
-		s[1] = i + '0';
+		char s[4] = "m00";
+		s[1] = ((i+1) / 10) + '0';
+		s[2] = ((i+1) % 10) + '0';
 		m_terrain->SetModel(i,s);
 	}
 

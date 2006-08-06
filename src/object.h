@@ -16,6 +16,8 @@ struct TObjectSaveStruct
 	unsigned long reserved;
 };
 
+
+
 class BecherObject : public HoeGame::Strategy::StgObject
 #ifdef BECHER_EDITOR
 	, public HoeEditor::PropObject

@@ -57,12 +57,12 @@ void Store::AdvPaint(IHoePaint3D * h3)
 bool Store::Save(BecherGameSave &w)
 {
 	BecherBuilding::Save(w);
-	w.Write(m_stone);
-	w.Write(m_wood);
-	w.Write(m_sugar);
-	w.Write(m_water);
-	w.Write(m_becher);
-	w.Write(m_alcohol);
+	w.WriteRI(m_stone);
+	w.WriteRI(m_wood);
+	w.WriteRI(m_sugar);
+	w.WriteRI(m_water);
+	w.WriteRI(m_becher);
+	w.WriteRI(m_alcohol);
 	return true;
 }
 
