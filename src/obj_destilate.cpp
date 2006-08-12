@@ -75,61 +75,8 @@ bool Destilate::Select()
 }
 
 
-bool Destilate::Idiot(Troll * t)
+bool Destilate::Idiot(Job * t)
 {
-	// pokud neni trtina prinest trtinu
-	// jestli neni pracujici a je vice nez 50% trtiny tak pracovat
-	// pokud je vice nez 90% trtiny a je volne misto tak pracuj
-	// pokud je cukru vice nez volneho mista pak odnest
-	// odmitnout
-	
-	Store * s = FindStore();
-	if (!s)
-	{
-		if (m_sugar > 1 && m_worked.NumFree() > 1)
-		{
-			SetWork(t);
-			return true;
-		}
-		else return false;
-	}
-
-	if (m_alco >= (v_sklad.GetInt() - m_sugar - m_alco))
-	{
-		SetOut(t,s);
-		return true;
-	}
-
-	if (m_sugar == 0 && s->GetStatus(EBS_Sugar) > 0)
-	{
-		SetIn(t,s);
-		return true;			
-	}
-
-	if ((m_sugar * 2 >= v_sklad.GetInt() && m_worked.num == 0) ||
-		(m_sugar >= v_sklad.GetInt() * 0.9 && m_worked.NumFree() > 1))
-	{
-		SetWork(t);
-		return true;
-	}
-
-	if (m_alco > 10)
-	{
-		SetOut(t,s);
-		return true;
-	}
-
-	if ((v_sklad.GetInt()-m_sugar-m_alco)>0 && s->GetStatus(EBS_Sugar) >0)
-	{
-		SetIn(t,s);
-		return true;			
-	}
-
-	if (m_alco > 0)
-	{
-		SetOut(t,s);
-		return true;
-	}
 	return false;
 }
 
@@ -172,27 +119,18 @@ void Destilate::SetWork(Troll *t)
 	Job job;
 	job.owner = this;
 	job.type = Job::jtWork;
-	t->SetJob(job);
+	//t->SetJob(job);
 }
-void Destilate::SetOut(Troll *t, Store *s )
-{
-	Job job;
-	job.owner = this;
-	job.type = Job::jtOdnes;
-	job.store = s;
-	job.num = 10;
-	job.surtype = EBS_Alco;
-	t->SetJob(job);
-}
+
 void Destilate::SetIn(Troll *t, Store * s)
 {
 	Job job;
 	job.owner = this;
 	job.type = Job::jtPrines;
-	job.store = s;
+	//job.store = s;
 	job.num = 10;
 	job.surtype = EBS_Sugar;
-	t->SetJob(job);
+	//t->SetJob(job);
 }
 
 int Destilate::GetNumInfos()

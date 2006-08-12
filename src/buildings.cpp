@@ -7,13 +7,7 @@
 #include "troll.h"
 #include "obj_store.h"
 
-ResourceItem::ResourceItem(ESurType type)
-{
-	type = m_type;
-	m_actual = 0;
-	if (type == EBS_Cane)
-		m_actual = 100;
-}
+
 
 /////////////////////////////////////////////////////////
 BecherBuilding::BecherBuilding(IHoeScene * scn) : BecherObject(scn)
@@ -43,19 +37,6 @@ bool BecherBuilding::Load(BecherGameLoad &r)
 {
 	return true;
 }
-#ifndef BECHER_EDITOR
-Store * BecherBuilding::FindStore()
-{
-	for (int i=0;i < GetBecher()->GetLevel()->GetNumObj();i++)
-		{
-			BecherObject * bo = GetBecher()->GetLevel()->GetObj(i);
-			if (bo->GetType() != EBO_Store)
-				continue;
-			return dynamic_cast<Store*>(bo);
-		}
-	return NULL;
-}
-#endif
 
 //////////////////////////////////////////////////////////////////
 

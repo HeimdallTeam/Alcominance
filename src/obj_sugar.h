@@ -10,7 +10,7 @@ protected:
 	// trolls
 	int m_cane;
 	int m_sugar;
-	WorkMode m_mode;
+	//WorkMode m_mode;
 	WorkT<4> m_worked;
 public:
 	Sugar(IHoeScene * scn);

@@ -41,45 +41,8 @@ void Shop::AddToWork(Troll *t)
 {
 }
 
-bool Shop::Idiot(Troll * t)
+bool Shop::Idiot(Job * t)
 {
-	// vybrat idealni job
-	// zjistit zda je trtina, pokud ne, je to jasny
-	// bud podle modu nebo toho co je potreba
-
-	//t->
-	//if (trtina < 5)
-	{
-		// najit sklad
-		Store * s = NULL;
-		Job job;
-		job.owner = this;
-
-		for (int i=0;i < GetBecher()->GetLevel()->GetNumObj();i++)
-		{
-			BecherObject * bo = GetBecher()->GetLevel()->GetObj(i);
-			if (bo->GetType() != EBO_Store)
-				continue;
-			Store * ts = dynamic_cast<Store*>(bo);
-			// pokud je lepsi nez ten druhy
-			s = ts;
-		}
-
-		if (s != NULL && s->GetStatus(EBS_Alco) > 0)
-		{
-			job.type = Job::jtPrines;
-			job.store = s;
-			job.num = 10;
-			job.surtype = EBS_Alco;
-			t->SetJob(job);
-			return true;			
-		}
-		// zarezervovat
-
-		// predat job a registrovat
-		//t->job.Prine
-
-	}
 	return false;
 }
 

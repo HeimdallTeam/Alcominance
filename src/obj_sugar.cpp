@@ -5,6 +5,7 @@
 #include "troll.h"
 #include "obj_sugar.h"
 #include "obj_store.h"
+#include "crr.h"
 
 
 static CVar v_numzpr("sugar_work", 1.f, 0);
@@ -18,7 +19,7 @@ Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn)
 	GetCtrl()->SetFlags(HOF_SHOW);
 	m_cane = 0;
 	m_sugar = 0;
-	m_mode = wmIn;
+	//m_mode = wmIn;
 	m_worked.num = 0;
 }
 
@@ -122,79 +123,23 @@ bool Sugar::Select()
 	return true;
 }
 
-bool Sugar::Idiot(Troll * t)
-{
-	// zjistit pripadny zdroj pro suroviny
-	// 
-	int cane_avail = 0;
-	Store * s = FindStore();
-	if (s) cane_avail = s->GetStatus(EBS_Cane);
-
-	HoeGame::LuaFunc f(GetLua(), "i_sugar");
-	f.PushTable();
-	// suroviny
-	f.SetTableInteger("free", v_sklad.GetInt() - m_sugar - m_cane);
-	f.SetTableInteger("cane_avail", cane_avail);
-	f.SetTableInteger("cane", m_cane);
-	f.SetTableInteger("sugar", m_sugar);
-	// works
-	f.SetTableInteger("works", this->m_worked.num);
-	f.SetTableInteger("works_free", this->m_worked.NumFree());
-	f.Run(1);
-	if (f.IsNil(-1))
-	{
-		f.Pop(1);
-		return false;
-	}
-
-	int r = f.GetTableInteger("type", -1);
-	f.Pop(1);
-	
-	switch (r)
-	{
-	case EBS_Cane:
-		SetIn(t,s);
-		return true;
-	case EBS_Work:
-		SetWork(t);
-		return true;
-    /*
-    @deprecated O odnaseni se staraji ostatni budovy
-	case EBS_Sugar:
-		SetOut(t,s);
-		return true;
-    */
-	}
-	return false;
-}
-
 void Sugar::SetWork(Troll *t)
 {
 	Job job;
 	job.owner = this;
 	job.type = Job::jtWork;
-	t->SetJob(job);
+	//t->SetJob(job);
 }
-//@deprecated O odnaseni se staraji ostatni budovy
-void Sugar::SetOut(Troll *t, Store *s )
-{
-	Job job;
-	job.owner = this;
-	job.type = Job::jtOdnes;
-	job.store = s;
-	job.num = 10;
-	job.surtype = EBS_Sugar;
-	t->SetJob(job);
-}
+
 void Sugar::SetIn(Troll *t, Store * s)
 {
 	Job job;
 	job.owner = this;
 	job.type = Job::jtPrines;
-	job.store = s;
+	//job.store = s;
 	job.num = 10;
 	job.surtype = EBS_Cane;
-	t->SetJob(job);
+	//t->SetJob(job);
 }
 #else
 
@@ -218,3 +163,51 @@ void Sugar::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 }
 
 #endif
+
+bool Sugar::Idiot(Job * j)
+{
+	// zjistit pripadny zdroj pro suroviny
+	// 
+	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
+	ResourceItem * ri = CRR::Get()->Find(EBS_Cane); // urceni priorit
+	
+	HoeGame::LuaFunc f(GetLua(), "i_sugar");
+	f.PushTable();
+	// suroviny
+	// informace o surovinach
+	f.SetTableInteger("max_store", v_sklad.GetInt());
+	f.SetTableInteger("cane_avail", ri ? ri->GetNum():0);
+	f.SetTableInteger("cane", m_cane);
+	f.SetTableInteger("sugar", m_sugar);
+	// works
+	f.SetTableInteger("works", this->m_worked.num);
+	f.SetTableInteger("works_free", this->m_worked.NumFree());
+	f.Run(1);
+	if (f.IsNil(-1))
+	{
+		f.Pop(1);
+		return false;
+	}
+
+	// prevest zpatky na job
+	int r = f.GetTableInteger("type", -1); // typ prace
+	j->percent = f.GetTableInteger("percent", -1); // na kolik procent je vyzadovano
+	j->owner = this;
+	switch (r)
+	{
+	case 0:
+		j->surtype = (ESurType)f.GetTableInteger("sur", -1); // typ suroviny
+		j->type = Job::jtPrines;
+		j->num = f.GetTableInteger("num", -1); // pocet k prineseni
+		j->ritem = ri;
+		break;
+	case 1:
+		j->type = Job::jtWork;
+		break;
+	};
+		
+	f.Pop(1);
+	
+	return true;
+}
+

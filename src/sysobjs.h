@@ -28,7 +28,7 @@ class SystemObjectSound : public BecherSystemObject
 	IHoeLight * light;
 public:
 	SystemObjectSound(IHoeScene * scn);
-	virtual EObjType GetType() { return EBS_Sound; }
+	virtual EObjType GetType() { return EBSys_Sound; }
 	virtual bool Save(BecherGameSave &w);
 	virtual bool Load(BecherGameLoad &r);
 	static IHoeModel * GetModelForSound();

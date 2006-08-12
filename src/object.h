@@ -70,7 +70,7 @@ public:
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
 	virtual void Update(const double t); \
 	virtual bool Select(); \
-	virtual bool Idiot(Troll * t); \
+	virtual bool Idiot(Job * j); \
 	virtual int AddSur(ESurType type, int s); \
 	virtual int GetSur(ESurType type, int req, bool upln); \
 	virtual void AddToWork(class Troll * t); \

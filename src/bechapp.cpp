@@ -75,6 +75,13 @@ void BechApp::OnUpdate(float dtime)
 		scene->Update(dtime);
 }
 
+#if 1
+#undef BEGIN_TRY
+#undef END_TRY 
+#define BEGIN_TRY
+#define END_TRY(code)
+#endif
+
 int BechApp::RunGame()
 {
 	BEGIN_TRY

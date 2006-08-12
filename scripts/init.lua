@@ -35,7 +35,7 @@ AddFile("data/czech.hx")
 AddFile("data/dopln.hm")
 AddFile("data/ter.hx")
 AddFile("data/utes.hm")
-AddFile("hud.hx")
+AddFile("data/hud.hx")
 --files-end
 --resources
 LoadResource(ID_INFO_FONT, "font 'resource/font.ttf' 16")

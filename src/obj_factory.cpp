@@ -80,7 +80,7 @@ void Factory::Update(const double dtime)
 {
 }
 
-bool Factory::Idiot(Troll *t)
+bool Factory::Idiot(Job *t)
 {
 	return false;
 }

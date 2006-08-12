@@ -3,72 +3,44 @@
 
 #include "buildings.h"
 
-/**
- * Spojovy seznam
- */
-class LinkedList{
-
-private:
-
-    struct item{
-            item* next;
-            void* value;
-/*
-        public:
-            // prochazeni pomoci start(), next() a hasNext()
-            item* getNext(){
-                return next;
-            }
-            void setNext(item* next){
-                this->next=next;
-            }
-            void* getValue(){
-                return value;
-            }
-            void setValue(void* value){
-                this->value=value;
-            }
-*/
-    };
-    
-    item* getHead();
-    item* getActual();
-
-    item *head, *tail;
-    item* actual;
-
+class ResourceItem
+{
+protected:
+	ESurType m_type;
+	uint m_max;
+	uint m_actual;
+	int m_priority;
+	BecherObject * m_owner;
 public:
-    
-    LinkedList();
-    ~LinkedList();
-
-    void add(void* value);
-    void remove(void* value);
-    bool isEmpty();
-
-    void* next();
-    bool hasNext();
-    void start();    
+	ResourceItem(ESurType type);
+	void SetOwner(BecherObject * own) { m_owner = own; }
+	inline BecherObject * GetOwner() { assert(m_owner); return m_owner; }
+	inline ESurType GetType() { return m_type; }
+	inline uint GetNum() { return m_actual; }
+	inline void SetNum(uint num) { m_actual = num; }
+	inline int GetPriority() { return m_priority; }
+	inline void SetPriority(int p) { m_priority = p; }
+	void Register();
+	void Unregister();
+	void Add(uint s) {}
 };
 
 /**
  * Central Register of Resource
  * Centralni registr zdroju (surovin) slouzi ...
  */
-class CRR {
-
+class CRR 
+{
 private:
-    /** TODO predelat pole spojaku na pole poli */
-    LinkedList* resLists;
-    int resCount;
     static CRR* this_;
+	HoeGame::PtrList<ResourceItem*> m_items[EBS_Max];
+	ResourceItem * s;
 public:
-    CRR(int resCount);
+    CRR();
     ~CRR();
-    void addResource(ResourceItem* item);
-    LinkedList* getResources(ESurType resourceType);
-    LinkedList* getResources(LinkedList* list, ESurCriterion criterion);
-    LUA_FUNCTION(l_getResources);
+	static CRR * Get();
+    void Register(ResourceItem* item);
+	ResourceItem * Find(ESurType type);
 };
 
 

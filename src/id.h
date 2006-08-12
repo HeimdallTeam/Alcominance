@@ -48,8 +48,8 @@ enum EObjType
 	EBC_Max,
 
 	// system
-	EBS_Sound = 1000,
-	EBS_Max,
+	EBSys_Sound = 1000,
+	EBSys_Max,
 };
 
 #define assert_obj(n) assert(n > EBO_None && n < EBO_Max)
@@ -67,7 +67,7 @@ enum ESurType
 	EBS_Sugar,
 	EBS_Alco,
 	EBS_Cane,
-	EBS_Unknown,
+	EBS_Max,
 };
 
 enum ESurCriterion{

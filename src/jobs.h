@@ -9,28 +9,17 @@ struct Job
 {
 	enum Type
 	{
-		jtNone,
+		jtNone = 0,
 		jtPrines,
-		jtOdnes,
 		jtWork,
 	} type;
-	class BecherBuilding * owner;
-	union {
-		struct {
-			class Store * store;
-			ESurType surtype;
-			int num;
-		};
-	};
+	BecherBuilding * owner;
+	ResourceItem * ritem;
+	ESurType surtype;
+	int num;
+	float percent;
 };
 
-
-class MainSklad
-{
-	// seznam skladu a surovin
-public:
-
-};
 
 #endif // _JOBS_H_
 

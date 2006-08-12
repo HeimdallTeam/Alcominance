@@ -13,7 +13,7 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_TROLL));
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE);
-	
+	memset(&m_job, 0, sizeof(m_job));
 }
 
 Troll::~Troll()
@@ -24,52 +24,62 @@ Troll::~Troll()
 
 void Troll::Update(const double t)
 {
-	switch (job.phase)
+	EPhaseResult res;
+	res = MakePhase(t);
+	while (res==PhaseRepeat)
 	{
-	case JobEx::GoTo:
-	case JobEx::GoFrom:
-		if (!job.Step(this, (float)t*v_speed.GetFloat()))
-			return;
+		res = MakePhase(t);
 	}
-	switch (job.type)
+	if (res==PhaseEnd)
 	{
-	case Job::jtPrines:
-		if (job.phase == JobEx::GoTo)
+		// podle jobu a faze urcit dalsi akci
+		switch (m_job.type)
 		{
-			job.sur = job.store->GetSur(job.surtype, job.num, false);
-			job.path.SetPosTo(job.owner);
-			job.phase = JobEx::GoFrom;
-		}
-		else if (job.phase == JobEx::GoFrom)
-		{
-			job.owner->AddSur(job.surtype, job.sur);
-			NewJob();
-		}
-		break;
-	case Job::jtOdnes:
-		if (job.phase == JobEx::GoTo)
-		{
-			job.sur = job.owner->GetSur(job.surtype, job.num, false);
-			job.path.SetPosTo(job.store);
-			job.phase = JobEx::GoFrom;
-		}
-		else if (job.phase == JobEx::GoFrom)
-		{
-			job.store->AddSur(job.surtype, job.sur);
-			NewJob();
-		}
-		break;
-	case Job::jtWork:
-		if (job.phase == JobEx::GoTo)
-		{
-			job.owner->AddToWork(this);
-			job.phase = JobEx::GoToNew;
-		}
-		break;
-	case Job::jtNone:
-		NewJob();
-		break;
+		case Job::jtPrines:
+			if (m_phase == PhaseStart)
+			{
+				// nastavit novou cestu na misto urceni
+				m_phase = GoTo;
+				m_path.SetPosTo(m_job.ritem->GetOwner());
+			}
+			else if (m_phase == GoTo)
+			{
+				//job.sur = job.ritem->GetSur(job.surtype, job.num, false);
+				m_path.SetPosTo(m_job.owner);
+				m_phase = GoFrom;
+			}
+			else if (m_phase == GoFrom)
+			{
+				//job.owner->AddSur(job.surtype, job.sur);
+				FindJob(m_job.owner);
+			}
+			break;
+		/*case Job::jtWork:
+			if (job.phase == JobEx::GoTo)
+			{
+				job.owner->AddToWork(this);
+				job.phase = JobEx::GoToNew;
+			}
+			break;
+		case Job::jtNone:
+			FindJob(NULL);
+			break;*/
+		};
 	}
+}
+
+EPhaseResult Troll::MakePhase(const double t)
+{
+	switch (m_phase)
+	{
+	case PhaseStart:
+		return PhaseEnd;
+	case GoTo:
+	case GoFrom:
+		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
+			return PhaseEnd;
+	}
+	return PhaseContinue;
 }
 
 bool Troll::Select()
@@ -78,19 +88,33 @@ bool Troll::Select()
 	return true;
 }
 
-void Troll::SetJob(const Job & j)
+void Troll::MakeJob(const Job & j)
 {
-	job = j;
+	//job = j; nastaveni zakladnich vlastnosti (treba cesty atd)
+	m_job = j;
+	// nastavit pocatecni hodnoty
+	m_phase = PhaseStart;
 }
 
 void Troll::StopWork()
 {
-	NewJob();
+	//FindJob(NULL);
 }
 
-void Troll::NewJob()
+bool Troll::FindJob(BecherBuilding * pref)
 {
-	if (job.type == Job::jtNone || !job.owner->Idiot(this))
+	Job job;
+	if (pref && pref->Idiot(&job))
+	{
+		MakeJob(job);
+		return true;
+	}
+	if (m_job.owner && m_job.owner->Idiot(&job)) 
+	{
+		MakeJob(job);
+		return true;
+	}
+	/*if (job.type == Job::jtNone || !job.owner->Idiot(this))
 	{
 		// hledani noveho idiota
 		for (int i=0;i < GetBecher()->GetLevel()->GetNumObj();i++)
@@ -102,11 +126,12 @@ void Troll::NewJob()
 				return;
 		}
 		job.SetNone();
-	}
+	}*/
+	return false;
 }
 
 ////////////////////////////////////////////////
-JobEx::JobEx()
+/*JobEx::JobEx()
 {
 	SetNone();
 	phase = JobEx::GoToNew;
@@ -116,17 +141,15 @@ const Job & JobEx::operator = (const Job & j)
 {
 	this->type = j.type;
 	this->owner = j.owner;
-	this->store = j.store;
 	this->num = j.num;
 	this->surtype = j.surtype;
 	this->phase = JobEx::GoTo;
 	switch (j.type)
 	{
 	case Job::jtPrines:
-		path.SetPosTo(j.store);
+		//path.SetPosTo(j.store);
 		break;
 	case Job::jtWork:
-	case Job::jtOdnes:
 		path.SetPosTo(j.owner);
 		break;
 	};
@@ -136,20 +159,7 @@ const Job & JobEx::operator = (const Job & j)
 void JobEx::SetNone()
 {
 	type = jtNone;
-}
-
-bool JobEx::Step(Troll * t, const float time)
-{
-	bool finish;
-	float posX = t->GetPosX();
-	float posY = t->GetPosY();
-	float puvX = posX;
-	float puvY = posY;
-	finish = path.GetNextPos(time, posX,posY);
-	t->SetAngle(-atan2f(posX-puvX,posY-puvY));
-	t->SetPosition( posX, posY, 0);
-	return finish;
-}
+}*/
 
 /////////////////////////////////////////
 // Path
@@ -185,6 +195,19 @@ void Path::SetPosTo(BecherObject * bo)
 	SetPosTo( bo->GetPosX(), bo->GetPosY());
 }
 
+bool Path::Step(Troll * t, const float time)
+{
+	bool finish;
+	float posX = t->GetPosX();
+	float posY = t->GetPosY();
+	float puvX = posX;
+	float puvY = posY;
+	finish = GetNextPos(time, posX,posY);
+	t->SetAngle(-atan2f(posX-puvX,posY-puvY));
+	// nastavit pozici podle terenu
+	t->SetPosition( posX, posY, GetBecher()->GetLevel()->GetScene()->GetScenePhysics()->GetHeight(posX,posY));
+	return finish;
+}
 
 #endif // BECHER_EDITOR
 

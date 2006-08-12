@@ -33,11 +33,11 @@ int ControlPanel::Draw(IHoe2D * hoe2d)
         hoe2d->Blt(r,this->m_buttons[i].picture);
 	}
 	// uplne dole
-	/*static IHoePicture * pic = (IHoePicture *)GetEngine()->Create("picture hud");
+	static IHoePicture * pic = (IHoePicture *)GetEngine()->Create("picture hud");
 	hoe2d->SetRect(1024, 768);
 	THoeRect r = { 0, 0, 1024, 768};
 	hoe2d->SetAlpha(true);
-	hoe2d->Blt(&r, pic);*/
+	hoe2d->Blt(&r, pic);
 	// tooltip
 	if (m_selbutton != -1)
 	{

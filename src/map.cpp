@@ -2,6 +2,7 @@
 #include "StdAfx.h"
 #include "becher.h"
 #include "id.h"
+#include "game.h"
 #include "buildings.h"
 #include "elements.h"
 #include "troll.h"
@@ -65,7 +66,7 @@ BecherSystemObject * BecherMap::CreateSystemObject(EObjType type)
 {
 	switch (type)
 	{
-	case EBS_Sound:
+	case EBSys_Sound:
 		return new SystemObjectSound(m_scene);
 	default:
 		assert(!"Unknown becher object");
@@ -92,7 +93,7 @@ EObjType BecherMap::GetObjectClass(EObjType type)
 	case EBO_Troll:
 	case EBO_Tree:
 		return type;
-	case EBS_Sound:
+	case EBSys_Sound:
 		return EBC_System;
 	default:
 		assert(!"Unknown becher object");
@@ -197,7 +198,15 @@ bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 			break;
 		};
 		// musi byt zakonceny chunkem
-		if (r.GetFile()->Tell() != st + r.Chunk().size || r.Read<dword>() != 123456789)
+		if (r.GetFile()->Tell() != st + r.Chunk().size)
+		{
+			GetCon()->Printf("Error:Chunk %c%c%c%c size no match. chunk: %d, read size: %d",
+				r.Chunk().chunk & 0xff,(r.Chunk().chunk & 0xff00) >> 8,
+				(r.Chunk().chunk & 0xff0000) >> 16,(r.Chunk().chunk & 0xff000000) >> 24,
+				st + r.Chunk().size, r.GetFile()->Tell());
+			return false;
+		}
+		if (r.Read<dword>() != 123456789)
 		{
 			GetCon()->Printf("Error:Corupt file...");
 			return false;

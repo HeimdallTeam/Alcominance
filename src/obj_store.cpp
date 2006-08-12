@@ -12,10 +12,11 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn),
 	m_stone(EBS_Stone), m_wood(EBS_Wood), m_sugar(EBS_Sugar), m_water(EBS_Water),
 	m_becher(EBS_Becher), m_alcohol(EBS_Alco), m_cane(EBS_Cane)
 {
+	// set owners
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STORE));
 	GetCtrl()->SetFlags(HOF_ADVSHOW);
+	m_cane.SetOwner(this); CRR::Get()->Register(&m_cane);
 }
-
 
 void Store::AdvPaint(IHoePaint3D * h3)
 {
@@ -142,7 +143,7 @@ int Store::GetStatus(ESurType type)
 	return EBSToPointer(type)->GetNum();
 }
 
-bool Store::Idiot(Troll *t)
+bool Store::Idiot(Job *t)
 {
 	return false;
 }

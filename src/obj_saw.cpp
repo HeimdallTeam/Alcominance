@@ -36,7 +36,7 @@ void Saw::AddToWork(Troll *t)
 {
 }
 
-bool Saw::Idiot(Troll *t)
+bool Saw::Idiot(Job *t)
 {
 	return false;
 }

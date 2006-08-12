@@ -4,6 +4,7 @@
 
 #include "level.h"
 #include "panels.h"
+#include "crr.h"
 
 class BecherGame : public HoeGame::Scene, public HoeGame::KeyboardStdInput, public HoeGame::MouseStdInput
 {
@@ -17,6 +18,7 @@ class BecherGame : public HoeGame::Scene, public HoeGame::KeyboardStdInput, publ
 	BecherObject * m_mselect;
 	HoeGame::HoeMusic_Module m_music;
 	BecherLevel m_level;
+	CRR m_crr;
 public:
 	BecherGame();
 	bool Init();

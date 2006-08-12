@@ -4,27 +4,9 @@
 
 #include "object.h"
 
-class ResourceItem
-{
-protected:
-	ESurType m_type;
-	uint m_max;
-	uint m_actual;
-	int m_priority;
-public:
-	ResourceItem(ESurType type);
-	inline ESurType GetType() { return m_type; }
-	inline uint GetNum() { return m_actual; }
-	inline void SetNum(uint num) { m_actual = num; }
-	inline int GetPriority() { return m_priority; }
-	inline void SetPriority(int p) { m_priority = p; }
-	void Register();
-	void Unregister();
-	void Add(uint s) {}
-};
-
 class Troll;
-class Store;
+struct Job;
+
 template <int N> struct WorkT
 {
 	Troll * works[N];
@@ -41,21 +23,6 @@ template <int N> struct WorkT
 	}
 };
 
-/*
- model projekt
- nanosenej material
-
-*/
-
-enum WorkMode
-{
-	wmBuildIn,
-	wmBuild,
-	wmIn,
-	wmWork,
-	wmOut
-};
-
 class BecherBuilding : public BecherObject
 {
 protected:
@@ -68,9 +35,8 @@ public:
 	virtual int AddSur(ESurType type, int s) { assert(!"add surovina"); return 0; }
 	virtual int GetSur(ESurType type, int req, bool upln) { assert(!"get surovina"); return 0; } 
 	virtual void AddToWork(class Troll * t) { assert(!"add to work"); }
-	Store * FindStore();
 #ifndef BECHER_EDITOR
-	virtual bool Idiot(Troll * t) { return false; }
+	virtual bool Idiot(Job * t) { return false; }
 #endif
 };
 

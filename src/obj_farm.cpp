@@ -21,7 +21,7 @@ Farm::Farm(IHoeScene * scn) : BecherBuilding(scn)
 
 void Farm::Update(const double dtime)
 {
-	static bool hl = false;
+	/*static bool hl = false;
 	if (!hl)
 	{
 		GetBecher()->GetInfoPanel()->Add("Farma potrebuje delnika!");
@@ -36,7 +36,7 @@ void Farm::Update(const double dtime)
 			rust = 0;
 			Idiot(worked);
 		}
-	}
+	}*/
 
 }
 
@@ -79,9 +79,9 @@ void Farm::AddToWork(Troll *t)
 	worked = t;
 }
 
-bool Farm::Idiot(Troll *t)
+bool Farm::Idiot(Job *t)
 {
-	Store * s = FindStore();
+	/*Store * s = FindStore();
 
 	HoeGame::LuaFunc f(GetLua(), "i_farm");
 	f.PushTable();

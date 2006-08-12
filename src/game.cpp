@@ -277,7 +277,7 @@ int BecherGame::l_AddTroll(lua_State * L)
 				t->SetPosition(-400, -400, 0);
 				GetBecher()->m_level.AddObject(t);
 				BecherObject * b = GetBecher()->m_level.GetSelectedObject();
-				dynamic_cast<BecherBuilding*>(b)->Idiot(t);
+				t->FindJob(dynamic_cast<BecherBuilding*>(b));
 			}
 			else
 				lp.Error("No object selected");

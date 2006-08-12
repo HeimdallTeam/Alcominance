@@ -1,6 +1,7 @@
 
 #include "StdAfx.h"
 #include "becher.h"
+#include "game.h"
 #include "utils.h"
 #include "buildings.h"
 
