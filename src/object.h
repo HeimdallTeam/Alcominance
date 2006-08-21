@@ -71,9 +71,6 @@ public:
 	virtual void Update(const double t); \
 	virtual bool Select(); \
 	virtual bool Idiot(Job * j); \
-	virtual int AddSur(ESurType type, int s); \
-	virtual int GetSur(ESurType type, int req, bool upln); \
-	virtual void AddToWork(class Troll * t); \
 	virtual int GetNumInfos(); \
 	virtual int GetInfo(int id, char * buff, size_t size);
 #else

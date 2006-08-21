@@ -7,14 +7,14 @@
 class Store : public BecherBuilding
 {
 protected:
-	ResourceItem m_stone;
-	ResourceItem m_wood;
-	ResourceItem m_sugar;
-	ResourceItem m_water;
-	ResourceItem m_becher;
-	ResourceItem m_alcohol;
-	ResourceItem m_cane;
-	ResourceItem * EBSToPointer(ESurType type);
+	ResourceExp m_stone;
+	ResourceExp m_wood;
+	ResourceExp m_sugar;
+	ResourceExp m_water;
+	ResourceExp m_becher;
+	ResourceExp m_alcohol;
+	ResourceExp m_cane;
+	ResourceExp * EBSToPointer(ESurType type);
 public:
 	Store(IHoeScene * scn);
 	//virtual ~Store();
@@ -26,6 +26,8 @@ public:
 	virtual void AdvPaint(class IHoePaint3D * advpaint);
 #ifdef BECHER_EDITOR
 	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
+#else
+	virtual bool InsertSur(ESurType type, uint *s);
 #endif
 
 	DECLARE_BUILDING(EBO_Store)

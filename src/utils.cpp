@@ -22,12 +22,12 @@ void BecherGameSave::WriteChunkEnd()
 	WriteValue<dword>(123456789);
 }
 
-void BecherGameSave::WriteRI(ResourceItem &item)
+void BecherGameSave::WriteRI(ResourceExp &item)
 {
 	WriteValue<int>(item.GetNum());
 }
 
-void BecherGameLoad::ReadRI(ResourceItem &item)
+void BecherGameLoad::ReadRI(ResourceExp &item)
 {
 	item.SetNum(Read<int>());
 }

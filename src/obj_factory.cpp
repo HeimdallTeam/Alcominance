@@ -85,16 +85,6 @@ bool Factory::Idiot(Job *t)
 	return false;
 }
 
-int Factory::GetSur(ESurType type, int req, bool upln)
-{
-	return 0;
-}
-
-int Factory::AddSur(ESurType type, int s)
-{
-	return 0;
-}
-
 int Factory::GetNumInfos()
 {
 	return 0;
@@ -103,10 +93,6 @@ int Factory::GetNumInfos()
 int Factory::GetInfo(int id, char * buff, size_t n)
 {
 	return 0;
-}
-
-void Factory::AddToWork(Troll *t)
-{
 }
 
 #else

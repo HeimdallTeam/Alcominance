@@ -17,28 +17,11 @@ void Shop::Update(const double t)
 {
 }
 
-int Shop::AddSur(ESurType type, int s)
-{
-	
-	//trtina += s;
-	GetBecher()->GetCash()->Add(s);
-	return 0;
-}
-
 bool Shop::Select()
 {
 	if (!IsBuildMode())
         GetLua()->func("s_shop");
 	return true;
-}
-
-int Shop::GetSur(ESurType EBO_Shop, int req, bool upln)
-{
-	return 0;
-}
-
-void Shop::AddToWork(Troll *t)
-{
 }
 
 bool Shop::Idiot(Job * t)

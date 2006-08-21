@@ -8,19 +8,17 @@
 #include "crr.h"
 
 
-static CVar v_numzpr("sugar_work", 1.f, 0);
+static CVar v_numzpr("sugar_speed", 1.f, 0);
 static HoeGame::CTimer t_numzpr(v_numzpr);
 static CVar v_sklad("sugar_max", 50, 0);
+static CVar v_numworks("sugar_maxwork", 4, 0);
 
 ////////////////////////////////////////////////////////
-Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn)
+Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_SUGAR));
 	GetCtrl()->SetFlags(HOF_SHOW);
-	m_cane = 0;
-	m_sugar = 0;
 	//m_mode = wmIn;
-	m_worked.num = 0;
 }
 
 Sugar::~Sugar()
@@ -29,52 +27,24 @@ Sugar::~Sugar()
 
 #ifndef BECHER_EDITOR
 
-int Sugar::AddSur(ESurType type, int s)
+bool Sugar::InsertSur(ESurType type, uint *s)
 {
-	if (type==EBS_Cane)
-	{
-		// kolik se trtiny vejde
-		int max = v_sklad.GetInt() - m_sugar - m_cane;
-		if (s>max)
-		{
-			m_cane += max; return s - max;
-		}
-		else
-		{
-			m_cane += s; return 0;
-		}
-	}
-	else
-	{
-		return s;
-	}
+	assert(type==EBS_Cane);
+	// max
+	return m_cane.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
 }
 
-int Sugar::GetSur(ESurType type, int req, bool upln)
+bool Sugar::SetToWork(Troll * t)
 {
-	if (type!=EBS_Sugar)
-		return 0;
-	if (req <= this->m_sugar)
-	{
-		m_sugar -= req;
-		return req;
-	}
-	else if (!upln)
-	{
-		req = m_sugar;
-		m_sugar = 0;
-		return req;
-	}
-	else
-	{
-		return 0;
-	}
+	if (m_worked.Count() >= (uint)v_numworks.GetInt())
+		return false;
+	m_worked.Add(t);
+	return true;
 }
 
-void Sugar::AddToWork(Troll *t)
+void Sugar::UnsetFromWork(Troll * t)
 {
-	if (!m_worked.Add(t))
-		t->StopWork();
+	m_worked.Remove(t);
 }
 
 int Sugar::GetNumInfos()
@@ -87,30 +57,29 @@ int Sugar::GetInfo(int id, char * buff, size_t size)
 	switch (id)
 	{
 	case 0:
-		sprintf(buff, "cukr: %d", m_sugar);break;
+		sprintf(buff, "cukr: %d", m_sugar.GetNum());break;
 	case 1:
-		sprintf(buff, "trtina: %d", m_cane);break;
+		sprintf(buff, "trtina: %d", m_cane.GetNum());break;
 	};
 	return 1;
 }
 
 void Sugar::Update(const double t)
 {
-	if (m_worked.num > 0)
+	if (m_worked.Count() > 0)
 	{
-		if (m_cane > 0)
+		if (m_cane.GetNum() > 0)
 		{
-			int p = t_numzpr.Compute(t * m_worked.num);
-			if (p > m_cane)
-				p = m_cane;
-			m_cane-=p;
-			m_sugar+=p;
+			uint p = t_numzpr.Compute(t * m_worked.Count());
+			p=m_cane.Get(p,true);
+			m_sugar.Add(&p, v_sklad.GetInt() - GetMiniStoreCount());
+			m_exitdelay.Reset();
 		}
 		else
 		{
-			for (size_t i=0;i < m_worked.num;i++)
-				m_worked.works[i]->StopWork();
-			m_worked.num = 0;
+			// postupne propoustet
+			if (m_exitdelay.AddTime(t, 3.f))
+				m_worked.StopWork();
 		}
 	}
 }
@@ -123,24 +92,6 @@ bool Sugar::Select()
 	return true;
 }
 
-void Sugar::SetWork(Troll *t)
-{
-	Job job;
-	job.owner = this;
-	job.type = Job::jtWork;
-	//t->SetJob(job);
-}
-
-void Sugar::SetIn(Troll *t, Store * s)
-{
-	Job job;
-	job.owner = this;
-	job.type = Job::jtPrines;
-	//job.store = s;
-	job.num = 10;
-	job.surtype = EBS_Cane;
-	//t->SetJob(job);
-}
 #else
 
 bool Sugar::Select()
@@ -169,7 +120,7 @@ bool Sugar::Idiot(Job * j)
 	// zjistit pripadny zdroj pro suroviny
 	// 
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
-	ResourceItem * ri = CRR::Get()->Find(EBS_Cane); // urceni priorit
+	ResourceExp * ri = CRR::Get()->Find(EBS_Cane); // urceni priorit
 	
 	HoeGame::LuaFunc f(GetLua(), "i_sugar");
 	f.PushTable();
@@ -177,11 +128,11 @@ bool Sugar::Idiot(Job * j)
 	// informace o surovinach
 	f.SetTableInteger("max_store", v_sklad.GetInt());
 	f.SetTableInteger("cane_avail", ri ? ri->GetNum():0);
-	f.SetTableInteger("cane", m_cane);
-	f.SetTableInteger("sugar", m_sugar);
+	f.SetTableInteger("cane", m_cane.GetNum());
+	f.SetTableInteger("sugar", m_sugar.GetNum());
 	// works
-	f.SetTableInteger("works", this->m_worked.num);
-	f.SetTableInteger("works_free", this->m_worked.NumFree());
+	f.SetTableInteger("works", this->m_worked.Count());
+	f.SetTableInteger("works_max", v_numworks.GetInt());
 	f.Run(1);
 	if (f.IsNil(-1))
 	{
@@ -191,7 +142,7 @@ bool Sugar::Idiot(Job * j)
 
 	// prevest zpatky na job
 	int r = f.GetTableInteger("type", -1); // typ prace
-	j->percent = f.GetTableInteger("percent", -1); // na kolik procent je vyzadovano
+	j->percent = f.GetTableFloat("percent", -1); // na kolik procent je vyzadovano
 	j->owner = this;
 	switch (r)
 	{

@@ -21,21 +21,6 @@ bool Saw::Select()
 	return true;
 }
 
-int Saw::AddSur(ESurType type, int s)
-{
-
-	return 0;
-}
-
-int Saw::GetSur(ESurType type, int req, bool upln)
-{
-	return 0;
-}
-
-void Saw::AddToWork(Troll *t)
-{
-}
-
 bool Saw::Idiot(Job *t)
 {
 	return false;

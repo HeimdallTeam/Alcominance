@@ -8,19 +8,22 @@ class Sugar : public FactoryBuilding, TrollList
 {
 protected:
 	// trolls
-	int m_cane;
-	int m_sugar;
+	ResourceImp m_cane;
+	ResourceExp m_sugar;
 	//WorkMode m_mode;
-	WorkT<4> m_worked;
+	TrollList m_worked;
+	HoeGame::StopWatch m_exitdelay;
+	inline const int GetMiniStoreCount() const { return m_cane.GetNum() + m_sugar.GetNum(); }
 public:
 	Sugar(IHoeScene * scn);
 	virtual ~Sugar();
-	void SetWork(Troll *);
-	void SetOut(Troll *t, Store *s );
-	void SetIn(Troll *t, Store * s);
 
 #ifdef BECHER_EDITOR
 	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
+#else
+	virtual bool SetToWork(Troll * t);
+	virtual void UnsetFromWork(Troll * t);
+	virtual bool InsertSur(ESurType type, uint *s);
 #endif
 
 	DECLARE_BUILDING(EBO_Sugar)

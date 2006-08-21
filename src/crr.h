@@ -3,26 +3,51 @@
 
 #include "buildings.h"
 
-class ResourceItem
+class ResourceBase
+{
+protected:
+	uint m_actual;
+public:
+	ResourceBase() { m_actual = 0; }
+	inline uint GetNum() const { return (int)m_actual; }
+	inline void SetNum(uint num) { m_actual = num; }
+	bool Add(uint *s, int max);
+	/**
+	* Vybiraci funkce
+	* @param p Zda brat i jen cast
+	*/
+	uint Get(uint req, bool p);
+};
+
+class ResourceImp : public ResourceBase
+{
+public:
+};
+
+enum ESurPriority
+{
+	// nevydavat
+	// spis zanechat
+	// normalni
+	// zbavit se
+};
+
+class ResourceExp : public ResourceBase
 {
 protected:
 	ESurType m_type;
 	uint m_max;
-	uint m_actual;
-	int m_priority;
+	ESurPriority m_priority;
 	BecherObject * m_owner;
 public:
-	ResourceItem(ESurType type);
+	ResourceExp(ESurType type);
 	void SetOwner(BecherObject * own) { m_owner = own; }
 	inline BecherObject * GetOwner() { assert(m_owner); return m_owner; }
 	inline ESurType GetType() { return m_type; }
-	inline uint GetNum() { return m_actual; }
-	inline void SetNum(uint num) { m_actual = num; }
-	inline int GetPriority() { return m_priority; }
-	inline void SetPriority(int p) { m_priority = p; }
+	inline ESurPriority GetPriority() { return m_priority; }
+	inline void SetPriority(ESurPriority p) { m_priority = p; }
 	void Register();
 	void Unregister();
-	void Add(uint s) {}
 };
 
 /**
@@ -33,14 +58,16 @@ class CRR
 {
 private:
     static CRR* this_;
-	HoeGame::PtrList<ResourceItem*> m_items[EBS_Max];
-	ResourceItem * s;
+	HoeGame::PtrSet<ResourceExp*> m_items[EBS_Max];
 public:
     CRR();
     ~CRR();
 	static CRR * Get();
-    void Register(ResourceItem* item);
-	ResourceItem * Find(ESurType type);
+    void Register(ResourceExp* item);
+	/**
+	* Najit podle priority, obsahu, vzdalenosti
+	*/
+	ResourceExp * Find(ESurType type);
 };
 
 

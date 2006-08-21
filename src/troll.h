@@ -18,9 +18,9 @@ public:
 enum EPhaseJob
 {
 	PhaseStart,
-	GoTo,
-	GoFrom,
-	GoToNew,
+	GoToSource,
+	GoToOwner,
+	Works,
 };
 
 enum EPhaseResult
@@ -33,29 +33,28 @@ enum EPhaseResult
 class Troll : public BecherObject
 {
 	//bool MakeStep(Task * j, float step);
-#ifndef BECHER_EDITOR
 	Job m_job; // co ma aktualne na praci
 	EPhaseJob m_phase; // faze vykonavane prace
 	Path m_path; // jeho cesta
+
 	ESurType m_surtype; // co ma u sebe
-	int m_numsur; // kolik ma u sebe
+	uint m_numsur; // kolik ma u sebe
+
 	EPhaseResult MakePhase(const double t);
-#endif
 public:
 	Troll(IHoeScene * scn);
 	~Troll();
 
 	virtual EObjType GetType() { return EBO_Troll; }
-#ifndef BECHER_EDITOR
-    virtual void Update(const double t);
+
+	virtual void Update(const double t);
 	virtual bool Select();
 
-	void MakeJob(const Job & j);
+	void SetJob(const Job & j);
 	void StopWork();
 	
 	//Job::Type GetActJob() { return job.type; }
 	bool FindJob(BecherBuilding * prior);
-#endif
 };
 
 

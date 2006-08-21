@@ -7,21 +7,9 @@
 class Troll;
 struct Job;
 
-template <int N> struct WorkT
-{
-	Troll * works[N];
-	size_t num;
-	bool Add(Troll * t)
-	{
-		if (num < N) works[num++]=t;
-		else return false;
-		return true;
-	}
-	size_t NumFree()
-	{
-		return N - num;
-	}
-};
+/**
+* Vsechno co ma spolecneho s funkcni budovou
+*/
 
 class BecherBuilding : public BecherObject
 {
@@ -32,12 +20,11 @@ public:
 	bool StartBuilding(int gold, int wood, int stone);
 	virtual bool Save(BecherGameSave &w);
 	virtual bool Load(BecherGameLoad &r);
-	virtual int AddSur(ESurType type, int s) { assert(!"add surovina"); return 0; }
-	virtual int GetSur(ESurType type, int req, bool upln) { assert(!"get surovina"); return 0; } 
-	virtual void AddToWork(class Troll * t) { assert(!"add to work"); }
-#ifndef BECHER_EDITOR
+	virtual bool InsertSur(ESurType type, uint *s) { assert(!"add surovina"); return false; }
+	virtual bool SetToWork(Troll * t) { assert(!"add to work"); return false; }
+	virtual void UnsetFromWork(Troll * t) { assert(!"add to work"); }
 	virtual bool Idiot(Job * t) { return false; }
-#endif
+
 };
 
 class FactoryBuilding : public BecherBuilding
@@ -54,15 +41,11 @@ public:
 * Dokaze jim davat rozkazy
 * Prideluje praci
 */
-class TrollList
+class TrollList : public HoeGame::PtrSet<Troll *>
 {
-protected:
-	Troll *  m_trolls[10];
-	int m_numtrolls;	
 public:
-	TrollList() { m_numtrolls = 0; }
-	void RegisterTroll(Troll * t);
-	void UnregisterTroll(Troll * t);
+	TrollList() { }
+	void StopWork();
 };
 
 // neni cukr -> vyslany
@@ -72,7 +55,6 @@ public:
 // pokud najdou praci registruji se, pokud ne, odregistruji se
 // idiot prideluje praci, objednava zakazky, atd
 // jakmile trol, splni ukol, prijde zpet 
-
 
 
 class HerbeWoman : public BecherBuilding

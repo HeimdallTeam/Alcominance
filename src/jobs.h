@@ -4,6 +4,7 @@
 
 class BecherBuilding;
 class Troll;
+class ResourceExp;
 
 struct Job
 {
@@ -14,7 +15,7 @@ struct Job
 		jtWork,
 	} type;
 	BecherBuilding * owner;
-	ResourceItem * ritem;
+	ResourceExp * ritem;
 	ESurType surtype;
 	int num;
 	float percent;

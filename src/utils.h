@@ -2,7 +2,7 @@
 #ifndef _BECHER_UTILS_H_
 #define _BECHER_UTILS_H_
 
-class ResourceItem;
+class ResourceExp;
 
 #define ID_CHUNK(a,b,c,d) ((a) | (b) << 8 | (c) << 16 | (d) << 24)
 #define ID_BECHERFILE ID_CHUNK('b','m','a','p')
@@ -22,7 +22,7 @@ class BecherGameSave : public HoeFileWriter
 	size_t m_lastsizepos;
 public:
 	BecherGameSave(XHoeFile * f) : HoeFileWriter(f) {}
-	void WriteRI(ResourceItem & item);
+	void WriteRI(ResourceExp & item);
 	void WriteChunk(unsigned long chunk, unsigned long ver);
 	void WriteChunkEnd();
 };
@@ -44,7 +44,7 @@ public:
 			chunk.chunk = 0;
 		return chunk.chunk != 0;
 	}
-	void ReadRI(ResourceItem & item);
+	void ReadRI(ResourceExp & item);
 	bool ReadHeader();
 };
 

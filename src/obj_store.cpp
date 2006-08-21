@@ -81,7 +81,7 @@ bool Store::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
-ResourceItem * Store::EBSToPointer(ESurType type)
+ResourceExp * Store::EBSToPointer(ESurType type)
 {
 	switch (type)
 	{
@@ -105,31 +105,9 @@ ResourceItem * Store::EBSToPointer(ESurType type)
 	return NULL;
 }
 
-int Store::AddSur(ESurType type, int s)
+bool Store::InsertSur(ESurType type, uint *s)
 {
-	EBSToPointer(type)->Add(s);
-	return 0;
-}
-
-int Store::GetSur(ESurType type, int req, bool upln)
-{
-	/*ResourceItem * s = EBSToPointer(type);
-	if (req <= s-)
-	{
-		*s -= req;
-		return req;
-	}
-	else if (!upln)
-	{
-		req = *s;
-		*s = 0;
-		return req;
-	}
-	else
-	{
-		return 0;
-	}*/
-	return 0;
+	return EBSToPointer(type)->Add(s, 10000000);
 }
 
 void Store::Update(const double t)
@@ -146,10 +124,6 @@ int Store::GetStatus(ESurType type)
 bool Store::Idiot(Job *t)
 {
 	return false;
-}
-
-void Store::AddToWork(Troll *t)
-{
 }
 
 int Store::GetNumInfos()

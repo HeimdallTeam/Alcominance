@@ -11,7 +11,6 @@ class Destilate : public FactoryBuilding
 protected:
 	int m_sugar;
 	int m_alco;
-	WorkT<4> m_worked;
 public:
 	Destilate(IHoeScene * scn);
 	// virtual ~Destilate();

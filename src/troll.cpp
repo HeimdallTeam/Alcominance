@@ -14,13 +14,12 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_TROLL));
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE);
 	memset(&m_job, 0, sizeof(m_job));
+	m_numsur = 0;
 }
 
 Troll::~Troll()
 {
 }
-
-#ifndef BECHER_EDITOR
 
 void Troll::Update(const double t)
 {
@@ -39,29 +38,55 @@ void Troll::Update(const double t)
 			if (m_phase == PhaseStart)
 			{
 				// nastavit novou cestu na misto urceni
-				m_phase = GoTo;
+				m_phase = GoToSource;
 				m_path.SetPosTo(m_job.ritem->GetOwner());
 			}
-			else if (m_phase == GoTo)
+			else if (m_phase == GoToSource)
 			{
+				// vyjmout surovinu
+
 				//job.sur = job.ritem->GetSur(job.surtype, job.num, false);
-				m_path.SetPosTo(m_job.owner);
-				m_phase = GoFrom;
+				//
+				assert(m_job.ritem);
+				m_surtype = m_job.surtype;
+				assert(m_surtype == m_job.ritem->GetType());
+				m_numsur = m_job.ritem->Get(10,true);
+				// jestli uz nic neni hledat novou praci
+				if (m_numsur > 0)
+				{
+					m_path.SetPosTo(m_job.owner);
+					m_phase = GoToOwner;
+				}
+				else
+				{
+					FindJob(m_job.owner);
+					/*!!!*/ // dodelat aby kdyz nebude prace tak nic
+				}
 			}
-			else if (m_phase == GoFrom)
+			else if (m_phase == GoToOwner)
 			{
+				// odevzdat surovinu, mozna by mohl cekat dokud nebude volno ve skladu
+				/*!!!*/
+				assert(m_job.owner);
+				m_job.owner->InsertSur(m_surtype, &m_numsur);
 				//job.owner->AddSur(job.surtype, job.sur);
 				FindJob(m_job.owner);
 			}
 			break;
-		/*case Job::jtWork:
-			if (job.phase == JobEx::GoTo)
+		case Job::jtWork:
+			if (m_phase == PhaseStart)
 			{
-				job.owner->AddToWork(this);
-				job.phase = JobEx::GoToNew;
+				// nastavit novou cestu na misto urceni
+				m_phase = GoToOwner;
+				m_path.SetPosTo(m_job.owner);
+			}
+			else if (m_phase == GoToOwner)
+			{
+				m_job.owner->SetToWork(this);
+				m_phase = Works;
 			}
 			break;
-		case Job::jtNone:
+		/*case Job::jtNone:
 			FindJob(NULL);
 			break;*/
 		};
@@ -74,8 +99,8 @@ EPhaseResult Troll::MakePhase(const double t)
 	{
 	case PhaseStart:
 		return PhaseEnd;
-	case GoTo:
-	case GoFrom:
+	case GoToOwner:
+	case GoToSource:
 		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
 			return PhaseEnd;
 	}
@@ -88,7 +113,7 @@ bool Troll::Select()
 	return true;
 }
 
-void Troll::MakeJob(const Job & j)
+void Troll::SetJob(const Job & j)
 {
 	//job = j; nastaveni zakladnich vlastnosti (treba cesty atd)
 	m_job = j;
@@ -98,7 +123,7 @@ void Troll::MakeJob(const Job & j)
 
 void Troll::StopWork()
 {
-	//FindJob(NULL);
+	FindJob(NULL);
 }
 
 bool Troll::FindJob(BecherBuilding * pref)
@@ -106,12 +131,12 @@ bool Troll::FindJob(BecherBuilding * pref)
 	Job job;
 	if (pref && pref->Idiot(&job))
 	{
-		MakeJob(job);
+		SetJob(job);
 		return true;
 	}
 	if (m_job.owner && m_job.owner->Idiot(&job)) 
 	{
-		MakeJob(job);
+		SetJob(job);
 		return true;
 	}
 	/*if (job.type == Job::jtNone || !job.owner->Idiot(this))
@@ -209,5 +234,5 @@ bool Path::Step(Troll * t, const float time)
 	return finish;
 }
 
-#endif // BECHER_EDITOR
+
 

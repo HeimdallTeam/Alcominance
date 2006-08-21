@@ -46,39 +46,6 @@ bool Farm::Select()
 	return true;
 }
 
-int Farm::AddSur(ESurType type, int s)
-{
-
-	return 0;
-}
-
-int Farm::GetSur(ESurType type, int req, bool upln)
-{
-	if (type != EBS_Cane)
-		return 0;
-	if (req <= this->skliz)
-	{
-		skliz -= req;
-		return req;
-	}
-	else if (!upln)
-	{
-		req = skliz;
-		skliz = 0;
-		return req;
-	}
-	else
-	{
-		return 0;
-	}
-	return 0;
-}
-
-void Farm::AddToWork(Troll *t)
-{
-	worked = t;
-}
-
 bool Farm::Idiot(Job *t)
 {
 	/*Store * s = FindStore();

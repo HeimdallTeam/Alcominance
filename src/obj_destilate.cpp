@@ -15,58 +15,9 @@ Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_DESTILATE));
 	m_sugar = m_alco = 0;
-	m_worked.num = 0;
 }
 
 #ifndef BECHER_EDITOR
-
-int Destilate::AddSur(ESurType type, int s)
-{
-	if (type==EBS_Sugar)
-	{
-		// kolik se trtiny vejde
-		int max = v_sklad.GetInt() - m_sugar - m_alco;
-		if (s>max)
-		{
-			m_sugar += max; return s - max;
-		}
-		else
-		{
-			m_sugar += s; return 0;
-		}
-	}
-	else
-	{
-		return s;
-	}
-}
-
-int Destilate::GetSur(ESurType type, int req, bool upln)
-{
-	if (type != EBS_Alco)
-		return 0;
-	if (req <= m_alco)
-	{
-		m_alco -= req;
-		return req;
-	}
-	else if (!upln)
-	{
-		req = m_alco;
-		m_alco = 0;
-		return req;
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-void Destilate::AddToWork(Troll *t)
-{
-	if (!m_worked.Add(t))
-		t->StopWork();
-}
 
 bool Destilate::Select()
 {
@@ -82,7 +33,7 @@ bool Destilate::Idiot(Job * t)
 
 void Destilate::Update(const double t)
 {
-	if (m_worked.num > 0)
+	/*if (m_worked.num > 0)
 	{
 		if (m_sugar > 0)
 		{
@@ -99,7 +50,7 @@ void Destilate::Update(const double t)
 			m_worked.num = 0;
 		}
 	}
-	/*if (IsBuildMode())
+	if (IsBuildMode())
 	{
 		m_buildproc += (float)(t * 20);
 		if (m_buildproc >= 100.f)

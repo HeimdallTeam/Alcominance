@@ -7,7 +7,15 @@
 #include "troll.h"
 #include "obj_store.h"
 
-
+// premistit
+void TrollList::StopWork()
+{
+	// kvuli optimalizaci je lepsi pozpatku, protoze oni se hned z toho seznamu vymazavaj
+	for (int i=Count()-1;i >= 0;i--)
+	{
+		Get(i)->StopWork();
+	}
+}
 
 /////////////////////////////////////////////////////////
 BecherBuilding::BecherBuilding(IHoeScene * scn) : BecherObject(scn)
