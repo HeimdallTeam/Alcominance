@@ -45,7 +45,7 @@ class TrollList : public HoeGame::PtrSet<Troll *>
 {
 public:
 	TrollList() { }
-	void StopWork();
+	void OneStopWork();
 };
 
 // neni cukr -> vyslany

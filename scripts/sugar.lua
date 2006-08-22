@@ -10,15 +10,20 @@ function s_cukr()
  PlaySound(ID_TESTSOUND)
 end
 
-
+--max_store kolik se vejde do skladu
+--cane_avail kolik je trtiny k dispozici
+--cane trtiny v miniskladu
+--sugar cukro v miniskladu
+--works pocet pracujicich
+--works_max max. pocet pracujicich
 function i_sugar(b)
  -- tady pujde hlavne o to vychytat kdy nosit a kdy pracovat
  -- jako vstup je struktura se informacema o budove
  
- print("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
+ info("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
  -- pokud je nejaky cukr tak odnest
  -- jestlize se trtina vejde tak trtina
- if b.cane > 1 then
+ if b.cane > 1 and b.works == 0 then
      job = { type = 1, percent = 90 }
      return job 
  end

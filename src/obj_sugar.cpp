@@ -79,7 +79,11 @@ void Sugar::Update(const double t)
 		{
 			// postupne propoustet
 			if (m_exitdelay.AddTime(t, 3.f))
-				m_worked.StopWork();
+			{
+				m_exitdelay.Reset();
+				// propustit jednoho workera
+				m_worked.OneStopWork();
+			}
 		}
 	}
 }

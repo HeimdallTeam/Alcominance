@@ -20,6 +20,7 @@ enum EPhaseJob
 	PhaseStart,
 	GoToSource,
 	GoToOwner,
+	GoToEnd,
 	Works,
 };
 

@@ -85,6 +85,11 @@ void Troll::Update(const double t)
 				m_job.owner->SetToWork(this);
 				m_phase = Works;
 			}
+			else if (m_phase == GoToEnd)
+			{
+				m_job.owner->UnsetFromWork(this);
+				FindJob(m_job.owner);
+			}
 			break;
 		/*case Job::jtNone:
 			FindJob(NULL);
@@ -98,11 +103,17 @@ EPhaseResult Troll::MakePhase(const double t)
 	switch (m_phase)
 	{
 	case PhaseStart:
+	case GoToEnd:
 		return PhaseEnd;
 	case GoToOwner:
 	case GoToSource:
 		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
 			return PhaseEnd;
+		break;
+	case Works:
+		return PhaseContinue;
+	default:
+		assert(!"Unknown phase");
 	}
 	return PhaseContinue;
 }
@@ -123,7 +134,10 @@ void Troll::SetJob(const Job & j)
 
 void Troll::StopWork()
 {
-	FindJob(NULL);
+	// nastavit na hledani
+	// pokud pracuje tak odhlasit z prace
+	if (m_phase == Works)
+		m_phase = GoToEnd;
 }
 
 bool Troll::FindJob(BecherBuilding * pref)
