@@ -762,63 +762,6 @@ void BecherEdit::CloseMap()
 	//m_mapfilepath = wxT("");
 }
 
-/////////////////////////////////////
-void BecherEdit::MouseEnter(int absX, int absY)
-{
-	if (m_tool)
-		m_tool->Enter(absX, absY);
-}
-
-void BecherEdit::MouseLeave()
-{
-	if (m_tool)
-		m_tool->Leave();
-}
-
-void BecherEdit::MouseMove(int relX, int relY, int absX, int absY, const wxMouseEvent & ev)
-{
-	if (m_tool)
-		m_tool->Move(relX, relY, absX, absY, ev);
-}
-
-void BecherEdit::MouseLeftDown(const int x, const int y, wxMouseEvent & e)
-{
-	if (m_tool)
-		m_tool->LeftDown(x,y,e);
-}
-
-void BecherEdit::MouseLeftUp(const int x, const int y, wxMouseEvent & e)
-{
-	if (m_tool)
-		m_tool->LeftUp(x,y,e);
-}
-
-void BecherEdit::MouseRightDown(const int x, const int y, wxMouseEvent & e)
-{
-	if (m_tool)
-		m_tool->RightDown(x,y,e);
-}
-
-void BecherEdit::MouseWheel(wxMouseEvent & e)
-{
-	if (m_map)
-	{
-		if (e.ControlDown() && m_tool)
-		{
-			/*BecherObject * o = m_map->GetObject(e.GetX(),e.GetY());
-			if (o)
-				o->SetAngle(o->GetAngle() + e.GetWheelRotation() / 500.f);
-				*/
-			m_tool->Wheel(e);
-		}
-		else if (e.ShiftDown())
-			m_map->GetView()->Zoom(e.GetWheelRotation() / 20.f);
-		else
-			m_map->GetView()->Rotate(e.GetWheelRotation() / 400.f);
-	}
-		
-}
-
 const float move_speed = 8.f;
 
 void BecherEdit::KeyDown(wxKeyEvent& e)
@@ -869,16 +812,6 @@ void BecherEdit::KeyDown(wxKeyEvent& e)
 void BecherEdit::KeyUp(wxKeyEvent& e)
 {
 
-}
-
-void BecherEdit::SetTool(EditorTool *tool)
-{
-	if (m_tool)
-		m_tool->Exit();
-	if (tool)
-		m_tool = tool;
-	else
-		m_tool = new ToolSelect();
 }
 
 void BecherEdit::SetStatus(const wxString &str)

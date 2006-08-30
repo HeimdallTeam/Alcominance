@@ -7,11 +7,6 @@
 #include "editor.h"
 #include "../sysobjs.h"
 
-void EditorTool::RightDown(const int x, const int y, const wxMouseEvent &e)
-{
-	BecherEdit::Get()->SetTool(NULL);
-}
-
 //////////////////////////////////////////////////////
 // ToolSelect
 ToolSelect::ToolSelect()

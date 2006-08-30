@@ -10,28 +10,7 @@ class BecherUndoAction : public HoeEditor::UndoAction
 public:
 };
 
-class EditorTool
-{
-public:
-	EditorTool() {}
-	virtual ~EditorTool() {}
-
-	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e) = 0;
-	virtual void LeftUp(const int x, const int y, const wxMouseEvent & e) {}
-	virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
-	virtual void RightUp(const int x, const int y, const wxMouseEvent & e) {}
-	virtual void Wheel(const wxMouseEvent & e) {}
-	virtual void Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev) {}
-	virtual void Enter(int absX, int absY) {}
-	virtual void Leave() {}
-
-	/**
-	* Funkce ktera zaridi aby se nastroj "vypnul" a automaticky smaze objekt
-	*/
-	virtual void Exit() { delete this; }
-};
-
-class ToolSelect : public EditorTool
+class ToolSelect : public HoeEditor::EditorTool
 {
 protected:
 	BecherObject * m_obj;
@@ -48,7 +27,7 @@ class UndoCreate : public BecherUndoAction
 public:
 };
 
-class ToolCreateObject : public EditorTool
+class ToolCreateObject : public HoeEditor::EditorTool
 {
 protected:
 	BecherObject * m_obj;
@@ -69,7 +48,7 @@ public:
 	virtual void Leave();
 };
 
-class ToolTex : public EditorTool
+class ToolTex : public HoeEditor::EditorTool
 {
 	byte m_set;
 public:
@@ -81,7 +60,7 @@ public:
 
 };
 
-class ToolTerrain : public EditorTool
+class ToolTerrain : public HoeEditor::EditorTool
 {
 	bool lock;
 	int lockx;
@@ -99,7 +78,7 @@ public:
 
 };
 
-class ToolTerrainExp : public EditorTool
+class ToolTerrainExp : public HoeEditor::EditorTool
 {
 public:
 	ToolTerrainExp();

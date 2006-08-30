@@ -10,7 +10,6 @@
 #define _BECHER_EDITOR_H_
 
 class EditorMap;
-class EditorTool;
 
 class BecherResources : public HoeEditor::Resources
 {
@@ -89,7 +88,6 @@ protected:
 	TerrainTextures m_tex;
 	BecherResources m_res;
 	EditorMap *m_map;
-	EditorTool * m_tool;
 	HoeEditor::PropertyGrid * m_prop;
 	HoeEditor::EngineView m_engview;
 	HoeEditor::PanelMgr m_leftpanel;
@@ -134,8 +132,6 @@ public:
 	void CloseMap();
 	void UpdateControls();
 
-	void SetTool(EditorTool * tool);
-
 	void SetStatus(const wxString & str);
 
 	void AddUndo(HoeEditor::UndoAction * action);
@@ -152,7 +148,7 @@ class BecherEditApp : public HoeEditor::App
 	wxLocale m_locale;
 public:
 	virtual HoeEditor::BaseEditor * CreateEditor();
-	virtual void OnPostInit();
+	virtual bool OnPostInit();
 };
 
 #endif // _BECHER_EDITOR_H_
