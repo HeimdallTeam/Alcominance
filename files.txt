@@ -21,6 +21,7 @@ data/ter.hx
 data/terrain.hm
 data/drevorubec.hm
 data/utes.hm
+data/hud.hx
 #resources
 ID_FACTORY="model tovarna" ; Tovarna
 ID_INFO_RING="model info" ; Ring
