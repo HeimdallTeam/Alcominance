@@ -18,11 +18,6 @@ ControlPanel::ControlPanel()
 	m_selbutton = -1;
 }
 
-bool ControlPanel::Init()
-{
-	return true;
-}
-
 int ControlPanel::Draw(IHoe2D * hoe2d)
 {
 	hoe2d->SetRect(800,600);
@@ -32,12 +27,6 @@ int ControlPanel::Draw(IHoe2D * hoe2d)
 		hoe2d->PaintRect(r->left-3,r->right+3,r->top-3,r->bottom+3,i==m_selbutton ? 0xffff0000:0x80ff0000,true);
         hoe2d->Blt(r,this->m_buttons[i].picture);
 	}
-	// uplne dole
-	static IHoePicture * pic = (IHoePicture *)GetEngine()->Create("picture hud");
-	hoe2d->SetRect(1024, 768);
-	THoeRect r = { 0, 0, 1024, 768};
-	hoe2d->SetAlpha(true);
-	hoe2d->Blt(&r, pic);
 	// tooltip
 	if (m_selbutton != -1)
 	{
@@ -50,7 +39,7 @@ int ControlPanel::Draw(IHoe2D * hoe2d)
 
 int ControlPanel::l_AddButton(lua_State * L)
 {
-	LuaParam lp(L);
+	/*LuaParam lp(L);
 	if (lp.CheckPar(3,"s*s", "AddButton"))
 	{
 		const char * tt;
@@ -59,18 +48,18 @@ int ControlPanel::l_AddButton(lua_State * L)
 		else
 			tt = GetLang()->Get(lp.GetNum(-2));
 		GetBecher()->GetControlPanel()->AddButton(lp.GetNum(-3),lp.GetString(-1),tt);
-	}
+	}*/
 	return 0;
 }
 
 int ControlPanel::l_ClearButtons(lua_State * L)
 {
-	LuaParam lp(L);
+	/*LuaParam lp(L);
 	if (lp.CheckPar(0,"","ClearButtons"))
 	{
 		ControlPanel * cp = GetBecher()->GetControlPanel();
 		cp->m_selbutton = -1;
-	}
+	}*/
 	return 0;
 }
 
@@ -284,176 +273,6 @@ bool ControlPanel::AddToList(int idlist, int id)
 	return AddSpriteToList(l,id);
 }
 */
-
-//////////////////////////////////////////////////////////////////
-
-int InfoPanel::Info::comp(const void * v1,const void *v2)
-{
-	const Info * p1 = (Info*)v1;
-	const Info * p2 = (Info*)v2;
-
-	if (!p1->visible)
-	{
-		if (p2->visible)
-			return 1;
-		else
-			return 0;
-	}
-	
-	if (!p2->visible)
-		return -1;
-
-	if (p1->y < p2->y)
-		return -1;
-	else
-		return 1;
-}
-
-InfoPanel::InfoPanel()
-{
-	font = NULL;
-	memset(m_infos,0,sizeof(m_infos));
-}
-
-InfoPanel::~InfoPanel()
-{
-}
-
-bool InfoPanel::Init(float min, float bottom, float left)
-{
-	font = (IHoeFont*)GetResMgr()->ReqResource(ID_INFO_FONT);
-
-	stepsize = font->GetTextHeight();
-	minheight = min;
-	startheight = bottom - stepsize;
-
-	return true;
-}
-
-int InfoPanel::Draw(IHoe2D * hoe2d)
-{
-	hoe2d->SetRect(800,600);
-	float t = GetEngine()->SysFloatTime();
-
-	// vypsat info o objektu
-	BecherObject * o = GetBecher()->GetLevel()->GetSelectedObject();
-	if (o)
-	{
-		char buff[200];
-		float top = 600.f-(o->GetNumInfos()+1)*20;
-		for (int i=0; i < o->GetNumInfos();i++)
-		{
-			o->GetInfo(i, buff, sizeof(buff));
-			font->DrawText(30, top, 0xff00cc00, buff);
-			top += 20;
-		}
-	}
-
-	// predelat cas by se mel odecitat 
-
-	for (int i=0;i < MAX_INFOS;i++)
-	{
-		if (m_infos[i].visible)
-		{
-			const float tt = m_infos[i].totime - t;
-			unsigned long alpha;
-			if (tt < 0)
-			{
-				m_infos[i].visible = false;
-				continue;
-			}
-			alpha = (unsigned long)(tt * float(0x80));
-			if (alpha > 0xff) alpha = 0xff;
-
-			font->DrawText(5,m_infos[i].y,((alpha & 0xff) << 24) | 0x00ffffff,m_infos[i].info);
-		}
-	}
-	
-	return 0;
-}
-
-void InfoPanel::Add(const char * str)
-{
-	int a = -1;
-
-	for (int i=0;i < MAX_INFOS;i++)
-	{
-		if (m_infos[i].visible)
-		{
-			// move up
-			m_infos[i].y -= stepsize;
-			if (m_infos[i].y < minheight)
-			{
-				m_infos[i].visible = false;
-			}
-			else
-				continue;
-		}
-		
-		if (a == -1)
-		{
-			a = i;
-		}
-	}
-
-	if (a == -1) // get top list
-	{
-		a = 0;
-		for (int i=0;i < MAX_INFOS;i++)
-		{
-			if (m_infos[i].visible && m_infos[a].y > m_infos[i].y)
-			{
-				a = i;
-			}
-		}
-	}
-
-	assert(a != -1);
-
-	strcpy(m_infos[a].info,str);
-	m_infos[a].y = startheight;
-	m_infos[a].totime = GetEngine()->SysFloatTime() + 5.f;
-	m_infos[a].visible = true;
-
-	//qsort(m_infos,MAX_INFOS,sizeof(Info),Info::comp);
-
-	//GetConsole()->Con_Print(str);
-}
-
-void InfoPanel::Addf(const char * format, ...)
-{
-	static char szBuff[512];
-
-	va_list args;
-
-	va_start(args, format);
-#ifdef _WIN32
-	_vsnprintf( szBuff, 512, format, args );
-#else
-	vsnprintf( szBuff, 512, format, args );
-#endif
-	va_end(args);
-
-	Add(szBuff);
-}
-
-void InfoPanel::Add(int id)
-{
-	Add(GetLang()->GetString(id));
-}
-
-int InfoPanel::l_info(lua_State * L)
-{
-	LuaParam lp(L);
-	if (lp.GetNumParam() != 1)
-		return 0;
-
-	//if (lp.IsNum(-1))
-	//	GetBecher()->GetInfoPanel()->Add(GetLang()->GetString(lp.GetNum(-1)));
-	//if (lp.IsString(-1))
-		GetBecher()->GetInfoPanel()->Add(lp.GetString(-1));
-	return 0;
-}
 
 
 

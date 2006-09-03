@@ -29,11 +29,11 @@ BecherBuilding::BecherBuilding(IHoeScene * scn) : BecherObject(scn)
 #ifndef BECHER_EDITOR
 bool BecherBuilding::StartBuilding(int gold, int wood, int stone)
 {
-	if (!GetBecher()->GetCash()->Add(-gold))
+	/*if (!GetBecher()->GetCash()->Add(-gold))
 	{
 		GetBecher()->GetInfoPanel()->Add(1);
 		return false;
-	}
+	}*/
 
 	return true;
 }

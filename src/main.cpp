@@ -27,10 +27,10 @@ int main(int argc,char * argv[])
 	BGConsole con;
 
 	con.SetFileLogging("becher.log");
-	g_con = &con;
-	con.Con_Print("***********************");
-	con.Con_Print("*     Becher Game!    *");
-	con.Con_Print("***********************");
+
+	con.Con_Print("****************************");
+	con.Con_Print("*     Alcominance Game!    *");
+	con.Con_Print("****************************");
 
 	if (!Configure(CONF_PARAM))
 		return 0;

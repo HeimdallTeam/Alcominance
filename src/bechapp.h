@@ -2,9 +2,12 @@
 #ifndef _BECHER_APP_H_
 #define _BECHER_APP_H_
 
+class BecherGame;
+
 class BechApp : public HoeGame::HoeApp
 {
 	HoeGame::Scene * scene;
+	BecherGame *m_game;
 public:
 	BechApp(HOE_INSTANCE instance, HoeGame::Console * con);
 	virtual const char * GetAppName() { return "BecherGame"; }
@@ -12,6 +15,7 @@ public:
 	virtual void OnUpdate(float dtime);
 	void SetScene(HoeGame::Scene * scn);
 	int RunGame();
+	inline BecherGame * GetGame() { return m_game; }
 };
 
 #endif // _BECHER_APP_H_

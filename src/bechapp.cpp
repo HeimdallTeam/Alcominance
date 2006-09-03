@@ -6,7 +6,7 @@
 
 HoeGame::CVar v_level("map", "test.bm", 0);
 
-class BecherLogo : public HoeGame::Scene
+class BecherLogo : public HoeGame::Scene, public XHoe2DCallback
 {
 	IHoeFont * font;
 	IHoe3DEngine * engine;
@@ -46,16 +46,18 @@ BechApp::BechApp(HOE_INSTANCE instance, HoeGame::Console * con) : HoeApp(instanc
 
 bool BechApp::InitGame()
 {
-	this->SetTitle("Becher Game!");
-
 	// create scen
 	BecherLogo logo(GetEngine());
 	SetScene(&logo);
 	Frame(0);
-	if (!InitBecher(this))
+	// vytvorit game
+	m_game = new BecherGame();
+
+	HoeGetInfo(GetEngine())->LoadFont("resource/font.ttf",12); 
+
+	if (!m_game->Init())
 		return false;
 
-	GetBecher()->Init();
 	SetScene(NULL);
 	return true;
 }

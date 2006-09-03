@@ -12,16 +12,83 @@ BecherLevel::BecherLevel()
 	this->m_build = NULL;
 	m_filename[0] = '\0';
 	m_select = NULL;
+	m_mselect = NULL;
+	//m_info.Init(10.f,550.f, 50.f);
+	//m_controls.Init();
+
 }
+
+void BecherLevel::_Paint(IHoe2D * h2d)
+{
+	// hud
+	m_hud.Draw(h2d);
+	m_controls.Draw(h2d);
+	m_info.Draw(h2d);
+	GetCash()->Paint(h2d);
+	if (GetCon()->IsActive())
+        GetCon()->Draw(h2d);
+
+}
+
+void BecherLevel::OnSet()
+{
+	HoeGetRef(GetEngine())->SetBackgroundColor(0x00000000);
+	HoeGetInput(GetEngine())->RegisterKeyboard(this);
+		//if (HoeGetRef(GetEngine())->IsFullscreen())
+		//	HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Cursored, this);
+		//else
+	HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Background, this);
+
+	GetScene()->Set2DCallback(this);
+	GetEngine()->SetActiveScene(GetScene());	
+
+}
+
+#define MOVE_STEP 40.f
 
 void BecherLevel::Update(float time)
 {
-	m_timer.Update(time);
-	// update objects
-	for (int i=0;i < this->m_numobj;i++)
+	if (IsPaused())
 	{
-		this->m_obj[i]->Update(time);
+		GetCon()->Update(time);
+		return;
 	}
+	else
+	{
+		m_timer.Update(time);
+		// update objects
+		for (int i=0;i < this->m_numobj;i++)
+		{
+			this->m_obj[i]->Update(time);
+		}
+	}
+
+	if (!GetCon()->IsActive())
+	{
+		if (this->IsKeyDown(HK_UP))
+			GetView()->Move(time * MOVE_STEP,0);
+		if (this->IsKeyDown(HK_DOWN))
+			GetView()->Move(-time * MOVE_STEP,0);
+		if (this->IsKeyDown(HK_RIGHT))
+			GetView()->Move(0,time * MOVE_STEP);
+		if (this->IsKeyDown(HK_LEFT))
+			GetView()->Move(0,-time * MOVE_STEP);
+
+		if (IsKeyDown(HK_MINUS))
+			GetView()->Zoom(20 * time);
+		if (IsKeyDown(HK_EQUALS))
+			GetView()->Zoom(-20 * time);
+			
+		if (IsKeyDown(HK_COMMA))
+			GetView()->Rotate(-time);
+		if (IsKeyDown(HK_PERIOD))
+			GetView()->Rotate(time);
+	}
+	else
+	{
+		GetCon()->Update(time);
+	}
+
 }
 
 void BecherLevel::MouseUpdate(float x, float y)
@@ -168,6 +235,9 @@ bool BecherLevel::LoadGame(BecherGameLoad &r)
 bool BecherLevel::LoadGame(const char *path)
 {
 	Create(CreateScene());
+
+	m_hud.Load("scripts/sugar.menu");
+
 	SetTerrainData();
 
 	HoeGame::HoeFile file;
@@ -193,12 +263,6 @@ bool BecherLevel::LoadGame(const char *path)
 	}
 
 	return true;
-}
-
-Store * BecherLevel::FindBestStore()
-{
-	assert(!"FindBestStore");
-	return NULL;
 }
 
 ////////////////////////////////////////////////
@@ -284,6 +348,162 @@ void BecherCash::Paint(IHoe2D * d2)
 	}
 }
 
+void BecherLevel::OnKeyDown(int key)
+{
+	if (key == HK_GRAVE)
+		GetCon()->Open();
+	else if (key == HK_F9)
+	{
+			if (SaveGame("a.sav"))
+				m_info.Add("Game saved.");
+			else
+				assert(!"game save failed");
+			
+			
+	}
+	/*if (GetCon()->IsActive())
+		GetCon()->*/
+	//m_info.Addf("key down %d",key);
+}
+
+void BecherLevel::OnMouseMove(float X, float Y)
+{
+	bool select = false;
+
+	// select 2d
+	/*select = this->m_controls.MouseMove(X,Y);
+	if (select)
+        MouseLeave();
+	else
+		MouseUpdate(X,Y);
+	*/
+}
+
+void BecherLevel::OnWheel(long p)
+{
+	if (IsShiftKeyDown())
+		GetView()->Zoom(p * 0.1f);
+	else
+		GetView()->Rotate(p * 0.001f);
+}
+
+void BecherLevel::OnLeftButtonUp()
+{
+	int i = m_controls.GetButton(GetMouseX(), GetMouseY());
+	if (i != -1)
+	{
+		// zrusit select
+		m_controls.GetButton(i)->Click();
+		return;
+	}
+
+	this->m_controls.ShowReset();
+	MouseLeftDown(GetMouseX(), GetMouseY());
+}
+
+void BecherLevel::OnLeftButtonDown()
+{
+	//m_info.Addf("button up %d",p);
+
+}
+
+void BecherLevel::OnRightButtonUp()
+{
+	/*if (GetSelectionCount() > 0 && GetSelectedObject(0)->GetType() ==  EBO_Troll)
+	{
+		float x,y;
+		if (GetView()->GetPick(GetMouseX(), GetMouseY(), &x, &y))
+            reinterpret_cast<Troll*>(GetSelectedObject(0))->Go(x,y);
+	}*/
+}
+
+void BecherLevel::OnRightButtonDown()
+{
+	//m_info.Addf("right button up");
+}
+
+void BecherLevel::OnSelectObject(EObjType type, BecherObject* obj)
+{
+	if (obj)
+		obj->Select();
+}
+
+void BecherLevel::AddTroll(float x, float y)
+{
+	/*Troll * t = (Troll*)CreateObject(EBO_Troll);
+	t->SetPosition(-400, -400);
+
+	AddObject(t);
+	t->Go(x,y);
+	t->jobs.Reset();
+	t->jobs.Go(x,y);
+	t->jobs.Msg("Prisel novej tupoun");*/
+}
+
+void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone)
+{
+	if (GetCash()->GetLimitCash() < gold)
+	{
+		GetInfoPanel()->Add(1);
+		return;
+	}
+
+	assert_obj(id);
+	BecherObject * bo = CreateObject((EObjType)id);
+	SetBuildObject( bo, gold, wood, stone);
+}
+
+int BecherLevel::l_AddTroll(lua_State * L)
+{
+	/*HoeGame::LuaParam lp(L);
+	if (lp.CheckPar(1, "b", "AddTroll"))
+	{
+		if (lp.GetBool(-1))
+		{
+			if (GetBecher()->GetSelectedObject())
+			{
+				Troll * t = (Troll*)GetBecher()->CreateObject(EBO_Troll);
+				t->SetPosition(-400, -400, 0);
+				GetBecher()->AddObject(t);
+				BecherObject * b = GetBecher()->GetSelectedObject();
+				t->FindJob(dynamic_cast<BecherBuilding*>(b));
+			}
+			else
+				lp.Error("No object selected");
+		}
+		else
+			GetBecher()->AddTroll(0,0);
+	}*/
+	return 0;
+}
+
+int BecherLevel::l_SetBuilding(lua_State * L)
+{
+	/*HoeGame::LuaParam lp(L);
+	if (lp.CheckPar(4,"nnnn", "SetBuilding"))
+	{
+		GetBecher()->AddBuildObject(lp.GetNum(-4), lp.GetNum(-3), lp.GetNum(-2), lp.GetNum(-1));
+	}*/
+	return 0;
+}
+
+int BecherLevel::l_AddCash(lua_State * L)
+{
+	/*HoeGame::LuaParam lp(L);
+	if (lp.CheckPar(1, "n", "AddCash"))
+	{
+		GetBecher()->GetCash()->Add(lp.GetNum(-1));
+	}*/
+	return 0;
+}
+
+int BecherLevel::l_GetCash(lua_State * L)
+{
+	/*HoeGame::LuaParam lp(L);
+	lp.CheckPar(0,0, "GetCash");
+	lp.PushNum(GetBecher()->GetCash()->GetLimitCash());*/
+	return 1;
+}
 
 
 

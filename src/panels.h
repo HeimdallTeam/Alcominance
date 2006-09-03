@@ -26,7 +26,6 @@ class ControlPanel : public Panel
 protected:
 public:
 	ControlPanel();
-	bool Init();
 	int Draw(IHoe2D * hoe2d);
 	/** zpracovani pohybu mysi, pokud se ma zpracovano,vraci true */
 	bool MouseMove(float X, float Y);
@@ -38,6 +37,12 @@ public:
 
 	LUA_FUNCTION(l_ClearButtons);
 	LUA_FUNCTION(l_AddButton);
+};
+
+class HUD : public HoeGame::Hoe2DFigure
+{
+public:
+//	virtual BaseGui * CreateGUI(const char * type) = 0;
 };
 
 /*#define CPPS_SCRIPT_LENGTH	32
@@ -104,43 +109,5 @@ protected:
 	PanelList * GetList(int id);
 	PanelSprite * GetSprite(int id);
 };*/
-
-#define MAX_INFOS 20
-
-class InfoPanel : public Panel
-{
-	struct Info
-	{
-		bool visible;
-		float y;
-		float totime;
-		char info[512];
-		static int comp(const void *,const void *);
-	};
-
-	Info m_infos[MAX_INFOS];
-	int act;
-	float startheight;
-	float minheight;
-	float stepsize;
-
-	IHoeFont * font;
-
-	float infoStartX,infoStartY;
-	float infoX,infoY;
-
-public:
-	InfoPanel();
-	~InfoPanel();
-
-	bool Init(float min, float bottom, float left);
-	int Draw(IHoe2D * hoe2d);
-
-	void Add(int id);
-	void Add(const char *);
-	void Addf(const char *, ...);
-
-	LUA_FUNCTION(l_info);
-};
 
 #endif // _PANELS_H_
