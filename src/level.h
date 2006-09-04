@@ -32,7 +32,6 @@ public:
 	bool Add(int m) { if (GetLimitCash() < -m) return false; m_cash += m; return true; };
 	int GetValue() { return m_cash; }
 	int GetLimitCash() { return m_cash - m_limit; }
-	void Paint(IHoe2D * d2);
 };
 
 class BecherLevel : public BecherMap, public HoeGame::Scene, public XHoe2DCallback, public HoeGame::KeyboardStdInput, public HoeGame::MouseStdInput

@@ -6,19 +6,26 @@
 
 using namespace HoeGame;
 
-void TButton::Click()
+void BecherButton::OnClick()
 {
 	if (script[0] != 0)
 		GetLua()->func(script);
 }
 
-ControlPanel::ControlPanel()
+HoeGame::BaseGui * HUD::CreateGUI(const char * type)
 {
-	m_numbuttons = 0;
-	m_selbutton = -1;
+	GuiItem * g = NULL;
+#define IS(t) (strcmp(type,t)==0)
+	if (IS("button"))
+		g = new BecherButton;
+	else
+		return Hoe2DFigure::CreateGUI(type);
+
+	m_list.Add(g);
+	return g;
 }
 
-int ControlPanel::Draw(IHoe2D * hoe2d)
+/*int ControlPanel::Draw(IHoe2D * hoe2d)
 {
 	hoe2d->SetRect(800,600);
 	for (int i=0;i < this->m_numbuttons;i++)
@@ -35,9 +42,9 @@ int ControlPanel::Draw(IHoe2D * hoe2d)
 			0xbbb0b0b0, m_buttons[m_selbutton].tooltip);
 	}
 	return 0;
-}
+}*/
 
-int ControlPanel::l_AddButton(lua_State * L)
+int HUD::l_AddButton(lua_State * L)
 {
 	/*LuaParam lp(L);
 	if (lp.CheckPar(3,"s*s", "AddButton"))
@@ -52,7 +59,7 @@ int ControlPanel::l_AddButton(lua_State * L)
 	return 0;
 }
 
-int ControlPanel::l_ClearButtons(lua_State * L)
+int HUD::l_ClearButtons(lua_State * L)
 {
 	/*LuaParam lp(L);
 	if (lp.CheckPar(0,"","ClearButtons"))
@@ -63,7 +70,20 @@ int ControlPanel::l_ClearButtons(lua_State * L)
 	return 0;
 }
 
-int ControlPanel::GetButton(float X, float Y)
+int HUD::l_info(lua_State * L)
+{
+	LuaParam lp(L);
+	if (lp.GetNumParam() != 1)
+		return 0;
+
+	//if (lp.IsNum(-1))
+	//	GetBecher()->GetInfoPanel()->Add(GetLang()->GetString(lp.GetNum(-1)));
+	//if (lp.IsString(-1))
+	//	GetBecher()->GetInfoPanel()->Add(lp.GetString(-1));
+	return 0;
+}
+
+/*int ControlPanel::GetButton(float X, float Y)
 {
 	for (int i=0;i < m_numbuttons;i++)
 	{
@@ -72,15 +92,15 @@ int ControlPanel::GetButton(float X, float Y)
 			return i;
 	}
 	return -1;
-}
+}*/
 
-bool ControlPanel::MouseMove(float X, float Y)
+/*bool ControlPanel::MouseMove(float X, float Y)
 {
 	this->m_selbutton = GetButton(X,Y);
 	return (this->m_selbutton != -1);
-}
+}*/
 
-TButton * ControlPanel::AddButton(int idres, const char * func, const char * tooltip)
+/*TButton * ControlPanel::AddButton(int idres, const char * func, const char * tooltip)
 {
 	m_buttons[m_numbuttons].picture = (IHoePicture*)GetResMgr()->ReqResource(idres);
 	if (func)
@@ -98,7 +118,7 @@ TButton * ControlPanel::AddButton(int idres, const char * func, const char * too
 	m_buttons[m_numbuttons].rect.right = m_buttons[m_numbuttons].rect.left + 32 + 16;
 	
 	return &m_buttons[m_numbuttons++];
-}
+}*/
 
 /////////////////////////////////////
 

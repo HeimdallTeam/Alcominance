@@ -59,9 +59,9 @@ bool BecherGame::Init()
 		return false;
 	if (!GetLua()->Connect(GetApp()->GetFS()))
 		return false;
-	GetLua()->AddFunc("AddButton",ControlPanel::l_AddButton);
-	GetLua()->AddFunc("ClearButtons",ControlPanel::l_ClearButtons);
-	GetLua()->AddFunc("info",InfoPanel::l_info);
+	GetLua()->AddFunc("AddButton",HUD::l_AddButton);
+	GetLua()->AddFunc("ClearButtons",HUD::l_ClearButtons);
+	GetLua()->AddFunc("info",HUD::l_info);
 	GetLua()->AddFunc("AddTroll",BecherLevel::l_AddTroll);
 	GetLua()->AddFunc("SetBuilding",BecherLevel::l_SetBuilding);
 	GetLua()->AddFunc("PlaySound",BecherGame::l_PlaySound);

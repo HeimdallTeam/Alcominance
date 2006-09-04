@@ -22,9 +22,9 @@ void BecherLevel::_Paint(IHoe2D * h2d)
 {
 	// hud
 	m_hud.Draw(h2d);
-	m_controls.Draw(h2d);
-	m_info.Draw(h2d);
-	GetCash()->Paint(h2d);
+	//m_controls.Draw(h2d);
+	//m_info.Draw(h2d);
+	//GetCash()->Paint(h2d);
 	if (GetCon()->IsActive())
         GetCon()->Draw(h2d);
 
@@ -302,52 +302,6 @@ bool BecherCash::Load(int ver, HoeFileReader &r)
 	return true;
 }
 
-void BecherCash::Paint(IHoe2D * d2)
-{
-		// draw digit
-	static IHoePicture * p = GetResMgr()->Get<IHoePicture>(ID_DIGITFONT);
-	d2->SetRect(20,20);
-	const int np = 7;
-	const int rl = 18;
-	const int ll = 15;
-
-	int i = GetValue();
-	bool sign = false;
-	if (i < 0)
-	{
-		sign = true;
-		i = -i;
-	}
-
-	const float pp = ((float)(rl-ll)) / np;
-	float up = rl;
-	if (i == 0)
-	{
-		THoeRect r = {up-pp, 0, up, 1};
-		THoeRect r2={ 0, 0, 1*(60.0/64.0/4), 1*(60.0/64.0/3)};
-		d2->Blt(&r, p, &r2);
-		i = i / 10;
-		up -= pp;
-	}
-	while (i != 0)
-	{
-		THoeRect r = {up-pp, 0, up, 1};
-		int t=i%10;
-		THoeRect r2={ (t%4)*(60.0f/64.0f/4), (t/4)*(60.0f/64.0f/3), (t%4+1)*(60.0f/64.0f/4), (t/4+1)*(60.0f/64.0f/3)};
-		d2->Blt(&r, p, &r2);
-		i = i / 10;
-		up -= pp;
-	}
-	if (sign)
-	{
-		THoeRect r = {up-pp, 0, up, 1};
-		THoeRect r2={ 2*(60.0/64.0/4), 2*(60.0/64.0/3), 3*(60.0/64.0/4), 3*(60.0/64.0/3)};
-		d2->Blt(&r, p, &r2);
-		i = i / 10;
-		up -= pp;
-	}
-}
-
 void BecherLevel::OnKeyDown(int key)
 {
 	if (key == HK_GRAVE)
@@ -355,7 +309,7 @@ void BecherLevel::OnKeyDown(int key)
 	else if (key == HK_F9)
 	{
 			if (SaveGame("a.sav"))
-				m_info.Add("Game saved.");
+				;//m_info.Add("Game saved.");
 			else
 				assert(!"game save failed");
 			
@@ -389,15 +343,15 @@ void BecherLevel::OnWheel(long p)
 
 void BecherLevel::OnLeftButtonUp()
 {
-	int i = m_controls.GetButton(GetMouseX(), GetMouseY());
+	int i = -1;//m_controls.GetButton(GetMouseX(), GetMouseY());
 	if (i != -1)
 	{
 		// zrusit select
-		m_controls.GetButton(i)->Click();
+		//m_controls.GetButton(i)->Click();
 		return;
 	}
 
-	this->m_controls.ShowReset();
+	//this->m_controls.ShowReset();
 	MouseLeftDown(GetMouseX(), GetMouseY());
 }
 
@@ -444,7 +398,7 @@ void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone
 {
 	if (GetCash()->GetLimitCash() < gold)
 	{
-		GetInfoPanel()->Add(1);
+		//GetInfoPanel()->Add(1);
 		return;
 	}
 

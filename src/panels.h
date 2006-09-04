@@ -2,47 +2,28 @@
 #ifndef _PANELS_H_
 #define _PANELS_H_
 
-class Panel
+class BecherButton : public HoeGame::Button
 {
-public:
-};
-
-struct TButton
-{
-	bool enable;
-	IHoePicture * picture;
-	THoeRect rect;
+protected:
 	char tooltip[1024];
 	char script[512];
-	void Click();
-};
-
-class ControlPanel : public Panel
-{
-	//IHoePicture * m_back;
-	TButton m_buttons[64];
-	int m_numbuttons;
-	int m_selbutton; //< vybrane tlacidlo
-protected:
 public:
-	ControlPanel();
-	int Draw(IHoe2D * hoe2d);
-	/** zpracovani pohybu mysi, pokud se ma zpracovano,vraci true */
-	bool MouseMove(float X, float Y);
-	int GetButton(float X, float Y);
-	TButton * GetButton(int index) { return &m_buttons[index]; }
-	int GetNumButtons() { return m_numbuttons; }
-	TButton * AddButton(int idres, const char * func, const char * tooltip);
-	void ShowReset() { m_numbuttons = 0; }
-
-	LUA_FUNCTION(l_ClearButtons);
-	LUA_FUNCTION(l_AddButton);
+	virtual void OnClick();
 };
 
 class HUD : public HoeGame::Hoe2DFigure
 {
 public:
-//	virtual BaseGui * CreateGUI(const char * type) = 0;
+	virtual HoeGame::BaseGui * CreateGUI(const char * type);
+	void AddButton(int idres, const char * func, const char * tooltip);
+	void ShowReset();
+	/** zpracovani pohybu mysi, pokud se ma zpracovano,vraci true */
+	bool MouseMove(float X, float Y);
+
+	LUA_FUNCTION(l_ClearButtons);
+	LUA_FUNCTION(l_AddButton);
+	LUA_FUNCTION(l_info);
+
 };
 
 /*#define CPPS_SCRIPT_LENGTH	32
