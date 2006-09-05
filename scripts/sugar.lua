@@ -1,6 +1,8 @@
 -- funkce pro cukrovar
 
 function c_stavcukr()
+  info("stav cukr")
+  AddCash(456)
   SetBuilding(EBO_Sugar,1000,10,0)
 end
 
@@ -21,10 +23,14 @@ function i_sugar(b)
  -- jako vstup je struktura se informacema o budove
  
  info("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
- -- pokud je nejaky cukr tak odnest
  -- jestlize se trtina vejde tak trtina
  if b.cane > 1 and b.works == 0 then
      job = { type = 1, percent = 90 }
+     return job 
+ end
+ 
+ if b.cane > 25 and b.works_max > b.works then
+      job = { type = 1, percent = 90 }
      return job 
  end
  

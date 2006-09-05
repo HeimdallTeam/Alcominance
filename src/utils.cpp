@@ -16,7 +16,7 @@ void BecherGameSave::WriteChunkEnd()
 {
 	size_t sf = GetFile()->Tell();
 	GetFile()->Seek(m_lastsizepos - sizeof(unsigned long));
-	WriteValue<unsigned long>(sf-m_lastsizepos);
+	WriteValue<unsigned long>((size_t)sf-m_lastsizepos);
 	GetFile()->Seek(sf);
 	// save size
 	WriteValue<dword>(123456789);

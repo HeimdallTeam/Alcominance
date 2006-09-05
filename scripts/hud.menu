@@ -1,0 +1,93 @@
+static
+{
+	name = "pozadi"
+	rect = 0.000000 0.000000 800.000000 600.000000
+	alpha = false
+	picture = "hud"
+}
+button
+{
+	name = "butt_00"
+	rect = 672.112000 487.037048 697.316223 509.259247
+	picture = "obchod_ico"
+}
+button
+{
+	name = "butt_01"
+	rect = 700.116699 487.037048 725.320862 509.259247
+	picture = "up_predpoved"
+}
+button
+{
+	name = "butt_02"
+	rect = 729.054871 487.962952 755.192505 508.333344
+	picture = "studna_ico"
+}
+button
+{
+	name = "butt_03"
+	rect = 758.926514 488.888885 785.997681 509.259247
+	picture = "up_agroinzenyr"
+}
+button
+{
+	name = "butt_04"
+	rect = 673.045532 514.814819 697.316223 538.888916
+	picture = "stromy_ico"
+}
+button
+{
+	name = "butt_05"
+	rect = 699.183228 514.814819 727.187866 539.814819
+	picture = "com_workstop"
+}
+button
+{
+	name = "butt_06"
+	rect = 732.788818 513.888916 757.059509 539.814819
+	picture = "com_release"
+}
+button
+{
+	name = "butt_07"
+	rect = 760.793457 512.962952 786.931152 541.666687
+	picture = "lihovar_ico"
+}
+button
+{
+	name = "butt_08"
+	rect = 673.979004 542.592590 695.449219 564.814819
+	picture = "com_work"
+}
+button
+{
+	name = "butt_09"
+	rect = 5.120000 488.844635 133.119995 596.414368
+	picture = "up_predpoved"
+}
+digicounter
+{
+	name = "cash"
+	rect = 510.720001 1.195219 641.280029 27.490040
+	picture = "digit"
+}
+infopanel
+{
+	name = "info"
+	rect = 14.080000 46.613544 343.040009 473.306763
+	font = "font 'resource/font.ttf' 16"
+}
+font
+{
+	name = "trtina"
+	rect = 170.240005 507.968140 174.080002 509.163361
+	font = "font 'resource/font.ttf' 16"
+	text = "20 trtiny."
+}
+font
+{
+	name = "cukr"
+	rect = 168.960007 543.824707 170.240005 543.824707
+	font = "font 'resource/font.ttf' 16"
+	text = "20 cukru."
+}

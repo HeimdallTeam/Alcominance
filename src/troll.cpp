@@ -15,6 +15,7 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE);
 	memset(&m_job, 0, sizeof(m_job));
 	m_numsur = 0;
+	m_phase = PhaseStart;
 }
 
 Troll::~Troll()
@@ -91,9 +92,9 @@ void Troll::Update(const double t)
 				FindJob(m_job.owner);
 			}
 			break;
-		/*case Job::jtNone:
+		case Job::jtNone:
 			FindJob(NULL);
-			break;*/
+			break;
 		};
 	}
 }

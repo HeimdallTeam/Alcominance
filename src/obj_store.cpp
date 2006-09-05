@@ -7,6 +7,17 @@
 
 float getheight(IHoeModel * m);
 
+
+
+bool Store::SetToWork(Troll * t)
+{
+	return false;
+}
+
+void Store::UnsetFromWork(Troll * t)
+{
+}
+
 ////////////////////////////////////////////////////////////
 Store::Store(IHoeScene * scn) : BecherBuilding(scn), 
 	m_stone(EBS_Stone), m_wood(EBS_Wood), m_sugar(EBS_Sugar), m_water(EBS_Water),
@@ -15,6 +26,12 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn),
 	// set owners
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STORE));
 	GetCtrl()->SetFlags(HOF_ADVSHOW);
+	m_stone.SetOwner(this); CRR::Get()->Register(&m_stone);
+	m_wood.SetOwner(this); CRR::Get()->Register(&m_wood);
+	m_sugar.SetOwner(this); CRR::Get()->Register(&m_sugar);
+	m_water.SetOwner(this); CRR::Get()->Register(&m_water);
+	m_becher.SetOwner(this); CRR::Get()->Register(&m_becher);
+	m_alcohol.SetOwner(this); CRR::Get()->Register(&m_alcohol);
 	m_cane.SetOwner(this); CRR::Get()->Register(&m_cane);
 }
 
@@ -76,6 +93,8 @@ bool Store::Load(BecherGameLoad &r)
 	r.ReadRI(m_water);
 	r.ReadRI(m_becher);
 	r.ReadRI(m_alcohol);
+	uint n = 10000;
+	m_cane.Add(&n,10000);
 	return true;
 }
 
@@ -124,35 +143,6 @@ int Store::GetStatus(ESurType type)
 bool Store::Idiot(Job *t)
 {
 	return false;
-}
-
-int Store::GetNumInfos()
-{
-	return 7;
-}
-
-int Store::GetInfo(int id, char * buff, size_t size)
-{ 
-	switch (id)
-	{
-	case 0:
-		sprintf(buff, "Stone: %d", m_stone.GetNum());break;
-	case 1:
-		sprintf(buff, "Wood: %d", m_wood.GetNum());break;
-	case 2:
-		sprintf(buff, "Sugar: %d", m_sugar.GetNum());break;
-	case 3:
-		sprintf(buff, "Water: %d", m_water.GetNum());break;
-	case 4:
-		sprintf(buff, "Becher: %d", m_becher.GetNum());break;
-	case 5:
-		sprintf(buff, "Lih: %d", m_alcohol.GetNum());break;
-	case 6:
-		sprintf(buff, "Trtina: %d", m_cane.GetNum());break;
-	default:
-		return 0;
-	};
-	return 1;
 }
 
 bool Store::Select()

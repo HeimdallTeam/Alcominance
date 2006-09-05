@@ -3,6 +3,20 @@
 #include "becher.h"
 #include "obj_saw.h"
 
+bool Saw::InsertSur(ESurType type, uint *s)
+{
+	return false;
+}
+
+bool Saw::SetToWork(Troll * t)
+{
+	return false;
+}
+
+void Saw::UnsetFromWork(Troll * t)
+{
+}
+
 ////////////////////////////////////////////////////////////
 Saw::Saw(IHoeScene * scn) : BecherBuilding(scn)
 {
@@ -26,16 +40,6 @@ bool Saw::Idiot(Job *t)
 	return false;
 }
 
-int Saw::GetNumInfos()
-{
-	return 0;
-}
-
-int Saw::GetInfo(int id, char *buff, size_t size)
-{
-	
-	return 0;
-}
 
 #else // BECHER_OBJECT
 

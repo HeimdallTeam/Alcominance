@@ -23,6 +23,11 @@ inline BecherGame * GetBecher()
 	return GetApp()->GetGame();
 }
 
+inline BecherLevel * GetLevel()
+{
+	return GetBecher()->GetLevel();
+}
+
 inline BGConsole * GetCon()
 {
 	return dynamic_cast<BGConsole *>(GetApp()->GetConsole());

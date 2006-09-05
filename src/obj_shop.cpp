@@ -6,6 +6,20 @@
 #include "obj_shop.h"
 #include "obj_store.h"
 
+bool Shop::InsertSur(ESurType type, uint *s)
+{
+	return false;
+}
+
+bool Shop::SetToWork(Troll * t)
+{
+	return false;
+}
+
+void Shop::UnsetFromWork(Troll * t)
+{
+}
+
 /////////////////////////////////////////////////////////////
 Shop::Shop(IHoeScene * scn) : BecherBuilding(scn)
 {
@@ -29,15 +43,6 @@ bool Shop::Idiot(Job * t)
 	return false;
 }
 
-int Shop::GetNumInfos()
-{
-	return 0;
-}
-
-int Shop::GetInfo(int id, char *buff, size_t size)
-{
-	return 0;
-}
 
 #else
 bool Shop::Select()

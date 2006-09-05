@@ -6,6 +6,8 @@
 #include "level.h"
 #include "game.h"
 #include "troll.h"
+#include "obj_sugar.h"
+#include "obj_destilate.h"
 
 BecherLevel::BecherLevel()
 {
@@ -13,6 +15,7 @@ BecherLevel::BecherLevel()
 	m_filename[0] = '\0';
 	m_select = NULL;
 	m_mselect = NULL;
+	m_selhud = NULL;
 	//m_info.Init(10.f,550.f, 50.f);
 	//m_controls.Init();
 
@@ -22,6 +25,8 @@ void BecherLevel::_Paint(IHoe2D * h2d)
 {
 	// hud
 	m_hud.Draw(h2d);
+	if (m_selhud)
+		m_selhud->Draw(h2d);
 	//m_controls.Draw(h2d);
 	//m_info.Draw(h2d);
 	//GetCash()->Paint(h2d);
@@ -165,7 +170,10 @@ void BecherLevel::MouseLeftDown(float x, float y)
 void BecherLevel::SelectObject(BecherObject * so)
 {
 	if (m_select)
+	{
 		m_select->Unselect();
+		SetObjectHud(NULL);
+	}
 	if (!so || so->Select())
 		m_select = so;
 }
@@ -236,7 +244,10 @@ bool BecherLevel::LoadGame(const char *path)
 {
 	Create(CreateScene());
 
-	m_hud.Load("scripts/sugar.menu");
+	m_hud.Load("scripts/hud.menu");
+	this->m_cash.Link(dynamic_cast<HoeGame::DigiCounter *>(m_hud.ReqItem("cash")));
+	Sugar::m_userhud.Load("scripts/sugar.menu");
+	Destilate::m_userhud.Load("scripts/alco.menu");
 
 	SetTerrainData();
 
@@ -278,13 +289,21 @@ bool BecherTime::Load(int ver, HoeFileReader &r)
 
 BecherCash::BecherCash()
 {
-	Set(0,-100000);
+	Set(-1000,-100000);
 }
 
 void BecherCash::Set(int cash, int limit)
 {
 	m_limit = limit;
 	m_cash = cash;
+}
+
+bool BecherCash::Add(int m)
+{ 
+	if (GetLimitCash() < -m) 
+		return false; 
+	m_cash += m; 
+	return true; 
 }
 
 bool BecherCash::Save(HoeFileWriter &w)
@@ -328,9 +347,9 @@ void BecherLevel::OnMouseMove(float X, float Y)
 	/*select = this->m_controls.MouseMove(X,Y);
 	if (select)
         MouseLeave();
-	else
+	else*/
 		MouseUpdate(X,Y);
-	*/
+	
 }
 
 void BecherLevel::OnWheel(long p)
@@ -343,14 +362,13 @@ void BecherLevel::OnWheel(long p)
 
 void BecherLevel::OnLeftButtonUp()
 {
-	int i = -1;//m_controls.GetButton(GetMouseX(), GetMouseY());
-	if (i != -1)
+	BecherButton * butt = m_hud.GetButton(GetMouseX(), GetMouseY());
+	if (butt)
 	{
-		// zrusit select
-		//m_controls.GetButton(i)->Click();
+		butt->OnClick();
 		return;
 	}
-
+	else
 	//this->m_controls.ShowReset();
 	MouseLeftDown(GetMouseX(), GetMouseY());
 }
@@ -398,7 +416,7 @@ void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone
 {
 	if (GetCash()->GetLimitCash() < gold)
 	{
-		//GetInfoPanel()->Add(1);
+		//GetPanel()->Add(1);
 		return;
 	}
 
@@ -409,53 +427,53 @@ void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone
 
 int BecherLevel::l_AddTroll(lua_State * L)
 {
-	/*HoeGame::LuaParam lp(L);
+	HoeGame::LuaParam lp(L);
 	if (lp.CheckPar(1, "b", "AddTroll"))
 	{
 		if (lp.GetBool(-1))
 		{
-			if (GetBecher()->GetSelectedObject())
+			if (GetLevel()->GetSelectedObject())
 			{
-				Troll * t = (Troll*)GetBecher()->CreateObject(EBO_Troll);
-				t->SetPosition(-400, -400, 0);
-				GetBecher()->AddObject(t);
-				BecherObject * b = GetBecher()->GetSelectedObject();
+				Troll * t = (Troll*)GetLevel()->CreateObject(EBO_Troll);
+				t->SetPosition(0, 0, 0);
+				GetLevel()->AddObject(t);
+				BecherObject * b = GetLevel()->GetSelectedObject();
 				t->FindJob(dynamic_cast<BecherBuilding*>(b));
 			}
 			else
 				lp.Error("No object selected");
 		}
 		else
-			GetBecher()->AddTroll(0,0);
-	}*/
+			GetLevel()->AddTroll(0,0);
+	}
 	return 0;
 }
 
 int BecherLevel::l_SetBuilding(lua_State * L)
 {
-	/*HoeGame::LuaParam lp(L);
+	HoeGame::LuaParam lp(L);
 	if (lp.CheckPar(4,"nnnn", "SetBuilding"))
 	{
-		GetBecher()->AddBuildObject(lp.GetNum(-4), lp.GetNum(-3), lp.GetNum(-2), lp.GetNum(-1));
-	}*/
+		GetLevel()->AddBuildObject(lp.GetNum(-4), lp.GetNum(-3), lp.GetNum(-2), lp.GetNum(-1));
+	}
 	return 0;
 }
 
 int BecherLevel::l_AddCash(lua_State * L)
 {
-	/*HoeGame::LuaParam lp(L);
+	HoeGame::LuaParam lp(L);
 	if (lp.CheckPar(1, "n", "AddCash"))
 	{
-		GetBecher()->GetCash()->Add(lp.GetNum(-1));
-	}*/
+		GetLevel()->GetCash()->Add(lp.GetNum(-1));
+	}
 	return 0;
 }
 
 int BecherLevel::l_GetCash(lua_State * L)
 {
-	/*HoeGame::LuaParam lp(L);
+	HoeGame::LuaParam lp(L);
 	lp.CheckPar(0,0, "GetCash");
-	lp.PushNum(GetBecher()->GetCash()->GetLimitCash());*/
+	lp.PushNum(GetLevel()->GetCash()->GetLimitCash());
 	return 1;
 }
 

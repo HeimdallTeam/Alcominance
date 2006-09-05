@@ -12,6 +12,29 @@ void BecherButton::OnClick()
 		GetLua()->func(script);
 }
 
+void BecherButton::SetButt(int idres, const char * func, const char * tp)
+{
+	if (idres != -1)
+		SetPicture((IHoePicture*)GetResMgr()->ReqResource(idres));
+	else
+		SetPicture(NULL);
+	if (func)
+        strncpy(script,func,sizeof(script)-1);
+	else
+		script[0] = '\0';
+	if (tp)
+        strncpy(tooltip,tp,sizeof(tooltip)-1);
+	else
+		tooltip[0] = '\0';
+}
+
+HUD::HUD()
+{
+	m_info = NULL;
+	memset(m_butt,0,sizeof(m_butt));
+	m_num = 0;
+}
+
 HoeGame::BaseGui * HUD::CreateGUI(const char * type)
 {
 	GuiItem * g = NULL;
@@ -23,6 +46,56 @@ HoeGame::BaseGui * HUD::CreateGUI(const char * type)
 
 	m_list.Add(g);
 	return g;
+}
+
+bool HUD::Load(const char * fname)
+{
+	if (!Hoe2DFigure::Load(fname))
+		return false;
+	m_info = dynamic_cast<HoeGame::InfoPanel*>(ReqItem("info"));
+
+	for (int i=0;i < 16;i++)
+	{
+		char str[15];
+		sprintf(str,"butt_%02d",i);
+		GuiItem * item = GetItem(str);
+		if (item==NULL)
+			break;
+		m_butt[i] = dynamic_cast<BecherButton*>(item);
+	}
+	return true;
+}
+
+
+
+void HUD::AddButton(int idres, const char * func, const char * tooltip)
+{
+	if (m_num == 16 || m_butt[m_num] == NULL)
+		return;
+	m_butt[m_num]->SetButt(idres, func, tooltip);
+	m_num++;
+}
+
+void HUD::ShowReset()
+{
+	for (int i=0;i<m_num;i++)
+	{
+		m_butt[i]->SetButt(-1,NULL,NULL);
+	}
+	m_num = 0;
+}
+
+BecherButton * HUD::GetButton(float X, float Y)
+{
+	for (int i=0;i < 16;i++)
+	{
+		if (!m_butt[i])
+			return NULL;
+		const THoeRect & r = m_butt[i]->GetRect();
+		if (X >= r.left && X <= r.right && Y >= r.top && Y <= r.bottom)
+			return m_butt[i];
+	}
+	return NULL;
 }
 
 /*int ControlPanel::Draw(IHoe2D * hoe2d)
@@ -46,7 +119,7 @@ HoeGame::BaseGui * HUD::CreateGUI(const char * type)
 
 int HUD::l_AddButton(lua_State * L)
 {
-	/*LuaParam lp(L);
+	LuaParam lp(L);
 	if (lp.CheckPar(3,"s*s", "AddButton"))
 	{
 		const char * tt;
@@ -54,19 +127,18 @@ int HUD::l_AddButton(lua_State * L)
 			tt = lp.GetString(-2);
 		else
 			tt = GetLang()->Get(lp.GetNum(-2));
-		GetBecher()->GetControlPanel()->AddButton(lp.GetNum(-3),lp.GetString(-1),tt);
-	}*/
+		GetLevel()->GetPanel()->AddButton(lp.GetNum(-3),lp.GetString(-1),tt);
+	}
 	return 0;
 }
 
 int HUD::l_ClearButtons(lua_State * L)
 {
-	/*LuaParam lp(L);
+	LuaParam lp(L);
 	if (lp.CheckPar(0,"","ClearButtons"))
 	{
-		ControlPanel * cp = GetBecher()->GetControlPanel();
-		cp->m_selbutton = -1;
-	}*/
+		GetLevel()->GetPanel()->ShowReset();
+	}
 	return 0;
 }
 
@@ -76,48 +148,17 @@ int HUD::l_info(lua_State * L)
 	if (lp.GetNumParam() != 1)
 		return 0;
 
-	//if (lp.IsNum(-1))
-	//	GetBecher()->GetInfoPanel()->Add(GetLang()->GetString(lp.GetNum(-1)));
-	//if (lp.IsString(-1))
-	//	GetBecher()->GetInfoPanel()->Add(lp.GetString(-1));
+	if (lp.IsNum(-1))
+		GetLevel()->GetPanel()->GetInfo()->Add(GetLang()->GetString(lp.GetNum(-1)));
+	else if (lp.IsString(-1))
+		GetLevel()->GetPanel()->GetInfo()->Add(lp.GetString(-1));
 	return 0;
 }
-
-/*int ControlPanel::GetButton(float X, float Y)
-{
-	for (int i=0;i < m_numbuttons;i++)
-	{
-		const TButton & b = m_buttons[i];
-		if (X >= b.rect.left && X <= b.rect.right && Y >= b.rect.top && Y <= b.rect.bottom)
-			return i;
-	}
-	return -1;
-}*/
 
 /*bool ControlPanel::MouseMove(float X, float Y)
 {
 	this->m_selbutton = GetButton(X,Y);
 	return (this->m_selbutton != -1);
-}*/
-
-/*TButton * ControlPanel::AddButton(int idres, const char * func, const char * tooltip)
-{
-	m_buttons[m_numbuttons].picture = (IHoePicture*)GetResMgr()->ReqResource(idres);
-	if (func)
-        strncpy(m_buttons[m_numbuttons].script,func,sizeof(m_buttons[m_numbuttons].script)-1);
-	else
-		m_buttons[m_numbuttons].script[0] = '\0';
-	if (tooltip)
-        strncpy(m_buttons[m_numbuttons].tooltip,tooltip,sizeof(m_buttons[m_numbuttons].tooltip)-1);
-	else
-		m_buttons[m_numbuttons].tooltip[0] = '\0';
-
-	m_buttons[m_numbuttons].rect.top = 50;
-	m_buttons[m_numbuttons].rect.bottom = m_buttons[m_numbuttons].rect.top + 32 + 16;
-	m_buttons[m_numbuttons].rect.left = (m_numbuttons == 0) ? 10:m_buttons[m_numbuttons-1].rect.right + 10;
-	m_buttons[m_numbuttons].rect.right = m_buttons[m_numbuttons].rect.left + 32 + 16;
-	
-	return &m_buttons[m_numbuttons++];
 }*/
 
 /////////////////////////////////////

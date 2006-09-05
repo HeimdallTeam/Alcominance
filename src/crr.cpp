@@ -21,7 +21,7 @@ uint ResourceBase::Get(uint req, bool p)
 
 bool ResourceBase::Add(uint *s, int max)
 {
-	if (*s<max)
+	if (*s<(uint)max)
 	{
 		m_actual += *s; 
 		return true;

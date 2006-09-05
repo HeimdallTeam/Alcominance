@@ -8,6 +8,20 @@
 
 static CVar v_rust("farm_rust", 0.02f, 0);
 
+bool Farm::InsertSur(ESurType type, uint *s)
+{
+	return false;
+}
+
+bool Farm::SetToWork(Troll * t)
+{
+	return false;
+}
+
+void Farm::UnsetFromWork(Troll * t)
+{
+}
+
 ////////////////////////////////////////////////////////////
 Farm::Farm(IHoeScene * scn) : BecherBuilding(scn)
 {
@@ -81,16 +95,6 @@ bool Farm::Idiot(Job *t)
 	return false;
 }
 
-int Farm::GetNumInfos()
-{
-	return 1;
-}
-
-int Farm::GetInfo(int id, char *buff, size_t size)
-{
-	sprintf(buff, "Rust: %f", rust);
-	return 0;
-}
 
 #else // BECHER_OBJECT
 

@@ -29,12 +29,17 @@ public:
 	void Set(int cash, int limit);
 	bool Save(HoeFileWriter &w);
 	bool Load(int ver, HoeFileReader &r);
-	bool Add(int m) { if (GetLimitCash() < -m) return false; m_cash += m; return true; };
+	bool Add(int m);
 	int GetValue() { return m_cash; }
 	int GetLimitCash() { return m_cash - m_limit; }
+	void Link(HoeGame::DigiCounter * cnt) { cnt->Set(&m_cash); }
 };
 
-class BecherLevel : public BecherMap, public HoeGame::Scene, public XHoe2DCallback, public HoeGame::KeyboardStdInput, public HoeGame::MouseStdInput
+class BecherLevel : public BecherMap, 
+	public HoeGame::Scene, 
+	public XHoe2DCallback, 
+	public HoeGame::KeyboardStdInput, 
+	public HoeGame::MouseStdInput
 {
 protected:
 	char m_filename[512];
@@ -50,6 +55,7 @@ protected:
 	CRR m_crr;
 	BecherObject * m_mselect;
 	HUD m_hud;
+	ObjectHud * m_selhud;
 	//
 	bool LoadGame(BecherGameLoad &r);
 
@@ -61,6 +67,7 @@ public:
 	bool IsPaused() { return m_timer.IsPaused(); }
 	virtual void Update(float time);
 	virtual void HOEAPI _Paint(IHoe2D * h2d);
+	void SetObjectHud(ObjectHud * selhud) { m_selhud = selhud; }
 
 	void MouseUpdate(float x, float y);
 	void MouseLeave();

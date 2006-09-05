@@ -24,11 +24,6 @@ public:
 	int GetStatus(ESurType type);
 
 	virtual void AdvPaint(class IHoePaint3D * advpaint);
-#ifdef BECHER_EDITOR
-	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
-#else
-	virtual bool InsertSur(ESurType type, uint *s);
-#endif
 
 	DECLARE_BUILDING(EBO_Store)
 };

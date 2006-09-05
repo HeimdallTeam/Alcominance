@@ -6,6 +6,8 @@
 #include "infos.h"
 #include <hoefs.h>
 
+class Troll;
+
 struct TObjectSaveStruct
 {
 	unsigned long id;
@@ -61,8 +63,6 @@ public:
 	unsigned long GetID() { return id; }
 
 	virtual void SetProperty(const char * prop, const char * value);
-	virtual int GetNumInfos() { return 0; }
-	virtual int GetInfo(int id, char * buff, size_t size) { return 0; }
 };
 
 #define DECLARE_BASEOBJECT(type) virtual EObjType GetType() { return type; }
@@ -71,11 +71,13 @@ public:
 	virtual void Update(const double t); \
 	virtual bool Select(); \
 	virtual bool Idiot(Job * j); \
-	virtual int GetNumInfos(); \
-	virtual int GetInfo(int id, char * buff, size_t size);
+	virtual bool SetToWork(Troll * t); \
+	virtual void UnsetFromWork(Troll * t); \
+	virtual bool InsertSur(ESurType type, uint *s);
 #else
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
 	virtual bool Select();
+	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
 #endif
 
 #endif // _BECHER_OBJECT_H_

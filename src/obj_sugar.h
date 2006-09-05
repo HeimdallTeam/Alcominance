@@ -4,9 +4,27 @@
 
 #include "buildings.h"
 
-class Sugar : public FactoryBuilding, TrollList
+class Sugar;
+
+class SugarStatic : public ObjectHud
 {
 protected:
+	char m_sugarinfo[256];
+	char m_trtinainfo[256];
+	Sugar * m_act;
+public:
+	SugarStatic();
+	void SetAct(Sugar * act);
+	virtual void Draw(IHoe2D * h2d);
+};
+
+class Sugar : public FactoryBuilding, TrollList
+{
+	friend class BecherLevel;
+	friend class SugarStatic;
+protected:
+	// panel
+	static SugarStatic m_userhud;
 	// trolls
 	ResourceImp m_cane;
 	ResourceExp m_sugar;
@@ -17,14 +35,6 @@ protected:
 public:
 	Sugar(IHoeScene * scn);
 	virtual ~Sugar();
-
-#ifdef BECHER_EDITOR
-	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
-#else
-	virtual bool SetToWork(Troll * t);
-	virtual void UnsetFromWork(Troll * t);
-	virtual bool InsertSur(ESurType type, uint *s);
-#endif
 
 	DECLARE_BUILDING(EBO_Sugar)
 };

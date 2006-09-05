@@ -30,7 +30,8 @@ public:
 	}
 	virtual void HOEAPI _Paint(IHoe2D * h2d)
 	{
-		font->DrawText(500,400,0xffffffff,"Loading..."); 
+		h2d->SetRect(800,600);
+		font->DrawText(535,507,0xffffffff,"Loading..."); 
 	}
 	~BecherLogo()
 	{

@@ -11,3 +11,29 @@ function s_lihovar()
 
 end
 
+function i_alco(b)
+ -- tady pujde hlavne o to vychytat kdy nosit a kdy pracovat
+ -- jako vstup je struktura se informacema o budove
+ 
+ info("Lihovar ma ",b.sugar," cukru a ",b.alco," lihu")
+ -- pokud je nejaky cukr tak odnest
+ -- jestlize se trtina vejde tak trtina
+ if b.sugar > 1 and b.works == 0 then
+     job = { type = 1, percent = 90 }
+     return job 
+ end
+ 
+ if b.sugar_avail > 0 then
+     job = { type = 0, sur = EBS_Sugar, num=10,  percent = 100 }
+     return job    
+ end 
+ 
+ -- jestli je nejaka trtina tak zpracovat
+ if b.sugar > 0 then 
+     job = { type = 1, percent = 90 }
+     return job    
+ end 
+ 
+ return nil
+end
+
