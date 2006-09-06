@@ -11,10 +11,10 @@ class FactoryStatic : public ObjectHud
 protected:
 	char m_sugarinfo[256];
 	char m_trtinainfo[256];
-	Sugar * m_act;
+	Factory * m_act;
 public:
-	SugarStatic();
-	void SetAct(Sugar * act);
+	FactoryStatic();
+	void SetAct(Factory * act);
 	virtual void Draw(IHoe2D * h2d);
 };
 
@@ -32,7 +32,8 @@ protected:
 	//WorkMode m_mode;
 	TrollList m_worked;
 	HoeGame::StopWatch m_exitdelay;
-	inline const int GetMiniStoreCount() const { return m_cane.GetNum() + m_sugar.GetNum(); }
+	inline const int GetMiniStoreCount() const 
+	{ return m_sugar.GetNum() + m_alco.GetNum() + m_becher.GetNum(); }
 public:
 	Factory(IHoeScene * scn);
 	virtual ~Factory();

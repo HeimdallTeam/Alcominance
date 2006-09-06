@@ -11,7 +11,7 @@ static HoeGame::CTimer t_numzpr(v_numzpr);
 static CVar v_sklad("factory_max", 50, 0);
 static CVar v_numworks("factory_maxwork", 4, 0);
 
-SugarStatic Factory::m_userhud;
+FactoryStatic Factory::m_userhud;
 
 FactoryStatic::FactoryStatic()
 {
@@ -39,9 +39,10 @@ void FactoryStatic::Draw(IHoe2D * h2d)
 }
 
 ////////////////////////////////////////////////////////
-Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), m_Factory(EBS_Factory)
+Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), m_becher(EBS_Becher)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_FACTORY));
+	m_becher.SetOwner(this); CRR::Get()->Register(&m_becher);
 }
 
 Factory::~Factory()
@@ -52,9 +53,10 @@ Factory::~Factory()
 
 bool Factory::InsertSur(ESurType type, uint *s)
 {
-	assert(type==EBS_Cane);
+	//assert(type==EBS_Cane);
 	// max
-	return m_cane.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
+	//return m_cane.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
+	return false;
 }
 
 bool Factory::SetToWork(Troll * t)
@@ -72,7 +74,7 @@ void Factory::UnsetFromWork(Troll * t)
 
 void Factory::Update(const double t)
 {
-	if (m_worked.Count() > 0)
+	/*if (m_worked.Count() > 0)
 	{
 		if (m_cane.GetNum() > 0)
 		{
@@ -91,7 +93,7 @@ void Factory::Update(const double t)
 				m_worked.OneStopWork();
 			}
 		}
-	}
+	}*/
 }
 
 
@@ -100,7 +102,7 @@ bool Factory::Select()
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	if (!IsBuildMode())
-        GetLua()->func("s_cukr");!!!
+        GetLua()->func("s_tovarna");
 	return true;
 }
 

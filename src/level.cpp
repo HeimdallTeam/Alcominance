@@ -8,6 +8,8 @@
 #include "troll.h"
 #include "obj_sugar.h"
 #include "obj_destilate.h"
+#include "obj_factory.h"
+#include "obj_store.h"
 
 BecherLevel::BecherLevel()
 {
@@ -248,6 +250,8 @@ bool BecherLevel::LoadGame(const char *path)
 	this->m_cash.Link(dynamic_cast<HoeGame::DigiCounter *>(m_hud.ReqItem("cash")));
 	Sugar::m_userhud.Load("scripts/sugar.menu");
 	Destilate::m_userhud.Load("scripts/alco.menu");
+	Factory::m_userhud.Load("scripts/factory.menu");
+	Store::m_userhud.Load("scripts/store.menu");
 
 	SetTerrainData();
 

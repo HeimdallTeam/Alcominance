@@ -41,7 +41,7 @@ ResourceExp::ResourceExp(ESurType type)
 	m_actual = 0;
 	m_owner = NULL;
 	if (type == EBS_Cane)
-		m_actual = 100;
+		m_actual = 10000;
 }
 
 //////////////////////////////////////////

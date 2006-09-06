@@ -7,21 +7,51 @@
 
 float getheight(IHoeModel * m);
 
+static CVar v_sklad("store_max", 50, 0);
+static CVar v_numworks("store_maxwork", 4, 0);
 
+StoreStatic Store::m_userhud;
 
-bool Store::SetToWork(Troll * t)
+StoreStatic::StoreStatic()
 {
-	return false;
+	m_act = NULL;
 }
 
-void Store::UnsetFromWork(Troll * t)
+void StoreStatic::SetAct(Store * act)
 {
+	m_act = act;
+	// pripojit 
+	dynamic_cast<HoeGame::Font*>(ReqItem("trtina"))->SetPtr(m_caneinfo);
+	dynamic_cast<HoeGame::Font*>(ReqItem("drevo"))->SetPtr(m_woodinfo);
+	dynamic_cast<HoeGame::Font*>(ReqItem("kamen"))->SetPtr(m_stoneinfo);
+	dynamic_cast<HoeGame::Font*>(ReqItem("byliny"))->SetPtr(m_herbeinfo);
+	dynamic_cast<HoeGame::Font*>(ReqItem("voda"))->SetPtr(m_waterinfo);
+	dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
+	dynamic_cast<HoeGame::Font*>(ReqItem("lih"))->SetPtr(m_alcoinfo);
+	dynamic_cast<HoeGame::Font*>(ReqItem("becher"))->SetPtr(m_becherinfo);
+}
+
+void StoreStatic::Draw(IHoe2D * h2d)
+{
+	if (m_act)
+	{
+		sprintf(m_sugarinfo,"%d cukru.", m_act->m_sugar.GetNum());
+		sprintf(m_caneinfo,"%d trtina.", m_act->m_cane.GetNum());
+		sprintf(m_woodinfo,"%d dreva.", m_act->m_wood.GetNum());
+		sprintf(m_stoneinfo,"%d sutru.", m_act->m_stone.GetNum());
+		sprintf(m_herbeinfo,"%d bylin.", m_act->m_herbe.GetNum());
+		sprintf(m_waterinfo,"%d vody.", m_act->m_water.GetNum());
+		sprintf(m_alcoinfo,"%d lihu.", m_act->m_alcohol.GetNum());
+		sprintf(m_becherinfo,"%d flasek.", m_act->m_becher.GetNum());
+
+		ObjectHud::Draw(h2d);
+	}
 }
 
 ////////////////////////////////////////////////////////////
 Store::Store(IHoeScene * scn) : BecherBuilding(scn), 
 	m_stone(EBS_Stone), m_wood(EBS_Wood), m_sugar(EBS_Sugar), m_water(EBS_Water),
-	m_becher(EBS_Becher), m_alcohol(EBS_Alco), m_cane(EBS_Cane)
+	m_becher(EBS_Becher), m_alcohol(EBS_Alco), m_cane(EBS_Cane), m_herbe(EBS_Herbe)
 {
 	// set owners
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STORE));
@@ -33,6 +63,7 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn),
 	m_becher.SetOwner(this); CRR::Get()->Register(&m_becher);
 	m_alcohol.SetOwner(this); CRR::Get()->Register(&m_alcohol);
 	m_cane.SetOwner(this); CRR::Get()->Register(&m_cane);
+	m_herbe.SetOwner(this); CRR::Get()->Register(&m_herbe);
 }
 
 void Store::AdvPaint(IHoePaint3D * h3)
@@ -93,8 +124,6 @@ bool Store::Load(BecherGameLoad &r)
 	r.ReadRI(m_water);
 	r.ReadRI(m_becher);
 	r.ReadRI(m_alcohol);
-	uint n = 10000;
-	m_cane.Add(&n,10000);
 	return true;
 }
 
@@ -118,6 +147,8 @@ ResourceExp * Store::EBSToPointer(ESurType type)
 		return &m_wood;
 	case EBS_Water:
 		return &m_water;
+	case EBS_Herbe:
+		return &m_herbe;
 	default:
 		assert(!"Unknown sur. type");
 	}
@@ -129,24 +160,80 @@ bool Store::InsertSur(ESurType type, uint *s)
 	return EBSToPointer(type)->Add(s, 10000000);
 }
 
+bool Store::SetToWork(Troll * t)
+{
+	if (m_worked.Count() >= (uint)v_numworks.GetInt())
+		return false;
+	m_worked.Add(t);
+	return true;
+}
+
+void Store::UnsetFromWork(Troll * t)
+{
+	m_worked.Remove(t);
+}
+
 void Store::Update(const double t)
 {
 }
 
 int Store::GetStatus(ESurType type)
 {
-		if (type == EBS_Cane)
-		return 100;
 	return EBSToPointer(type)->GetNum();
 }
 
 bool Store::Idiot(Job *t)
 {
+	// zjistit pripadny zdroj pro suroviny
+	// 
+	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
+	/*ResourceExp * ri = CRR::Get()->Find(EBS_Cane); // urceni priorit
+	
+	HoeGame::LuaFunc f(GetLua(), "i_Store");
+	f.PushTable();
+	// suroviny
+	// informace o surovinach
+	f.SetTableInteger("max_store", v_sklad.GetInt());
+	f.SetTableInteger("cane_avail", ri ? ri->GetNum():0);
+	f.SetTableInteger("cane", m_cane.GetNum());
+	f.SetTableInteger("Store", m_sugar.GetNum());
+	// works
+	f.SetTableInteger("works", this->m_worked.Count());
+	f.SetTableInteger("works_max", v_numworks.GetInt());
+	f.Run(1);
+	if (f.IsNil(-1))
+	{
+		f.Pop(1);
+		return false;
+	}
+
+	// prevest zpatky na job
+	int r = f.GetTableInteger("type", -1); // typ prace
+	j->percent = f.GetTableFloat("percent", -1); // na kolik procent je vyzadovano
+	j->owner = this;
+	switch (r)
+	{
+	case 0:
+		j->surtype = (ESurType)f.GetTableInteger("sur", -1); // typ suroviny
+		j->type = Job::jtPrines;
+		j->num = f.GetTableInteger("num", -1); // pocet k prineseni
+		j->ritem = ri;
+		break;
+	case 1:
+		j->type = Job::jtWork;
+		break;
+	};
+		
+	f.Pop(1);
+	
+	return true;*/
 	return false;
 }
 
 bool Store::Select()
 {
+	GetLevel()->SetObjectHud(&m_userhud);
+	m_userhud.SetAct(this);
 	if (!IsBuildMode())
         GetLua()->func("s_sklad");
 	return true;
@@ -197,5 +284,4 @@ void Store::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 
 
 #endif
-
 

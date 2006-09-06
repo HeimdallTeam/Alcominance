@@ -129,6 +129,7 @@ void Troll::SetJob(const Job & j)
 {
 	//job = j; nastaveni zakladnich vlastnosti (treba cesty atd)
 	m_job = j;
+	if (m_job.owner) m_job.owner->GetPosX();
 	// nastavit pocatecni hodnoty
 	m_phase = PhaseStart;
 }
