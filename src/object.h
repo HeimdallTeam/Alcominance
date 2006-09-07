@@ -29,7 +29,7 @@ protected:
 	float m_angle;
 	float posX;
 	float posY;
-	unsigned int m_info;
+	THoeSub_Model m_infoselect;
 public:
 	unsigned long id;
 
@@ -51,8 +51,8 @@ public:
 	bool IsSelected() { return false; }
 	bool IsCurActive() { return false; }
 
-	virtual bool Select() { return false; }
-	virtual void Unselect() { }
+	virtual bool Select();
+	virtual void Unselect();
 #ifdef BECHER_EDITOR
 	virtual 
 #endif

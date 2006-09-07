@@ -42,6 +42,9 @@ void FactoryStatic::Draw(IHoe2D * h2d)
 Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), m_becher(EBS_Becher)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_FACTORY));
+	m_infoselect.s_x = 6.7f;
+	m_infoselect.t_y = 2.f;
+	m_infoselect.s_z = 6.7f;
 	m_becher.SetOwner(this); CRR::Get()->Register(&m_becher);
 }
 
@@ -99,6 +102,7 @@ void Factory::Update(const double t)
 
 bool Factory::Select()
 {
+	FactoryBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	if (!IsBuildMode())
@@ -110,6 +114,7 @@ bool Factory::Select()
 
 bool Factory::Select()
 {
+	FactoryBuilding::Select();
 	/*GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Store"));
 	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());

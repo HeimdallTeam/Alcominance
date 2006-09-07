@@ -44,6 +44,9 @@ void SugarStatic::Draw(IHoe2D * h2d)
 Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_SUGAR));
+	m_infoselect.s_x = 3.5f;
+	m_infoselect.t_y = 2.f;
+	m_infoselect.s_z = 3.5f;
 	//GetCtrl()->SetFlags(HOF_SHOW);
 	//m_mode = wmIn;
 	m_sugar.SetOwner(this); CRR::Get()->Register(&m_sugar);
@@ -102,6 +105,7 @@ void Sugar::Update(const double t)
 
 bool Sugar::Select()
 {
+	FactoryBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	if (!IsBuildMode())
@@ -113,6 +117,7 @@ bool Sugar::Select()
 
 bool Sugar::Select()
 {
+	FactoryBuilding::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Store"));
 	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());

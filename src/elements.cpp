@@ -13,7 +13,9 @@ Tree::Tree(IHoeScene * scn) : BecherObject(scn)
 	SetOrientation(0,1,0,(rand() % 628) * 0.01);
 	SetHeight((50+rand() % 100)*0.01f);
 #endif
-
+	m_infoselect.s_x = 1.f;
+	m_infoselect.t_y = 3.f;
+	m_infoselect.s_z = 1.f;
 	param.wood = 100;
 	param.height = 1.f;
 	SetTypeModel(1);
@@ -48,6 +50,7 @@ void Tree::SetTypeModel(int type)
 
 bool Tree::Select()
 {
+	FactoryBuilding::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Position"));
 	GetProp()->AppendFloat(6, _("Height"), 1);
@@ -82,6 +85,7 @@ Bridge::Bridge(IHoeScene * scn) : BecherObject(scn)
 
 bool Bridge::Select()
 {
+	FactoryBuilding::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Position"));
 	GetProp()->AppendFloat(6, _("Height"), m_height);
@@ -106,13 +110,16 @@ void Bridge::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 WaterHole::WaterHole(IHoeScene * scn) : BecherObject(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_WATERHOLE));
-
+	m_infoselect.s_x = 1.f;
+	m_infoselect.t_y = 2.f;
+	m_infoselect.s_z = 1.f;
 }
 
 #ifndef BECHER_EDITOR
 
 bool WaterHole::Select()
 {
+	BecherObject::Select();
 	GetLua()->func("s_studna");
 	return true;
 }

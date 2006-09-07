@@ -31,6 +31,7 @@ void Saw::Update(const double dtime)
 
 bool Saw::Select()
 {
+	BecherBuilding::Select();
 	GetLua()->func("s_saw");
 	return true;
 }
@@ -45,6 +46,7 @@ bool Saw::Idiot(Job *t)
 
 bool Saw::Select()
 {
+	FactoryBuilding::Select();
 	return true;
 }
 

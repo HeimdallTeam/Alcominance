@@ -51,20 +51,31 @@ bool BecherBuilding::Load(BecherGameLoad &r)
 }
 
 //////////////////////////////////////////////////////////////////
+float getheight(IHoeModel *);
 
 HerbeWoman::HerbeWoman(IHoeScene * scn) : BecherBuilding(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_BABA));
-	GetCtrl()->SetFlags(HOF_ADVSHOW);
+	m_infoselect.s_x = 1.4f;
+	m_infoselect.t_y = 2.f;
+	m_infoselect.s_z = 2.f;
+	static THoeSub_Model m;
+	m.model = dynamic_cast<IHoeModel*>(GetEngine()->Create("model miska"));
+	m.t_x = 0.f;
+	m.t_y = getheight(this->GetModel()) + 3.f;
+	m.t_z = 0.f;
+	m.s_x = 2.f;
+	m.s_y = 4.f;
+	m.s_z = 2.f;
+	GetCtrl()->Link(THoeSubObject::Object, &m);
 }
 
 HerbeWoman::~HerbeWoman()
 {
 }
 
-float getheight(IHoeModel *);
 
-void HerbeWoman::AdvPaint(IHoePaint3D * h3)
+/*void HerbeWoman::AdvPaint(IHoePaint3D * h3)
 {
 	// info
 	if (this->IsCurActive() || this->IsSelected())
@@ -87,7 +98,7 @@ void HerbeWoman::AdvPaint(IHoePaint3D * h3)
 	h3->Move(0, p+3, 0);
 	h3->Paint(mod);
 	
-}
+}*/
 
 float getheight(IHoeModel*m)
 {

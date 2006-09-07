@@ -26,6 +26,9 @@ void Farm::UnsetFromWork(Troll * t)
 Farm::Farm(IHoeScene * scn) : BecherBuilding(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_FARM));
+	m_infoselect.s_x = 4.5f;
+	m_infoselect.t_y = 2.f;
+	m_infoselect.s_z = 3.5f;
 	worked = NULL;
 	rust = 0.f;
 	skliz = 0;
@@ -56,6 +59,7 @@ void Farm::Update(const double dtime)
 
 bool Farm::Select()
 {
+	BecherBuilding::Select();
 	GetLua()->func("s_farma");
 	return true;
 }
@@ -100,6 +104,7 @@ bool Farm::Idiot(Job *t)
 
 bool Farm::Select()
 {
+	FactoryBuilding::Select();
 	return true;
 }
 

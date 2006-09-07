@@ -55,7 +55,23 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn),
 {
 	// set owners
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STORE));
-	GetCtrl()->SetFlags(HOF_ADVSHOW);
+	m_infoselect.s_x = 2.5f;
+	m_infoselect.t_y = 3.f;
+	m_infoselect.s_z = 2.5f;
+
+	memset(&m_info, 0, sizeof(m_info));
+	const float p = getheight(GetModel()); 
+	for (int i=0;i < 16;i++)
+	{
+		m_info[i].model = dynamic_cast<IHoeModel*>(GetEngine()->Create("model sud"));
+		m_info[i].s_x = m_info[i].s_y = m_info[i].s_z = 1.f;
+		m_info[i].t_x = (float)8*(i/4)-12;
+		m_info[i].t_y = p;
+		m_info[i].t_z = (float)8*(i%4)-12;
+		
+		GetCtrl()->Link(THoeSubObject::Object, &m_info[i]);
+	}
+
 	m_stone.SetOwner(this); CRR::Get()->Register(&m_stone);
 	m_wood.SetOwner(this); CRR::Get()->Register(&m_wood);
 	m_sugar.SetOwner(this); CRR::Get()->Register(&m_sugar);
@@ -66,7 +82,7 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn),
 	m_herbe.SetOwner(this); CRR::Get()->Register(&m_herbe);
 }
 
-void Store::AdvPaint(IHoePaint3D * h3)
+/*void Store::AdvPaint(IHoePaint3D * h3)
 {
 	// info
 	if (this->IsCurActive() || this->IsSelected())
@@ -101,7 +117,7 @@ void Store::AdvPaint(IHoePaint3D * h3)
 			}
 		}
 
-}
+}*/
 
 bool Store::Save(BecherGameSave &w)
 {
@@ -232,6 +248,7 @@ bool Store::Idiot(Job *t)
 
 bool Store::Select()
 {
+	BecherBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	if (!IsBuildMode())
@@ -242,6 +259,7 @@ bool Store::Select()
 #else
 bool Store::Select()
 {
+	FactoryBuilding::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Materials"));
 	GetProp()->AppendLong(0, _("Wood"), m_wood.GetNum());

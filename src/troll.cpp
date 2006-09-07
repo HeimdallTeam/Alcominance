@@ -13,6 +13,9 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_TROLL));
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE);
+	m_infoselect.s_x = .8f;
+	m_infoselect.t_y = 2.f;
+	m_infoselect.s_z = .8f;
 	memset(&m_job, 0, sizeof(m_job));
 	m_numsur = 0;
 	m_phase = PhaseStart;
@@ -121,6 +124,7 @@ EPhaseResult Troll::MakePhase(const double t)
 
 bool Troll::Select()
 {
+	BecherObject::Select();
 	GetLua()->func("s_tupoun");
 	return true;
 }
@@ -244,7 +248,8 @@ bool Path::Step(Troll * t, const float time)
 	float puvX = posX;
 	float puvY = posY;
 	finish = GetNextPos(time, posX,posY);
-	t->SetAngle(-atan2f(posX-puvX,posY-puvY));
+	float angle = -atan2f(posX*10.f-puvX*10.f,posY*10.f-puvY*10.f);
+	t->SetAngle(angle);
 	// nastavit pozici podle terenu
 	t->SetPosition( posX, posY, GetBecher()->GetLevel()->GetScene()->GetScenePhysics()->GetHeight(posX,posY));
 	return finish;

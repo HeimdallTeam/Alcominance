@@ -62,8 +62,6 @@ class HerbeWoman : public BecherBuilding
 public:
 	HerbeWoman(IHoeScene * scn);
 	virtual ~HerbeWoman();
-	//virtual void Select();
-	virtual void AdvPaint(IHoePaint3D * h3);
 
 	DECLARE_BASEOBJECT(EBO_HerbeWoman)
 };

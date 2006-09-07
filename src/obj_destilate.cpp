@@ -42,6 +42,9 @@ void DestilateStatic::Draw(IHoe2D * h2d)
 Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_DESTILATE));
+	m_infoselect.s_x = 4.5f;
+	m_infoselect.t_y = 2.f;
+	m_infoselect.s_z = 4.5f;
 	//GetCtrl()->SetFlags(HOF_SHOW);
 	//m_mode = wmIn;
 	m_alco.SetOwner(this); CRR::Get()->Register(&m_alco);
@@ -103,6 +106,7 @@ void Destilate::Update(const double t)
 
 bool Destilate::Select()
 {
+	FactoryBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	if (!IsBuildMode())
@@ -114,6 +118,7 @@ bool Destilate::Select()
 
 bool Destilate::Select()
 {
+	FactoryBuilding::Select();
 	/*GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Store"));
 	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());

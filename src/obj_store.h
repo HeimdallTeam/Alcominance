@@ -41,7 +41,7 @@ protected:
 	ResourceExp m_cane;
 	ResourceExp m_herbe;
 	ResourceExp * EBSToPointer(ESurType type);
-
+	THoeSub_Model m_info[16];
 	//WorkMode m_mode;
 	TrollList m_worked;
 	HoeGame::StopWatch m_exitdelay;
@@ -53,8 +53,6 @@ public:
 	virtual bool Load(BecherGameLoad &r);
 
 	int GetStatus(ESurType type);
-
-	virtual void AdvPaint(class IHoePaint3D * advpaint);
 
 	DECLARE_BUILDING(EBO_Store)
 };
