@@ -50,6 +50,12 @@ Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 	//GetCtrl()->SetFlags(HOF_SHOW);
 	//m_mode = wmIn;
 	m_sugar.SetOwner(this); CRR::Get()->Register(&m_sugar);
+
+	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
+	m_part.t_x = -14.f;
+	m_part.t_y = 23.f;
+	m_part.t_z = 10.f;
+	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 }
 
 Sugar::~Sugar()

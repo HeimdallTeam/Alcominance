@@ -28,6 +28,8 @@ protected:
 	// trolls
 	ResourceImp m_cane;
 	ResourceExp m_sugar;
+
+	THoeSub_Particle m_part;
 	//WorkMode m_mode;
 	TrollList m_worked;
 	HoeGame::StopWatch m_exitdelay;
