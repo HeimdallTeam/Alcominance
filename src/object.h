@@ -42,11 +42,7 @@ public:
 	void SetAngle(float angle);
 	float GetAngle() { return m_angle; }
 
-	/** Funkce pro nastavovani viditelnosti infa */
-	void SetInfo(unsigned int info);
-
-	/** Funkce pro odnastavovani viditelnosti infa */
-	void UnsetInfo(unsigned int info);
+	void SetCurActive(bool active);
 
 	bool IsSelected() { return false; }
 	bool IsCurActive() { return false; }

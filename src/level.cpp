@@ -109,6 +109,7 @@ void BecherLevel::MouseUpdate(float x, float y)
 	}
 	else // show select
 	{
+		// vybrat objekt pro zobrazeni
 	}
 }
 
@@ -171,7 +172,7 @@ void BecherLevel::MouseLeftDown(float x, float y)
 
 void BecherLevel::SelectObject(BecherObject * so)
 {
-	if (m_select)
+	if (m_select && m_select != so)
 	{
 		m_select->Unselect();
 		SetObjectHud(NULL);
@@ -352,8 +353,19 @@ void BecherLevel::OnMouseMove(float X, float Y)
 	if (select)
         MouseLeave();
 	else*/
-		MouseUpdate(X,Y);
-	
+	BecherObject * o = dynamic_cast<BecherObject *>(GetView()->SelObject(X,Y));
+	if (m_mselect && o != m_mselect && m_mselect != m_select)
+	{
+		m_mselect->SetCurActive(false);
+	}
+	if (o && o != m_select)
+	{
+		o->SetCurActive(true);
+	}
+	m_mselect = o;
+
+	MouseUpdate(X,Y);
+
 }
 
 void BecherLevel::OnWheel(long p)

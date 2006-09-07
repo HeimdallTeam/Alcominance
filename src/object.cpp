@@ -58,6 +58,12 @@ void BecherObject::Unselect()
 	m_infoselect.model = NULL;
 }
 
+void BecherObject::SetCurActive(bool active)
+{
+	m_infoselect.model = active ? (IHoeModel*)GetResMgr()->ReqResource(ID_INFO_RING2):NULL;
+	
+}
+
 
 
 

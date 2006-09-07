@@ -10,7 +10,7 @@
 
 print("Hello world, from ",_VERSION,"!")
 
-hoe("hidefps")
+hoe("showfps")
 --hoe("wireframe 1")
 
 --files 
@@ -60,6 +60,7 @@ LoadResource(ID_TROLL, "model olaf")
 --LoadResource(ID_TROLL, "generate model box 5")
 
 LoadResource(ID_INFO_RING, "model info")
+LoadResource(ID_INFO_RING2, "model info2")
 LoadResource(ID_CONSTRUCT, "model staveniste")
 LoadResource(ID_CONSTRUCT_D, "model doplnky")
 LoadResource(ID_CONSOLE_BACK, "picture console_pic");
