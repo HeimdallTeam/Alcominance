@@ -6,6 +6,7 @@
 
 class Factory;
 
+#ifndef BECHER_EDITOR
 class FactoryStatic : public ObjectHud
 {
 protected:
@@ -17,6 +18,7 @@ public:
 	void SetAct(Factory * act);
 	virtual void Draw(IHoe2D * h2d);
 };
+#endif // BECHER_EDITOR
 
 class Factory : public FactoryBuilding, TrollList
 {
@@ -24,7 +26,9 @@ class Factory : public FactoryBuilding, TrollList
 	friend class FactoryStatic;
 protected:
 	// panel
+#ifndef BECHER_EDITOR
 	static FactoryStatic m_userhud;
+#endif // BECHER_EDITOR
 	// trolls
 	ResourceImp m_sugar;
 	ResourceImp m_alco;

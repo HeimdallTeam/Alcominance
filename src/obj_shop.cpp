@@ -1,24 +1,10 @@
 
 #include "StdAfx.h"
 #include "becher.h"
-#include "game.h"
 #include "troll.h"
 #include "obj_shop.h"
-#include "obj_store.h"
 
-bool Shop::InsertSur(ESurType type, uint *s)
-{
-	return false;
-}
 
-bool Shop::SetToWork(Troll * t)
-{
-	return false;
-}
-
-void Shop::UnsetFromWork(Troll * t)
-{
-}
 
 /////////////////////////////////////////////////////////////
 Shop::Shop(IHoeScene * scn) : BecherBuilding(scn)
@@ -31,6 +17,20 @@ Shop::Shop(IHoeScene * scn) : BecherBuilding(scn)
 
 #ifndef BECHER_EDITOR
 void Shop::Update(const double t)
+{
+}
+
+bool Shop::InsertSur(ESurType type, uint *s)
+{
+	return false;
+}
+
+bool Shop::SetToWork(Troll * t)
+{
+	return false;
+}
+
+void Shop::UnsetFromWork(Troll * t)
 {
 }
 
@@ -51,9 +51,14 @@ bool Shop::Idiot(Job * t)
 #else
 bool Shop::Select()
 {
-	FactoryBuilding::Select();
+	BecherBuilding::Select();
 	return true;
 }
+
+void Shop::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+{
+}
+
 #endif
 
 

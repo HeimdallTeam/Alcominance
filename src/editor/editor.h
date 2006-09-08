@@ -81,7 +81,7 @@ public:
 	TexturesDialog(wxWindow * parent);
 };
 
-class BecherEdit : public HoeEditor::LevelEditor
+class BecherEdit : public HoeEditor::BaseEditor
 {
 	static BecherEdit * s_actinstance;
 protected:
@@ -98,9 +98,9 @@ public:
 	virtual ~BecherEdit();
 	static inline BecherEdit * Get() { assert(s_actinstance); return s_actinstance; }
 	EditorMap * GetActMap() { return m_map; }
+	BecherResources * GetResMgr() { return &m_res; }
 	bool IsMapLoaded() { return m_map != NULL; }
 
-	virtual void OnInitMenu();
 	virtual XHoeFS * GetFS() { return &m_res; }
 	HoeEditor::PropertyGrid * GetProp() { return m_prop; }
 	virtual HoeEditor::EngineView * GetEngineView() { return &m_engview; }
@@ -120,14 +120,14 @@ public:
 
 	virtual void KeyDown(wxKeyEvent& event);
 	virtual void KeyUp(wxKeyEvent& event);
-	virtual void MouseLeftDown(const int x, const int y, wxMouseEvent & e);
+	/*virtual void MouseLeftDown(const int x, const int y, wxMouseEvent & e);
 	virtual void MouseLeftUp(const int x, const int y, wxMouseEvent & e);
 	virtual void MouseRightDown(const int x, const int y, wxMouseEvent & e);
 	virtual void MouseRightUp(const int x, const int y, wxMouseEvent & e) {};
 	virtual void MouseWheel(wxMouseEvent & e);
 	virtual void MouseMove(int relX, int relY, int absX, int absY, const wxMouseEvent & ev);
 	virtual void MouseEnter(int absX, int absY);
-	virtual void MouseLeave();
+	virtual void MouseLeave();*/
 
 	void CloseMap();
 	void UpdateControls();
@@ -137,9 +137,7 @@ public:
 	void AddUndo(HoeEditor::UndoAction * action);
 
     DECLARE_EVENT_TABLE()
-protected:
-	// updejt menu
-	virtual void MenuUpdate();
+
 };
 
 class BecherEditApp : public HoeEditor::App

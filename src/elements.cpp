@@ -3,7 +3,6 @@
 #include "becher.h"
 #include "elements.h"
 #include "id.h"
-#include "game.h"
 
 //////////////////////////////////////////////////////////////////
 
@@ -50,7 +49,7 @@ void Tree::SetTypeModel(int type)
 
 bool Tree::Select()
 {
-	FactoryBuilding::Select();
+	BecherObject::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Position"));
 	GetProp()->AppendFloat(6, _("Height"), 1);
@@ -85,7 +84,7 @@ Bridge::Bridge(IHoeScene * scn) : BecherObject(scn)
 
 bool Bridge::Select()
 {
-	FactoryBuilding::Select();
+	BecherObject::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Position"));
 	GetProp()->AppendFloat(6, _("Height"), m_height);
@@ -105,25 +104,4 @@ void Bridge::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 }
 
 #endif // BECHER_OBJECT
-
-////////////////////////////////////////////////////////////
-WaterHole::WaterHole(IHoeScene * scn) : BecherObject(scn)
-{
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_WATERHOLE));
-	m_infoselect.s_x = 1.f;
-	m_infoselect.t_y = 2.f;
-	m_infoselect.s_z = 1.f;
-}
-
-#ifndef BECHER_EDITOR
-
-bool WaterHole::Select()
-{
-	BecherObject::Select();
-	GetLua()->func("s_studna");
-	return true;
-}
-
-#endif
-
 

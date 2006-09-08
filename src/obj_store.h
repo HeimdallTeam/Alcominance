@@ -6,6 +6,7 @@
 
 class Store;
 
+#ifndef BECHER_EDITOR
 class StoreStatic : public ObjectHud
 {
 protected:
@@ -17,12 +18,14 @@ protected:
 	char m_waterinfo[256];
 	char m_alcoinfo[256];
 	char m_becherinfo[256];
+	char m_coalinfo[256];
 	Store * m_act;
 public:
 	StoreStatic();
 	void SetAct(Store * act);
 	virtual void Draw(IHoe2D * h2d);
 };
+#endif // BECHER_EDITOR
 
 class Store : public BecherBuilding
 {
@@ -30,7 +33,9 @@ class Store : public BecherBuilding
 	friend class StoreStatic;
 protected:
 	// panel
+#ifndef BECHER_EDITOR
 	static StoreStatic m_userhud;
+#endif // BECHER_EDITOR
 	// trolls
 	ResourceExp m_stone;
 	ResourceExp m_wood;
@@ -40,6 +45,7 @@ protected:
 	ResourceExp m_alcohol;
 	ResourceExp m_cane;
 	ResourceExp m_herbe;
+	ResourceExp m_coal;
 	ResourceExp * EBSToPointer(ESurType type);
 	THoeSub_Model m_info[16];
 	//WorkMode m_mode;

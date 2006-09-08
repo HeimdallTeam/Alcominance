@@ -2,10 +2,8 @@
 #include "StdAfx.h"
 #include "becher.h"
 #include "buildings.h"
-#include "infos.h"
-#include "game.h"
+#include "crr.h"
 #include "troll.h"
-#include "obj_store.h"
 
 static CVar v_speed("troll_speed", 20.f, 0);
 
@@ -121,13 +119,21 @@ EPhaseResult Troll::MakePhase(const double t)
 	}
 	return PhaseContinue;
 }
-
+#ifndef BECHER_EDITOR
 bool Troll::Select()
 {
 	BecherObject::Select();
 	GetLua()->func("s_tupoun");
 	return true;
 }
+#else
+bool Troll::Select()
+{
+	BecherObject::Select();
+	return true;
+}
+
+#endif
 
 void Troll::SetJob(const Job & j)
 {
@@ -251,9 +257,8 @@ bool Path::Step(Troll * t, const float time)
 	float angle = -atan2f(posX*10.f-puvX*10.f,posY*10.f-puvY*10.f);
 	t->SetAngle(angle);
 	// nastavit pozici podle terenu
-	t->SetPosition( posX, posY, GetBecher()->GetLevel()->GetScene()->GetScenePhysics()->GetHeight(posX,posY));
+	t->SetPosition( posX, posY, GetLevel()->GetScene()->GetScenePhysics()->GetHeight(posX,posY));
 	return finish;
 }
-
 
 

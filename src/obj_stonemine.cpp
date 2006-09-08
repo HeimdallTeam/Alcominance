@@ -1,17 +1,17 @@
 
 #include "StdAfx.h"
 #include "becher.h"
-#include "obj_saw.h"
+#include "obj_stonemine.h"
 
 #ifndef BECHER_EDITOR
-SawStatic Saw::m_userhud;
+StoneMineStatic StoneMine::m_userhud;
 
-SawStatic::SawStatic()
+StoneMineStatic::StoneMineStatic()
 {
 	m_act = NULL;
 }
 
-void SawStatic::SetAct(Saw * act)
+void StoneMineStatic::SetAct(StoneMine * act)
 {
 	m_act = act;
 	// pripojit 
@@ -19,7 +19,7 @@ void SawStatic::SetAct(Saw * act)
 	//dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
 }
 
-void SawStatic::Draw(IHoe2D * h2d)
+void StoneMineStatic::Draw(IHoe2D * h2d)
 {
 	if (m_act)
 	{
@@ -31,55 +31,55 @@ void SawStatic::Draw(IHoe2D * h2d)
 #endif // BECHER_EDITOR
 
 ////////////////////////////////////////////////////////////
-Saw::Saw(IHoeScene * scn) : SourceBuilding(scn)
+StoneMine::StoneMine(IHoeScene * scn) : SourceBuilding(scn)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_SAW));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STONEMINE));
 }
 
 #ifndef BECHER_EDITOR
 
-void Saw::Update(const double dtime)
+void StoneMine::Update(const double dtime)
 {
 }
 
-bool Saw::Select()
+bool StoneMine::Select()
 {
 	SourceBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	if (!IsBuildMode())
-        GetLua()->func("s_saw");
+        GetLua()->func("s_stonemine");
 	return true;
 }
 
-bool Saw::Idiot(Job *t)
+bool StoneMine::Idiot(Job *t)
 {
 	return false;
 }
 
-bool Saw::InsertSur(ESurType type, uint *s)
+bool StoneMine::InsertSur(ESurType type, uint *s)
 {
 	return false;
 }
 
-bool Saw::SetToWork(Troll * t)
+bool StoneMine::SetToWork(Troll * t)
 {
 	return false;
 }
 
-void Saw::UnsetFromWork(Troll * t)
+void StoneMine::UnsetFromWork(Troll * t)
 {
 }
 
 #else // BECHER_OBJECT
 
-bool Saw::Select()
+bool StoneMine::Select()
 {
 	SourceBuilding::Select();
 	return true;
 }
 
-void Saw::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+void StoneMine::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 {
 }
 

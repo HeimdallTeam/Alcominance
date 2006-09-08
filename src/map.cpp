@@ -2,7 +2,6 @@
 #include "StdAfx.h"
 #include "becher.h"
 #include "id.h"
-#include "game.h"
 #include "buildings.h"
 #include "elements.h"
 #include "troll.h"
@@ -13,6 +12,10 @@
 #include "obj_destilate.h"
 #include "obj_farm.h"
 #include "obj_saw.h"
+#include "obj_herbe.h"
+#include "obj_waterhole.h"
+#include "obj_coalmine.h"
+#include "obj_stonemine.h"
 #include "map.h"
 #include "sysobjs.h"
 
@@ -54,6 +57,10 @@ BecherObject * BecherMap::CreateObject(EObjType type)
 		bo = new Troll(m_scene);break;
 	case EBO_Saw:
 		bo = new Saw(m_scene);break;
+	case EBO_StoneMine:
+		bo = new StoneMine(m_scene);break;
+	case EBO_CoalMine:
+		bo = new CoalMine(m_scene);break;
 	default:
 		assert(!"Unknown becher object");
 	};

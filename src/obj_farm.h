@@ -6,7 +6,7 @@
 
 class Troll;
 
-class Farm : public BecherBuilding
+class Farm : public SourceBuilding
 {
 	float rust;
 	int skliz;

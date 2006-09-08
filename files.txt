@@ -39,4 +39,5 @@ ID_WATERHOLE="model studna" ; Studna
 ID_MOST="model most" ; Most
 ID_TROLL="model olaf" ; Tupoun
 ID_SAW="model drevorubec" ; Pila
+ID_COALMINE="model studna" ; Uhelny dul
 #end

@@ -27,6 +27,7 @@ enum {
 
 enum EObjType
 {
+	// pridavat vzdy az na konec!!!
 	EBO_None = 0,
 	EBO_Tree = 1, // class
 	EBO_Sugar,
@@ -40,6 +41,8 @@ enum EObjType
 	EBO_Store,
 	EBO_Shop,
 	EBO_Saw,
+	EBO_CoalMine,
+	EBO_StoneMine,
 	EBO_Max,
 
 // class
@@ -58,7 +61,6 @@ enum EObjType
 enum ESurType
 {
 	EBS_None = 0,
-    EBS_Work,
 	EBS_Becher,
 	EBS_Stone,
 	EBS_Wood,
@@ -67,6 +69,7 @@ enum ESurType
 	EBS_Sugar,
 	EBS_Alco,
 	EBS_Cane,
+    EBS_Coal,
 	EBS_Max,
 };
 

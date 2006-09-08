@@ -47,20 +47,6 @@ public:
 	DECLARE_BASEOBJECT(EBO_Bridge)
 };
 
-class WaterHole : public BecherObject
-{
-public:
-	WaterHole(IHoeScene * scn);
-	virtual EObjType GetClass() { return EBO_WaterHole; }
-
-#ifndef BECHER_EDITOR
-	virtual bool Select();
-#endif
-
-	DECLARE_BASEOBJECT(EBO_WaterHole)
-};
-
-
 
 #endif // _BECHERGAME_ELEMENTS_H_
 

@@ -1,17 +1,17 @@
 
 #include "StdAfx.h"
 #include "becher.h"
-#include "obj_saw.h"
+#include "obj_coalmine.h"
 
 #ifndef BECHER_EDITOR
-SawStatic Saw::m_userhud;
+CoalMineStatic CoalMine::m_userhud;
 
-SawStatic::SawStatic()
+CoalMineStatic::CoalMineStatic()
 {
 	m_act = NULL;
 }
 
-void SawStatic::SetAct(Saw * act)
+void CoalMineStatic::SetAct(CoalMine * act)
 {
 	m_act = act;
 	// pripojit 
@@ -19,7 +19,7 @@ void SawStatic::SetAct(Saw * act)
 	//dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
 }
 
-void SawStatic::Draw(IHoe2D * h2d)
+void CoalMineStatic::Draw(IHoe2D * h2d)
 {
 	if (m_act)
 	{
@@ -31,58 +31,57 @@ void SawStatic::Draw(IHoe2D * h2d)
 #endif // BECHER_EDITOR
 
 ////////////////////////////////////////////////////////////
-Saw::Saw(IHoeScene * scn) : SourceBuilding(scn)
+CoalMine::CoalMine(IHoeScene * scn) : SourceBuilding(scn)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_SAW));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_COALMINE));
 }
 
 #ifndef BECHER_EDITOR
 
-void Saw::Update(const double dtime)
+void CoalMine::Update(const double dtime)
 {
 }
 
-bool Saw::Select()
+bool CoalMine::Select()
 {
 	SourceBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	if (!IsBuildMode())
-        GetLua()->func("s_saw");
+        GetLua()->func("s_coalmine");
 	return true;
 }
 
-bool Saw::Idiot(Job *t)
+bool CoalMine::Idiot(Job *t)
 {
 	return false;
 }
 
-bool Saw::InsertSur(ESurType type, uint *s)
+bool CoalMine::InsertSur(ESurType type, uint *s)
 {
 	return false;
 }
 
-bool Saw::SetToWork(Troll * t)
+bool CoalMine::SetToWork(Troll * t)
 {
 	return false;
 }
 
-void Saw::UnsetFromWork(Troll * t)
+void CoalMine::UnsetFromWork(Troll * t)
 {
 }
 
 #else // BECHER_OBJECT
 
-bool Saw::Select()
+bool CoalMine::Select()
 {
 	SourceBuilding::Select();
 	return true;
 }
 
-void Saw::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+void CoalMine::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 {
 }
-
 
 #endif // BECHER_OBJECT
 

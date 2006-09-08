@@ -8,6 +8,7 @@ class Troll;
 
 class Destilate;
 
+#ifndef BECHER_EDITOR
 class DestilateStatic : public ObjectHud
 {
 protected:
@@ -19,6 +20,7 @@ public:
 	void SetAct(Destilate * act);
 	virtual void Draw(IHoe2D * h2d);
 };
+#endif // BECHER_EDITOR
 
 class Destilate : public FactoryBuilding
 {
@@ -26,7 +28,9 @@ class Destilate : public FactoryBuilding
 	friend class DestilateStatic;
 protected:
 	// panel
+#ifndef BECHER_EDITOR
 	static DestilateStatic m_userhud;
+#endif // BECHER_EDITOR
 	// trolls
 	ResourceImp m_sugar;
 	ResourceExp m_alco;

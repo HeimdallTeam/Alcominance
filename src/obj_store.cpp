@@ -1,7 +1,6 @@
 
 #include "StdAfx.h"
 #include "becher.h"
-#include "game.h"
 #include "troll.h"
 #include "obj_store.h"
 
@@ -10,6 +9,7 @@ float getheight(IHoeModel * m);
 static CVar v_sklad("store_max", 50, 0);
 static CVar v_numworks("store_maxwork", 4, 0);
 
+#ifndef BECHER_EDITOR
 StoreStatic Store::m_userhud;
 
 StoreStatic::StoreStatic()
@@ -29,6 +29,7 @@ void StoreStatic::SetAct(Store * act)
 	dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
 	dynamic_cast<HoeGame::Font*>(ReqItem("lih"))->SetPtr(m_alcoinfo);
 	dynamic_cast<HoeGame::Font*>(ReqItem("becher"))->SetPtr(m_becherinfo);
+	dynamic_cast<HoeGame::Font*>(ReqItem("uhli"))->SetPtr(m_coalinfo);
 }
 
 void StoreStatic::Draw(IHoe2D * h2d)
@@ -43,15 +44,18 @@ void StoreStatic::Draw(IHoe2D * h2d)
 		sprintf(m_waterinfo,"%d vody.", m_act->m_water.GetNum());
 		sprintf(m_alcoinfo,"%d lihu.", m_act->m_alcohol.GetNum());
 		sprintf(m_becherinfo,"%d flasek.", m_act->m_becher.GetNum());
+		sprintf(m_coalinfo,"%d uhli.", m_act->m_coal.GetNum());
 
 		ObjectHud::Draw(h2d);
 	}
 }
+#endif // BECHER_EDITOR
 
 ////////////////////////////////////////////////////////////
 Store::Store(IHoeScene * scn) : BecherBuilding(scn), 
 	m_stone(EBS_Stone), m_wood(EBS_Wood), m_sugar(EBS_Sugar), m_water(EBS_Water),
-	m_becher(EBS_Becher), m_alcohol(EBS_Alco), m_cane(EBS_Cane), m_herbe(EBS_Herbe)
+	m_becher(EBS_Becher), m_alcohol(EBS_Alco), m_cane(EBS_Cane), m_herbe(EBS_Herbe),
+	m_coal(EBS_Coal)
 {
 	// set owners
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STORE));
@@ -80,6 +84,7 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn),
 	m_alcohol.SetOwner(this); CRR::Get()->Register(&m_alcohol);
 	m_cane.SetOwner(this); CRR::Get()->Register(&m_cane);
 	m_herbe.SetOwner(this); CRR::Get()->Register(&m_herbe);
+	m_coal.SetOwner(this); CRR::Get()->Register(&m_coal);
 }
 
 /*void Store::AdvPaint(IHoePaint3D * h3)
@@ -128,6 +133,10 @@ bool Store::Save(BecherGameSave &w)
 	w.WriteRI(m_water);
 	w.WriteRI(m_becher);
 	w.WriteRI(m_alcohol);
+	w.WriteRI(m_cane);
+	w.WriteRI(m_herbe);
+	w.WriteRI(m_coal);
+
 	return true;
 }
 
@@ -140,6 +149,10 @@ bool Store::Load(BecherGameLoad &r)
 	r.ReadRI(m_water);
 	r.ReadRI(m_becher);
 	r.ReadRI(m_alcohol);
+	r.ReadRI(m_cane);
+	r.ReadRI(m_herbe);
+	r.ReadRI(m_coal);
+
 	return true;
 }
 
@@ -165,6 +178,8 @@ ResourceExp * Store::EBSToPointer(ESurType type)
 		return &m_water;
 	case EBS_Herbe:
 		return &m_herbe;
+	case EBS_Coal:
+		return &m_coal;
 	default:
 		assert(!"Unknown sur. type");
 	}
@@ -212,7 +227,7 @@ bool Store::Idiot(Job *t)
 	f.SetTableInteger("max_store", v_sklad.GetInt());
 	f.SetTableInteger("cane_avail", ri ? ri->GetNum():0);
 	f.SetTableInteger("cane", m_cane.GetNum());
-	f.SetTableInteger("Store", m_sugar.GetNum());
+	f.SetTableInteger("sugar", m_sugar.GetNum());
 	// works
 	f.SetTableInteger("works", this->m_worked.Count());
 	f.SetTableInteger("works_max", v_numworks.GetInt());
@@ -259,7 +274,7 @@ bool Store::Select()
 #else
 bool Store::Select()
 {
-	FactoryBuilding::Select();
+	BecherBuilding::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Materials"));
 	GetProp()->AppendLong(0, _("Wood"), m_wood.GetNum());
@@ -268,8 +283,12 @@ bool Store::Select()
 	GetProp()->AppendLong(3, _("Sugar"), m_sugar.GetNum());
 	GetProp()->AppendLong(4, _("Alcohol"), m_alcohol.GetNum());
 	GetProp()->AppendLong(5, _("Bechers"), m_becher.GetNum());
+	GetProp()->AppendLong(6, _("Cane"), m_cane.GetNum());
+	GetProp()->AppendLong(7, _("Herbe"), m_herbe.GetNum());
+	GetProp()->AppendLong(8, _("Coal"), m_coal.GetNum());
+
 	GetProp()->AppendCategory(_("Store"));
-	GetProp()->AppendLong(6, _("Limit"), 100);
+	GetProp()->AppendLong(20, _("Limit"), 100);
 	GetProp()->End();	
 	return true;
 }
@@ -295,6 +314,15 @@ void Store::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 		break;
 	case 5:
 		m_becher.SetNum(pi.GetLong());
+		break;
+	case 6:
+		m_cane.SetNum(pi.GetLong());
+		break;
+	case 7:
+		m_herbe.SetNum(pi.GetLong());
+		break;
+	case 8:
+		m_coal.SetNum(pi.GetLong());
 		break;
 	};
 }

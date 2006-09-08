@@ -61,3 +61,10 @@ font
 	font = "font 'resource/font.ttf' 16"
 	text = "20 vody."
 }
+font
+{
+	name = "uhli"
+	rect = 421.119995 554.581665 421.119995 555.776917
+	font = "font 'resource/font.ttf' 16"
+	text = "20 uhli."
+}

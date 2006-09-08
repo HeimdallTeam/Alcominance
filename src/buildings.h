@@ -35,6 +35,12 @@ public:
 	FactoryBuilding(IHoeScene * scn) : BecherBuilding(scn) {}
 };
 
+class SourceBuilding : public BecherBuilding
+{
+public:
+	SourceBuilding(IHoeScene * scn) : BecherBuilding(scn) {}
+};
+
 /**
 * Objekt ktery se stara o tupouny
 * Ma prehled o vsech tupounech kteri pro nej pracuji
@@ -56,15 +62,6 @@ public:
 // idiot prideluje praci, objednava zakazky, atd
 // jakmile trol, splni ukol, prijde zpet 
 
-
-class HerbeWoman : public BecherBuilding
-{
-public:
-	HerbeWoman(IHoeScene * scn);
-	virtual ~HerbeWoman();
-
-	DECLARE_BASEOBJECT(EBO_HerbeWoman)
-};
 
 #endif // _BECHERGAME_BUILDINGS_H_
 

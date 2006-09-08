@@ -1,16 +1,15 @@
 
 #include "StdAfx.h"
 #include "becher.h"
-#include "game.h"
 #include "troll.h"
 #include "obj_factory.h"
-#include "obj_store.h"
 
 static CVar v_numzpr("factory_speed", 1.f, 0);
 static HoeGame::CTimer t_numzpr(v_numzpr);
 static CVar v_sklad("factory_max", 50, 0);
 static CVar v_numworks("factory_maxwork", 4, 0);
 
+#ifndef BECHER_EDITOR
 FactoryStatic Factory::m_userhud;
 
 FactoryStatic::FactoryStatic()
@@ -37,6 +36,7 @@ void FactoryStatic::Draw(IHoe2D * h2d)
 		ObjectHud::Draw(h2d);
 	}
 }
+#endif // BECHER_EDITOR
 
 ////////////////////////////////////////////////////////
 Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), m_becher(EBS_Becher)
@@ -110,30 +110,6 @@ bool Factory::Select()
 	return true;
 }
 
-#else
-
-bool Factory::Select()
-{
-	FactoryBuilding::Select();
-	/*GetProp()->Begin(this);
-	GetProp()->AppendCategory(_("Store"));
-	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());
-	GetProp()->End();*/	
-	return true;
-}
-
-void Factory::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-	/*switch (id)
-	{
-	case 6:
-		v_sklad.Set((int)pi.GetLong());
-		break;
-	};*/
-}
-
-#endif
-
 bool Factory::Idiot(Job * j)
 {
 	// zjistit pripadny zdroj pro suroviny
@@ -181,3 +157,28 @@ bool Factory::Idiot(Job * j)
 	return true;*/
 	return false;
 }
+
+#else
+
+bool Factory::Select()
+{
+	FactoryBuilding::Select();
+	/*GetProp()->Begin(this);
+	GetProp()->AppendCategory(_("Store"));
+	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());
+	GetProp()->End();*/	
+	return true;
+}
+
+void Factory::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+{
+	/*switch (id)
+	{
+	case 6:
+		v_sklad.Set((int)pi.GetLong());
+		break;
+	};*/
+}
+
+#endif
+

@@ -35,7 +35,7 @@ enum {
 	ID_TERRAINTEX,
 };
 
-BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::LevelEditor)
+BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::BaseEditor)
 	EVT_MENU(ID_SHOWRES, BecherEdit::OnResMgr)
 	EVT_MENU(ID_MAPSETTINGS, BecherEdit::OnMapSettings)
 	EVT_MENU(HoeEditor::ID_NEW, BecherEdit::OnNewFile)
@@ -58,20 +58,9 @@ END_EVENT_TABLE()
 
 // tools
 enum {
-	IDB_SUGAR = 1,
-	IDB_BABA,
-	IDB_STROM,
-	IDB_FARM,
-	IDB_BRIDGE,
-	IDB_DESTILATE,
-	IDB_FACTORY,
-	IDB_WATERHOLE,
-	IDB_STORE,
-	IDB_SHOP,
-	IDB_TROLL,
-	IDB_SAW,
+	IDB_OBJECT = 1,
+	IDB_OBJECT_MAX = IDB_OBJECT + EBSys_Max,
 // system
-	IDB_SOUND,
 // textures
 	IDB_NOTEX,
 	IDB_TEX1,
@@ -79,10 +68,11 @@ enum {
 	IDB_TERRDOWN,
 	IDB_TERRPREV,
 };
+#define EVT_BUTTON_RANGE(id1, id2, func) wx__DECLARE_EVT2(wxEVT_COMMAND_BUTTON_CLICKED, id1, id2, wxCommandEventHandler(func))
 
 
 BEGIN_EVENT_TABLE(ToolObjects, wxChoicebook)
-    EVT_BUTTON(IDB_SUGAR,ToolObjects::OnClick)
+    /*EVT_BUTTON(IDB_SUGAR,ToolObjects::OnClick)
     EVT_BUTTON(IDB_BABA,ToolObjects::OnClick)
     EVT_BUTTON(IDB_FARM,ToolObjects::OnClick)
     EVT_BUTTON(IDB_BRIDGE,ToolObjects::OnClick)
@@ -93,9 +83,10 @@ BEGIN_EVENT_TABLE(ToolObjects, wxChoicebook)
 	EVT_BUTTON(IDB_STORE,ToolObjects::OnClick)
 	EVT_BUTTON(IDB_SHOP,ToolObjects::OnClick)
 	EVT_BUTTON(IDB_TROLL,ToolObjects::OnClick)
-	EVT_BUTTON(IDB_SAW,ToolObjects::OnClick)
+	EVT_BUTTON(IDB_SAW,ToolObjects::OnClick)*/
+	//EVT_BUTTON_RANGE(
+	EVT_BUTTON_RANGE(IDB_OBJECT, IDB_OBJECT_MAX, ToolObjects::OnClick)
 	// system
-	EVT_BUTTON(IDB_SOUND,ToolObjects::OnClick)
 END_EVENT_TABLE()
 
 // gfx
@@ -117,46 +108,51 @@ END_EVENT_TABLE()
 
 #define BT_SIZE wxSize(28,28)
 #define BT_P(x,y) wxPoint(28 * x + 6, 28 * y + 3)
+#define IDB(obj) (IDB_OBJECT+obj)
 
 ToolObjects::ToolObjects(wxWindow * parent)
 	: wxChoicebook(parent,wxID_ANY,wxDefaultPosition, wxSize(80,50))
 {
 	wxWindow * p  = new wxWindow(this,-1);
-	wxButton * b = new wxBitmapButton(p,IDB_FACTORY,wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+	wxButton * b = new wxBitmapButton(p,IDB(EBO_Factory),wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Factory") );
-	b = new wxBitmapButton(p,IDB_BABA,wxBitmap(chaloupka_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p,IDB(EBO_HerbeWoman),wxBitmap(chaloupka_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Chalupa") );
-	b = new wxBitmapButton(p,IDB_FARM,wxBitmap(farma_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p,IDB(EBO_Farm),wxBitmap(farma_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Farm") );
-	b = new wxBitmapButton(p,IDB_DESTILATE,wxBitmap(lihovar_xpm),BT_P(3,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p,IDB(EBO_Destilate),wxBitmap(lihovar_xpm),BT_P(3,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Destilate") );
-	b = new wxBitmapButton(p,IDB_SUGAR,wxBitmap(cukrovar_xpm),BT_P(4,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p,IDB(EBO_Sugar),wxBitmap(cukrovar_xpm),BT_P(4,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Sugar") );
-	b = new wxBitmapButton(p,IDB_STORE,wxBitmap(sklad_xpm),BT_P(0,1),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p,IDB(EBO_Store),wxBitmap(sklad_xpm),BT_P(0,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Store") );
-	b = new wxBitmapButton(p,IDB_SHOP,wxBitmap(obchod_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p,IDB(EBO_Shop),wxBitmap(obchod_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Shop") );
-	b = new wxBitmapButton(p,IDB_SAW,wxBitmap(drevorubec_xpm),BT_P(2,1),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p,IDB(EBO_Saw),wxBitmap(drevorubec_xpm),BT_P(2,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Saw") );
 
 
 	//b->SetForegroundColour(*wxBLUE);
 	wxWindow * p2  = new wxWindow(this,-1);
-	b = new wxBitmapButton(p2,IDB_STROM,wxBitmap(stromy_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
-	b->SetToolTip( _("Strom") );
-	b = new wxBitmapButton(p2,IDB_BRIDGE,wxBitmap(most_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
-	b->SetToolTip( _("Bridge") );
-	b = new wxBitmapButton(p2,IDB_WATERHOLE,wxBitmap(studna_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p2,IDB(EBO_Tree),wxBitmap(stromy_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Tree") );
+	b = new wxBitmapButton(p2,IDB(EBO_WaterHole),wxBitmap(studna_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Water Hole") );
-	b = new wxBitmapButton(p2,IDB_TROLL,wxBitmap(studna_xpm),BT_P(3,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p2,IDB(EBO_StoneMine),wxBitmap(studna_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Stone Mine") );
+	b = new wxBitmapButton(p2,IDB(EBO_CoalMine),wxBitmap(studna_xpm),BT_P(3,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Coan Mine") );
+	b = new wxBitmapButton(p2,IDB(EBO_Troll),wxBitmap(studna_xpm),BT_P(0,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Troll") );
+	b = new wxBitmapButton(p2,IDB(EBO_Bridge),wxBitmap(most_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Bridge") );
 
 	wxWindow * p3  = new wxWindow(this,-1);
-	b = new wxBitmapButton(p3,IDB_SOUND,wxBitmap(Sound_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(p3,IDB(EBSys_Sound),wxBitmap(Sound_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Sound instance") );
 
-	AddPage(p,_("Buildings"));
 	AddPage(p2,_("Map elements"));
+	AddPage(p,_("Buildings"));
 	AddPage(p3,_("System tools"));
 
 }
@@ -169,51 +165,14 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 		return;
 	}
 
-	EObjType type = EBO_Max;
+	EObjType type = (EObjType)(event.GetId()-IDB_OBJECT);
 	bool rep = false;
 	bool rnd = false;
-	switch (event.GetId())
+	switch (type)
 	{
-	case IDB_SUGAR:
-		type = EBO_Sugar;
-		break;
-	case IDB_BABA:
-		type = EBO_HerbeWoman;
-		break;
-	case IDB_FARM:
-		type = EBO_Farm;
-		break;
-	case IDB_BRIDGE:
-		type = EBO_Bridge;
-		break;
-	case IDB_STROM:
-		type = EBO_Tree;
+	case EBO_Tree:
 		rep = true;
 		rnd = true;
-		break;
-	case IDB_DESTILATE:
-		type = EBO_Destilate;
-		break;
-	case IDB_FACTORY:
-		type = EBO_Factory;
-		break;
-	case IDB_WATERHOLE:
-		type = EBO_WaterHole;
-		break;
-	case IDB_STORE:
-		type = EBO_Store;
-		break;
-	case IDB_SHOP:
-		type = EBO_Shop;
-		break;
-	case IDB_TROLL:
-		type = EBO_Troll;
-		break;
-	case IDB_SAW:
-		type = EBO_Saw;
-		break;
-	case IDB_SOUND:
-		type = EBS_Sound;
 		break;
 	};
 
@@ -411,10 +370,11 @@ HoeEditor::BaseEditor * BecherEditApp::CreateEditor()
 	return e;
 }
 
-void BecherEditApp::OnPostInit()
+bool BecherEditApp::OnPostInit()
 {
 	//m_splash->
 	//delete m_splash;
+	return false;
 }
 
 ///////////////////////////
@@ -425,7 +385,6 @@ BecherEdit::BecherEdit()
 	assert(s_actinstance == NULL);
 	s_actinstance = this;
 	m_map = NULL;
-	m_tool = NULL;
 }
 
 BecherEdit::~BecherEdit()
@@ -450,38 +409,8 @@ bool BecherEdit::Create(const wxString & title)
 		return false;
 	}
 */
-	HoeEditor::LevelEditor::Create(title);
+	HoeEditor::BaseEditor::Create(title);
 
-	wxSplitterWindow * split = new wxSplitterWindow(this,10, wxDefaultPosition, wxDefaultSize,0);
-	split->SetSashGravity(0);
-	
-	// seradit do layoutu
-
-	this->m_leftpanel.Create(split, -1);
-	this->m_engview.Create(split, -1, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS);
-
-	split->SplitVertically(&m_leftpanel, &m_engview, 150);
-
-	m_prop = new HoeEditor::PropertyGrid(GetPanelMgr());
-	GetPanelMgr()->AddPanel(
-		new ToolObjects(GetPanelMgr()), _("Tools"), true, true);
-	GetPanelMgr()->AddPanel(
-		new TerrainObject(GetPanelMgr()), _("Terrain"), true, true);
-	GetPanelMgr()->AddPanel(
-		m_prop, _("Properties"), false, true);
-
-
-	UpdateControls();
-
-	// create status bar
-	wxStatusBar *statbar = GetStatusBar();
-	statbar->SetFieldsCount(2);
-
-	return true;
-}
-
-void BecherEdit::OnInitMenu()
-{
     // file
     wxMenu * menuFile = new wxMenu;
 	menuFile->Append(HoeEditor::ID_NEW, _("&New...\tCtrl+N"), _("Creates a new file or project."));
@@ -550,11 +479,38 @@ void BecherEdit::OnInitMenu()
     // ... and attach this menu bar to the frame
     SetMenuBar(m_menu); 
 
-	MenuUpdate();
+	wxSplitterWindow * split = new wxSplitterWindow(this,10, wxDefaultPosition, wxDefaultSize,0);
+	split->SetSashGravity(0);
+	
+	// seradit do layoutu
+
+	this->m_leftpanel.Create(split, -1);
+	this->m_engview.Create(split, -1, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS);
+
+	split->SplitVertically(&m_leftpanel, &m_engview, 150);
+
+	m_prop = new HoeEditor::PropertyGrid();
+	m_prop->Create(GetPanelMgr());
+	GetPanelMgr()->AddPanel(
+		new ToolObjects(GetPanelMgr()), _("Tools"), true, true);
+	GetPanelMgr()->AddPanel(
+		new TerrainObject(GetPanelMgr()), _("Terrain"), true, true);
+	GetPanelMgr()->AddPanel(
+		m_prop, _("Properties"), false, true);
+
+
+	UpdateControls();
+
+	// create status bar
+	wxStatusBar *statbar = CreateStatusBar();
+	statbar->SetFieldsCount(2);
+
+	UpdateControls();
+	return true;
 }
 
 // updejt menu
-void BecherEdit::MenuUpdate()
+void BecherEdit::UpdateControls()
 {
 	if (m_menu)
 	{
@@ -640,7 +596,6 @@ void BecherEdit::OnNewFile(wxCommandEvent &)
 		m_map = new EditorMap();
 		m_map->CreateNew(dlg.m_width->GetValue(),dlg.m_height->GetValue());
 		UpdateControls();
-		MenuUpdate();
 	}
 }
 
@@ -658,7 +613,7 @@ void BecherEdit::OnOpenFile(wxCommandEvent &)
 		{
 			wxLogMessage(_("Open map file %s failed."), dlg.GetPath().c_str());
 			CloseMap();
-			MenuUpdate();
+			UpdateControls();
 		}
 		else
 		{
@@ -666,7 +621,6 @@ void BecherEdit::OnOpenFile(wxCommandEvent &)
 			SetTitle(m_map->GetTitle());
 			GetEngine()->SetActiveScene(m_map->GetScene());
 			HoeGetRef(GetEngine())->SetBackgroundColor(0xffb060ff);
-			MenuUpdate();
 		}
 	}
 	
@@ -751,10 +705,6 @@ void BecherEdit::OnNewObject(wxCommandEvent &)
 }
 
 /////////////////////////////////////
-void BecherEdit::UpdateControls()
-{
-	
-}
 
 void BecherEdit::CloseMap()
 {
@@ -825,8 +775,5 @@ EditBaseConsole * GetCon()
 	return HoeEditor::App::Get()->GetConsole();
 }
 
-HoeEditor::PropertyGrid * GetProp()
-{
-	return reinterpret_cast<BecherEdit*>(HoeEditor::App::Get()->GetEditor())->GetProp();
-}
+
 

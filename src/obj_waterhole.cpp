@@ -1,17 +1,17 @@
 
 #include "StdAfx.h"
 #include "becher.h"
-#include "obj_saw.h"
+#include "obj_waterhole.h"
 
 #ifndef BECHER_EDITOR
-SawStatic Saw::m_userhud;
+WaterHoleStatic WaterHole::m_userhud;
 
-SawStatic::SawStatic()
+WaterHoleStatic::WaterHoleStatic()
 {
 	m_act = NULL;
 }
 
-void SawStatic::SetAct(Saw * act)
+void WaterHoleStatic::SetAct(WaterHole * act)
 {
 	m_act = act;
 	// pripojit 
@@ -19,7 +19,7 @@ void SawStatic::SetAct(Saw * act)
 	//dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
 }
 
-void SawStatic::Draw(IHoe2D * h2d)
+void WaterHoleStatic::Draw(IHoe2D * h2d)
 {
 	if (m_act)
 	{
@@ -30,56 +30,59 @@ void SawStatic::Draw(IHoe2D * h2d)
 }
 #endif // BECHER_EDITOR
 
+
 ////////////////////////////////////////////////////////////
-Saw::Saw(IHoeScene * scn) : SourceBuilding(scn)
+WaterHole::WaterHole(IHoeScene * scn) : SourceBuilding(scn)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_SAW));
-}
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_WATERHOLE));
+	m_infoselect.s_x = 1.f;
+	m_infoselect.t_y = 2.f;
+	m_infoselect.s_z = 1.f;}
 
 #ifndef BECHER_EDITOR
 
-void Saw::Update(const double dtime)
+void WaterHole::Update(const double dtime)
 {
 }
 
-bool Saw::Select()
+bool WaterHole::Select()
 {
 	SourceBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	if (!IsBuildMode())
-        GetLua()->func("s_saw");
+        GetLua()->func("s_studna");
 	return true;
 }
 
-bool Saw::Idiot(Job *t)
+bool WaterHole::Idiot(Job *t)
 {
 	return false;
 }
 
-bool Saw::InsertSur(ESurType type, uint *s)
+bool WaterHole::InsertSur(ESurType type, uint *s)
 {
 	return false;
 }
 
-bool Saw::SetToWork(Troll * t)
+bool WaterHole::SetToWork(Troll * t)
 {
 	return false;
 }
 
-void Saw::UnsetFromWork(Troll * t)
+void WaterHole::UnsetFromWork(Troll * t)
 {
 }
 
 #else // BECHER_OBJECT
 
-bool Saw::Select()
+bool WaterHole::Select()
 {
 	SourceBuilding::Select();
 	return true;
 }
 
-void Saw::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+void WaterHole::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 {
 }
 

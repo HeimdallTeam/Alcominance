@@ -1,18 +1,15 @@
 
 #include "StdAfx.h"
 #include "becher.h"
-#include "game.h"
 #include "troll.h"
 #include "obj_sugar.h"
-#include "obj_store.h"
-#include "crr.h"
-
 
 static CVar v_numzpr("sugar_speed", 1.f, 0);
 static HoeGame::CTimer t_numzpr(v_numzpr);
 static CVar v_sklad("sugar_max", 50, 0);
 static CVar v_numworks("sugar_maxwork", 4, 0);
 
+#ifndef BECHER_EDITOR
 SugarStatic Sugar::m_userhud;
 
 SugarStatic::SugarStatic()
@@ -39,6 +36,7 @@ void SugarStatic::Draw(IHoe2D * h2d)
 		ObjectHud::Draw(h2d);
 	}
 }
+#endif // BECHER_EDITOR
 
 ////////////////////////////////////////////////////////
 Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
@@ -90,7 +88,7 @@ void Sugar::Update(const double t)
 	{
 		if (m_cane.GetNum() > 0)
 		{
-			uint p = t_numzpr.Compute(t * m_worked.Count());
+			uint p = t_numzpr.Compute((const float)t * m_worked.Count());
 			p=m_cane.Get(p,true);
 			m_sugar.Add(&p, v_sklad.GetInt() - GetMiniStoreCount());
 			m_exitdelay.Reset();
@@ -98,7 +96,7 @@ void Sugar::Update(const double t)
 		else
 		{
 			// postupne propoustet
-			if (m_exitdelay.AddTime(t, 3.f))
+			if (m_exitdelay.AddTime((const float)t, 3.f))
 			{
 				m_exitdelay.Reset();
 				// propustit jednoho workera
@@ -118,30 +116,6 @@ bool Sugar::Select()
         GetLua()->func("s_cukr");
 	return true;
 }
-
-#else
-
-bool Sugar::Select()
-{
-	FactoryBuilding::Select();
-	GetProp()->Begin(this);
-	GetProp()->AppendCategory(_("Store"));
-	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());
-	GetProp()->End();	
-	return true;
-}
-
-void Sugar::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-	switch (id)
-	{
-	case 6:
-		v_sklad.Set((int)pi.GetLong());
-		break;
-	};
-}
-
-#endif
 
 bool Sugar::Idiot(Job * j)
 {
@@ -189,6 +163,30 @@ bool Sugar::Idiot(Job * j)
 	
 	return true;
 }
+
+#else
+
+bool Sugar::Select()
+{
+	FactoryBuilding::Select();
+	GetProp()->Begin(this);
+	GetProp()->AppendCategory(_("Store"));
+	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());
+	GetProp()->End();	
+	return true;
+}
+
+void Sugar::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+{
+	switch (id)
+	{
+	case 6:
+		v_sklad.Set((int)pi.GetLong());
+		break;
+	};
+}
+
+#endif
 
 #if 0
 

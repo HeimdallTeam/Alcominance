@@ -81,8 +81,10 @@ ResourceExp * CRR::Find(ESurType type)
 
 void CRR::Register(ResourceExp* item)
 {
+#ifndef BECHER_EDITOR
 	// zaregistrovani itemu
 	assert(item);
 	this->m_items[item->GetType()].Add(item);
+#endif // BECHER_EDITOR
 }
 

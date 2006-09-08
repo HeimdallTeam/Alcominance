@@ -6,6 +6,7 @@
 
 class Sugar;
 
+#ifndef BECHER_EDITOR
 class SugarStatic : public ObjectHud
 {
 protected:
@@ -17,6 +18,7 @@ public:
 	void SetAct(Sugar * act);
 	virtual void Draw(IHoe2D * h2d);
 };
+#endif // BECHER_EDITOR
 
 class Sugar : public FactoryBuilding, TrollList
 {
@@ -24,7 +26,9 @@ class Sugar : public FactoryBuilding, TrollList
 	friend class SugarStatic;
 protected:
 	// panel
+#ifndef BECHER_EDITOR
 	static SugarStatic m_userhud;
+#endif // BECHER_EDITOR
 	// trolls
 	ResourceImp m_cane;
 	ResourceExp m_sugar;

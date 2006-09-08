@@ -242,11 +242,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\crr.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\elements.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\src\map.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\obj_coalmine.cpp"
 				>
 			</File>
 			<File
@@ -262,6 +270,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\obj_herbe.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\obj_saw.cpp"
 				>
 			</File>
@@ -270,11 +282,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\obj_stonemine.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\obj_store.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\src\obj_sugar.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\obj_waterhole.cpp"
 				>
 			</File>
 			<File

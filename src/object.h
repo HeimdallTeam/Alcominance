@@ -72,7 +72,7 @@ public:
 	virtual bool InsertSur(ESurType type, uint *s);
 #else
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
-	virtual bool Select();
+	virtual bool Select(); \
 	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
 #endif
 

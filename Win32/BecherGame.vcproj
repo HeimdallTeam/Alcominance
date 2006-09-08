@@ -427,6 +427,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\obj_coalmine.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\obj_coalmine.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\obj_destilate.cpp"
 						>
 					</File>
@@ -451,6 +459,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\obj_herbe.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\obj_herbe.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\obj_saw.cpp"
 						>
 					</File>
@@ -467,6 +483,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\src\obj_stonemine.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\obj_stonemine.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\obj_store.cpp"
 						>
 					</File>
@@ -480,6 +504,14 @@
 					</File>
 					<File
 						RelativePath="..\src\obj_sugar.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\obj_waterhole.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\obj_waterhole.h"
 						>
 					</File>
 				</Filter>

@@ -1,16 +1,15 @@
 
 #include "StdAfx.h"
 #include "becher.h"
-#include "game.h"
 #include "troll.h"
 #include "obj_destilate.h"
-#include "obj_store.h"
 
 static CVar v_numzpr("dest_work", 1.f, 0); // rychlost zpracovani
 static HoeGame::CTimer t_numzpr(v_numzpr);
 static CVar v_sklad("dest_max", 5000, 0); // velikost miniskladu, trtina muze zabirat max 95%
 static CVar v_numworks("dest_maxwork", 4, 0);
 
+#ifndef BECHER_EDITOR
 DestilateStatic Destilate::m_userhud;
 
 DestilateStatic::DestilateStatic()
@@ -37,6 +36,7 @@ void DestilateStatic::Draw(IHoe2D * h2d)
 		ObjectHud::Draw(h2d);
 	}
 }
+#endif // BECHER_EDITOR
 
 ////////////////////////////////////////////////////////
 Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
@@ -85,7 +85,7 @@ void Destilate::Update(const double t)
 	{
 		if (m_sugar.GetNum() > 0)
 		{
-			uint p = t_numzpr.Compute(t * m_worked.Count());
+			uint p = t_numzpr.Compute((const float)t * m_worked.Count());
 			p=m_sugar.Get(p,true);
 			m_alco.Add(&p, v_sklad.GetInt() - GetMiniStoreCount());
 			m_exitdelay.Reset();
@@ -93,7 +93,7 @@ void Destilate::Update(const double t)
 		else
 		{
 			// postupne propoustet
-			if (m_exitdelay.AddTime(t, 3.f))
+			if (m_exitdelay.AddTime((const float)t, 3.f))
 			{
 				m_exitdelay.Reset();
 				// propustit jednoho workera
@@ -113,30 +113,6 @@ bool Destilate::Select()
         GetLua()->func("s_lihovar");
 	return true;
 }
-
-#else
-
-bool Destilate::Select()
-{
-	FactoryBuilding::Select();
-	/*GetProp()->Begin(this);
-	GetProp()->AppendCategory(_("Store"));
-	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());
-	GetProp()->End();*/	
-	return true;
-}
-
-void Destilate::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-	/*switch (id)
-	{
-	case 6:
-		v_sklad.Set((int)pi.GetLong());
-		break;
-	};*/
-}
-
-#endif
 
 bool Destilate::Idiot(Job * j)
 {
@@ -184,6 +160,32 @@ bool Destilate::Idiot(Job * j)
 	
 	return true;
 }
+
+#else
+
+bool Destilate::Select()
+{
+	FactoryBuilding::Select();
+	/*GetProp()->Begin(this);
+	GetProp()->AppendCategory(_("Store"));
+	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());
+	GetProp()->End();*/	
+	return true;
+}
+
+void Destilate::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+{
+	/*switch (id)
+	{
+	case 6:
+		v_sklad.Set((int)pi.GetLong());
+		break;
+	};*/
+}
+
+#endif
+
+
 
 
 

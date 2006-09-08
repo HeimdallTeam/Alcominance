@@ -1,8 +1,8 @@
 
 #include "StdAfx.h"
 #include "becher.h"
-#include "game.h"
 #include "utils.h"
+#include "crr.h"
 #include "buildings.h"
 
 void BecherGameSave::WriteChunk(unsigned long chunk, unsigned long ver)
@@ -16,7 +16,7 @@ void BecherGameSave::WriteChunkEnd()
 {
 	size_t sf = GetFile()->Tell();
 	GetFile()->Seek(m_lastsizepos - sizeof(unsigned long));
-	WriteValue<unsigned long>((size_t)sf-m_lastsizepos);
+	WriteValue<unsigned long>((unsigned long)sf-m_lastsizepos);
 	GetFile()->Seek(sf);
 	// save size
 	WriteValue<dword>(123456789);

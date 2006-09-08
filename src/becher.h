@@ -5,6 +5,7 @@
 //#include "troll.h"
 #include "console.h"
 #include "utils.h"
+#include "crr.h"
 
 /////////////////////////////////////////////
 #ifndef BECHER_EDITOR
@@ -63,6 +64,9 @@ inline HoeGame::ResourceMgr * GetResMgr()
 
 #else // BECHER_PLUGIN
 
+#include "editor/editor.h"
+#include "editor/editor_map.h"
+
 EditBaseConsole * GetCon();
 
 inline IHoe3DEngine * GetEngine()
@@ -70,18 +74,36 @@ inline IHoe3DEngine * GetEngine()
 	return HoeEditor::App::Get()->GetEditor()->GetEngineView()->GetEngine();
 }
 
-inline BecherEditor * GetApp()
+inline BecherEditApp * GetApp()
 {
-	assert(g_editor);
-	return g_editor;
+	return dynamic_cast<BecherEditApp*>(HoeEditor::App::Get());
 }
 
-inline BecherLevel * GetLevel()
+/*inline BecherEdit * GetBecher()
 {
-	return g_level;
+	return BecherEdit::Get();
+}*/
+
+inline BecherEdit * GetEditor()
+{
+	return BecherEdit::Get();
 }
 
-HoeEditor::PropertyGrid * GetProp();
+
+inline HoeGame::ResourceMgr * GetResMgr()
+{
+	return GetEditor()->GetResMgr();
+}
+
+inline EditorMap * GetLevel()
+{
+	return GetEditor()->GetActMap();
+}
+
+inline HoeEditor::PropertyGrid * GetProp()
+{
+	return GetEditor()->GetProp();
+}
 
 
 #endif // BECHER_PLUGIN
