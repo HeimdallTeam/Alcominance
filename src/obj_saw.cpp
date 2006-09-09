@@ -15,8 +15,8 @@ void SawStatic::SetAct(Saw * act)
 {
 	m_act = act;
 	// pripojit 
-	//dynamic_cast<HoeGame::Font*>(ReqItem("trtina"))->SetPtr(m_trtinainfo);
-	//dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetPtr(m_trtinainfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetPtr(m_sugarinfo);
 }
 
 void SawStatic::Draw(IHoe2D * h2d)
@@ -38,7 +38,7 @@ Saw::Saw(IHoeScene * scn) : SourceBuilding(scn)
 
 #ifndef BECHER_EDITOR
 
-void Saw::Update(const double dtime)
+void Saw::Update(const float dtime)
 {
 }
 

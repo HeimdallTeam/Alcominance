@@ -27,6 +27,7 @@ protected:
 #ifndef BECHER_EDITOR
 	static CoalMineStatic m_userhud;
 #endif // BECHER_EDITOR
+	ResourceExp m_coal;
 public:
 	CoalMine(IHoeScene * scn);
 

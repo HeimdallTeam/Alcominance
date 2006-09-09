@@ -15,8 +15,8 @@ void CoalMineStatic::SetAct(CoalMine * act)
 {
 	m_act = act;
 	// pripojit 
-	//dynamic_cast<HoeGame::Font*>(ReqItem("trtina"))->SetPtr(m_trtinainfo);
-	//dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetPtr(m_trtinainfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetPtr(m_sugarinfo);
 }
 
 void CoalMineStatic::Draw(IHoe2D * h2d)
@@ -31,15 +31,21 @@ void CoalMineStatic::Draw(IHoe2D * h2d)
 #endif // BECHER_EDITOR
 
 ////////////////////////////////////////////////////////////
-CoalMine::CoalMine(IHoeScene * scn) : SourceBuilding(scn)
+CoalMine::CoalMine(IHoeScene * scn) : SourceBuilding(scn), m_coal(EBS_Coal)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_COALMINE));
+	m_coal.SetOwner(this); CRR::Get()->Register(&m_coal);
 }
 
 #ifndef BECHER_EDITOR
 
-void CoalMine::Update(const double dtime)
+void CoalMine::Update(const float dtime)
 {
+	// update cekajicich tupounu
+	// cakajici tupoun dostane dalsi dil do batohu a vypadne
+	// kazdy tupoun kope zvlast, ubiha to podle tupounu
+	// kazdemu tupounovi se pricita naklad zvlast
+	// takze forka pres vsechny tupouny, a kazdy dostane cast dilu co si vykopal
 }
 
 bool CoalMine::Select()
@@ -54,6 +60,7 @@ bool CoalMine::Select()
 
 bool CoalMine::Idiot(Job *t)
 {
+	// idiot bude vzdycku false,protoze pro dul nikdo nepracuje
 	return false;
 }
 

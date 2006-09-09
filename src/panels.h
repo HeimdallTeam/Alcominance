@@ -8,7 +8,7 @@ public:
 
 };
 
-class BecherButton : public HoeGame::Button
+class BecherButton : public HoeGame::Gui::Button
 {
 protected:
 	char tooltip[1024];
@@ -21,19 +21,19 @@ public:
 class HUD : public HoeGame::Hoe2DFigure
 {
 protected:
-	HoeGame::InfoPanel * m_info;
+	HoeGame::Gui::InfoPanel * m_info;
 	BecherButton * m_butt[16];
 	int m_num;
 public:
 	HUD();
-	virtual HoeGame::BaseGui * CreateGUI(const char * type);
+	virtual HoeGame::Gui::Base * CreateGUI(const char * type);
 	void AddButton(int idres, const char * func, const char * tooltip);
 	void ShowReset();
 	/** zpracovani pohybu mysi, pokud se ma zpracovano,vraci true */
 	bool MouseMove(float X, float Y);
 	bool Load(const char * fname);
 	BecherButton * GetButton(float x, float y);
-	HoeGame::InfoPanel * GetInfo() { return m_info; }
+	HoeGame::Gui::InfoPanel * GetInfo() { return m_info; }
 
 	LUA_FUNCTION(l_ClearButtons);
 	LUA_FUNCTION(l_AddButton);

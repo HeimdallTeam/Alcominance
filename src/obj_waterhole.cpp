@@ -15,8 +15,8 @@ void WaterHoleStatic::SetAct(WaterHole * act)
 {
 	m_act = act;
 	// pripojit 
-	//dynamic_cast<HoeGame::Font*>(ReqItem("trtina"))->SetPtr(m_trtinainfo);
-	//dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetPtr(m_trtinainfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetPtr(m_sugarinfo);
 }
 
 void WaterHoleStatic::Draw(IHoe2D * h2d)
@@ -41,7 +41,7 @@ WaterHole::WaterHole(IHoeScene * scn) : SourceBuilding(scn)
 
 #ifndef BECHER_EDITOR
 
-void WaterHole::Update(const double dtime)
+void WaterHole::Update(const float dtime)
 {
 }
 

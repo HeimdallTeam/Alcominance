@@ -35,6 +35,7 @@ protected:
 	ResourceImp m_sugar;
 	ResourceExp m_alco;
 	TrollList m_worked;
+	THoeSub_Particle m_part;
 	HoeGame::StopWatch m_exitdelay;
 	inline const int GetMiniStoreCount() const { return m_alco.GetNum() + m_sugar.GetNum(); }
 public:

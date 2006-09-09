@@ -64,7 +64,7 @@ public:
 #define DECLARE_BASEOBJECT(type) virtual EObjType GetType() { return type; }
 #ifndef BECHER_EDITOR
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
-	virtual void Update(const double t); \
+	virtual void Update(const float t); \
 	virtual bool Select(); \
 	virtual bool Idiot(Job * j); \
 	virtual bool SetToWork(Troll * t); \

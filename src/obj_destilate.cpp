@@ -21,8 +21,8 @@ void DestilateStatic::SetAct(Destilate * act)
 {
 	m_act = act;
 	// pripojit 
-	dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
-	dynamic_cast<HoeGame::Font*>(ReqItem("lih"))->SetPtr(m_alcoinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetPtr(m_sugarinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("lih", HoeGame::Gui::EText))->SetPtr(m_alcoinfo);
 
 }
 
@@ -48,6 +48,13 @@ Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
 	//GetCtrl()->SetFlags(HOF_SHOW);
 	//m_mode = wmIn;
 	m_alco.SetOwner(this); CRR::Get()->Register(&m_alco);
+
+	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
+	m_part.t_x = 4.f;
+	m_part.t_y = 13.f;
+	m_part.t_z = -14.f;
+	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
+
 }
 
 Destilate::~Destilate()
@@ -79,7 +86,7 @@ void Destilate::UnsetFromWork(Troll * t)
 	m_worked.Remove(t);
 }
 
-void Destilate::Update(const double t)
+void Destilate::Update(const float t)
 {
 	if (m_worked.Count() > 0)
 	{

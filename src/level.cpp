@@ -176,6 +176,7 @@ void BecherLevel::SelectObject(BecherObject * so)
 	{
 		m_select->Unselect();
 		SetObjectHud(NULL);
+		m_hud.ShowReset();
 	}
 	if (!so || so->Select())
 		m_select = so;
@@ -248,7 +249,7 @@ bool BecherLevel::LoadGame(const char *path)
 	Create(CreateScene());
 
 	m_hud.Load("scripts/hud.menu");
-	this->m_cash.Link(dynamic_cast<HoeGame::DigiCounter *>(m_hud.ReqItem("cash")));
+	this->m_cash.Link(dynamic_cast<HoeGame::Gui::DigiCounter *>(m_hud.ReqItem("cash", HoeGame::Gui::EDigiCounter)));
 	Sugar::m_userhud.Load("scripts/sugar.menu");
 	Destilate::m_userhud.Load("scripts/alco.menu");
 	Factory::m_userhud.Load("scripts/factory.menu");
@@ -353,7 +354,9 @@ void BecherLevel::OnMouseMove(float X, float Y)
 	if (select)
         MouseLeave();
 	else*/
-	BecherObject * o = dynamic_cast<BecherObject *>(GetView()->SelObject(X,Y));
+	BecherObject * o = NULL;
+	if (!m_hud.Move(X,Y))
+		o = dynamic_cast<BecherObject *>(GetView()->SelObject(X,Y));
 	if (m_mselect && o != m_mselect && m_mselect != m_select)
 	{
 		m_mselect->SetCurActive(false);

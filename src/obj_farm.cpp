@@ -20,7 +20,7 @@ Farm::Farm(IHoeScene * scn) : SourceBuilding(scn)
 
 #ifndef BECHER_EDITOR
 
-void Farm::Update(const double dtime)
+void Farm::Update(const float dtime)
 {
 	/*static bool hl = false;
 	if (!hl)

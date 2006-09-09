@@ -21,8 +21,8 @@ void SugarStatic::SetAct(Sugar * act)
 {
 	m_act = act;
 	// pripojit 
-	dynamic_cast<HoeGame::Font*>(ReqItem("trtina"))->SetPtr(m_trtinainfo);
-	dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetPtr(m_trtinainfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetPtr(m_sugarinfo);
 
 }
 
@@ -82,7 +82,7 @@ void Sugar::UnsetFromWork(Troll * t)
 	m_worked.Remove(t);
 }
 
-void Sugar::Update(const double t)
+void Sugar::Update(const float t)
 {
 	if (m_worked.Count() > 0)
 	{
@@ -207,8 +207,8 @@ void CLASSStatic::SetAct(CLASS * act)
 {
 	m_act = act;
 	// pripojit 
-	//dynamic_cast<HoeGame::Font*>(ReqItem("trtina"))->SetPtr(m_trtinainfo);
-	//dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetPtr(m_trtinainfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetPtr(m_sugarinfo);
 
 }
 

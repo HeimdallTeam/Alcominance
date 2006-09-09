@@ -16,7 +16,7 @@ Shop::Shop(IHoeScene * scn) : BecherBuilding(scn)
 }
 
 #ifndef BECHER_EDITOR
-void Shop::Update(const double t)
+void Shop::Update(const float t)
 {
 }
 

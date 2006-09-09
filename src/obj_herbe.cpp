@@ -15,8 +15,8 @@ void HerbeWomanStatic::SetAct(HerbeWoman * act)
 {
 	m_act = act;
 	// pripojit 
-	//dynamic_cast<HoeGame::Font*>(ReqItem("trtina"))->SetPtr(m_trtinainfo);
-	//dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetPtr(m_trtinainfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetPtr(m_sugarinfo);
 }
 
 void HerbeWomanStatic::Draw(IHoe2D * h2d)
@@ -53,7 +53,7 @@ HerbeWoman::HerbeWoman(IHoeScene * scn) : SourceBuilding(scn)
 
 #ifndef BECHER_EDITOR
 
-void HerbeWoman::Update(const double dtime)
+void HerbeWoman::Update(const float dtime)
 {
 }
 

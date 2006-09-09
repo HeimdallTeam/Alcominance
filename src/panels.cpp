@@ -14,10 +14,14 @@ void BecherButton::OnClick()
 
 void BecherButton::SetButt(int idres, const char * func, const char * tp)
 {
-	if (idres != -1)
-		SetPicture((IHoePicture*)GetResMgr()->ReqResource(idres));
-	else
-		SetPicture(NULL);
+	if (idres == -1)
+	{
+		Hide();
+		return;
+	}
+
+	SetPicture((IHoePicture*)GetResMgr()->ReqResource(idres));
+	
 	if (func)
         strncpy(script,func,sizeof(script)-1);
 	else
@@ -26,6 +30,7 @@ void BecherButton::SetButt(int idres, const char * func, const char * tp)
         strncpy(tooltip,tp,sizeof(tooltip)-1);
 	else
 		tooltip[0] = '\0';
+	Show();
 }
 
 HUD::HUD()
@@ -35,9 +40,9 @@ HUD::HUD()
 	m_num = 0;
 }
 
-HoeGame::BaseGui * HUD::CreateGUI(const char * type)
+HoeGame::Gui::Base * HUD::CreateGUI(const char * type)
 {
-	GuiItem * g = NULL;
+	Gui::Item * g = NULL;
 #define IS(t) (strcmp(type,t)==0)
 	if (IS("button"))
 		g = new BecherButton;
@@ -52,16 +57,17 @@ bool HUD::Load(const char * fname)
 {
 	if (!Hoe2DFigure::Load(fname))
 		return false;
-	m_info = dynamic_cast<HoeGame::InfoPanel*>(ReqItem("info"));
+	m_info = dynamic_cast<HoeGame::Gui::InfoPanel*>(ReqItem("info", HoeGame::Gui::EInfoPanel));
 
 	for (int i=0;i < 16;i++)
 	{
 		char str[15];
 		sprintf(str,"butt_%02d",i);
-		GuiItem * item = GetItem(str);
+		Gui::Item * item = GetItem(str, HoeGame::Gui::EButton);
 		if (item==NULL)
 			break;
 		m_butt[i] = dynamic_cast<BecherButton*>(item);
+		m_butt[i]->Hide();
 	}
 	return true;
 }
@@ -80,7 +86,7 @@ void HUD::ShowReset()
 {
 	for (int i=0;i<m_num;i++)
 	{
-		m_butt[i]->SetButt(-1,NULL,NULL);
+		m_butt[i]->Hide();
 	}
 	m_num = 0;
 }

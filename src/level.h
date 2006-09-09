@@ -32,7 +32,7 @@ public:
 	bool Add(int m);
 	int GetValue() { return m_cash; }
 	int GetLimitCash() { return m_cash - m_limit; }
-	void Link(HoeGame::DigiCounter * cnt) { cnt->Set(&m_cash); }
+	void Link(HoeGame::Gui::DigiCounter * cnt) { cnt->Set(&m_cash); }
 };
 
 class BecherLevel : public BecherMap, 

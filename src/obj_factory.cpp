@@ -21,8 +21,8 @@ void FactoryStatic::SetAct(Factory * act)
 {
 	m_act = act;
 	// pripojit 
-	//dynamic_cast<HoeGame::Font*>(ReqItem("trtina"))->SetPtr(m_trtinainfo);
-	//dynamic_cast<HoeGame::Font*>(ReqItem("cukr"))->SetPtr(m_sugarinfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetPtr(m_trtinainfo);
+	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetPtr(m_sugarinfo);
 
 }
 
@@ -75,7 +75,7 @@ void Factory::UnsetFromWork(Troll * t)
 	m_worked.Remove(t);
 }
 
-void Factory::Update(const double t)
+void Factory::Update(const float t)
 {
 	/*if (m_worked.Count() > 0)
 	{
