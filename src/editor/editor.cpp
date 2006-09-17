@@ -394,6 +394,12 @@ BecherEdit::~BecherEdit()
 	s_actinstance = NULL;
 }
 
+bool BecherEdit::OnPostInit()
+{
+	LoadEngine("../Hoe/bin/Hoe3Dd_D3D9.dll"); 
+	return false;
+}
+
 bool BecherEdit::Create(const wxString & title)
 {
 
@@ -767,6 +773,11 @@ void BecherEdit::KeyUp(wxKeyEvent& e)
 void BecherEdit::SetStatus(const wxString &str)
 {
 	SetStatusText(str, 0);
+}
+
+void BecherEdit::OnDefaultTool()
+{
+	SetTool(new ToolSelect());
 }
 
 //////////////////////////////////

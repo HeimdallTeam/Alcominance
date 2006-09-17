@@ -47,6 +47,8 @@ public:
 	bool IsSelected() { return false; }
 	bool IsCurActive() { return false; }
 
+	virtual void Update(const float) {}
+
 	virtual bool Select();
 	virtual void Unselect();
 #ifdef BECHER_EDITOR

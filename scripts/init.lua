@@ -12,6 +12,7 @@ print("Hello world, from ",_VERSION,"!")
 
 hoe("showfps")
 --hoe("wireframe 1")
+LoadResource(ID_TESTSOUND+2,"sound 'sound/datel1.ogg'")
 
 --files 
 AddFile("data/textures.hx")
@@ -36,6 +37,7 @@ AddFile("data/czech.hx")
 AddFile("data/dopln.hm")
 AddFile("data/ter.hx")
 AddFile("data/utes.hm")
+AddFile("data/dul.hm")
 AddFile("data/hud.hx")
 --files-end
 --resources
@@ -57,7 +59,7 @@ LoadResource(ID_FARM, "model farma")
 LoadResource(ID_FARM_POLE, "model pole")
 LoadResource(ID_SAW, "model drevorubec")
 LoadResource(ID_WATERHOLE, "model studna")
-LoadResource(ID_COALMINE, "model studna")
+LoadResource(ID_COALMINE, "model dul_uhli")
 LoadResource(ID_TROLL, "model olaf")
 --LoadResource(ID_TROLL, "generate model box 5")
 

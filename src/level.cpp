@@ -356,7 +356,11 @@ void BecherLevel::OnMouseMove(float X, float Y)
 	else*/
 	BecherObject * o = NULL;
 	if (!m_hud.Move(X,Y))
-		o = dynamic_cast<BecherObject *>(GetView()->SelObject(X,Y));
+	{
+		HoeGame::Strategy::StgObject * obj = GetView()->SelObject(X,Y);
+		if (obj)
+			o = dynamic_cast<BecherObject *>(obj);
+	}
 	if (m_mselect && o != m_mselect && m_mselect != m_select)
 	{
 		m_mselect->SetCurActive(false);

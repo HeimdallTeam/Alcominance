@@ -64,9 +64,16 @@ Sugar::~Sugar()
 
 bool Sugar::InsertSur(ESurType type, uint *s)
 {
-	assert(type==EBS_Cane);
-	// max
-	return m_cane.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
+	switch (type)
+	{
+	case EBS_Cane:
+		return m_cane.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
+	case EBS_Coal:
+		return m_drum.Add(s,100);
+	default:
+		assert(!"insert bad type");
+		return false;
+	};
 }
 
 bool Sugar::SetToWork(Troll * t)
@@ -123,6 +130,7 @@ bool Sugar::Idiot(Job * j)
 	// 
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
 	ResourceExp * ri = CRR::Get()->Find(EBS_Cane); // urceni priorit
+	ResourceExp * rc = CRR::Get()->Find(EBS_Coal); // urceni priorit
 	
 	HoeGame::LuaFunc f(GetLua(), "i_sugar");
 	f.PushTable();
@@ -132,6 +140,9 @@ bool Sugar::Idiot(Job * j)
 	f.SetTableInteger("cane_avail", ri ? ri->GetNum():0);
 	f.SetTableInteger("cane", m_cane.GetNum());
 	f.SetTableInteger("sugar", m_sugar.GetNum());
+	f.SetTableInteger("coal", m_drum.GetNum());
+	f.SetTableInteger("coal_avail", rc ? rc->GetNum():0);
+	f.SetTableInteger("coal_max", 100);
 	// works
 	f.SetTableInteger("works", this->m_worked.Count());
 	f.SetTableInteger("works_max", v_numworks.GetInt());
@@ -152,7 +163,7 @@ bool Sugar::Idiot(Job * j)
 		j->surtype = (ESurType)f.GetTableInteger("sur", -1); // typ suroviny
 		j->type = Job::jtPrines;
 		j->num = f.GetTableInteger("num", -1); // pocet k prineseni
-		j->ritem = ri;
+		j->ritem = j->surtype == EBS_Cane ? ri:rc;
 		break;
 	case 1:
 		j->type = Job::jtWork;

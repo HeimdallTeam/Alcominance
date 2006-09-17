@@ -34,8 +34,13 @@ function i_sugar(b)
      return job 
  end
  
- if b.cane_avail > 0 then
+ if b.cane_avail > 0 and b.cane_avail > b.coal_avail then
      job = { type = 0, sur = EBS_Cane, num=10,  percent = 100 }
+     return job    
+ end 
+
+ if b.coal_avail > 0 and b.cane_avail <= b.coal_avail then
+     job = { type = 0, sur = EBS_Coal, num=10,  percent = 100 }
      return job    
  end 
  

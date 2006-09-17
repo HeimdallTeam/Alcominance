@@ -221,6 +221,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\scripts\mine.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\scripts\store.lua"
 				>
 			</File>

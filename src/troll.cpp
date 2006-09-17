@@ -23,7 +23,7 @@ Troll::~Troll()
 {
 }
 
-void Troll::Update(const double t)
+void Troll::Update(const float t)
 {
 	EPhaseResult res;
 	res = MakePhase(t);
@@ -52,6 +52,7 @@ void Troll::Update(const double t)
 				assert(m_job.ritem);
 				m_surtype = m_job.surtype;
 				assert(m_surtype == m_job.ritem->GetType());
+				// tady vzit nebo vytezit surovinu...
 				m_numsur = m_job.ritem->Get(10,true);
 				// jestli uz nic neni hledat novou praci
 				if (m_numsur > 0)

@@ -73,11 +73,6 @@ enum ESurType
 	EBS_Max,
 };
 
-enum ESurCriterion{
-    EBSC_Distance = 0,
-    EBSC_Priority,
-};
-
 extern HoeGame::LuaPreprocess::IDConst g_luaconst[];
 
 const char * FindIDString(int id);

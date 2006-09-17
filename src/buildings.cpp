@@ -39,7 +39,7 @@ bool BecherBuilding::StartBuilding(int gold, int wood, int stone)
 
 #endif
 
-bool BecherBuilding::Save(BecherGameSave &w)
+/*bool BecherBuilding::Save(BecherGameSave &w)
 {
 	return true;
 }
@@ -47,7 +47,7 @@ bool BecherBuilding::Save(BecherGameSave &w)
 bool BecherBuilding::Load(BecherGameLoad &r)
 {
 	return true;
-}
+}*/
 
 float getheight(IHoeModel*m)
 {

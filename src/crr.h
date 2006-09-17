@@ -1,7 +1,9 @@
 #ifndef _CRR_H_
 #define _CRR_H_
 
-#include "buildings.h"
+#include "id.h"
+
+class BecherObject;
 
 class ResourceBase
 {
@@ -30,6 +32,8 @@ enum ESurPriority
 	// spis zanechat
 	// normalni
 	// zbavit se
+    EBSP_None = 0,
+    EBSP_TimeWork,
 };
 
 class ResourceExp : public ResourceBase

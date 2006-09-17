@@ -27,20 +27,13 @@ void BecherObject::SetAngle(float angle)
 bool BecherObject::Save(BecherGameSave &w)
 {
 	// ulozit 10 x dword, jako reserved
-	for (int i=0;i < 10;i++)
-	{
-		dword dw = 0;
-		w.Write<dword>(dw);
-	}
+	w.WriteReservedWords(10);
 	return true;
 }
 
 bool BecherObject::Load(BecherGameLoad &r)
 {
-	for (int i=0;i < 10;i++)
-	{
-		r.Read<dword>();
-	}
+	r.ReadReservedWords(10);
 	return true;
 }
 

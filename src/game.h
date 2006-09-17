@@ -12,10 +12,10 @@ public:
 
 class BecherGame
 {
+protected:
 	HoeGame::HoeMusic_Module m_music;
 	BecherLevel m_level;
 	HoeGame::Lang m_lang;
-	//IHoe3DEngine * g_engine = NULL;
 	BecherResources m_resmgr;
 	HoeGame::LuaScript m_lua;
 public:
@@ -27,7 +27,6 @@ public:
 	void CloseLevel();
 	BecherLevel * GetLevel() { return &m_level; }
 	HoeGame::Lang * GetLang() { return &m_lang; }
-	//IHoe3DEngine * g_engine = NULL;
 	BecherResources * GetResMgr() { return &m_resmgr; }
 	HoeGame::LuaScript * GetLua() { return &m_lua; }
 

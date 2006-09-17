@@ -48,7 +48,7 @@ public:
 
 	virtual EObjType GetType() { return EBO_Troll; }
 
-	virtual void Update(const double t);
+	virtual void Update(const float t);
 	virtual bool Select();
 
 	void SetJob(const Job & j);

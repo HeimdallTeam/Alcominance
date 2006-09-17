@@ -25,6 +25,7 @@ public:
 	void WriteRI(ResourceExp & item);
 	void WriteChunk(unsigned long chunk, unsigned long ver);
 	void WriteChunkEnd();
+	void WriteReservedWords(int num);
 };
 
 class BecherGameLoad : public HoeFileReader
@@ -46,6 +47,7 @@ public:
 	}
 	void ReadRI(ResourceExp & item);
 	bool ReadHeader();
+	void ReadReservedWords(int num);
 };
 
 #define SAFE_DELETE_ARRAY(arr) if (arr) { delete [] arr; arr = NULL; }

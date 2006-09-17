@@ -40,8 +40,8 @@ ResourceExp::ResourceExp(ESurType type)
 	m_type = type;
 	m_actual = 0;
 	m_owner = NULL;
-	if (type == EBS_Cane)
-		m_actual = 10000;
+	m_priority = EBSP_None;
+	m_max = 0;
 }
 
 //////////////////////////////////////////

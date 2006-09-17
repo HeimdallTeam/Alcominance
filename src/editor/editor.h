@@ -100,6 +100,7 @@ public:
 	EditorMap * GetActMap() { return m_map; }
 	BecherResources * GetResMgr() { return &m_res; }
 	bool IsMapLoaded() { return m_map != NULL; }
+	virtual bool OnPostInit();
 
 	virtual XHoeFS * GetFS() { return &m_res; }
 	HoeEditor::PropertyGrid * GetProp() { return m_prop; }
@@ -117,6 +118,8 @@ public:
 	void OnAbout(wxCommandEvent &);
 	void OnTypeShow(wxCommandEvent &);
 	void OnTerrainTextures(wxCommandEvent &);
+
+	virtual void OnDefaultTool();
 
 	virtual void KeyDown(wxKeyEvent& event);
 	virtual void KeyUp(wxKeyEvent& event);

@@ -31,6 +31,9 @@ protected:
 public:
 	CoalMine(IHoeScene * scn);
 
+	virtual bool Save(BecherGameSave &w);
+	virtual bool Load(BecherGameLoad &r);
+
 	DECLARE_BUILDING(EBO_CoalMine)
 };
 

@@ -3,6 +3,7 @@
 #define _BECHERGAME_BUILDINGS_H_
 
 #include "object.h"
+#include "crr.h"
 
 class Troll;
 struct Job;
@@ -18,8 +19,8 @@ public:
 	BecherBuilding(IHoeScene * scn);
 	bool IsBuildMode() { return false; }
 	bool StartBuilding(int gold, int wood, int stone);
-	virtual bool Save(BecherGameSave &w);
-	virtual bool Load(BecherGameLoad &r);
+	//virtual bool Save(BecherGameSave &w);
+	//virtual bool Load(BecherGameLoad &r);
 	virtual bool InsertSur(ESurType type, uint *s) { assert(!"add surovina"); return false; }
 	virtual bool SetToWork(Troll * t) { assert(!"add to work"); return false; }
 	virtual void UnsetFromWork(Troll * t) { assert(!"add to work"); }
@@ -27,10 +28,16 @@ public:
 
 };
 
+// 
+class DrumEngine : public ResourceImp
+{
+public:
+};
+
 class FactoryBuilding : public BecherBuilding
 {
 protected:
-	
+	DrumEngine m_drum;
 public:
 	FactoryBuilding(IHoeScene * scn) : BecherBuilding(scn) {}
 };
