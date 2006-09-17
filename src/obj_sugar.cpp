@@ -5,9 +5,9 @@
 #include "obj_sugar.h"
 
 static CVar v_numzpr("sugar_speed", 1.f, 0);
-static HoeGame::CTimer t_numzpr(v_numzpr);
 static CVar v_sklad("sugar_max", 50, 0);
 static CVar v_numworks("sugar_maxwork", 4, 0);
+static CVar v_recept("sugar_recept", "C1=1", 0);
 
 #ifndef BECHER_EDITOR
 SugarStatic Sugar::m_userhud;
@@ -54,6 +54,9 @@ Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 	m_part.t_y = 23.f;
 	m_part.t_z = 10.f;
 	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
+
+	m_w.SetRecept(&v_recept);
+	m_progress = 0.f;
 }
 
 Sugar::~Sugar()
@@ -69,7 +72,7 @@ bool Sugar::InsertSur(ESurType type, uint *s)
 	case EBS_Cane:
 		return m_cane.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
 	case EBS_Coal:
-		return m_drum.Add(s,100);
+		return m_w.Add(s,100);
 	default:
 		assert(!"insert bad type");
 		return false;
@@ -91,26 +94,47 @@ void Sugar::UnsetFromWork(Troll * t)
 
 void Sugar::Update(const float t)
 {
+	// update
+	float prog = m_w.InProcess() ? m_worked.Count()*v_numzpr.GetFloat():0.f;
+
+	if (m_worked.Count() > 0)
+		m_w.Update(t*prog);
+
+	if (m_w.CanOut() && (m_w.Out(false)<=(v_sklad.GetInt() - GetMiniStoreCount())))
+	{
+		uint p = m_w.Out(true);
+		m_sugar.Add(&p, p);
+	}
+
+	// naplneni
+	if (m_w.CanIn() && m_w.In(&m_cane, 'C', true))
+	{
+		m_w.ToProcess();
+	}
+
+	if (m_progress != prog)
+	{
+		// update 
+		m_progress = prog;
+		// pokud neni progress a nemuze se delat
+		if (m_progress > 0.f)
+			m_part.emitor->Start();
+		else
+			m_part.emitor->Stop();
+	}
+
 	if (m_worked.Count() > 0)
 	{
-		if (m_cane.GetNum() > 0)
-		{
-			uint p = t_numzpr.Compute((const float)t * m_worked.Count());
-			p=m_cane.Get(p,true);
-			m_sugar.Add(&p, v_sklad.GetInt() - GetMiniStoreCount());
+		if (prog > 0.f)
 			m_exitdelay.Reset();
-		}
-		else
+		else if (m_exitdelay.AddTime((const float)t, m_worked.Count() == 1 ? 3.f:1.f))
 		{
-			// postupne propoustet
-			if (m_exitdelay.AddTime((const float)t, 3.f))
-			{
-				m_exitdelay.Reset();
-				// propustit jednoho workera
-				m_worked.OneStopWork();
-			}
+			m_exitdelay.Reset();
+					// propustit jednoho workera
+			m_worked.OneStopWork();
 		}
 	}
+
 }
 
 
@@ -140,7 +164,7 @@ bool Sugar::Idiot(Job * j)
 	f.SetTableInteger("cane_avail", ri ? ri->GetNum():0);
 	f.SetTableInteger("cane", m_cane.GetNum());
 	f.SetTableInteger("sugar", m_sugar.GetNum());
-	f.SetTableInteger("coal", m_drum.GetNum());
+	f.SetTableInteger("coal", m_w.GetNum());
 	f.SetTableInteger("coal_avail", rc ? rc->GetNum():0);
 	f.SetTableInteger("coal_max", 100);
 	// works

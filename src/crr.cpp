@@ -3,47 +3,6 @@
 #include "becher.h"
 #include "crr.h"
 
-///////////////////////////////////////////
-uint ResourceBase::Get(uint req, bool p)
-{
-	// callback na update
-	if (m_actual > req)
-	{
-		m_actual -= req;
-		return req;
-	}
-	if (!p) return 0;
-	// odebrat cast
-	req = m_actual;
-	m_actual = 0;
-	return req;
-}
-
-bool ResourceBase::Add(uint *s, int max)
-{
-	if (*s<(uint)max)
-	{
-		m_actual += *s; 
-		return true;
-	}
-	else
-	{
-		*s = max - m_actual;
-		m_actual += max;
-		return false;
-	}
-}
-
-////////////////////////////////////////////
-ResourceExp::ResourceExp(ESurType type)
-{
-	m_type = type;
-	m_actual = 0;
-	m_owner = NULL;
-	m_priority = EBSP_None;
-	m_max = 0;
-}
-
 //////////////////////////////////////////
 
 CRR* CRR::this_ = NULL;

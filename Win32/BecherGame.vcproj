@@ -348,6 +348,14 @@
 				RelativePath="..\src\map.h"
 				>
 			</File>
+			<File
+				RelativePath="..\src\workspace.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\workspace.h"
+				>
+			</File>
 			<Filter
 				Name="objects"
 				>

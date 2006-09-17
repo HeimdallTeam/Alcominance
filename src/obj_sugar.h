@@ -32,6 +32,7 @@ protected:
 	// trolls
 	ResourceImp m_cane;
 	ResourceExp m_sugar;
+	float m_progress;
 
 	THoeSub_Particle m_part;
 	//WorkMode m_mode;

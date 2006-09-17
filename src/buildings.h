@@ -3,7 +3,7 @@
 #define _BECHERGAME_BUILDINGS_H_
 
 #include "object.h"
-#include "crr.h"
+#include "workspace.h"
 
 class Troll;
 struct Job;
@@ -28,16 +28,10 @@ public:
 
 };
 
-// 
-class DrumEngine : public ResourceImp
-{
-public:
-};
-
 class FactoryBuilding : public BecherBuilding
 {
 protected:
-	DrumEngine m_drum;
+	Workspace m_w;
 public:
 	FactoryBuilding(IHoeScene * scn) : BecherBuilding(scn) {}
 };

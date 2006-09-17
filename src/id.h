@@ -61,14 +61,14 @@ enum EObjType
 enum ESurType
 {
 	EBS_None = 0,
-	EBS_Becher,
+	EBS_Becher, // B
 	EBS_Stone,
 	EBS_Wood,
-	EBS_Water,
-	EBS_Herbe,
-	EBS_Sugar,
-	EBS_Alco,
-	EBS_Cane,
+	EBS_Water, // W
+	EBS_Herbe, // H
+	EBS_Sugar, // S
+	EBS_Alco, // A
+	EBS_Cane, // C
     EBS_Coal,
 	EBS_Max,
 };
