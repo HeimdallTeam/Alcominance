@@ -6,7 +6,6 @@
 
 class Store;
 
-#ifndef BECHER_EDITOR
 class StoreStatic : public ObjectHud
 {
 protected:
@@ -20,12 +19,24 @@ protected:
 	char m_becherinfo[256];
 	char m_coalinfo[256];
 	Store * m_act;
+	IHoeModel * m_models[EBS_Max];
 public:
 	StoreStatic();
 	void SetAct(Store * act);
 	virtual void Draw(IHoe2D * h2d);
+	IHoeModel * GetModel(int i) { return m_models[i]; }
+	void LoadModels();
 };
-#endif // BECHER_EDITOR
+
+class StoreRes : public ResourceExp
+{
+	bool m_enable;
+public:
+	StoreRes() : ResourceExp(EBS_None) { m_enable = true; }
+	void SetType(ESurType type) { m_type = type; }
+	bool IsEnable() { return m_enable; }
+	void Enable(bool enable) { m_enable = enable; }
+};
 
 class Store : public BecherBuilding
 {
@@ -33,25 +44,19 @@ class Store : public BecherBuilding
 	friend class StoreStatic;
 protected:
 	// panel
-#ifndef BECHER_EDITOR
-	static StoreStatic m_userhud;
-#endif // BECHER_EDITOR
+	static StoreStatic m_storepref;
 	// trolls
-	ResourceExp m_stone;
-	ResourceExp m_wood;
-	ResourceExp m_sugar;
-	ResourceExp m_water;
-	ResourceExp m_becher;
-	ResourceExp m_alcohol;
-	ResourceExp m_cane;
-	ResourceExp m_herbe;
-	ResourceExp m_coal;
-	ResourceExp * EBSToPointer(ESurType type);
+	StoreRes m_res[EBS_Max];
 	THoeSub_Model m_info[16];
 	//WorkMode m_mode;
 	TrollList m_worked;
 	HoeGame::StopWatch m_exitdelay;
-	inline const int GetMiniStoreCount() const { return m_cane.GetNum() + m_sugar.GetNum(); }
+	void FillStore();
+	inline const int GetMiniStoreCount() const
+	{
+		int n = 0;for (int i=1;i<EBS_Max;i++) n+=m_res[i].GetNum();
+		return n;
+	}
 public:
 	Store(IHoeScene * scn);
 	//virtual ~Store();
@@ -59,6 +64,7 @@ public:
 	virtual bool Load(BecherGameLoad &r);
 
 	int GetStatus(ESurType type);
+
 
 	DECLARE_BUILDING(EBO_Store)
 };

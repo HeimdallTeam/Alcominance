@@ -3,6 +3,8 @@
 
 #include "workspace.h"
 
+class BecherBuilding;
+
 /**
  * Central Register of Resource
  * Centralni registr zdroju (surovin) slouzi ...
@@ -20,7 +22,7 @@ public:
 	/**
 	* Najit podle priority, obsahu, vzdalenosti
 	*/
-	ResourceExp * Find(ESurType type);
+	ResourceExp * Find(ESurType type, BecherObject * owner);
 };
 
 

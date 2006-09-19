@@ -6,11 +6,10 @@
 
 float getheight(IHoeModel * m);
 
-static CVar v_sklad("store_max", 50, 0);
+static CVar v_sklad("store_max", 160, 0);
 static CVar v_numworks("store_maxwork", 4, 0);
 
-#ifndef BECHER_EDITOR
-StoreStatic Store::m_userhud;
+StoreStatic Store::m_storepref;
 
 StoreStatic::StoreStatic()
 {
@@ -36,26 +35,37 @@ void StoreStatic::Draw(IHoe2D * h2d)
 {
 	if (m_act)
 	{
-		sprintf(m_sugarinfo,"%d cukru.", m_act->m_sugar.GetNum());
-		sprintf(m_caneinfo,"%d trtina.", m_act->m_cane.GetNum());
-		sprintf(m_woodinfo,"%d dreva.", m_act->m_wood.GetNum());
-		sprintf(m_stoneinfo,"%d sutru.", m_act->m_stone.GetNum());
-		sprintf(m_herbeinfo,"%d bylin.", m_act->m_herbe.GetNum());
-		sprintf(m_waterinfo,"%d vody.", m_act->m_water.GetNum());
-		sprintf(m_alcoinfo,"%d lihu.", m_act->m_alcohol.GetNum());
-		sprintf(m_becherinfo,"%d flasek.", m_act->m_becher.GetNum());
-		sprintf(m_coalinfo,"%d uhli.", m_act->m_coal.GetNum());
+		sprintf(m_sugarinfo,"%d cukru.", m_act->GetStatus(EBS_Sugar));
+		sprintf(m_caneinfo,"%d trtina.", m_act->GetStatus(EBS_Cane));
+		sprintf(m_woodinfo,"%d dreva.", m_act->GetStatus(EBS_Wood));
+		sprintf(m_stoneinfo,"%d sutru.", m_act->GetStatus(EBS_Stone));
+		sprintf(m_herbeinfo,"%d bylin.", m_act->GetStatus(EBS_Herbe));
+		sprintf(m_waterinfo,"%d vody.", m_act->GetStatus(EBS_Water));
+		sprintf(m_alcoinfo,"%d lihu.", m_act->GetStatus(EBS_Alco));
+		sprintf(m_becherinfo,"%d flasek.", m_act->GetStatus(EBS_Becher));
+		sprintf(m_coalinfo,"%d uhli.", m_act->GetStatus(EBS_Coal));
 
 		ObjectHud::Draw(h2d);
 	}
 }
-#endif // BECHER_EDITOR
+
+void StoreStatic::LoadModels()
+{
+	for (int i=0;i < EBS_Max;i++)
+		m_models[i] = NULL;
+	m_models[EBS_Herbe] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model miska"));
+	m_models[EBS_Alco] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model sud"));
+	m_models[EBS_Stone] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model kblok"));
+	m_models[EBS_Cane] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_becher"));
+	m_models[EBS_Becher] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_becher"));
+	m_models[EBS_Sugar] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_cukr"));
+	m_models[EBS_Coal] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_dul"));
+	m_models[EBS_Wood] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model kmen"));
+	m_models[EBS_Water] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model vedro"));
+}
 
 ////////////////////////////////////////////////////////////
-Store::Store(IHoeScene * scn) : BecherBuilding(scn), 
-	m_stone(EBS_Stone), m_wood(EBS_Wood), m_sugar(EBS_Sugar), m_water(EBS_Water),
-	m_becher(EBS_Becher), m_alcohol(EBS_Alco), m_cane(EBS_Cane), m_herbe(EBS_Herbe),
-	m_coal(EBS_Coal)
+Store::Store(IHoeScene * scn) : BecherBuilding(scn)
 {
 	// set owners
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STORE));
@@ -65,9 +75,10 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn),
 
 	memset(&m_info, 0, sizeof(m_info));
 	const float p = getheight(GetModel()); 
+	m_storepref.LoadModels();
 	for (int i=0;i < 16;i++)
 	{
-		m_info[i].model = dynamic_cast<IHoeModel*>(GetEngine()->Create("model sud"));
+		m_info[i].model = NULL;
 		m_info[i].s_x = m_info[i].s_y = m_info[i].s_z = 1.f;
 		m_info[i].t_x = (float)8*(i/4)-12;
 		m_info[i].t_y = p;
@@ -76,15 +87,11 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn),
 		GetCtrl()->Link(THoeSubObject::Object, &m_info[i]);
 	}
 
-	m_stone.SetOwner(this); CRR::Get()->Register(&m_stone);
-	m_wood.SetOwner(this); CRR::Get()->Register(&m_wood);
-	m_sugar.SetOwner(this); CRR::Get()->Register(&m_sugar);
-	m_water.SetOwner(this); CRR::Get()->Register(&m_water);
-	m_becher.SetOwner(this); CRR::Get()->Register(&m_becher);
-	m_alcohol.SetOwner(this); CRR::Get()->Register(&m_alcohol);
-	m_cane.SetOwner(this); CRR::Get()->Register(&m_cane);
-	m_herbe.SetOwner(this); CRR::Get()->Register(&m_herbe);
-	m_coal.SetOwner(this); CRR::Get()->Register(&m_coal);
+	for (int i=1;i<EBS_Max;i++)
+	{
+		m_res[i].SetType((ESurType)i);
+		m_res[i].SetOwner(this); CRR::Get()->Register(&m_res[i]);
+	}
 }
 
 /*void Store::AdvPaint(IHoePaint3D * h3)
@@ -99,14 +106,7 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn),
 		h3->Paint(mod_i);
 	}
 
-	static IHoeModel * mod[] = {dynamic_cast<IHoeModel*>(GetEngine()->Create("model miska")),
-		dynamic_cast<IHoeModel*>(GetEngine()->Create("model sud")),
-		dynamic_cast<IHoeModel*>(GetEngine()->Create("model kblok")),
-		dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_becher")),
-		dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_cukr")),
-		dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_dul")),
-		dynamic_cast<IHoeModel*>(GetEngine()->Create("model kmen")),
-		dynamic_cast<IHoeModel*>(GetEngine()->Create("model vedro"))};
+	static IHoeModel * mod[] = {
 	static float p = getheight(this->GetModel());
 	int m = 0;
 	for (int i=0;i<4;i++)
@@ -127,15 +127,9 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn),
 bool Store::Save(BecherGameSave &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteRI(m_stone);
-	w.WriteRI(m_wood);
-	w.WriteRI(m_sugar);
-	w.WriteRI(m_water);
-	w.WriteRI(m_becher);
-	w.WriteRI(m_alcohol);
-	w.WriteRI(m_cane);
-	w.WriteRI(m_herbe);
-	w.WriteRI(m_coal);
+
+	for (int i=1;i < EBS_Max;i++)
+		w.WriteRI(m_res[i]);
 
 	return true;
 }
@@ -143,52 +137,21 @@ bool Store::Save(BecherGameSave &w)
 bool Store::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
-	r.ReadRI(m_stone);
-	r.ReadRI(m_wood);
-	r.ReadRI(m_sugar);
-	r.ReadRI(m_water);
-	r.ReadRI(m_becher);
-	r.ReadRI(m_alcohol);
-	r.ReadRI(m_cane);
-	r.ReadRI(m_herbe);
-	r.ReadRI(m_coal);
 
+	for (int i=1;i < EBS_Max;i++)
+		r.ReadRI(m_res[i]);
+
+	FillStore();
 	return true;
 }
 
 #ifndef BECHER_EDITOR
 
-ResourceExp * Store::EBSToPointer(ESurType type)
-{
-	switch (type)
-	{
-	case EBS_Becher:
-		return &m_becher;
-	case EBS_Cane:
-		return &m_cane;
-	case EBS_Sugar:
-		return &m_sugar;
-	case EBS_Alco:
-		return &m_alcohol;
-	case EBS_Stone:
-		return &m_stone;
-	case EBS_Wood:
-		return &m_wood;
-	case EBS_Water:
-		return &m_water;
-	case EBS_Herbe:
-		return &m_herbe;
-	case EBS_Coal:
-		return &m_coal;
-	default:
-		assert(!"Unknown sur. type");
-	}
-	return NULL;
-}
-
 bool Store::InsertSur(ESurType type, uint *s)
 {
-	return EBSToPointer(type)->Add(s, 10000000);
+	bool ret = m_res[type].Add(s, *s);
+	FillStore();
+	return ret;
 }
 
 bool Store::SetToWork(Troll * t)
@@ -206,66 +169,74 @@ void Store::UnsetFromWork(Troll * t)
 
 void Store::Update(const float t)
 {
+	// update po snimcic
+	FillStore();
+
 }
 
 int Store::GetStatus(ESurType type)
 {
-	return EBSToPointer(type)->GetNum();
+	return m_res[type].GetNum();
 }
 
-bool Store::Idiot(Job *t)
+bool Store::Idiot(TJob *t)
 {
 	// zjistit pripadny zdroj pro suroviny
 	// 
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
 	/*ResourceExp * ri = CRR::Get()->Find(EBS_Cane); // urceni priorit
 	
-	HoeGame::LuaFunc f(GetLua(), "i_Store");
-	f.PushTable();
-	// suroviny
-	// informace o surovinach
-	f.SetTableInteger("max_store", v_sklad.GetInt());
-	f.SetTableInteger("cane_avail", ri ? ri->GetNum():0);
-	f.SetTableInteger("cane", m_cane.GetNum());
-	f.SetTableInteger("sugar", m_sugar.GetNum());
-	// works
-	f.SetTableInteger("works", this->m_worked.Count());
-	f.SetTableInteger("works_max", v_numworks.GetInt());
-	f.Run(1);
-	if (f.IsNil(-1))
-	{
-		f.Pop(1);
-		return false;
-	}
-
-	// prevest zpatky na job
-	int r = f.GetTableInteger("type", -1); // typ prace
-	j->percent = f.GetTableFloat("percent", -1); // na kolik procent je vyzadovano
-	j->owner = this;
-	switch (r)
-	{
-	case 0:
-		j->surtype = (ESurType)f.GetTableInteger("sur", -1); // typ suroviny
-		j->type = Job::jtPrines;
-		j->num = f.GetTableInteger("num", -1); // pocet k prineseni
-		j->ritem = ri;
-		break;
-	case 1:
-		j->type = Job::jtWork;
-		break;
-	};
-		
-	f.Pop(1);
+	// vybrat surovinu co je potreba sehnat...
+	// takze to bude probihat spise stylem spoluprace s crr
+	projit vsechny, a najit surovinu
 	
 	return true;*/
+	// vyplnit podle
+	int req[EBS_Max] = {0};
+	int poc = 0;
+	for (int i=1;i < EBS_Max;i++)
+		if (m_res[i].IsEnable())
+			poc++;
+	if (poc==0)
+		return false;
+	poc = v_sklad.GetInt() / poc;
+	for (int i=1;i < EBS_Max;i++)
+		req[i] = m_res[i].IsEnable() ? m_res[i].GetNum()-poc: 0xfffffff;
+	// vybirat prvni mozne
+	while (1)
+	{
+		// vybrat nejmensi
+		int min=1;
+		for (int i=2;i < EBS_Max;i++)
+			if (req[min] > req[i])
+				min = i;
+		if (req[min] == 0xfffffff)
+			return false;
+		ResourceExp * ri = CRR::Get()->Find((ESurType)min, this);
+		if (ri && ri->GetAvail() > 0)
+		{
+			// return job
+			t->type = TJob::jtGotoRes;
+			t->owner = this;
+			t->ritem = ri;
+			t->surtype = (ESurType)min;
+			t->num = ri->GetAvail();
+			if (t->num > 10)
+				t->num = 10;
+			t->percent = 100;
+			return true;
+		}
+		else
+			req[min] = 0xfffffff;
+	}
 	return false;
 }
 
 bool Store::Select()
 {
 	BecherBuilding::Select();
-	GetLevel()->SetObjectHud(&m_userhud);
-	m_userhud.SetAct(this);
+	GetLevel()->SetObjectHud(&m_storepref);
+	m_storepref.SetAct(this);
 	if (!IsBuildMode())
         GetLua()->func("s_sklad");
 	return true;
@@ -277,15 +248,15 @@ bool Store::Select()
 	BecherBuilding::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Materials"));
-	GetProp()->AppendLong(0, _("Wood"), m_wood.GetNum());
-	GetProp()->AppendLong(1, _("Stone"), m_stone.GetNum());
-	GetProp()->AppendLong(2, _("Water"), m_water.GetNum());
-	GetProp()->AppendLong(3, _("Sugar"), m_sugar.GetNum());
-	GetProp()->AppendLong(4, _("Alcohol"), m_alcohol.GetNum());
-	GetProp()->AppendLong(5, _("Bechers"), m_becher.GetNum());
-	GetProp()->AppendLong(6, _("Cane"), m_cane.GetNum());
-	GetProp()->AppendLong(7, _("Herbe"), m_herbe.GetNum());
-	GetProp()->AppendLong(8, _("Coal"), m_coal.GetNum());
+	GetProp()->AppendLong(EBS_Wood, _("Wood"), m_res[EBS_Wood].GetNum());
+	GetProp()->AppendLong(EBS_Stone, _("Stone"), m_res[EBS_Stone].GetNum());
+	GetProp()->AppendLong(EBS_Water, _("Water"), m_res[EBS_Water].GetNum());
+	GetProp()->AppendLong(EBS_Sugar, _("Sugar"), m_res[EBS_Sugar].GetNum());
+	GetProp()->AppendLong(EBS_Alco, _("Alcohol"), m_res[EBS_Alco].GetNum());
+	GetProp()->AppendLong(EBS_Becher, _("Bechers"), m_res[EBS_Becher].GetNum());
+	GetProp()->AppendLong(EBS_Cane, _("Cane"), m_res[EBS_Cane].GetNum());
+	GetProp()->AppendLong(EBS_Herbe, _("Herbe"), m_res[EBS_Herbe].GetNum());
+	GetProp()->AppendLong(EBS_Coal, _("Coal"), m_res[EBS_Coal].GetNum());
 
 	GetProp()->AppendCategory(_("Store"));
 	GetProp()->AppendLong(20, _("Limit"), 100);
@@ -295,39 +266,42 @@ bool Store::Select()
 
 void Store::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 {
+	if (id > EBS_None && id < EBS_Max)
+		m_res[id].SetNum(pi.GetLong());
+	/*else
 	switch (id)
 	{
-	case 0:
-		m_wood.SetNum(pi.GetLong());
-		break;
-	case 1:
-		m_stone.SetNum(pi.GetLong());
-		break;
-	case 2:
-		m_water.SetNum(pi.GetLong());
-		break;
-	case 3:
-		m_sugar.SetNum(pi.GetLong());
-		break;
-	case 4:
-		m_alcohol.SetNum(pi.GetLong());
-		break;
-	case 5:
-		m_becher.SetNum(pi.GetLong());
-		break;
-	case 6:
-		m_cane.SetNum(pi.GetLong());
-		break;
-	case 7:
-		m_herbe.SetNum(pi.GetLong());
-		break;
-	case 8:
+	case 20:
 		m_coal.SetNum(pi.GetLong());
 		break;
-	};
+	};*/
+	FillStore();
 }
 
-
-
 #endif
+
+void Store::FillStore()
+{
+	// project a vypocitat
+	// maximum = ;
+	int max = GetMiniStoreCount();
+	if (v_sklad.GetInt() > max)
+		max = v_sklad.GetInt();
+
+	max = max / 16;
+	int p = 0;
+	for (int i=1;i < EBS_Max;i++)
+	{
+		int c = m_res[i].GetNum() > 0 ? m_res[i].GetNum() / max+1:0;
+		for (;c > 0;c--)
+		{
+			m_info[p++].model = m_storepref.GetModel(i);
+			if (p >= 16)
+				return;
+		}
+	}
+	for (;p <= 16;p++)
+		m_info[p].model = NULL;
+
+}
 

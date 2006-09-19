@@ -83,6 +83,8 @@ bool EditorMap::SaveMap(const wxString &path)
 
 	// objekty
 	SaveAllObjects(w);
+	
+	// ulozit parametry objektu
 
 	w.WriteChunk(ID_CHUNK('e','n','d',' '), 0);
 

@@ -40,8 +40,45 @@ ResourceExp::ResourceExp(ESurType type)
 	m_type = type;
 	m_actual = 0;
 	m_owner = NULL;
-	m_priority = EBSP_None;
+	m_priority = EBSP_Normal;
 	m_max = 0;
+	m_locked = 0;
+}
+
+uint ResourceExp::Lock(uint num)
+{
+	// zalockovat surovinu
+	m_locked += num;
+	// kontrola
+	if (m_locked < 0)
+	{
+		assert(!"nepravdepodobna situace");
+		m_locked = 0;
+	}
+	if (m_locked > m_actual)
+	{
+		assert(!"nepravdepodobna situace");
+		m_locked = m_actual;
+	}
+	return num;
+}
+
+void ResourceExp::Unlock(uint num)
+{
+	if (m_locked > m_actual)
+	{
+		assert(!"nepravdepodobna situace");
+		m_locked = m_actual;
+	}
+	if (m_locked < num)
+	{
+		assert(!"nepravdepodobna situace");
+		m_locked = 0;
+	}
+	else
+		m_locked -= num;
+	// kontrola
+
 }
 
 //////////////////////////////////////////

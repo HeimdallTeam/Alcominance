@@ -4,10 +4,10 @@
 #include "troll.h"
 #include "obj_sugar.h"
 
-static CVar v_numzpr("sugar_speed", 1.f, 0);
-static CVar v_sklad("sugar_max", 50, 0);
-static CVar v_numworks("sugar_maxwork", 4, 0);
-static CVar v_recept("sugar_recept", "C1=1", 0);
+static CVar v_numzpr("sugar_speed", 1.f, 0); // rychlost zpracovani jedne davky (davek / vterina)
+static CVar v_sklad("sugar_max", 50, 0); // maximalni velikost miniskladu
+static CVar v_numworks("sugar_maxwork", 4, 0); // maximalni pocet pracujicich
+static CVar v_recept("sugar_recept", "C1=1", 0); // recept pro jednu davku
 
 #ifndef BECHER_EDITOR
 SugarStatic Sugar::m_userhud;
@@ -72,7 +72,7 @@ bool Sugar::InsertSur(ESurType type, uint *s)
 	case EBS_Cane:
 		return m_cane.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
 	case EBS_Coal:
-		return m_w.Add(s,100);
+		return m_w.Add(s,*s);
 	default:
 		assert(!"insert bad type");
 		return false;
@@ -98,18 +98,20 @@ void Sugar::Update(const float t)
 	float prog = m_w.InProcess() ? m_worked.Count()*v_numzpr.GetFloat():0.f;
 
 	if (m_worked.Count() > 0)
+	{
 		m_w.Update(t*prog);
 
-	if (m_w.CanOut() && (m_w.Out(false)<=(v_sklad.GetInt() - GetMiniStoreCount())))
-	{
-		uint p = m_w.Out(true);
-		m_sugar.Add(&p, p);
-	}
+		if (m_w.CanOut() && (m_w.Out(false)<=(v_sklad.GetInt() - GetMiniStoreCount())))
+		{
+			uint p = m_w.Out(true);
+			m_sugar.Add(&p, p);
+		}
 
-	// naplneni
-	if (m_w.CanIn() && m_w.In(&m_cane, 'C', true))
-	{
-		m_w.ToProcess();
+		// naplneni
+		if (m_w.CanIn() && m_w.In(&m_cane, 'C', true))
+		{
+			m_w.ToProcess();
+		}
 	}
 
 	if (m_progress != prog)
@@ -148,24 +150,24 @@ bool Sugar::Select()
 	return true;
 }
 
-bool Sugar::Idiot(Job * j)
+bool Sugar::Idiot(TJob * j)
 {
 	// zjistit pripadny zdroj pro suroviny
 	// 
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
-	ResourceExp * ri = CRR::Get()->Find(EBS_Cane); // urceni priorit
-	ResourceExp * rc = CRR::Get()->Find(EBS_Coal); // urceni priorit
+	ResourceExp * ri = CRR::Get()->Find(EBS_Cane, this); // urceni priorit
+	ResourceExp * rc = CRR::Get()->Find(EBS_Coal, this); // urceni priorit
 	
 	HoeGame::LuaFunc f(GetLua(), "i_sugar");
 	f.PushTable();
 	// suroviny
 	// informace o surovinach
 	f.SetTableInteger("max_store", v_sklad.GetInt());
-	f.SetTableInteger("cane_avail", ri ? ri->GetNum():0);
+	f.SetTableInteger("cane_avail", ri ? ri->GetAvail():0);
 	f.SetTableInteger("cane", m_cane.GetNum());
 	f.SetTableInteger("sugar", m_sugar.GetNum());
 	f.SetTableInteger("coal", m_w.GetNum());
-	f.SetTableInteger("coal_avail", rc ? rc->GetNum():0);
+	f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
 	f.SetTableInteger("coal_max", 100);
 	// works
 	f.SetTableInteger("works", this->m_worked.Count());
@@ -185,12 +187,12 @@ bool Sugar::Idiot(Job * j)
 	{
 	case 0:
 		j->surtype = (ESurType)f.GetTableInteger("sur", -1); // typ suroviny
-		j->type = Job::jtPrines;
+		j->type = TJob::jtGotoRes;
 		j->num = f.GetTableInteger("num", -1); // pocet k prineseni
 		j->ritem = j->surtype == EBS_Cane ? ri:rc;
 		break;
 	case 1:
-		j->type = Job::jtWork;
+		j->type = TJob::jtGotoWork;
 		break;
 	};
 		

@@ -67,7 +67,7 @@ bool HerbeWoman::Select()
 	return true;
 }
 
-bool HerbeWoman::Idiot(Job *t)
+bool HerbeWoman::Idiot(TJob *t)
 {
 	return false;
 }

@@ -6,14 +6,19 @@ class BecherBuilding;
 class Troll;
 class ResourceExp;
 
-struct Job
+struct TJob
 {
 	enum Type
 	{
 		jtNone = 0,
-		jtPrines,
+		jtGotoRes,
+		jtGotoOwnerWithRes,
+		jtGotoWork,
 		jtWork,
+		jtWaitToRes,
+		jtFindJob,
 	} type;
+	// parametry
 	BecherBuilding * owner;
 	ResourceExp * ritem;
 	ESurType surtype;

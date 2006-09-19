@@ -2,6 +2,10 @@
 #include "StdAfx.h"
 #include "becher.h"
 #include "obj_coalmine.h"
+#include "troll.h"
+
+static CVar v_numzpr("coal_mine", 1.f, 0); // rychlost zpracovani jedne davky (davek / vterina)
+static CVar v_numworks("coal_maxwork", 2, 0);
 
 #ifndef BECHER_EDITOR
 CoalMineStatic CoalMine::m_userhud;
@@ -63,6 +67,24 @@ void CoalMine::Update(const float dtime)
 	// kazdy tupoun kope zvlast, ubiha to podle tupounu
 	// kazdemu tupounovi se pricita naklad zvlast
 	// takze forka pres vsechny tupouny, a kazdy dostane cast dilu co si vykopal
+	for (uint i=0;i<m_worked.Count();i++)
+	{
+		TTrollWorkSlot &slot = m_worked.Get(i);
+		slot.t += v_numzpr.GetFloat() * dtime;
+		uint n = (uint)slot.t;
+		if (n > 0)
+		{
+			slot.t -= n;
+			n = m_coal.Get(n, false);
+			slot.num += n;
+			if (slot.num >= slot.req || m_coal.GetNum() == 0)
+			{
+				slot.troll->SurIn(EBS_Coal, slot.num);
+				m_worked.Remove(slot);
+				i--;
+			}
+		}
+	}
 }
 
 bool CoalMine::Select()
@@ -75,7 +97,7 @@ bool CoalMine::Select()
 	return true;
 }
 
-bool CoalMine::Idiot(Job *t)
+bool CoalMine::Idiot(TJob *t)
 {
 	// idiot bude vzdycku false,protoze pro dul nikdo nepracuje
 	return false;
@@ -93,6 +115,21 @@ bool CoalMine::SetToWork(Troll * t)
 
 void CoalMine::UnsetFromWork(Troll * t)
 {
+}
+
+bool CoalMine::SetToGet(Troll * t, uint num)
+{
+	// nalezt volny slot
+	if (m_worked.Count()>=(uint)v_numworks.GetInt())
+		return false;
+
+	TTrollWorkSlot slot;
+	slot.troll = t;
+	slot.req = num;
+	slot.num = 0;
+	slot.t = 0.f;
+	m_worked.Add(slot);
+	return true;
 }
 
 #else // BECHER_OBJECT

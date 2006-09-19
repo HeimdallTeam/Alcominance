@@ -4,6 +4,7 @@
 #include "id.h"
 
 class BecherObject;
+class Troll;
 
 class ResourceBase
 {
@@ -26,15 +27,7 @@ class ResourceImp : public ResourceBase
 public:
 };
 
-enum ESurPriority
-{
-	// nevydavat
-	// spis zanechat
-	// normalni
-	// zbavit se
-    EBSP_None = 0,
-    EBSP_TimeWork,
-};
+// zamykani surovin (get odemkne)
 
 class ResourceExp : public ResourceBase
 {
@@ -43,6 +36,7 @@ protected:
 	uint m_max;
 	ESurPriority m_priority;
 	BecherObject * m_owner;
+	uint m_locked;
 public:
 	ResourceExp(ESurType type);
 	void SetOwner(BecherObject * own) { m_owner = own; }
@@ -52,6 +46,9 @@ public:
 	inline void SetPriority(ESurPriority p) { m_priority = p; }
 	void Register();
 	void Unregister();
+	uint Lock(uint num); ///< zamknuti suroviny aby pro ni nesel nikdo jiny (tvari se jako by tam nebylo)
+	void Unlock(uint num); ///< vraceni suroviny pri zruseni
+	uint GetAvail() { return GetNum()-m_locked; } ///< vraceni kolik je k dispozici
 };
 
 // 
@@ -78,6 +75,28 @@ public:
 	bool CanOut() { return m_out > 0; }
 	bool InProcess() { return !m_out && m_mout; }
 	void ToProcess();
+};
+
+/**
+* Objekt ktery se stara o tupouny
+* Ma prehled o vsech tupounech kteri pro nej pracuji
+* Dokaze jim davat rozkazy
+* Prideluje praci
+*/
+class TrollList : public HoeGame::PtrSet<Troll *>
+{
+public:
+	TrollList() { }
+	void OneStopWork();
+};
+
+struct TTrollWorkSlot
+{
+	Troll * troll;
+	float t;
+	uint num;
+	uint req;
+	bool operator == (const TTrollWorkSlot& slot) { return troll == slot.troll; }
 };
 
 #endif // _WORKSPACE_H_

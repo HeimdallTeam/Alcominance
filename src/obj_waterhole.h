@@ -10,6 +10,7 @@ class WaterHole;
 class WaterHoleStatic : public ObjectHud
 {
 protected:
+	char m_waterinfo[256];
 	WaterHole * m_act;
 public:
 	WaterHoleStatic();
@@ -27,8 +28,15 @@ protected:
 #ifndef BECHER_EDITOR
 	static WaterHoleStatic m_userhud;
 #endif // BECHER_EDITOR
+	ResourceExp m_water;
+	float m_kap;
+	HoeGame::PtrSet<TTrollWorkSlot> m_worked;
 public:
 	WaterHole(IHoeScene * scn);
+
+#ifndef BECHER_EDITOR
+	virtual bool SetToGet(Troll * t, uint num);
+#endif // BECHER_EDITOR
 
 	DECLARE_BUILDING(EBO_WaterHole)
 };

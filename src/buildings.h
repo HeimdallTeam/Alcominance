@@ -6,7 +6,7 @@
 #include "workspace.h"
 
 class Troll;
-struct Job;
+struct TJob;
 
 /**
 * Vsechno co ma spolecneho s funkcni budovou
@@ -15,16 +15,18 @@ struct Job;
 class BecherBuilding : public BecherObject
 {
 protected:
+	EBuildingMode m_mode;
 public:
 	BecherBuilding(IHoeScene * scn);
 	bool IsBuildMode() { return false; }
 	bool StartBuilding(int gold, int wood, int stone);
-	//virtual bool Save(BecherGameSave &w);
-	//virtual bool Load(BecherGameLoad &r);
+	virtual void SetMode(EBuildingMode mode) { m_mode = mode; }
+	virtual bool Save(BecherGameSave &w);
+	virtual bool Load(BecherGameLoad &r);
 	virtual bool InsertSur(ESurType type, uint *s) { assert(!"add surovina"); return false; }
 	virtual bool SetToWork(Troll * t) { assert(!"add to work"); return false; }
 	virtual void UnsetFromWork(Troll * t) { assert(!"add to work"); }
-	virtual bool Idiot(Job * t) { return false; }
+	virtual bool Idiot(TJob * t) { return false; }
 
 };
 
@@ -40,20 +42,9 @@ class SourceBuilding : public BecherBuilding
 {
 public:
 	SourceBuilding(IHoeScene * scn) : BecherBuilding(scn) {}
+	virtual bool SetToGet(Troll * t, uint num) { return false; }
 };
 
-/**
-* Objekt ktery se stara o tupouny
-* Ma prehled o vsech tupounech kteri pro nej pracuji
-* Dokaze jim davat rozkazy
-* Prideluje praci
-*/
-class TrollList : public HoeGame::PtrSet<Troll *>
-{
-public:
-	TrollList() { }
-	void OneStopWork();
-};
 
 // neni cukr -> vyslany
 // cukr -> 50% -> maka

@@ -60,7 +60,7 @@ bool Farm::Select()
 	return true;
 }
 
-bool Farm::Idiot(Job *t)
+bool Farm::Idiot(TJob *t)
 {
 	/*Store * s = FindStore();
 

@@ -23,6 +23,8 @@ function i_sugar(b)
  -- jako vstup je struktura se informacema o budove
  
  info("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
+ 
+ 
  -- jestlize se trtina vejde tak trtina
  if b.cane > 1 and b.works == 0 then
      job = { type = 1, percent = 90 }
@@ -34,13 +36,22 @@ function i_sugar(b)
      return job 
  end
  
- if b.cane_avail > 0 and b.cane_avail > b.coal_avail then
-     job = { type = 0, sur = EBS_Cane, num=10,  percent = 100 }
+ --if b.cane_avail > 0 then
+ if b.cane_avail > 0 then
+     job = { type = 0, sur = EBS_Cane, num=b.cane_avail,  percent = 100 }
+     if job.num > 10 then
+       job.num = 10
+      end
      return job    
  end 
 
- if b.coal_avail > 0 and b.cane_avail <= b.coal_avail then
-     job = { type = 0, sur = EBS_Coal, num=10,  percent = 100 }
+ 
+ 
+ if b.coal_avail > 0 then
+     job = { type = 0, sur = EBS_Coal, num=b.coal_avail,  percent = 100 }
+       if job.num > 10 then
+       job.num = 10
+      end
      return job    
  end 
  

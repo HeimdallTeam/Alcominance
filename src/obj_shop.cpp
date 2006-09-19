@@ -42,7 +42,7 @@ bool Shop::Select()
 	return true;
 }
 
-bool Shop::Idiot(Job * t)
+bool Shop::Idiot(TJob * t)
 {
 	return false;
 }

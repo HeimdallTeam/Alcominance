@@ -121,19 +121,19 @@ bool Destilate::Select()
 	return true;
 }
 
-bool Destilate::Idiot(Job * j)
+bool Destilate::Idiot(TJob * j)
 {
 	// zjistit pripadny zdroj pro suroviny
 	// 
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
-	ResourceExp * ri = CRR::Get()->Find(EBS_Sugar); // urceni priorit
+	ResourceExp * ri = CRR::Get()->Find(EBS_Sugar, this); // urceni priorit
 	
 	HoeGame::LuaFunc f(GetLua(), "i_alco");
 	f.PushTable();
 	// suroviny
 	// informace o surovinach
 	f.SetTableInteger("max_store", v_sklad.GetInt());
-	f.SetTableInteger("sugar_avail", ri ? ri->GetNum():0);
+	f.SetTableInteger("sugar_avail", ri ? ri->GetAvail():0);
 	f.SetTableInteger("sugar", m_sugar.GetNum());
 	f.SetTableInteger("alco", m_alco.GetNum());
 	// works
@@ -154,12 +154,12 @@ bool Destilate::Idiot(Job * j)
 	{
 	case 0:
 		j->surtype = (ESurType)f.GetTableInteger("sur", -1); // typ suroviny
-		j->type = Job::jtPrines;
+		j->type = TJob::jtGotoRes;
 		j->num = f.GetTableInteger("num", -1); // pocet k prineseni
 		j->ritem = ri;
 		break;
 	case 1:
-		j->type = Job::jtWork;
+		j->type = TJob::jtGotoWork;
 		break;
 	};
 		

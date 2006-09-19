@@ -110,7 +110,7 @@ bool Factory::Select()
 	return true;
 }
 
-bool Factory::Idiot(Job * j)
+bool Factory::Idiot(TJob * j)
 {
 	// zjistit pripadny zdroj pro suroviny
 	// 

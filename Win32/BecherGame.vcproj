@@ -305,14 +305,6 @@
 			Name="game"
 			>
 			<File
-				RelativePath="..\src\crr.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\crr.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\game.cpp"
 				>
 			</File>
@@ -348,17 +340,17 @@
 				RelativePath="..\src\map.h"
 				>
 			</File>
-			<File
-				RelativePath="..\src\workspace.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\workspace.h"
-				>
-			</File>
 			<Filter
 				Name="objects"
 				>
+				<File
+					RelativePath="..\src\buildings.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\buildings.h"
+					>
+				</File>
 				<File
 					RelativePath="..\src\elements.cpp"
 					>
@@ -366,28 +358,6 @@
 				<File
 					RelativePath="..\src\elements.h"
 					>
-				</File>
-				<File
-					RelativePath="..\src\jobs.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\jobs.h"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\src\object.cpp"
@@ -430,14 +400,6 @@
 				<Filter
 					Name="buildings"
 					>
-					<File
-						RelativePath="..\src\buildings.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\buildings.h"
-						>
-					</File>
 					<File
 						RelativePath="..\src\obj_coalmine.cpp"
 						>
@@ -527,6 +489,48 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="workspace"
+				>
+				<File
+					RelativePath="..\src\crr.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\crr.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\jobs.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\jobs.h"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\workspace.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\workspace.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

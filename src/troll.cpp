@@ -15,8 +15,10 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 	m_infoselect.t_y = 2.f;
 	m_infoselect.s_z = .8f;
 	memset(&m_job, 0, sizeof(m_job));
-	m_numsur = 0;
-	m_phase = PhaseStart;
+	m_job.type = TJob::jtNone;
+	m_load.locked = false;
+	m_load.numsur = 0;
+	m_load.surtype = EBS_None;
 }
 
 Troll::~Troll()
@@ -25,37 +27,22 @@ Troll::~Troll()
 
 void Troll::Update(const float t)
 {
-	EPhaseResult res;
-	res = MakePhase(t);
-	while (res==PhaseRepeat)
+	// pokud chodi tak chodi
+	// pokud ceka, tak nic
+	switch (m_job.type)
 	{
-		res = MakePhase(t);
-	}
-	if (res==PhaseEnd)
-	{
-		// podle jobu a faze urcit dalsi akci
-		switch (m_job.type)
-		{
-		case Job::jtPrines:
-			if (m_phase == PhaseStart)
-			{
-				// nastavit novou cestu na misto urceni
-				m_phase = GoToSource;
-				m_path.SetPosTo(m_job.ritem->GetOwner());
-			}
-			else if (m_phase == GoToSource)
-			{
-				// vyjmout surovinu
-
-				//job.sur = job.ritem->GetSur(job.surtype, job.num, false);
-				//
-				assert(m_job.ritem);
-				m_surtype = m_job.surtype;
-				assert(m_surtype == m_job.ritem->GetType());
-				// tady vzit nebo vytezit surovinu...
-				m_numsur = m_job.ritem->Get(10,true);
-				// jestli uz nic neni hledat novou praci
-				if (m_numsur > 0)
+	case TJob::jtGotoRes:
+	case TJob::jtGotoOwnerWithRes:
+	case TJob::jtGotoWork:
+		// update cesty, pokud cesta hotova tak finish
+		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
+			Finish();
+		break;
+	case TJob::jtFindJob:
+		FindJob(m_job.owner);
+		break;
+	};
+	/*EPhaseResult res;
 				{
 					m_path.SetPosTo(m_job.owner);
 					m_phase = GoToOwner;
@@ -63,17 +50,12 @@ void Troll::Update(const float t)
 				else
 				{
 					FindJob(m_job.owner);
-					/*!!!*/ // dodelat aby kdyz nebude prace tak nic
+					// dodelat aby kdyz nebude prace tak nic
 				}
 			}
 			else if (m_phase == GoToOwner)
 			{
-				// odevzdat surovinu, mozna by mohl cekat dokud nebude volno ve skladu
-				/*!!!*/
-				assert(m_job.owner);
-				m_job.owner->InsertSur(m_surtype, &m_numsur);
-				//job.owner->AddSur(job.surtype, job.sur);
-				FindJob(m_job.owner);
+				
 			}
 			break;
 		case Job::jtWork:
@@ -99,27 +81,135 @@ void Troll::Update(const float t)
 			break;
 		};
 	}
+	*/
 }
 
-EPhaseResult Troll::MakePhase(const double t)
+void Troll::SetJob(const TJob & j)
 {
-	switch (m_phase)
+	// opustit stary job
+	switch (m_job.type)
 	{
-	case PhaseStart:
-	case GoToEnd:
-		return PhaseEnd;
-	case GoToOwner:
-	case GoToSource:
-		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
-			return PhaseEnd;
+	case TJob::jtWork:
+		assert(m_job.owner);
+		m_job.owner->UnsetFromWork(this);
 		break;
-	case Works:
-		return PhaseContinue;
-	default:
-		assert(!"Unknown phase");
+	};
+
+	// nastavit novy
+	if (m_load.locked)
+	{
+		m_job.ritem->Unlock(j.num);
+		m_load.numlocked = 0;
+		m_load.locked = false;
 	}
-	return PhaseContinue;
+
+	m_job = j;
+	// nastavit parametry
+	switch (j.type)
+	{
+	case TJob::jtGotoRes:
+		if (m_job.ritem->GetPriority() != EBSP_TimeWork)
+		{ 
+			m_load.numlocked = m_job.ritem->Lock(j.num);
+			m_load.locked = true;
+		}
+		m_path.SetPosTo(m_job.ritem->GetOwner());
+		break;
+	case TJob::jtGotoOwnerWithRes:
+	case TJob::jtGotoWork:
+		m_path.SetPosTo(m_job.owner);
+		break;
+	case TJob::jtWork:
+		assert(m_job.owner);
+		m_job.owner->SetToWork(this);
+		break;
+	};
 }
+
+void Troll::Finish()
+{
+	switch (m_job.type)
+	{
+	case TJob::jtGotoRes:
+		if (m_job.ritem->GetPriority() == EBSP_TimeWork)
+		{
+			assert(m_load.locked == false);
+			dynamic_cast<SourceBuilding*>(m_job.ritem->GetOwner())->SetToGet(this, m_job.num);
+			// nastavit job na cekani
+			TJob j = m_job;
+			j.type = TJob::jtWaitToRes;
+			SetJob(j);
+		}
+		else
+		{
+			// pokud jde pro surovinu, tak vyjmout a nastavit
+			assert(m_load.locked == true);
+			m_job.ritem->Unlock(m_load.numlocked);
+			m_load.locked = false;
+			m_load.surtype = m_job.surtype;
+			m_load.numsur = m_job.ritem->Get(m_load.numlocked,true);
+			// nastavit na chuzi k zpatky
+			TJob j = m_job;
+			j.type = TJob::jtGotoOwnerWithRes;
+			SetJob(j);
+		}
+		break;
+	case TJob::jtGotoOwnerWithRes:
+		// vlozit do budovy a hledat novy job
+// odevzdat surovinu, mozna by mohl cekat dokud nebude volno ve skladu
+		assert(m_job.owner);
+		m_job.owner->InsertSur(m_load.surtype, &m_load.numsur);
+		m_load.numsur = 0;
+		m_load.surtype = EBS_None;
+		FindJob(m_job.owner);
+		break;
+	case TJob::jtGotoWork:
+		{
+			//this->ToBuilding();
+			TJob j = m_job;
+			j.type = TJob::jtWork;
+			SetJob(j);
+		}
+		break;
+	};
+}
+
+void Troll::SurIn(ESurType type, uint num)
+{
+	//assert(type == m_job.surtype);
+	//assert(m_phase == WaitForSur);
+	//m_numsur = num;
+	//m_surtype = type;
+	// prenastavit job
+	m_load.surtype = type;
+	m_load.numsur = num;
+	TJob j = m_job;
+	j.type = TJob::jtGotoOwnerWithRes;
+	SetJob(j);
+}
+
+bool Troll::FindJob(BecherBuilding * pref)
+{
+	TJob job;
+	assert(pref);
+	if (pref->Idiot(&job))
+	{
+		SetJob(job);
+		return true;
+	}
+	return false;
+}
+
+void Troll::StopWork()
+{
+	// nastavit job na none
+	// hledat novy job
+	// pokud nenalezen, zajit k budove
+	TJob j = m_job;
+	j.type = TJob::jtFindJob;
+	SetJob(j);
+}
+
 #ifndef BECHER_EDITOR
 bool Troll::Select()
 {
@@ -135,52 +225,6 @@ bool Troll::Select()
 }
 
 #endif
-
-void Troll::SetJob(const Job & j)
-{
-	//job = j; nastaveni zakladnich vlastnosti (treba cesty atd)
-	m_job = j;
-	if (m_job.owner) m_job.owner->GetPosX();
-	// nastavit pocatecni hodnoty
-	m_phase = PhaseStart;
-}
-
-void Troll::StopWork()
-{
-	// nastavit na hledani
-	// pokud pracuje tak odhlasit z prace
-	if (m_phase == Works)
-		m_phase = GoToEnd;
-}
-
-bool Troll::FindJob(BecherBuilding * pref)
-{
-	Job job;
-	if (pref && pref->Idiot(&job))
-	{
-		SetJob(job);
-		return true;
-	}
-	if (m_job.owner && m_job.owner->Idiot(&job)) 
-	{
-		SetJob(job);
-		return true;
-	}
-	/*if (job.type == Job::jtNone || !job.owner->Idiot(this))
-	{
-		// hledani noveho idiota
-		for (int i=0;i < GetBecher()->GetLevel()->GetNumObj();i++)
-		{
-			BecherObject * bo = GetBecher()->GetLevel()->GetObj(i);
-			if (BecherMap::GetObjectClass(bo->GetType()) != EBC_Building)
-				continue;
-			if (dynamic_cast<BecherBuilding*>(bo)->Idiot(this))
-				return;
-		}
-		job.SetNone();
-	}*/
-	return false;
-}
 
 ////////////////////////////////////////////////
 /*JobEx::JobEx()

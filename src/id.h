@@ -73,6 +73,27 @@ enum ESurType
 	EBS_Max,
 };
 
+enum EBuildingMode
+{
+	EBM_Hide,
+	EBM_Select,
+	EBM_Build,
+	EBM_Normal,
+};
+
+enum ESurPriority
+{
+	// nevydavat
+	// spis zanechat
+	// normalni
+	// zbavit se
+	EBSP_Lowest,
+    EBSP_TimeWork,
+	EBSP_Normal,
+	EBSP_High,
+	EBSP_Higher,
+};
+
 extern HoeGame::LuaPreprocess::IDConst g_luaconst[];
 
 const char * FindIDString(int id);

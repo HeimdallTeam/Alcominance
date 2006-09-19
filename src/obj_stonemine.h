@@ -24,11 +24,17 @@ class StoneMine : public SourceBuilding
 	friend class StoneMineStatic;
 protected:
 	// panel
+	ResourceExp m_stone;
 #ifndef BECHER_EDITOR
 	static StoneMineStatic m_userhud;
+	HoeGame::PtrSet<TTrollWorkSlot> m_worked;
 #endif // BECHER_EDITOR
 public:
 	StoneMine(IHoeScene * scn);
+
+#ifndef BECHER_EDITOR
+	virtual bool SetToGet(Troll * t, uint num);
+#endif // BECHER_EDITOR
 
 	DECLARE_BUILDING(EBO_StoneMine)
 };

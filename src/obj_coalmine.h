@@ -28,11 +28,15 @@ protected:
 	static CoalMineStatic m_userhud;
 #endif // BECHER_EDITOR
 	ResourceExp m_coal;
+	HoeGame::PtrSet<TTrollWorkSlot> m_worked;
 public:
 	CoalMine(IHoeScene * scn);
 
 	virtual bool Save(BecherGameSave &w);
 	virtual bool Load(BecherGameLoad &r);
+#ifndef BECHER_EDITOR
+	virtual bool SetToGet(Troll * t, uint num);
+#endif // BECHER_EDITOR
 
 	DECLARE_BUILDING(EBO_CoalMine)
 };

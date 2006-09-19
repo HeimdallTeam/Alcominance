@@ -199,7 +199,22 @@ bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 					return false;
 				break;
 			}
-			// break; schvalne
+			else
+				r.Skip(r.Chunk().size);
+			break;
+		case ID_CHUNK('o','b','j','u'):
+			if (!savegame)
+			{
+				// nacist objekt
+				dword id = r.Read<dword>();
+				BecherObject * bo = GetObjFromID(id);
+				if (!bo || !bo->Load(r))
+					return false;
+				break;
+			}
+			else
+				r.Skip(r.Chunk().size);
+			break;
 		default:
 			r.Skip(r.Chunk().size);
 			break;
@@ -241,7 +256,8 @@ bool BecherMap::LoadObject(BecherGameLoad & r)
 	bo->SetAngle(s.angle);
 	bo->SetPosition(s.x, s.y,m_scene->GetScenePhysics()->GetHeight(s.x,s.y));
 	bo->Show(true);
-	bo->Load(r);
+	// presunout
+	//bo->Load(r);
 	AddObject(bo);
 	ComputeLastID();
 
@@ -261,6 +277,15 @@ bool BecherMap::SaveAllObjects(BecherGameSave &w)
 		s.y = bo->GetPosY();
 		s.angle = bo->GetAngle();
 		w.Write<TObjectSaveStruct>(s);
+		//bo->Save(w);
+		// write size
+		w.WriteChunkEnd();
+	}
+	for (int i=0;i < GetNumObj();i++)
+	{
+		w.WriteChunk(ID_CHUNK('o','b','j','u'), 1);
+		BecherObject * bo = GetObj(i);
+		w.Write<dword>(bo->id);
 		bo->Save(w);
 		// write size
 		w.WriteChunkEnd();

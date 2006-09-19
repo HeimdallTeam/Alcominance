@@ -313,6 +313,10 @@
 				RelativePath="..\src\utils.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\src\workspace.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="resource"

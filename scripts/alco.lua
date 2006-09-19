@@ -24,7 +24,10 @@ function i_alco(b)
  end
  
  if b.sugar_avail > 0 then
-     job = { type = 0, sur = EBS_Sugar, num=10,  percent = 100 }
+     job = { type = 0, sur = EBS_Sugar, num=b.sugar_avail,  percent = 100 }
+      if job.num > 10 then
+       job.num = 10
+      end
      return job    
  end 
  

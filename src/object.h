@@ -68,7 +68,7 @@ public:
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
 	virtual void Update(const float t); \
 	virtual bool Select(); \
-	virtual bool Idiot(Job * j); \
+	virtual bool Idiot(TJob * j); \
 	virtual bool SetToWork(Troll * t); \
 	virtual void UnsetFromWork(Troll * t); \
 	virtual bool InsertSur(ESurType type, uint *s);

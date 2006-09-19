@@ -24,16 +24,39 @@ CRR * CRR::Get()
 	return this_;
 }
 
-ResourceExp * CRR::Find(ESurType type)
+bool IsBetter(ResourceExp * p, ResourceExp * n)
+{
+	if (p->GetPriority() < n->GetPriority())
+		return true;
+	if (p->GetPriority() > n->GetPriority())
+		return false;
+	return p->GetAvail() < n->GetAvail();
+}
+
+bool IsBetterStore(ResourceExp * p, ResourceExp * n)
+{
+	return p->GetAvail() < n->GetAvail();
+}
+
+ResourceExp * CRR::Find(ESurType type, BecherObject * owner)
 {
 	HoeGame::PtrSet<ResourceExp*> & item = m_items[type];
+	bool (*cmp)(ResourceExp * p, ResourceExp * n);
+
+	if (owner->GetType() == EBO_Store)
+		cmp = IsBetterStore;
+	else
+		cmp = IsBetter;
 	if (item.Count() == 0)
 		return NULL;
-	ResourceExp * best = item.Get(0);
-	for (uint i=1;i < item.Count();i++)
+	ResourceExp * best = NULL;
+	for (uint i=0;i < item.Count();i++)
 	{
-		if (best->GetNum() < item.Get(i)->GetNum())
-			best = item.Get(i);
+		if (item.Get(i)->GetOwner() != owner)
+		{
+			if (!best || cmp(best, item.Get(i)))
+				best = item.Get(i);
+		}
 	}
 	return best;
 }

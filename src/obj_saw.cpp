@@ -52,7 +52,7 @@ bool Saw::Select()
 	return true;
 }
 
-bool Saw::Idiot(Job *t)
+bool Saw::Idiot(TJob *t)
 {
 	return false;
 }

@@ -15,33 +15,21 @@ public:
 	void SetPosTo(BecherObject * bo);
 };
 
-enum EPhaseJob
+struct TLoad
 {
-	PhaseStart,
-	GoToSource,
-	GoToOwner,
-	GoToEnd,
-	Works,
-};
-
-enum EPhaseResult
-{
-	PhaseEnd,
-	PhaseContinue,
-	PhaseRepeat
+	ESurType surtype; // co ma u sebe
+	uint numsur; // kolik ma u sebe
+	bool locked;
+	uint numlocked;
 };
 
 class Troll : public BecherObject
 {
-	//bool MakeStep(Task * j, float step);
-	Job m_job; // co ma aktualne na praci
-	EPhaseJob m_phase; // faze vykonavane prace
+	TJob m_job; // co ma aktualne na praci
 	Path m_path; // jeho cesta
-
-	ESurType m_surtype; // co ma u sebe
-	uint m_numsur; // kolik ma u sebe
-
-	EPhaseResult MakePhase(const double t);
+	TLoad m_load; // naklad (co ma u sebe)
+	void ToBuilding();
+	void LeaveBuilding();
 public:
 	Troll(IHoeScene * scn);
 	~Troll();
@@ -51,10 +39,15 @@ public:
 	virtual void Update(const float t);
 	virtual bool Select();
 
-	void SetJob(const Job & j);
+	//virtual bool Save(BecherGameSave &w);
+	//virtual bool Load(BecherGameLoad &r);
+
+	void SetJob(const TJob & j);
+	void SurIn(ESurType type, uint num);
+	void Finish();
+
+	// prace s tupounem
 	void StopWork();
-	
-	//Job::Type GetActJob() { return job.type; }
 	bool FindJob(BecherBuilding * prior);
 };
 

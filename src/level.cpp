@@ -10,6 +10,7 @@
 #include "obj_destilate.h"
 #include "obj_factory.h"
 #include "obj_store.h"
+#include "obj_waterhole.h"
 
 BecherLevel::BecherLevel()
 {
@@ -253,7 +254,8 @@ bool BecherLevel::LoadGame(const char *path)
 	Sugar::m_userhud.Load("scripts/sugar.menu");
 	Destilate::m_userhud.Load("scripts/alco.menu");
 	Factory::m_userhud.Load("scripts/factory.menu");
-	Store::m_userhud.Load("scripts/store.menu");
+	Store::m_storepref.Load("scripts/store.menu");
+	WaterHole::m_userhud.Load("scripts/waterhole.menu");
 
 	SetTerrainData();
 
