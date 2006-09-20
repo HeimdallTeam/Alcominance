@@ -51,6 +51,8 @@ public:
 
 	virtual bool Select();
 	virtual void Unselect();
+
+	virtual void OnDeleteObject(unsigned long id) {}; 
 #ifdef BECHER_EDITOR
 	virtual 
 #endif
@@ -60,7 +62,8 @@ public:
 
 	unsigned long GetID() { return id; }
 
-	virtual void SetProperty(const char * prop, const char * value);
+	// smazat
+	void SetProperty(const char * prop, const char * value);
 };
 
 #define DECLARE_BASEOBJECT(type) virtual EObjType GetType() { return type; }

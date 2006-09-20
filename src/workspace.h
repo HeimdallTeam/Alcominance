@@ -3,17 +3,20 @@
 
 #include "id.h"
 
-class BecherObject;
+class BecherBuilding;
 class Troll;
 
 class ResourceBase
 {
 protected:
 	uint m_actual;
+	BecherBuilding * m_owner;
 public:
-	ResourceBase() { m_actual = 0; }
+	ResourceBase();
 	inline uint GetNum() const { return (int)m_actual; }
-	inline void SetNum(uint num) { m_actual = num; }
+	void SetNum(uint num);
+	void SetOwner(BecherBuilding * own) { m_owner = own; }
+	inline BecherBuilding * GetOwner() { assert(m_owner); return m_owner; }
 	bool Add(uint *s, int max);
 	/**
 	* Vybiraci funkce
@@ -35,12 +38,9 @@ protected:
 	ESurType m_type;
 	uint m_max;
 	ESurPriority m_priority;
-	BecherObject * m_owner;
 	uint m_locked;
 public:
 	ResourceExp(ESurType type);
-	void SetOwner(BecherObject * own) { m_owner = own; }
-	inline BecherObject * GetOwner() { assert(m_owner); return m_owner; }
 	inline ESurType GetType() { return m_type; }
 	inline ESurPriority GetPriority() { return m_priority; }
 	inline void SetPriority(ESurPriority p) { m_priority = p; }

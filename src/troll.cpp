@@ -86,6 +86,7 @@ void Troll::Update(const float t)
 
 void Troll::SetJob(const TJob & j)
 {
+	assert(j.owner != NULL);
 	// opustit stary job
 	switch (m_job.type)
 	{
@@ -196,6 +197,12 @@ bool Troll::FindJob(BecherBuilding * pref)
 	{
 		SetJob(job);
 		return true;
+	}
+	else
+	{
+		TJob j = m_job;
+		j.type = TJob::jtFindJob;
+		SetJob(j);
 	}
 	return false;
 }

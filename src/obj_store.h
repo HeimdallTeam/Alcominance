@@ -51,7 +51,6 @@ protected:
 	//WorkMode m_mode;
 	TrollList m_worked;
 	HoeGame::StopWatch m_exitdelay;
-	void FillStore();
 	inline const int GetMiniStoreCount() const
 	{
 		int n = 0;for (int i=1;i<EBS_Max;i++) n+=m_res[i].GetNum();
@@ -62,8 +61,8 @@ public:
 	//virtual ~Store();
 	virtual bool Save(BecherGameSave &w);
 	virtual bool Load(BecherGameLoad &r);
-
 	int GetStatus(ESurType type);
+	virtual void OnUpdateSur();
 
 
 	DECLARE_BUILDING(EBO_Store)

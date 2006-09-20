@@ -26,6 +26,10 @@ CRR * CRR::Get()
 
 bool IsBetter(ResourceExp * p, ResourceExp * n)
 {
+	if (n->GetAvail() == 0)
+		return false;
+	if (p->GetAvail() == 0)
+		return true;
 	if (p->GetPriority() < n->GetPriority())
 		return true;
 	if (p->GetPriority() > n->GetPriority())

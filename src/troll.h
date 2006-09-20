@@ -28,8 +28,6 @@ class Troll : public BecherObject
 	TJob m_job; // co ma aktualne na praci
 	Path m_path; // jeho cesta
 	TLoad m_load; // naklad (co ma u sebe)
-	void ToBuilding();
-	void LeaveBuilding();
 public:
 	Troll(IHoeScene * scn);
 	~Troll();

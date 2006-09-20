@@ -8,8 +8,6 @@
 -- function ClearButtons()
 -- function PlaySound(id)
 
-farm = farm or false
-
 function c_najmout()
  AddTroll(true);
 end
@@ -122,9 +120,6 @@ function c_waterfarm()
  farm = true
 end
 
-function i_farm(bb)
- return nil
-end
 
 
 

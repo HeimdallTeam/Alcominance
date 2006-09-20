@@ -396,7 +396,13 @@ BecherEdit::~BecherEdit()
 
 bool BecherEdit::OnPostInit()
 {
-	LoadEngine("../Hoe/bin/Hoe3Dd_D3D9.dll"); 
+	wxString eng = 	wxConfigBase::Get()->Read(wxT("/engine"),wxT(""));
+	if (eng != "")
+	{
+		LoadEngine(eng);
+	}
+	m_res.LoadMainDir(wxConfigBase::Get()->Read(wxT("/ResourceDir"),wxT("")));
+
 	return false;
 }
 
@@ -555,11 +561,6 @@ BecherResources::~BecherResources()
 		wxConfigBase::Get()->Write(wxT("/BecherDir"),m_mainDir);
 		//LoadConf(HoeEditor::FullPath(m_mainDir, wxT("files.txt")));
 	}
-}
-
-IHoe3DEngine * BecherResources::GetEngine()
-{
-	return HoeEditor::App::Get()->GetEditor()->GetEngineView()->GetEngine();
 }
 
 wxString BecherResources::FindId(int id)

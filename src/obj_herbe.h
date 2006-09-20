@@ -27,8 +27,12 @@ protected:
 #ifndef BECHER_EDITOR
 	static HerbeWomanStatic m_userhud;
 #endif // BECHER_EDITOR
+	THoeSub_Model m_info;
+	ResourceExp m_herbe;
+	float m_wait;
 public:
 	HerbeWoman(IHoeScene * scn);
+	virtual void OnUpdateSur();
 
 	DECLARE_BUILDING(EBO_HerbeWoman)
 };

@@ -11,6 +11,7 @@
 #include "obj_factory.h"
 #include "obj_store.h"
 #include "obj_waterhole.h"
+#include "obj_farm.h"
 
 BecherLevel::BecherLevel()
 {
@@ -256,6 +257,7 @@ bool BecherLevel::LoadGame(const char *path)
 	Factory::m_userhud.Load("scripts/factory.menu");
 	Store::m_storepref.Load("scripts/store.menu");
 	WaterHole::m_userhud.Load("scripts/waterhole.menu");
+	Farm::m_userhud.Load("scripts/farm.menu");
 
 	SetTerrainData();
 

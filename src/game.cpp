@@ -82,6 +82,7 @@ bool BecherGame::Init()
 	//if (!LoadInfos())
 	//	return false;
 	GetEngine()->RegisterCmd("pvar", CVar::c_printvar, NULL); 
+	GetEngine()->RegisterCmd("printvars", CVar::c_printallvars, NULL); 
 	GetEngine()->RegisterCmd("set", CVar::c_setvar, NULL); 
 	GetEngine()->RegisterCmd("map", BecherGame::c_map, NULL); 
 

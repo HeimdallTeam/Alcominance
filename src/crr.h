@@ -3,7 +3,7 @@
 
 #include "workspace.h"
 
-class BecherBuilding;
+class BecherObject;
 
 /**
  * Central Register of Resource

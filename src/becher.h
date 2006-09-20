@@ -8,6 +8,13 @@
 #include "crr.h"
 
 /////////////////////////////////////////////
+
+inline IHoe3DEngine * GetEngine()
+{
+	assert(HoeGame::GetHoeEngine());
+	return HoeGame::GetHoeEngine();
+}
+
 #ifndef BECHER_EDITOR
 
 #include "bechapp.h"
@@ -36,7 +43,8 @@ inline BGConsole * GetCon()
 
 inline IHoe3DEngine * GetEngine()
 {
-	return GetApp()->GetEngine();
+	assert(HoeGame::GetHoeEngine());
+	return HoeGame::GetHoeEngine();
 }
 
 
@@ -68,11 +76,6 @@ inline HoeGame::ResourceMgr * GetResMgr()
 #include "editor/editor_map.h"
 
 EditBaseConsole * GetCon();
-
-inline IHoe3DEngine * GetEngine()
-{
-	return HoeEditor::App::Get()->GetEditor()->GetEngineView()->GetEngine();
-}
 
 inline BecherEditApp * GetApp()
 {

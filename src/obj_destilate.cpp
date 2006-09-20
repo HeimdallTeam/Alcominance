@@ -47,6 +47,8 @@ Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
 	m_infoselect.s_z = 4.5f;
 	//GetCtrl()->SetFlags(HOF_SHOW);
 	//m_mode = wmIn;
+	m_sugar.SetOwner(this);
+	m_w.SetOwner(this);
 	m_alco.SetOwner(this); CRR::Get()->Register(&m_alco);
 
 	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");

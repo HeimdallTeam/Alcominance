@@ -32,12 +32,19 @@ protected:
 	// trolls
 	ResourceImp m_sugar;
 	ResourceImp m_alco;
+	ResourceImp m_water;
+	ResourceImp m_herbe;
 	ResourceExp m_becher;
 	//WorkMode m_mode;
 	TrollList m_worked;
+	float m_progress;
 	HoeGame::StopWatch m_exitdelay;
 	inline const int GetMiniStoreCount() const 
-	{ return m_sugar.GetNum() + m_alco.GetNum() + m_becher.GetNum(); }
+	{ return m_sugar.GetNum()
+		+ m_alco.GetNum()
+		+ m_herbe.GetNum()
+		+ m_water.GetNum()
+		+ m_becher.GetNum(); }
 public:
 	Factory(IHoeScene * scn);
 	virtual ~Factory();

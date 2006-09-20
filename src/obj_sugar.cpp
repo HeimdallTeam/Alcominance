@@ -47,6 +47,8 @@ Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 	m_infoselect.s_z = 3.5f;
 	//GetCtrl()->SetFlags(HOF_SHOW);
 	//m_mode = wmIn;
+	m_w.SetOwner(this);
+	m_cane.SetOwner(this);
 	m_sugar.SetOwner(this); CRR::Get()->Register(&m_sugar);
 
 	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
@@ -101,7 +103,7 @@ void Sugar::Update(const float t)
 	{
 		m_w.Update(t*prog);
 
-		if (m_w.CanOut() && (m_w.Out(false)<=(v_sklad.GetInt() - GetMiniStoreCount())))
+		if (m_w.CanOut() && ((int)m_w.Out(false)<=(v_sklad.GetInt() - GetMiniStoreCount())))
 		{
 			uint p = m_w.Out(true);
 			m_sugar.Add(&p, p);

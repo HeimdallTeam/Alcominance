@@ -16,7 +16,6 @@ class BecherResources : public HoeEditor::Resources
 public:
 	BecherResources();
 	virtual ~BecherResources();
-	virtual IHoe3DEngine * GetEngine();
 	virtual wxString FindId(int id);
 };
 

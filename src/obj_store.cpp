@@ -3,6 +3,7 @@
 #include "becher.h"
 #include "troll.h"
 #include "obj_store.h"
+#include "panels.h"
 
 float getheight(IHoeModel * m);
 
@@ -141,7 +142,7 @@ bool Store::Load(BecherGameLoad &r)
 	for (int i=1;i < EBS_Max;i++)
 		r.ReadRI(m_res[i]);
 
-	FillStore();
+	OnUpdateSur();
 	return true;
 }
 
@@ -150,7 +151,7 @@ bool Store::Load(BecherGameLoad &r)
 bool Store::InsertSur(ESurType type, uint *s)
 {
 	bool ret = m_res[type].Add(s, *s);
-	FillStore();
+	OnUpdateSur();
 	return ret;
 }
 
@@ -170,8 +171,6 @@ void Store::UnsetFromWork(Troll * t)
 void Store::Update(const float t)
 {
 	// update po snimcic
-	FillStore();
-
 }
 
 int Store::GetStatus(ESurType type)
@@ -280,7 +279,7 @@ void Store::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 
 #endif
 
-void Store::FillStore()
+void Store::OnUpdateSur()
 {
 	// project a vypocitat
 	// maximum = ;

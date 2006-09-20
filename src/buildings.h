@@ -27,6 +27,7 @@ public:
 	virtual bool SetToWork(Troll * t) { assert(!"add to work"); return false; }
 	virtual void UnsetFromWork(Troll * t) { assert(!"add to work"); }
 	virtual bool Idiot(TJob * t) { return false; }
+	virtual void OnUpdateSur() {}
 
 };
 

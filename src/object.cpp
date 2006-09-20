@@ -45,11 +45,6 @@ void BecherObject::SetPosition(const float x, const float y, const float h)
 	GetCtrl()->SetPosition(x, h, y);
 }
 
-void BecherObject::SetProperty(const char * prop, const char * value)
-{
-
-}
-
 bool BecherObject::Select()
 {
 	m_infoselect.model = (IHoeModel*)GetResMgr()->ReqResource(ID_INFO_RING);
