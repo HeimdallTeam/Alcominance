@@ -3,6 +3,7 @@
 #define _BECHER_OBJECT_STORE_H_
 
 #include "buildings.h"
+#include "panels.h"
 
 class Store;
 

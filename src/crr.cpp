@@ -2,6 +2,8 @@
 #include "utils.h"
 #include "becher.h"
 #include "crr.h"
+#include "object.h"
+#include "buildings.h"
 
 //////////////////////////////////////////
 
@@ -56,7 +58,7 @@ ResourceExp * CRR::Find(ESurType type, BecherObject * owner)
 	ResourceExp * best = NULL;
 	for (uint i=0;i < item.Count();i++)
 	{
-		if (item.Get(i)->GetOwner() != owner)
+		if (static_cast<BecherObject*>(item.Get(i)->GetOwner()) != owner)
 		{
 			if (!best || cmp(best, item.Get(i)))
 				best = item.Get(i);

@@ -173,10 +173,7 @@ void Store::Update(const float t)
 	// update po snimcic
 }
 
-int Store::GetStatus(ESurType type)
-{
-	return m_res[type].GetNum();
-}
+
 
 bool Store::Idiot(TJob *t)
 {
@@ -274,7 +271,7 @@ void Store::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 		m_coal.SetNum(pi.GetLong());
 		break;
 	};*/
-	FillStore();
+	OnUpdateSur();
 }
 
 #endif
@@ -304,3 +301,7 @@ void Store::OnUpdateSur()
 
 }
 
+int Store::GetStatus(ESurType type)
+{
+	return m_res[type].GetNum();
+}

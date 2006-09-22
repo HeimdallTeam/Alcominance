@@ -12,6 +12,9 @@ class BecherConfig : public HoeGame::ConfigVars
 	bool m_continue;
 	bool m_showdlg;
 	static CVar m_config;
+	// parametry
+	static CVar m_engine, m_resolution;
+
 public:
 	BecherConfig()
 	{
@@ -31,21 +34,28 @@ public:
 };
 
 CVar BecherConfig::m_config("config_file", CONFIG_FILE, TVAR_SSTR);
+CVar BecherConfig::m_engine("config_file", CONFIG_FILE, TVAR_SSTR);
+CVar BecherConfig::m_resolution("config_file", CONFIG_FILE, TVAR_SSTR);
+
 extern HoeGame::CVar v_level;
 
 #ifdef _WIN32
 
 bool BecherConfig::ShowConfig(HINSTANCE hInst)
 {
+	//@todo zde se zjisti dostupne enginy
+
+
 	//HWND wnd = CreateDialog(hInst,MAKEINTRESOURCE(IDD_SETTDLG), GetDesktopWindow(), NULL);
 	if (DialogBox(hInst,MAKEINTRESOURCE(IDD_SETTDLG), GetDesktopWindow(), DialogProc) == 0)
 		return false;
-	// zapsat zmeny
-	return true;
+	
+	//return true;
 }
 
 INT_PTR CALLBACK BecherConfig::DialogProc(HWND hwndDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
+
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
@@ -56,7 +66,13 @@ INT_PTR CALLBACK BecherConfig::DialogProc(HWND hwndDlg,UINT uMsg,WPARAM wParam,L
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
 		{
+//		case IDC_DROP:
+
+//			break;
 		case IDOK:
+			m_engine.Set(SendDlgItemMessage(hwndDlg, IDC_ENGINE, CB_GETCURSEL, 0, 0));
+			m_resolution.Set(SendDlgItemMessage(hwndDlg, IDC_RESOLUTION, CB_GETCURSEL, 0, 0));
+
 			AnimateWindow(hwndDlg,200,AW_BLEND|AW_HIDE);
 			EndDialog(hwndDlg,1);
 			break;

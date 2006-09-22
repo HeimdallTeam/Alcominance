@@ -41,13 +41,6 @@ inline BGConsole * GetCon()
 	return dynamic_cast<BGConsole *>(GetApp()->GetConsole());
 }
 
-inline IHoe3DEngine * GetEngine()
-{
-	assert(HoeGame::GetHoeEngine());
-	return HoeGame::GetHoeEngine();
-}
-
-
 inline HoeGame::Lang * GetLang()
 {
 	return GetBecher()->GetLang();
