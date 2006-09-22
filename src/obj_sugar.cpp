@@ -49,7 +49,7 @@ Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 	//m_mode = wmIn;
 	m_w.SetOwner(this);
 	m_cane.SetOwner(this);
-	m_sugar.SetOwner(this); CRR::Get()->Register(&m_sugar);
+	m_sugar.SetOwner(this);
 
 	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
 	m_part.t_x = -14.f;
@@ -63,6 +63,27 @@ Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 
 Sugar::~Sugar()
 {
+}
+
+void Sugar::SetMode(EBuildingMode mode)
+{
+	// odmazat
+	if (mode == m_mode)
+		return;
+	// pri buildingu nastavit kolize
+	switch (m_mode)
+	{
+	case EBM_Normal:
+		CRR::Get()->Unregister(&m_sugar);
+		break;
+	};
+	switch (mode)
+	{
+	case EBM_Normal:
+		CRR::Get()->Register(&m_sugar);
+		break;
+	};
+	m_mode = mode;
 }
 
 #ifndef BECHER_EDITOR

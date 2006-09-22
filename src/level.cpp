@@ -121,7 +121,7 @@ void BecherLevel::MouseLeave()
 		m_build->Show(false);
 }
 
-void BecherLevel::SetBuildObject(BecherObject * bo, int gold, int wood, int stone)
+void BecherLevel::SetBuildObject(BecherBuilding * bo, int gold, int wood, int stone)
 {
 	if (m_build)
 		delete m_build;
@@ -130,7 +130,8 @@ void BecherLevel::SetBuildObject(BecherObject * bo, int gold, int wood, int ston
 	m_buildgold = gold;
 	m_buildwood = wood;
 	m_buildstone = stone;
-	m_buildinit = m_select;
+	//m_buildinit = m_select;
+	bo->SetMode(EBM_Select);
 	bo->Show(false);
 }
 
@@ -444,12 +445,15 @@ void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone
 	if (GetCash()->GetLimitCash() < gold)
 	{
 		//GetPanel()->Add(1);
+		// todo -> limit pro penize
 		return;
 	}
 
 	assert_obj(id);
 	BecherObject * bo = CreateObject((EObjType)id);
-	SetBuildObject( bo, gold, wood, stone);
+	BecherBuilding * bb = dynamic_cast<BecherBuilding*>(bo);
+	if (bb)
+		SetBuildObject( bb, gold, wood, stone);
 }
 
 int BecherLevel::l_AddTroll(lua_State * L)

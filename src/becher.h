@@ -41,6 +41,7 @@ inline BGConsole * GetCon()
 	return dynamic_cast<BGConsole *>(GetApp()->GetConsole());
 }
 
+
 inline HoeGame::Lang * GetLang()
 {
 	return GetBecher()->GetLang();

@@ -43,6 +43,8 @@ public:
 	Sugar(IHoeScene * scn);
 	virtual ~Sugar();
 
+	virtual void SetMode(EBuildingMode mode);
+
 	DECLARE_BUILDING(EBO_Sugar)
 };
 

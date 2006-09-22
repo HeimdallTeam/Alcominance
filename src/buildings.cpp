@@ -23,7 +23,7 @@ void TrollList::OneStopWork()
 /////////////////////////////////////////////////////////
 BecherBuilding::BecherBuilding(IHoeScene * scn) : BecherObject(scn)
 {
-	m_mode = EBM_Normal;
+	m_mode = EBM_None;
 }
 
 #ifndef BECHER_EDITOR
@@ -34,6 +34,7 @@ bool BecherBuilding::StartBuilding(int gold, int wood, int stone)
 		GetBecher()->GetInfoPanel()->Add(1);
 		return false;
 	}*/
+	SetMode(EBM_Normal);
 
 	return true;
 }
@@ -53,6 +54,14 @@ bool BecherBuilding::Load(BecherGameLoad &r)
 	BecherObject::Load(r);
 	this->SetMode((EBuildingMode)r.Read<dword>());
 	return true;
+}
+
+void BecherBuilding::SetCurActive(bool active)
+{
+	if (m_mode == EBM_Select)
+		BecherObject::SetCurActive(false);
+	else
+		BecherObject::SetCurActive(active);
 }
 
 float getheight(IHoeModel*m)

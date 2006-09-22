@@ -42,7 +42,7 @@ public:
 	void SetAngle(float angle);
 	float GetAngle() { return m_angle; }
 
-	void SetCurActive(bool active);
+	virtual void SetCurActive(bool active);
 
 	bool IsSelected() { return false; }
 	bool IsCurActive() { return false; }

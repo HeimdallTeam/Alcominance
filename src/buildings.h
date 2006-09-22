@@ -28,7 +28,7 @@ public:
 	virtual void UnsetFromWork(Troll * t) { assert(!"add to work"); }
 	virtual bool Idiot(TJob * t) { return false; }
 	virtual void OnUpdateSur() {}
-
+	virtual void SetCurActive(bool active);
 };
 
 class FactoryBuilding : public BecherBuilding

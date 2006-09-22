@@ -340,6 +340,14 @@
 				RelativePath="..\src\map.h"
 				>
 			</File>
+			<File
+				RelativePath="..\src\phys_prov.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\phys_prov.h"
+				>
+			</File>
 			<Filter
 				Name="objects"
 				>

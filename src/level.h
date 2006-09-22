@@ -44,11 +44,11 @@ class BecherLevel : public BecherMap,
 protected:
 	char m_filename[512];
 	// build object
-	BecherObject * m_build;
+	BecherBuilding * m_build;
 	int m_buildgold;
 	int m_buildstone;
 	int m_buildwood;
-	BecherObject * m_buildinit;
+	//BecherObject * m_buildinit;
 	BecherTime m_timer;
 	BecherCash m_cash; 
 	BecherObject * m_select;
@@ -82,7 +82,7 @@ public:
 	virtual void OnRightButtonUp();
 	virtual void OnRightButtonDown();
 
-	void SetBuildObject(BecherObject * bo, int gold, int wood, int stone);
+	void SetBuildObject(BecherBuilding * bo, int gold, int wood, int stone);
 	void Start();
 	bool SaveGame(const char * path);
 	bool LoadGame(const char * path);

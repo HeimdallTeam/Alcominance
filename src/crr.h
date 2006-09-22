@@ -19,6 +19,7 @@ public:
     ~CRR();
 	static CRR * Get();
     void Register(ResourceExp* item);
+    void Unregister(ResourceExp* item);
 	/**
 	* Najit podle priority, obsahu, vzdalenosti
 	*/

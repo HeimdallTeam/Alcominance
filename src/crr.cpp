@@ -76,3 +76,11 @@ void CRR::Register(ResourceExp* item)
 #endif // BECHER_EDITOR
 }
 
+void CRR::Unregister(ResourceExp* item)
+{
+#ifndef BECHER_EDITOR
+	// zaregistrovani itemu
+	assert(item);
+	this->m_items[item->GetType()].Remove(item);
+#endif // BECHER_EDITOR
+}
