@@ -28,6 +28,7 @@ class Troll : public BecherObject
 	TJob m_job; // co ma aktualne na praci
 	Path m_path; // jeho cesta
 	TLoad m_load; // naklad (co ma u sebe)
+	float anim;
 public:
 	Troll(IHoeScene * scn);
 	~Troll();

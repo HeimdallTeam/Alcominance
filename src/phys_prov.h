@@ -1,4 +1,7 @@
 
+#ifndef _PHYS_PROVISORIUM_H_
+#define _PHYS_PROVISORIUM_H_
+
 /*
 
 Provizorni fyzika
@@ -29,7 +32,9 @@ class Phys
 {
 	HoeGame::PtrSet<Obdelnik*> m_obd;
 	HoeGame::PtrSet<Kruh*> m_kruh;
+	static Phys m_instance;
 public:
+	static Phys * Get() { return &m_instance; }
 	bool IsOk(const Obdelnik * o)
 	{
 		for (size_t i=0;i < m_kruh.Count();i++)
@@ -37,13 +42,18 @@ public:
 			const float lx = m_kruh[i]->x - o->x;
 			const float ly = m_kruh[i]->y - o->y;
 			const float r = m_kruh[i]->radius+o->radius;
-			if (((lx*lx)+(ly*ly)) > (o*o))
+			if (((lx*lx)+(ly*ly)) > (r*r))
 				continue;
 
 			// hodne blizko
 		}
 	}
+	void ClearAll();
 };
+
+#endif // _PHYS_PROVISORIUM_H_
+
+
 
 
 

@@ -5,12 +5,14 @@
 #include "crr.h"
 #include "troll.h"
 
-static CVar v_speed("troll_speed", 20.f, 0);
+static CVar v_speed("troll_speed", 15.f, 0);
+static const float scale = 0.35f;
 
 Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_TROLL));
-	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE);
+	GetCtrl()->SetScale(scale,scale,scale);
+	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE|HOF_SCALED);
 	m_infoselect.s_x = .8f;
 	m_infoselect.t_y = 2.f;
 	m_infoselect.s_z = .8f;
@@ -19,6 +21,8 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 	m_load.locked = false;
 	m_load.numsur = 0;
 	m_load.surtype = EBS_None;
+
+	anim = 0.f;
 }
 
 Troll::~Troll()
@@ -35,6 +39,10 @@ void Troll::Update(const float t)
 	case TJob::jtGotoOwnerWithRes:
 	case TJob::jtGotoWork:
 		// update cesty, pokud cesta hotova tak finish
+		anim += ((t * v_speed.GetFloat()) / (scale * 20.f)) ;
+		if (anim > 1.f)
+			anim = 0.f;
+		this->SetAnimationTime(anim);
 		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
 			Finish();
 		break;
@@ -306,7 +314,7 @@ bool Path::Step(Troll * t, const float time)
 	float puvX = posX;
 	float puvY = posY;
 	finish = GetNextPos(time, posX,posY);
-	float angle = -atan2f(posX*10.f-puvX*10.f,posY*10.f-puvY*10.f);
+	float angle = -atan2f(-posX*10.f+puvX*10.f,-posY*10.f+puvY*10.f);
 	t->SetAngle(angle);
 	// nastavit pozici podle terenu
 	t->SetPosition( posX, posY, GetLevel()->GetScene()->GetScenePhysics()->GetHeight(posX,posY));
