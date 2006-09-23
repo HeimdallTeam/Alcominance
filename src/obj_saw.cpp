@@ -33,7 +33,7 @@ void SawStatic::Draw(IHoe2D * h2d)
 ////////////////////////////////////////////////////////////
 Saw::Saw(IHoeScene * scn) : SourceBuilding(scn)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_SAW));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SAW));
 }
 
 #ifndef BECHER_EDITOR

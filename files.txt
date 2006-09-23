@@ -23,21 +23,21 @@ data/drevorubec.hm
 data/utes.hm
 data/hud.hx
 #resources
-ID_FACTORY="model tovarna" ; Tovarna
-ID_INFO_RING="model info" ; Ring
-ID_SUGAR="model cukrovar" ; Cukrovar
-ID_CONSTRUCT="model staveniste" ; Staveniste
-ID_CONSTRUCT_D="model doplnky" ; Doplnky ke staveni
-ID_BABA="model chaloupkabk" ; Chaloupka
-ID_FARM="model farma" ; Farma
-ID_FARM_POLE="model pole" ; Pole na farmu
-ID_DESTILATE="model lihovar" ; Lihovar
-ID_STORE="model sklad" ; Sklad
-ID_SHOP="model obchod" ; Obchod
+model_FACTORY="model tovarna" ; Tovarna
+model_INFO_RING="model info" ; Ring
+model_SUGAR="model cukrovar" ; Cukrovar
+model_CONSTRUCT="model staveniste" ; Staveniste
+model_CONSTRUCT_D="model doplnky" ; Doplnky ke staveni
+model_BABA="model chaloupkabk" ; Chaloupka
+model_FARM="model farma" ; Farma
+model_FARM_POLE="model pole" ; Pole na farmu
+model_DESTILATE="model lihovar" ; Lihovar
+model_STORE="model sklad" ; Sklad
+model_SHOP="model obchod" ; Obchod
 201="model strom_war3" ; Strom 1
-ID_WATERHOLE="model studna" ; Studna
-ID_MOST="model most" ; Most
-ID_TROLL="model olaf" ; Tupoun
-ID_SAW="model drevorubec" ; Pila
-ID_COALMINE="model studna" ; Uhelny dul
+model_WATERHOLE="model studna" ; Studna
+model_MOST="model most" ; Most
+model_TROLL="model olaf" ; Tupoun
+model_SAW="model drevorubec" ; Pila
+model_COALMINE="model studna" ; Uhelny dul
 #end

@@ -37,7 +37,7 @@ void StoneMineStatic::Draw(IHoe2D * h2d)
 ////////////////////////////////////////////////////////////
 StoneMine::StoneMine(IHoeScene * scn) : SourceBuilding(scn), m_stone(EBS_Stone)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STONEMINE));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STONEMINE));
 	m_stone.SetOwner(this); CRR::Get()->Register(&m_stone);
 	m_stone.SetPriority(EBSP_TimeWork);
 }

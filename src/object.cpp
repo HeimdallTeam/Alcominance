@@ -47,7 +47,7 @@ void BecherObject::SetPosition(const float x, const float y, const float h)
 
 bool BecherObject::Select()
 {
-	m_infoselect.model = (IHoeModel*)GetResMgr()->ReqResource(ID_INFO_RING);
+	m_infoselect.model = (IHoeModel*)GetResMgr()->ReqResource(model_INFO_RING);
 	return true;
 }
 
@@ -58,7 +58,7 @@ void BecherObject::Unselect()
 
 void BecherObject::SetCurActive(bool active)
 {
-	m_infoselect.model = active ? (IHoeModel*)GetResMgr()->ReqResource(ID_INFO_RING2):NULL;
+	m_infoselect.model = active ? (IHoeModel*)GetResMgr()->ReqResource(model_INFO_RING2):NULL;
 	
 }
 

@@ -36,7 +36,7 @@ void FarmStatic::Draw(IHoe2D * h2d)
 ////////////////////////////////////////////////////////////
 Farm::Farm(IHoeScene * scn) : SourceBuilding(scn), m_cane(EBS_Cane)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_FARM));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_FARM));
 	m_infoselect.s_x = 4.5f;
 	m_infoselect.t_y = 2.f;
 	m_infoselect.s_z = 3.5f;
@@ -45,7 +45,7 @@ Farm::Farm(IHoeScene * scn) : SourceBuilding(scn), m_cane(EBS_Cane)
 	//rust = 0.f;
 	//skliz = 0;
 	memset(&m_growinfo,0, sizeof(m_growinfo));
-	m_growinfo.model = (IHoeModel*)GetResMgr()->ReqResource(ID_FARM_POLE);
+	m_growinfo.model = (IHoeModel*)GetResMgr()->ReqResource(model_FARM_POLE);
 	m_growinfo.s_x = 1.f;
 	m_growinfo.s_y = 1.f;
 	m_growinfo.s_z = 1.f;

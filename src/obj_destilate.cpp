@@ -41,7 +41,7 @@ void DestilateStatic::Draw(IHoe2D * h2d)
 ////////////////////////////////////////////////////////
 Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_DESTILATE));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_DESTILATE));
 	m_infoselect.s_x = 4.5f;
 	m_infoselect.t_y = 2.f;
 	m_infoselect.s_z = 4.5f;

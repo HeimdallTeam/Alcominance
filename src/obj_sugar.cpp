@@ -41,7 +41,7 @@ void SugarStatic::Draw(IHoe2D * h2d)
 ////////////////////////////////////////////////////////
 Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_SUGAR));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SUGAR));
 	m_infoselect.s_x = 3.5f;
 	m_infoselect.t_y = 2.f;
 	m_infoselect.s_z = 3.5f;

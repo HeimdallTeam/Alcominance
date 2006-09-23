@@ -16,7 +16,7 @@ bool BGConsole::Load(IHoe3DEngine *eng)
 	font = (IHoeFont *)eng->Create("font 'resource/font.ttf' 12");
 	if (!font)
 		return false;
-	background = (IHoePicture*)GetResMgr()->ReqResource(ID_CONSOLE_BACK);
+	background = (IHoePicture*)GetResMgr()->ReqResource(model_CONSOLE_BACK);
 	if (!background)
 		return false;
 

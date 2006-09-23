@@ -15,8 +15,8 @@ end
 function s_sklad()
  info("Vybranej sklad")
  ClearButtons()
- AddButton(ID_NEWTROLL,"Najmout delnika", "c_najmout")
- AddButton(ID_NEWTROLL,"", "camerka")
- AddButton(ID_NEWTROLL,"", "camerkazpet")
+ AddButton(model_NEWTROLL,"Najmout delnika", "c_najmout")
+ AddButton(model_NEWTROLL,"", "camerka")
+ AddButton(model_NEWTROLL,"", "camerkazpet")
 end
 

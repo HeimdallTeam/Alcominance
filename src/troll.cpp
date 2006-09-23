@@ -10,7 +10,7 @@ static const float scale = 0.35f;
 
 Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_TROLL));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_TROLL));
 	GetCtrl()->SetScale(scale,scale,scale);
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE|HOF_SCALED);
 	m_infoselect.s_x = .8f;

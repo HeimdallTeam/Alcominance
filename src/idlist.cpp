@@ -3,8 +3,7 @@
 #include "id.h"
 
 #define REG_ID(id) id,#id,
-#define ADD_EDGEID(id,num) REG_ID(id)
-#define ADD_ID(id) REG_ID(id)
+#define ADDID(id) REG_ID(id)
 
 HoeGame::LuaPreprocess::IDConst g_luaconst[] = {
 #include "../scripts/id.txt"

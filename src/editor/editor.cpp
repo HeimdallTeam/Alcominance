@@ -4,7 +4,6 @@
 //#include "../../resource/logo.xpm"
 #include "editor_tools.h"
 //#include "plugin_map.h"
-#include "../id.h"
 #include "editor_map.h"
 #include "editor.h"
 #include "help.h"

@@ -39,7 +39,7 @@ void WaterHoleStatic::Draw(IHoe2D * h2d)
 ////////////////////////////////////////////////////////////
 WaterHole::WaterHole(IHoeScene * scn) : SourceBuilding(scn), m_water(EBS_Water)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_WATERHOLE));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_WATERHOLE));
 	m_infoselect.s_x = 1.f;
 	m_infoselect.t_y = 2.f;
 	m_infoselect.s_z = 1.f;

@@ -39,7 +39,7 @@ void Tree::SetHeight(float h)
 void Tree::SetTypeModel(int type)
 {
 	param.type = type;
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STROM+type));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STROM+type));
 }
 
 #ifndef BECHER_EDITOR
@@ -72,7 +72,7 @@ void Tree::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 ////////////////////////////////////////////////////////////
 Bridge::Bridge(IHoeScene * scn) : BecherObject(scn)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_MOST));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_MOST));
 	m_height = 0.f;
 }
 

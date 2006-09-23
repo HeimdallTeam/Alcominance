@@ -69,7 +69,7 @@ void StoreStatic::LoadModels()
 Store::Store(IHoeScene * scn) : BecherBuilding(scn)
 {
 	// set owners
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_STORE));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STORE));
 	m_infoselect.s_x = 2.5f;
 	m_infoselect.t_y = 3.f;
 	m_infoselect.s_z = 2.5f;

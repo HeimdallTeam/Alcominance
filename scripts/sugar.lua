@@ -8,8 +8,8 @@ end
 
 function s_cukr()
  ClearButtons()
- AddButton(ID_STOPPRACI,2, "c_najmout")
- PlaySound(ID_TESTSOUND)
+ AddButton(model_STOPPRACI,2, "c_najmout")
+ PlaySound(model_TESTSOUND)
 end
 
 --max_store kolik se vejde do skladu

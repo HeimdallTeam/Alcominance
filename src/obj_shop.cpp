@@ -9,7 +9,7 @@
 /////////////////////////////////////////////////////////////
 Shop::Shop(IHoeScene * scn) : BecherBuilding(scn)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_SHOP));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SHOP));
 	m_infoselect.s_x = 1.5f;
 	m_infoselect.t_y = 2.f;
 	m_infoselect.s_z = 3.f;

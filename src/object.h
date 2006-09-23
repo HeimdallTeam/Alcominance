@@ -3,7 +3,6 @@
 #define _BECHER_OBJECT_H_
 
 #include "id.h"
-#include "infos.h"
 #include <hoefs.h>
 
 class Troll;

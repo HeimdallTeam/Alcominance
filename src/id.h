@@ -15,15 +15,13 @@
 #ifndef _ID_H_
 #define _ID_H_
 
-#define ADD_EDGEID(id,num) id=num,
-#define ADD_ID(id) id,
+#define ADDID(id) id,
 
 enum {
 #include "../scripts/id.txt"
 };
 
-#undef ADD_EDGEID
-#undef ADD_ID
+#undef ADDID
 
 enum EObjType
 {

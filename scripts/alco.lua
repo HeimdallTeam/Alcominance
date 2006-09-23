@@ -6,8 +6,8 @@ end
 
 function s_lihovar()
  ClearButtons()
- AddButton(ID_STOPPRACI,2, "c_najmout")
- AddButton(ID_LAHVARNA,"People pay more for nice bottles", "c_bottles")
+ AddButton(model_STOPPRACI,2, "c_najmout")
+ AddButton(model_LAHVARNA,"People pay more for nice bottles", "c_bottles")
 
 end
 

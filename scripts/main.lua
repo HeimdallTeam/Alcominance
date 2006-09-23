@@ -14,18 +14,18 @@ end
 
 function s_studna()
  ClearButtons()
- AddButton(ID_JDI,"Send him somewhere", "c_go")
- AddButton(ID_PRACUJ,"We have a work to do?", "c_work")
- AddButton(ID_CUKROVAR_ICO,"Build Sugar factory", "c_stavcukr")
- AddButton(ID_FARMA_ICO,"Build Sugar farm", "c_stavfarma")
- AddButton(ID_CHALOUPKA_ICO,"Build Herbwomen", "c_stavkorenarka")
- AddButton(ID_LIHOVAR_ICO,"Build Alcoholic house", "c_stavlihovar")
- AddButton(ID_OBCHOD_ICO,"Build Market", "c_stavobchod")
- AddButton(ID_SKLAD_ICO,"Build Storage", "c_stavsklad")
- AddButton(ID_STUDNA_ICO,"Build Waterpump", "c_stavstudna")
- AddButton(ID_TOVARNA_ICO,"Build Facility", "c_stavtovarna")
- AddButton(ID_KAMENYDUL_ICO,"Build Stone Mine", "c_stavkamen")
- AddButton(ID_STUDNA_ICO,"Build Coal Mine", "c_stavuhli")
+ AddButton(model_JDI,"Send him somewhere", "c_go")
+ AddButton(model_PRACUJ,"We have a work to do?", "c_work")
+ AddButton(model_CUKROVAR_ICO,"Build Sugar factory", "c_stavcukr")
+ AddButton(model_FARMA_ICO,"Build Sugar farm", "c_stavfarma")
+ AddButton(model_CHALOUPKA_ICO,"Build Herbwomen", "c_stavkorenarka")
+ AddButton(model_LIHOVAR_ICO,"Build Alcoholic house", "c_stavlihovar")
+ AddButton(model_OBCHOD_ICO,"Build Market", "c_stavobchod")
+ AddButton(model_SKLAD_ICO,"Build Storage", "c_stavsklad")
+ AddButton(model_STUDNA_ICO,"Build Waterpump", "c_stavstudna")
+ AddButton(model_TOVARNA_ICO,"Build Facility", "c_stavtovarna")
+ AddButton(model_KAMENYDUL_ICO,"Build Stone Mine", "c_stavkamen")
+ AddButton(model_STUDNA_ICO,"Build Coal Mine", "c_stavuhli")
 end
 
 function s_kamen()
@@ -37,15 +37,15 @@ end
 
 function s_farma()
  ClearButtons()
- AddButton(ID_STOPPRACI,2, "c_najmout")
+ AddButton(model_STOPPRACI,2, "c_najmout")
  if (not farm) then
-    AddButton(ID_ZAVLAZOVANI,"How about some automated water distribution?", "c_waterfarm")
+    AddButton(model_ZAVLAZOVANI,"How about some automated water distribution?", "c_waterfarm")
  end
 end
 
 function s_shop()
  ClearButtons()
- AddButton(ID_STOPPRACI,"Najmout delnika", "c_najmout")
+ AddButton(model_STOPPRACI,"Najmout delnika", "c_najmout")
 end
 
 function s_korenarka()
@@ -54,7 +54,7 @@ end
 
 function s_tupoun()
  ClearButtons()
-  AddButton(ID_CUKROVAR_ICO,"Build Sugar factory", "c_stavcukr")
+  AddButton(model_CUKROVAR_ICO,"Build Sugar factory", "c_stavcukr")
 end
 
 --builds
@@ -108,7 +108,7 @@ end
 
 function c_firefix()
  AddCash(100)
- PlaySound(ID_TESTSOUND+2)
+ PlaySound(model_TESTSOUND+2)
  if GetCash() < 1000 then
   info("v kase je mene nez 1000")
  else

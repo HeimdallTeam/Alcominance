@@ -37,7 +37,7 @@ void CoalMineStatic::Draw(IHoe2D * h2d)
 ////////////////////////////////////////////////////////////
 CoalMine::CoalMine(IHoeScene * scn) : SourceBuilding(scn), m_coal(EBS_Coal)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_COALMINE));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_COALMINE));
 	m_coal.SetOwner(this); CRR::Get()->Register(&m_coal);
 	m_coal.SetPriority(EBSP_TimeWork);
 }

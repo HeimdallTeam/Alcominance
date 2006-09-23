@@ -42,7 +42,7 @@ void FactoryStatic::Draw(IHoe2D * h2d)
 ////////////////////////////////////////////////////////
 Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), m_becher(EBS_Becher)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_FACTORY));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_FACTORY));
 	m_infoselect.s_x = 6.7f;
 	m_infoselect.t_y = 2.f;
 	m_infoselect.s_z = 6.7f;

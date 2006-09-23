@@ -38,7 +38,7 @@ float getheight(IHoeModel *);
 ////////////////////////////////////////////////////////////
 HerbeWoman::HerbeWoman(IHoeScene * scn) : SourceBuilding(scn), m_herbe(EBS_Herbe)
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(ID_BABA));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_BABA));
 	m_infoselect.s_x = 1.4f;
 	m_infoselect.t_y = 2.f;
 	m_infoselect.s_z = 2.f;
