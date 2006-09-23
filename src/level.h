@@ -97,6 +97,7 @@ public:
 	static int l_SetBuilding(lua_State * L);
 	static int l_AddCash(lua_State * L);
 	static int l_GetCash(lua_State * L);
+	static int l_Camera(lua_State * L);
 
 };
 

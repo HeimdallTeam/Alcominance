@@ -26,7 +26,6 @@ AddFile("data/most.hm")
 -- tupoun
 -- AddFile("data/olaf.hm")
 AddFile("data/tupoun.hm")
-AddFile("data/tupoun.hx")
 
 AddFile("data/tovarna.hm")
 AddFile("data/terrain.hm")

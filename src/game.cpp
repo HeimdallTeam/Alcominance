@@ -67,6 +67,7 @@ bool BecherGame::Init()
 	GetLua()->AddFunc("PlaySound",BecherGame::l_PlaySound);
 	GetLua()->AddFunc("AddCash",BecherLevel::l_AddCash);
 	GetLua()->AddFunc("GetCash",BecherLevel::l_GetCash);
+	GetLua()->AddFunc("Camera",BecherLevel::l_Camera);
 	GetLua()->AddFunc("SetVar", CVar::l_setvar);
 	GetLua()->AddFunc("GetVar", CVar::l_getvar);
 

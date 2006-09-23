@@ -24,8 +24,14 @@ function i_sugar(b)
  
  info("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
  
+ if b.sugar > 0 and b.sugar_out > 0 then
+     job = { type = 2, sur = EBS_Sugar, num=b.sugar,  percent = 100 }
+     if job.num > b.sugar_out then
+      job.num = b.sugar_out
+     end
+     return job 
+ end
  
- -- jestlize se trtina vejde tak trtina
  if b.cane > 1 and b.works == 0 then
      job = { type = 1, percent = 90 }
      return job 
@@ -39,19 +45,11 @@ function i_sugar(b)
  --if b.cane_avail > 0 then
  if b.cane_avail > 0 then
      job = { type = 0, sur = EBS_Cane, num=b.cane_avail,  percent = 100 }
-     if job.num > 10 then
-       job.num = 10
-      end
      return job    
  end 
 
- 
- 
  if b.coal_avail > 0 then
      job = { type = 0, sur = EBS_Coal, num=b.coal_avail,  percent = 100 }
-       if job.num > 10 then
-       job.num = 10
-      end
      return job    
  end 
  

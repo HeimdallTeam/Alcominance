@@ -20,7 +20,8 @@ struct TJob
 	} type;
 	// parametry
 	BecherBuilding * owner;
-	ResourceExp * ritem;
+	ResourceExp * from;
+	BecherBuilding * to;
 	ESurType surtype;
 	int num;
 	float percent;

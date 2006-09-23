@@ -89,7 +89,8 @@ Section "Game files"
   SetOutPath "$INSTDIR\scripts"
   File "..\scripts\*"
   SetOutPath "$INSTDIR\sound"
-  File "..\sound\*"
+  File "..\sound\*.ogg"
+  File "..\sound\music\*"
   
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\Alcominance "Install_Dir" "$INSTDIR"

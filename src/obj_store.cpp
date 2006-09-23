@@ -214,7 +214,7 @@ bool Store::Idiot(TJob *t)
 			// return job
 			t->type = TJob::jtGotoRes;
 			t->owner = this;
-			t->ritem = ri;
+			t->from = ri;
 			t->surtype = (ESurType)min;
 			t->num = ri->GetAvail();
 			if (t->num > 10)
@@ -304,4 +304,9 @@ void Store::OnUpdateSur()
 int Store::GetStatus(ESurType type)
 {
 	return m_res[type].GetNum();
+}
+
+uint Store::AcceptSur(ESurType type)
+{
+	return 10;
 }

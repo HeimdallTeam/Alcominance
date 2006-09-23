@@ -24,6 +24,7 @@ public:
 	* Najit podle priority, obsahu, vzdalenosti
 	*/
 	ResourceExp * Find(ESurType type, BecherObject * owner);
+	BecherBuilding * FindAccept(ESurType type, BecherObject * owner);
 };
 
 

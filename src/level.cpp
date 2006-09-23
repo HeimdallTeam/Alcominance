@@ -13,6 +13,9 @@
 #include "obj_waterhole.h"
 #include "obj_farm.h"
 
+static CVar v_camera("camera_speed", 0.9f, 0);
+
+
 BecherLevel::BecherLevel()
 {
 	this->m_build = NULL;
@@ -65,6 +68,7 @@ void BecherLevel::Update(float time)
 	else
 	{
 		m_timer.Update(time);
+		GetView()->Update(time);
 		// update objects
 		for (int i=0;i < this->m_numobj;i++)
 		{
@@ -182,7 +186,10 @@ void BecherLevel::SelectObject(BecherObject * so)
 		m_hud.ShowReset();
 	}
 	if (!so || so->Select())
+	{
 		m_select = so;
+		GetView()->SetTrack(so->GetPosX(), so->GetPosY(), v_camera.GetFloat());
+	}
 }
 
 bool BecherLevel::SaveGame(const char * path)
@@ -503,12 +510,27 @@ int BecherLevel::l_AddCash(lua_State * L)
 int BecherLevel::l_GetCash(lua_State * L)
 {
 	HoeGame::LuaParam lp(L);
-	lp.CheckPar(0,0, "GetCash");
-	lp.PushNum(GetLevel()->GetCash()->GetLimitCash());
+	if (lp.CheckPar(0,0, "GetCash"))
+		lp.PushNum(GetLevel()->GetCash()->GetLimitCash());
 	return 1;
 }
 
-
+int BecherLevel::l_Camera(lua_State * L)
+{
+	BecherLevel *level = GetLevel();
+	HoeGame::LuaParam lp(L);
+	if (lp.GetNumParam() == 1 && lp.CheckPar(1,"n", "Camera"))
+	{
+		BecherObject * bo = level->GetObj(lp.GetNum(-1));
+		if (bo)
+			level->GetView()->SetTrack(bo->GetPosX(), bo->GetPosY(), v_camera.GetFloat());
+	}
+	else if (lp.GetNumParam() == 2 && lp.CheckPar(2,"nn", "Camera"))
+	{
+		level->GetView()->SetTrack(lp.GetNum(-2), lp.GetNum(-1), v_camera.GetFloat());
+	}
+	return 0;
+}
 
 
 

@@ -29,6 +29,7 @@ public:
 	virtual bool Idiot(TJob * t) { return false; }
 	virtual void OnUpdateSur() {}
 	virtual void SetCurActive(bool active);
+	virtual uint AcceptSur(ESurType type) { return 0; }
 };
 
 class FactoryBuilding : public BecherBuilding

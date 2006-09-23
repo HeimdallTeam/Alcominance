@@ -4,6 +4,7 @@
 #include "crr.h"
 #include "object.h"
 #include "buildings.h"
+#include "obj_store.h"
 
 //////////////////////////////////////////
 
@@ -65,6 +66,19 @@ ResourceExp * CRR::Find(ESurType type, BecherObject * owner)
 		}
 	}
 	return best;
+}
+
+BecherBuilding * CRR::FindAccept(ESurType type, BecherObject * owner)
+{
+	if (GetLevel() == NULL)
+		return NULL;
+	for (int i=0;i < GetLevel()->GetNumObj();i++)
+	{
+		register BecherObject * bo = GetLevel()->GetObj(i);
+		if (bo->GetType() == EBO_Store && dynamic_cast<Store*>(bo)->AcceptSur(type) > 0)
+			return dynamic_cast<BecherBuilding*>(bo);
+	}
+	return NULL;
 }
 
 void CRR::Register(ResourceExp* item)

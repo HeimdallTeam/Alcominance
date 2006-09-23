@@ -208,16 +208,16 @@ bool Factory::Idiot(TJob * j)
 		switch (j->surtype)
 		{
 		case EBS_Alco:
-			j->ritem = ria; break;
+			j->from = ria; break;
 		case EBS_Sugar:
-			j->ritem = ris; break;
+			j->from = ris; break;
 		case EBS_Herbe:
-			j->ritem = rih; break;
+			j->from = rih; break;
 		case EBS_Water:
-			j->ritem = riw; break;
+			j->from = riw; break;
 		};
-		if (j->num > j->ritem->GetNum())
-			j->num = j->ritem->GetNum();
+		if (j->num > j->from->GetNum())
+			j->num = j->from->GetNum();
 		break;
 	case 1:
 		j->type = TJob::jtGotoWork;

@@ -158,7 +158,7 @@ bool Destilate::Idiot(TJob * j)
 		j->surtype = (ESurType)f.GetTableInteger("sur", -1); // typ suroviny
 		j->type = TJob::jtGotoRes;
 		j->num = f.GetTableInteger("num", -1); // pocet k prineseni
-		j->ritem = ri;
+		j->from = ri;
 		break;
 	case 1:
 		j->type = TJob::jtGotoWork;

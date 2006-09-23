@@ -107,7 +107,7 @@ void Troll::SetJob(const TJob & j)
 	// nastavit novy
 	if (m_load.locked)
 	{
-		m_job.ritem->Unlock(j.num);
+		m_job.from->Unlock(j.num);
 		m_load.numlocked = 0;
 		m_load.locked = false;
 	}
@@ -117,14 +117,18 @@ void Troll::SetJob(const TJob & j)
 	switch (j.type)
 	{
 	case TJob::jtGotoRes:
-		if (m_job.ritem->GetPriority() != EBSP_TimeWork)
+		if (m_job.from->GetPriority() != EBSP_TimeWork)
 		{ 
-			m_load.numlocked = m_job.ritem->Lock(j.num);
+			m_load.numlocked = m_job.from->Lock(j.num);
 			m_load.locked = true;
 		}
-		m_path.SetPosTo(m_job.ritem->GetOwner());
+		m_path.SetPosTo(m_job.from->GetOwner());
 		break;
 	case TJob::jtGotoOwnerWithRes:
+		if (!m_job.to)
+			m_job.to = m_job.owner;
+		m_path.SetPosTo(m_job.to);
+		break;
 	case TJob::jtGotoWork:
 		m_path.SetPosTo(m_job.owner);
 		break;
@@ -140,10 +144,10 @@ void Troll::Finish()
 	switch (m_job.type)
 	{
 	case TJob::jtGotoRes:
-		if (m_job.ritem->GetPriority() == EBSP_TimeWork)
+		if (m_job.from->GetPriority() == EBSP_TimeWork)
 		{
 			assert(m_load.locked == false);
-			dynamic_cast<SourceBuilding*>(m_job.ritem->GetOwner())->SetToGet(this, m_job.num);
+			dynamic_cast<SourceBuilding*>(m_job.from->GetOwner())->SetToGet(this, m_job.num);
 			// nastavit job na cekani
 			TJob j = m_job;
 			j.type = TJob::jtWaitToRes;
@@ -153,10 +157,10 @@ void Troll::Finish()
 		{
 			// pokud jde pro surovinu, tak vyjmout a nastavit
 			assert(m_load.locked == true);
-			m_job.ritem->Unlock(m_load.numlocked);
+			m_job.from->Unlock(m_load.numlocked);
 			m_load.locked = false;
 			m_load.surtype = m_job.surtype;
-			m_load.numsur = m_job.ritem->Get(m_load.numlocked,true);
+			m_load.numsur = m_job.from->Get(m_load.numlocked,true);
 			// nastavit na chuzi k zpatky
 			TJob j = m_job;
 			j.type = TJob::jtGotoOwnerWithRes;
@@ -166,8 +170,8 @@ void Troll::Finish()
 	case TJob::jtGotoOwnerWithRes:
 		// vlozit do budovy a hledat novy job
 // odevzdat surovinu, mozna by mohl cekat dokud nebude volno ve skladu
-		assert(m_job.owner);
-		m_job.owner->InsertSur(m_load.surtype, &m_load.numsur);
+		assert(m_job.to);
+		m_job.to->InsertSur(m_load.surtype, &m_load.numsur);
 		m_load.numsur = 0;
 		m_load.surtype = EBS_None;
 		FindJob(m_job.owner);
@@ -200,6 +204,7 @@ void Troll::SurIn(ESurType type, uint num)
 bool Troll::FindJob(BecherBuilding * pref)
 {
 	TJob job;
+	memset(&job,0,sizeof(job));
 	assert(pref);
 	if (pref->Idiot(&job))
 	{
