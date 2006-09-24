@@ -564,16 +564,14 @@ BecherResources::~BecherResources()
 
 wxString BecherResources::FindId(int id)
 {
-#define ADD_EDGEID(id,num) case id: return #id;
-#define ADD_ID(id) case id: return #id;
+#define ADDID(id) case id: return #id;
 	switch (id)
 	{
 #include "../../scripts/id.txt"
 	default:
 			return "";
 	};
-#undef ADD_ID
-#undef ADD_EDGEID
+#undef ADDID
 }
 
 void BecherEdit::OnResMgr(wxCommandEvent &)

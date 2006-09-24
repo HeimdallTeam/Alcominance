@@ -36,6 +36,21 @@ Saw::Saw(IHoeScene * scn) : SourceBuilding(scn)
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SAW));
 }
 
+bool Saw::Save(BecherGameSave &w)
+{
+	BecherBuilding::Save(w);
+	w.WriteReservedWords(10);
+	return true;
+}
+
+/*bool Saw::Load(BecherGameLoad &r)
+{
+	BecherBuilding::Load(r);
+	r.ReadReservedWords(10);
+	OnUpdateSur();
+	return true;
+}*/
+
 #ifndef BECHER_EDITOR
 
 void Saw::Update(const float dtime)

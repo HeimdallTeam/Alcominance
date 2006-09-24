@@ -42,6 +42,21 @@ StoneMine::StoneMine(IHoeScene * scn) : SourceBuilding(scn), m_stone(EBS_Stone)
 	m_stone.SetPriority(EBSP_TimeWork);
 }
 
+bool StoneMine::Save(BecherGameSave &w)
+{
+	BecherBuilding::Save(w);
+	w.WriteReservedWords(10);
+	return true;
+}
+
+/*bool StoneMine::Load(BecherGameLoad &r)
+{
+	BecherBuilding::Load(r);
+	r.ReadReservedWords(10);
+	OnUpdateSur();
+	return true;
+}*/
+
 #ifndef BECHER_EDITOR
 
 void StoneMine::Update(const float dtime)

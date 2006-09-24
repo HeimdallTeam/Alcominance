@@ -49,6 +49,21 @@ WaterHole::WaterHole(IHoeScene * scn) : SourceBuilding(scn), m_water(EBS_Water)
 	m_kap = 0.f;
 }
 
+bool WaterHole::Save(BecherGameSave &w)
+{
+	BecherBuilding::Save(w);
+	w.WriteReservedWords(10);
+	return true;
+}
+
+/*bool WaterHole::Load(BecherGameLoad &r)
+{
+	BecherBuilding::Load(r);
+	r.ReadReservedWords(10);
+	OnUpdateSur();
+	return true;
+}*/
+
 #ifndef BECHER_EDITOR
 
 void WaterHole::Update(const float dtime)

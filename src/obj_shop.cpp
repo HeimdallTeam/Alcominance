@@ -15,6 +15,21 @@ Shop::Shop(IHoeScene * scn) : BecherBuilding(scn)
 	m_infoselect.s_z = 3.f;
 }
 
+bool Shop::Save(BecherGameSave &w)
+{
+	BecherBuilding::Save(w);
+	w.WriteReservedWords(10);
+	return true;
+}
+
+/*bool Shop::Load(BecherGameLoad &r)
+{
+	BecherBuilding::Load(r);
+	r.ReadReservedWords(10);
+	OnUpdateSur();
+	return true;
+}*/
+
 #ifndef BECHER_EDITOR
 void Shop::Update(const float t)
 {

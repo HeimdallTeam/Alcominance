@@ -55,6 +55,21 @@ HerbeWoman::HerbeWoman(IHoeScene * scn) : SourceBuilding(scn), m_herbe(EBS_Herbe
 	m_wait = (float)v_time.GetInt();
 }
 
+bool HerbeWoman::Save(BecherGameSave &w)
+{
+	BecherBuilding::Save(w);
+	w.WriteReservedWords(10);
+	return true;
+}
+
+/*bool HerbeWoman::Load(BecherGameLoad &r)
+{
+	BecherBuilding::Load(r);
+	r.ReadReservedWords(10);
+	OnUpdateSur();
+	return true;
+}*/
+
 #ifndef BECHER_EDITOR
 
 void HerbeWoman::Update(const float dtime)

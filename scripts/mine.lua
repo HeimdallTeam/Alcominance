@@ -13,5 +13,3 @@ function s_coalmine()
  AddButton(model_STOPPRACI,"Stop the hard work", "c_workstop")
  PlaySound(model_TESTSOUND+1)
 end
-
-

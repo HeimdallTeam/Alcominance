@@ -61,6 +61,21 @@ Factory::~Factory()
 {
 }
 
+bool Factory::Save(BecherGameSave &w)
+{
+	BecherBuilding::Save(w);
+	w.WriteReservedWords(10);
+	return true;
+}
+
+/*bool Factory::Load(BecherGameLoad &r)
+{
+	BecherBuilding::Load(r);
+	r.ReadReservedWords(10);
+	OnUpdateSur();
+	return true;
+}*/
+
 #ifndef BECHER_EDITOR
 
 bool Factory::InsertSur(ESurType type, uint *s)

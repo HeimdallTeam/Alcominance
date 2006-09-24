@@ -110,9 +110,9 @@ function c_firefix()
  AddCash(100)
  PlaySound(model_TESTSOUND+2)
  if GetCash() < 1000 then
-  info("v kase je mene nez 1000")
+  info("v kase je méně než 1000")
  else
-  info("v kase je vice nez 1000")
+  info("v kase je více než 1000")
  end
 end
 function c_waterfarm()

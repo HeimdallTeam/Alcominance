@@ -65,6 +65,21 @@ Sugar::~Sugar()
 {
 }
 
+bool Sugar::Save(BecherGameSave &w)
+{
+	BecherBuilding::Save(w);
+	w.WriteReservedWords(10);
+	return true;
+}
+
+/*bool Sugar::Load(BecherGameLoad &r)
+{
+	BecherBuilding::Load(r);
+	r.ReadReservedWords(10);
+	OnUpdateSur();
+	return true;
+}*/
+
 void Sugar::SetMode(EBuildingMode mode)
 {
 	// odmazat

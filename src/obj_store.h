@@ -60,11 +60,10 @@ protected:
 public:
 	Store(IHoeScene * scn);
 	//virtual ~Store();
-	virtual bool Save(BecherGameSave &w);
-	virtual bool Load(BecherGameLoad &r);
 	int GetStatus(ESurType type);
 	virtual void OnUpdateSur();
 	virtual uint AcceptSur(ESurType type);
+	virtual bool Load(BecherGameLoad &r);
 
 	DECLARE_BUILDING(EBO_Store)
 };

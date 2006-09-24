@@ -1,4 +1,4 @@
--- funkce pro tovarnu
+﻿-- funkce pro tovarnu
 
 function c_stavtovarna()
  SetBuilding(EBO_Factory,100,100,100)
