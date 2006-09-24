@@ -22,6 +22,7 @@ data_old/terrain.hm
 data_old/drevorubec.hm
 data_old/utes.hm
 data_old/hud.hx
+data_old/dul.hm
 #resources
 model_FACTORY="model tovarna" ; Tovarna
 model_INFO_RING="model info" ; Ring
@@ -39,5 +40,6 @@ model_WATERHOLE="model studna" ; Studna
 model_MOST="model most" ; Most
 model_TROLL="model olaf" ; Tupoun
 model_SAW="model drevorubec" ; Pila
-model_COALMINE="model studna" ; Uhelny dul
+model_COALMINE="model dul_uhli" ; Uhelny dul
+model_STONEMINE="model dul_kamen" ; Dul uhli
 #end
