@@ -546,6 +546,14 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath="..\src\screens.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\screens.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="docs"
