@@ -23,6 +23,7 @@ data_old/drevorubec.hm
 data_old/utes.hm
 data_old/hud.hx
 data_old/dul.hm
+data_old/intro.hx
 #resources
 model_FACTORY="model tovarna" ; Tovarna
 model_INFO_RING="model info" ; Ring

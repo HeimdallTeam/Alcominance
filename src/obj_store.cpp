@@ -21,15 +21,15 @@ void StoreStatic::SetAct(Store * act)
 {
 	m_act = act;
 	// pripojit 
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetPtr(m_caneinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("drevo", HoeGame::Gui::EText))->SetPtr(m_woodinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("kamen", HoeGame::Gui::EText))->SetPtr(m_stoneinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("byliny", HoeGame::Gui::EText))->SetPtr(m_herbeinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("voda", HoeGame::Gui::EText))->SetPtr(m_waterinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetPtr(m_sugarinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("lih", HoeGame::Gui::EText))->SetPtr(m_alcoinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("becher", HoeGame::Gui::EText))->SetPtr(m_becherinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("uhli", HoeGame::Gui::EText))->SetPtr(m_coalinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetText(m_caneinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("drevo", HoeGame::Gui::EText))->SetText(m_woodinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("kamen", HoeGame::Gui::EText))->SetText(m_stoneinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("byliny", HoeGame::Gui::EText))->SetText(m_herbeinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("voda", HoeGame::Gui::EText))->SetText(m_waterinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetText(m_sugarinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("lih", HoeGame::Gui::EText))->SetText(m_alcoinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("becher", HoeGame::Gui::EText))->SetText(m_becherinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("uhli", HoeGame::Gui::EText))->SetText(m_coalinfo);
 }
 
 void StoreStatic::Draw(IHoe2D * h2d)

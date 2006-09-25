@@ -1,0 +1,14 @@
+static
+{
+	name = "pozadi"
+	rect = 0.000000 0.000000 1024.000000 717.131470
+	alpha = false
+	picture = "postel"
+}
+font
+{
+	name = "titulky"
+	rect = 364.799988 540.239014 367.359985 540.239014
+	font = "font 'resource/font.ttf' 16"
+	text = "test"
+}

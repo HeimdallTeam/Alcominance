@@ -170,9 +170,9 @@ void BecherLevel::MouseLeftDown(float x, float y)
 		return;
 	}
 
-    BecherObject * o = dynamic_cast<BecherObject *>(GetView()->SelObject(x,y));
+	HoeGame::Strategy::StgObject * o = GetView()->SelObject(x,y);
 	if (o)
-		SelectObject(o);
+		SelectObject(dynamic_cast<BecherObject *>(o));
 	else
 		SelectObject(NULL);
 }
@@ -185,11 +185,13 @@ void BecherLevel::SelectObject(BecherObject * so)
 		SetObjectHud(NULL);
 		m_hud.ShowReset();
 	}
-	if (!so || so->Select())
+	if (so && so->Select())
 	{
-		m_select = so;
 		GetView()->SetTrack(so->GetPosX(), so->GetPosY(), v_camera.GetFloat());
+		m_select = so;
 	}
+	else
+		m_select = NULL;
 }
 
 bool BecherLevel::SaveGame(const char * path)

@@ -42,7 +42,7 @@ IHoeResource * BecherResources::MissingResource(int id)
 }
 
 
-BecherGame::BecherGame() : m_lua(GetCon())
+BecherGame::BecherGame()
 {
 }
 
@@ -73,7 +73,7 @@ bool BecherGame::Init()
 
 
 	// load skript
-	if (!GetLua()->Load("scripts/init.lua",g_luaconst))
+	if (!GetLua()->Load("scripts/load.lua",g_luaconst))
 		return false;
 
 	if (!GetCon()->Load(GetEngine()))

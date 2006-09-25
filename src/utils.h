@@ -52,8 +52,5 @@ public:
 
 #define SAFE_DELETE_ARRAY(arr) if (arr) { delete [] arr; arr = NULL; }
 
-// ptr list
-
-
 #endif // _BECHER_UTILS_H_
 

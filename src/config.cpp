@@ -11,10 +11,6 @@ class BecherConfig : public HoeGame::ConfigVars
 {
 	bool m_continue;
 	bool m_showdlg;
-	static CVar m_config;
-	// parametry
-	static CVar m_engine, m_resolution;
-
 public:
 	BecherConfig()
 	{
@@ -33,9 +29,10 @@ public:
 #endif
 };
 
-CVar BecherConfig::m_config("config_file", CONFIG_FILE, TVAR_SSTR);
-CVar BecherConfig::m_engine("config_file", CONFIG_FILE, TVAR_SSTR);
-CVar BecherConfig::m_resolution("config_file", CONFIG_FILE, TVAR_SSTR);
+static CVar v_config("config_file", CONFIG_FILE, TVAR_SSTR);
+static CVar v_lang("lang_file", "resource/english.lng", TVAR_SSTR);
+//CVar BecherConfig::m_engine("config_file", CONFIG_FILE, TVAR_SSTR);
+//CVar BecherConfig::m_resolution("config_file", CONFIG_FILE, TVAR_SSTR);
 
 extern HoeGame::CVar v_level;
 
@@ -70,8 +67,8 @@ INT_PTR CALLBACK BecherConfig::DialogProc(HWND hwndDlg,UINT uMsg,WPARAM wParam,L
 
 //			break;
 		case IDOK:
-			m_engine.Set(SendDlgItemMessage(hwndDlg, IDC_ENGINE, CB_GETCURSEL, 0, 0));
-			m_resolution.Set(SendDlgItemMessage(hwndDlg, IDC_RESOLUTION, CB_GETCURSEL, 0, 0));
+			//v_engine.Set(SendDlgItemMessage(hwndDlg, IDC_ENGINE, CB_GETCURSEL, 0, 0));
+			//v_resolution.Set(SendDlgItemMessage(hwndDlg, IDC_RESOLUTION, CB_GETCURSEL, 0, 0));
 
 			AnimateWindow(hwndDlg,200,AW_BLEND|AW_HIDE);
 			EndDialog(hwndDlg,1);
@@ -96,7 +93,7 @@ bool BecherConfig::Conf(HINSTANCE hInstance)
 	if (!m_continue)
 		return false;
 
-	if (Load(m_config.GetString())!=0 || m_showdlg)
+	if (Load(v_config.GetString())!=0 || m_showdlg)
 	{
 		if (!ShowConfig(hInstance))
 			return false;

@@ -11,6 +11,7 @@ font
 	rect = 305.920013 507.968140 309.760010 509.163361
 	font = "font 'resource/font.ttf' 16"
 	text = "20 cukru."
+	show = true
 }
 static
 {

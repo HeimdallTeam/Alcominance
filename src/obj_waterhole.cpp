@@ -22,7 +22,7 @@ void WaterHoleStatic::SetAct(WaterHole * act)
 {
 	m_act = act;
 	// pripojit 
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("voda", HoeGame::Gui::EText))->SetPtr(m_waterinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("voda", HoeGame::Gui::EText))->SetText(m_waterinfo);
 }
 
 void WaterHoleStatic::Draw(IHoe2D * h2d)

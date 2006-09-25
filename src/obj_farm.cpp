@@ -19,7 +19,7 @@ void FarmStatic::SetAct(Farm * act)
 {
 	m_act = act;
 	// pripojit 
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("produkce", HoeGame::Gui::EText))->SetPtr(m_produkce);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("produkce", HoeGame::Gui::EText))->SetText(m_produkce);
 }
 
 void FarmStatic::Draw(IHoe2D * h2d)

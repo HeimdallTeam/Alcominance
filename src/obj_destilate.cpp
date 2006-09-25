@@ -21,8 +21,8 @@ void DestilateStatic::SetAct(Destilate * act)
 {
 	m_act = act;
 	// pripojit 
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetPtr(m_sugarinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("lih", HoeGame::Gui::EText))->SetPtr(m_alcoinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetText(m_sugarinfo);
+	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("lih", HoeGame::Gui::EText))->SetText(m_alcoinfo);
 
 }
 
