@@ -17,13 +17,13 @@ data_old/stromy.hm
 data_old/Studna.hm
 data_old/textures.hx
 data_old/dopln.hm
-data_old/ter.hx
 data_old/terrain.hm
 data_old/drevorubec.hm
 data_old/utes.hm
 data_old/hud.hx
 data_old/dul.hm
 data_old/intro.hx
+data/ter.hx
 #resources
 model_FACTORY="model tovarna" ; Tovarna
 model_INFO_RING="model info" ; Ring
