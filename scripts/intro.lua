@@ -35,11 +35,11 @@ SetText("titulky","Vlastně jako já")
 Wait(2)
 
 LoadImage("picture drunken con:'test'")
-SetText("Čím více měli, tím více pili, aby neviděli prázdnotu svých životů")
+SetText("titulky", "Čím více měli, tím více pili, aby neviděli prázdnotu svých životů")
 Wait(3)
 
 Fade("ff000000", 0.1)
-SetText("titulky","Vlastně jako já")
+SetText("titulky","Vlastně jako já2")
 Wait(1)
 Fade("00000000", 0.1)
 

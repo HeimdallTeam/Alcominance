@@ -28,6 +28,7 @@ protected:
 	static SlideShow * m_instance;
 	float m_waittime;
 	Fade m_fade;
+	IHoeSound * m_sound;
 public:
 	SlideShow();
 	~SlideShow();

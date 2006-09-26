@@ -48,6 +48,7 @@ SlideShow::SlideShow()
 	m_instance = this;
 	//m_text[0] = 0;
 	//m_image = NULL;
+	m_sound = NULL;
 }
 
 SlideShow::~SlideShow()
@@ -55,6 +56,8 @@ SlideShow::~SlideShow()
 	assert(m_instance == this);
 	m_instance = NULL;
 	// delete scene
+	if (m_sound)
+		m_sound->Delete();
 }
 
 void SlideShow::OnSet()
@@ -119,7 +122,12 @@ void SlideShow::Run()
 	m_lua.AddFunc("LoadImage",SlideShow::l_loadimage);
 	m_lua.AddFunc("Fade",SlideShow::l_fade);
 	m_lua.Load("scripts/intro.lua", 0, false); 
+ 
+	// spusteni zvuku
+	m_sound = (IHoeSound*)GetEngine()->Create("sound 'sound/intro.ogg'");
+	m_sound->Play();
 	lua_resume(m_lua.GetLua(),0);
+
 }
 
 int SlideShow::l_wait(lua_State * L)
