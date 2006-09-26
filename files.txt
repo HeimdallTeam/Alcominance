@@ -23,7 +23,8 @@ data_old/utes.hm
 data_old/hud.hx
 data_old/dul.hm
 data_old/intro.hx
-data/ter.hx
+data/stromy.hm
+data/terrain.hx
 #resources
 model_FACTORY="model tovarna" ; Tovarna
 model_INFO_RING="model info" ; Ring
@@ -36,7 +37,7 @@ model_FARM_POLE="model pole" ; Pole na farmu
 model_DESTILATE="model lihovar" ; Lihovar
 model_STORE="model sklad" ; Sklad
 model_SHOP="model obchod" ; Obchod
-201="model strom_war3" ; Strom 1
+model_STROMY="model stromy" ; Stromy
 model_WATERHOLE="model studna" ; Studna
 model_MOST="model most" ; Most
 model_TROLL="model olaf" ; Tupoun

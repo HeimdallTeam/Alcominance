@@ -9,6 +9,7 @@
 #include "help.h"
 #include "../object.h"
 #include "map_properties.h"
+#include "../terrain.h"
 
 #include <wx/arrimpl.cpp>
 
@@ -61,9 +62,9 @@ enum {
 	IDB_OBJECT_MAX = IDB_OBJECT + EBSys_Max,
 // system
 // textures
-	IDB_NOTEX,
-	IDB_TEX1,
-	IDB_TERRUP = IDB_TEX1 + 50,
+	IDB_TEXTURE,
+	IDB_TEXTURE_MAX  = IDB_TEXTURE + 50,
+	IDB_TERRUP,
 	IDB_TERRDOWN,
 	IDB_TERRPREV,
 };
@@ -183,26 +184,13 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 // terrain
 
 BEGIN_EVENT_TABLE(TerrainObject, wxPanel)
-	EVT_BUTTON(IDB_NOTEX, TerrainObject::OnTexturesClick)
-	EVT_BUTTON(IDB_TEX1, TerrainObject::OnTexturesClick)
-	EVT_BUTTON(IDB_TEX1+1, TerrainObject::OnTexturesClick)
-	EVT_BUTTON(IDB_TEX1+2, TerrainObject::OnTexturesClick)
-	EVT_BUTTON(IDB_TEX1+3, TerrainObject::OnTexturesClick)
-	EVT_BUTTON(IDB_TEX1+4, TerrainObject::OnTexturesClick)
-	EVT_BUTTON(IDB_TEX1+5, TerrainObject::OnTexturesClick)
-	EVT_BUTTON(IDB_TEX1+6, TerrainObject::OnTexturesClick)
+	EVT_BUTTON_RANGE(IDB_TEXTURE, IDB_TEXTURE_MAX, TerrainObject::OnTexturesClick)
+	// terrain
+
 	EVT_BUTTON(IDB_TERRUP, TerrainObject::OnTerrainClick)
 	EVT_BUTTON(IDB_TERRDOWN, TerrainObject::OnTerrainClick)
 	EVT_BUTTON(IDB_TERRPREV, TerrainObject::OnTerrainClick)
 END_EVENT_TABLE()
-
-#include "../../resource/maleikony/trava.xpm"
-#include "../../resource/maleikony/City_Dirt.xpm"
-#include "../../resource/maleikony/City_SquareTiles.xpm"
-#include "../../resource/maleikony/Cliff1.xpm"
-#include "../../resource/maleikony/Concrete.xpm"
-#include "../../resource/maleikony/MetalPlateCliff.xpm"
-#include "../../resource/maleikony/MetalPlateTiles.xpm"
 
 #include "../../resource/maleikony/e_terrup.xpm"
 #include "../../resource/maleikony/e_terrdown.xpm"
@@ -229,25 +217,27 @@ TerrainObject::TerrainObject(wxWindow * parent)
 
 	sb = new wxStaticBox(this, -1, _("Textures"), wxPoint(10,100),
                 wxSize(140,80));
-	b = new wxBitmapButton(sb,IDB_NOTEX,wxBitmap(tovarna_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
-	b->SetToolTip( _("Empty terrain") );
-	b = new wxBitmapButton(sb,IDB_TEX1,wxBitmap(trava_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
-	b->SetToolTip( _("Trava") );
-	b = new wxBitmapButton(sb,IDB_TEX1+1,wxBitmap(City_Dirt_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
-	b = new wxBitmapButton(sb,IDB_TEX1+2,wxBitmap(City_SquareTiles_xpm),BT_P(3,0),BT_SIZE/*,BS_FLAT*/);
-	b = new wxBitmapButton(sb,IDB_TEX1+3,wxBitmap(Cliff1_xpm),BT_P(0,1),BT_SIZE/*,BS_FLAT*/);
-	b = new wxBitmapButton(sb,IDB_TEX1+4,wxBitmap(Concrete_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
-	b = new wxBitmapButton(sb,IDB_TEX1+5,wxBitmap(MetalPlateCliff_xpm),BT_P(2,1),BT_SIZE/*,BS_FLAT*/);
-	b = new wxBitmapButton(sb,IDB_TEX1+6,wxBitmap(MetalPlateTiles_xpm),BT_P(3,1),BT_SIZE/*,BS_FLAT*/);
-                //long style = 0,
-                //const wxString& name = wxStaticBoxNameStr)
-	//wxButton * b = new wxBitmapButton(this,IDB_FACTORY,wxBitmap(tovarna_xpm),wxPoint(0,0),BT_SIZE/*,BS_FLAT*/);
-	//b->SetToolTip( _("Factory") );
 
+	// texturyyyyyy
+	// pridavat dokud se muze
+	int posx = 0,posy = 0;
+	for (int i=0;g_ter_surfaces[i].tex_name;i++)
+	{
+		if (g_ter_surfaces[i].icon == NULL)
+			continue;
+		b = new wxBitmapButton(sb,IDB_TEXTURE+i,
+			wxBitmap(g_ter_surfaces[i].icon),BT_P(posx,posy),BT_SIZE/*,BS_FLAT*/);
+		if (g_ter_surfaces[i].tt)
+			b->SetToolTip( _(g_ter_surfaces[i].tt) );
+		posx++;
+		if (posx == 4)
+		{
+			posy++; posx = 0;
+		}
+	}
 	topsizer->Add( sb);//,
                 //long style = 0,
                 //const wxString& name = wxStaticBoxNameStr)
-
 }
 
 void TerrainObject::OnTexturesClick(wxCommandEvent& e)
@@ -257,33 +247,7 @@ void TerrainObject::OnTexturesClick(wxCommandEvent& e)
 		wxMessageBox(_("First must create map."));
 		return;
 	}
-	byte id = 0xff;
-	switch (e.GetId())
-	{
-	case IDB_TEX1:
-		id = 1;
-		break;
-	case IDB_TEX1+1:
-		id = 2;
-		break;
-	case IDB_TEX1+2:
-		id = 3;
-		break;
-	case IDB_TEX1+3:
-		id = 4;
-		break;
-	case IDB_TEX1+4:
-		id = 5;
-		break;
-	case IDB_TEX1+5:
-		id = 6;
-		break;
-	case IDB_TEX1+6:
-		id = 7;
-		break;
-
-	};
-	BecherEdit::Get()->SetTool(new ToolTex(id));
+	BecherEdit::Get()->SetTool(new ToolTex(e.GetId()-IDB_TEXTURE));
 	//EditorMap::Get()->GetTerrain()->MoveHeight(0,0,50,-5);
 }
 

@@ -39,7 +39,7 @@ void Tree::SetHeight(float h)
 void Tree::SetTypeModel(int type)
 {
 	param.type = type;
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STROM+type));
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STROMY));
 }
 
 #ifndef BECHER_EDITOR

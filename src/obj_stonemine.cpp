@@ -49,13 +49,13 @@ bool StoneMine::Save(BecherGameSave &w)
 	return true;
 }
 
-/*bool StoneMine::Load(BecherGameLoad &r)
+bool StoneMine::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
 	r.ReadReservedWords(10);
 	OnUpdateSur();
 	return true;
-}*/
+}
 
 #ifndef BECHER_EDITOR
 

@@ -10,7 +10,11 @@ ADDID(model_FARM) // farma
 ADDID(model_FARM_POLE)
 ADDID(model_SAW) // farma
 ADDID(model_SHOP)// obchod
-ADDID(model_STROM)
+ADDID(model_STROM1)
+ADDID(model_STROM2)
+ADDID(model_STROM3)
+ADDID(model_STROM4)
+ADDID(model_STROMY)
 // minimalne 5 mist na typy stromu
 ADDID(model_MOST)
 ADDID(model_WATERHOLE)

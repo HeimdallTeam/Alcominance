@@ -36,8 +36,6 @@ public:
 	virtual bool SetToGet(Troll * t, uint num);
 #endif // BECHER_EDITOR
 
-	virtual bool Load(BecherGameLoad &r);
-
 	DECLARE_BUILDING(EBO_CoalMine)
 };
 

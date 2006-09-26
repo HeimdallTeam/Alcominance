@@ -64,17 +64,17 @@ Factory::~Factory()
 bool Factory::Save(BecherGameSave &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteReservedWords(10);
+	w.WriteReservedWords(30);
 	return true;
 }
 
-/*bool Factory::Load(BecherGameLoad &r)
+bool Factory::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
-	r.ReadReservedWords(10);
+	r.ReadReservedWords(30);
 	OnUpdateSur();
 	return true;
-}*/
+}
 
 #ifndef BECHER_EDITOR
 

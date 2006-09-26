@@ -313,14 +313,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\map.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\map.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\phys_prov.cpp"
 				>
 			</File>
@@ -517,6 +509,26 @@
 				</File>
 				<File
 					RelativePath="..\src\workspace.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="map"
+				>
+				<File
+					RelativePath="..\src\map.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\map.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\terrain.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\terrain.h"
 					>
 				</File>
 			</Filter>

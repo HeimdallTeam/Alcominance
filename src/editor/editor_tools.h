@@ -50,10 +50,13 @@ public:
 
 class ToolTex : public HoeEditor::EditorTool
 {
-	byte m_set;
+	byte m_tex;
+	bool m_leftdown;
+	int m_nx,m_ny;
 public:
-	ToolTex(byte set);
+	ToolTex(byte tex);
 	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
+	virtual void LeftUp(const int x, const int y, const wxMouseEvent & e);
 	virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
 	virtual void Wheel( const wxMouseEvent & e);
 	virtual void Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev);

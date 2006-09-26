@@ -77,13 +77,13 @@ bool Destilate::Save(BecherGameSave &w)
 	return true;
 }
 
-/*bool Destilate::Load(BecherGameLoad &r)
+bool Destilate::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
 	r.ReadReservedWords(10);
 	OnUpdateSur();
 	return true;
-}*/
+}
 
 #ifndef BECHER_EDITOR
 
@@ -196,13 +196,13 @@ bool Destilate::Idiot(TJob * j)
     f.SetTableInteger("sugar_wrkcount", m_wrk_sugar);
     f.SetTableInteger("sugar", m_sugar.GetNum());
 
-    f.SetTableInteger("alco_avail", ra ? ra->GetAvail():0);
+    //f.SetTableInteger("alco_avail", ra ? ra->GetAvail():0);
     f.SetTableInteger("alco_wrkcount", m_wrk_alco);
     f.SetTableInteger("alco", m_alco.GetNum());
 	
     f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
     f.SetTableInteger("coal_wrkcount", m_wrk_coal);
-	f.SetTableInteger("coal", m_coal.GetNum());
+	f.SetTableInteger("coal", m_w.GetNum());
     f.SetTableInteger("coal_max", v_coalmax.GetInt());
 
 	// works

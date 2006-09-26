@@ -63,7 +63,6 @@ public:
 	int GetStatus(ESurType type);
 	virtual void OnUpdateSur();
 	virtual uint AcceptSur(ESurType type);
-	virtual bool Load(BecherGameLoad &r);
 
 	DECLARE_BUILDING(EBO_Store)
 };

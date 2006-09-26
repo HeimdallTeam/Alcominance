@@ -6,6 +6,7 @@
 #include "editor_map.h"
 #include "editor.h"
 #include "../sysobjs.h"
+#include "../terrain.h"
 
 //////////////////////////////////////////////////////
 // ToolSelect
@@ -132,28 +133,37 @@ void ToolCreateObject::Wheel( const wxMouseEvent &e)
 
 //////////////////////////////////////////////////////
 // ToolTex
-ToolTex::ToolTex(byte set)
+ToolTex::ToolTex(byte tex)
 {
-	m_set = set;
+	m_tex = tex;
+	m_leftdown = false;
+	m_nx = -10;
+	m_ny = -10;
 }
 
 void ToolTex::LeftDown(const int x, const int y, const wxMouseEvent &e)
 {
 	float sx,sy;
+	m_leftdown = true;
 	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(x,y,&sx,&sy))
 	{
 		EditorMap & m = *BecherEdit::Get()->GetActMap();
-		IHoeEnv::GridSurface::TGridDesc desc;
 		// 300 / 20
 		//const uint nx = (uint)((sx+(m.m_sizeX+m.m_distX)*0.5f)/(m.m_distX));
 		//const uint ny = (uint)((sy+(m.m_sizeY+m.m_distY)*0.5f)/(m.m_distY));
+		//const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
+		//const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
 		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
 		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
-		m.GetTerrain()->GetGridDesc(nx,ny,&desc);
-		desc.tex2 = m_set;
-		m.GetTerrain()->SetGridDesc(nx,ny,&desc);
-		m.GetTerrain()->Load();
+		SetTerrainTexture(m.GetTerrain(), nx+1, ny+1, m_tex);
+		m_nx = nx;
+		m_ny = ny;
 	}
+}
+
+void ToolTex::LeftUp(const int x, const int y, const wxMouseEvent &e)
+{
+	m_leftdown = false;
 }
 
 void ToolTex::RightDown(const int x, const int y, const wxMouseEvent &e)
@@ -167,11 +177,17 @@ void ToolTex::Move(int relX, int relY, int absX, int absY, const wxMouseEvent & 
 	if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(absX,absY,&sx,&sy))
 	{
 		EditorMap & m = *BecherEdit::Get()->GetActMap();
-		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
-		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
+		const uint nx = (uint)((sx+m.m_distX*0.5f+(m.m_sizeX)*0.5f)/(m.m_distX));
+		const uint ny = (uint)((sy+m.m_distY*0.5f+(m.m_sizeY)*0.5f)/(m.m_distY));
 		wxString str;
 		str.Printf("x: %f y: %f nx: %d ny: %d", sx, sy, nx, ny);
 		BecherEdit::Get()->SetStatus(str);
+		if (m_leftdown && m_nx != nx && m_ny != ny)
+		{
+
+			m_nx = nx; m_ny = ny;
+			SetTerrainTexture(m.GetTerrain(), nx+1, ny+1, m_tex);
+		}
 	}
 }
 

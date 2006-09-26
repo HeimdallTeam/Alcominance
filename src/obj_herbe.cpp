@@ -62,13 +62,13 @@ bool HerbeWoman::Save(BecherGameSave &w)
 	return true;
 }
 
-/*bool HerbeWoman::Load(BecherGameLoad &r)
+bool HerbeWoman::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
 	r.ReadReservedWords(10);
 	OnUpdateSur();
 	return true;
-}*/
+}
 
 #ifndef BECHER_EDITOR
 

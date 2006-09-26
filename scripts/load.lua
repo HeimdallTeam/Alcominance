@@ -8,6 +8,11 @@
 
 --os.execute("htex hud.hx hud.dds")
 
+-- hotovo
+AddFile("data/terrain.hx")
+
+
+
 LoadResource(model_TESTSOUND+2,"sound 'sound/datel1.ogg'")
 
 --files 
@@ -30,11 +35,9 @@ AddFile("data_old/sklad.hm")
 AddFile("data_old/obchod.hm")
 AddFile("data_old/staveniste.hm")
 AddFile("data_old/drevorubec.hm")
-AddFile("data_old/trava.hm")
 AddFile("data_old/pic.hx")
 AddFile("data_old/czech.hx")
 AddFile("data_old/dopln.hm")
-AddFile("data_old/ter.hx")
 AddFile("data_old/utes.hm")
 AddFile("data_old/dul.hm")
 AddFile("data_old/hud.hx")
@@ -43,11 +46,11 @@ AddFile("data_old/hud.hx")
 LoadResource(model_INFO_FONT, "font 'resource/font.ttf' 16")
 LoadResource(model_DIGITFONT, "picture digit")
 LoadResource(model_FACTORY, "model tovarna")
---LoadResource(model_STROM+1, "model strom1")
---LoadResource(model_STROM+2, "model strom2")
---LoadResource(model_STROM+3, "model strom3")
---LoadResource(model_STROM+4, "model strom4")
-LoadResource(201, "model strom_war3")
+LoadResource(model_STROM1, "model strom_war3")
+LoadResource(model_STROM2, "model strom_war3")
+LoadResource(model_STROM3, "model strom_war3")
+LoadResource(model_STROM4, "model strom_war3")
+LoadResource(model_STROMY, "model strom_war3")
 LoadResource(model_SUGAR, "model cukrovar")
 LoadResource(model_DESTILATE, "model lihovar")
 LoadResource(model_BABA, "model chaloupkabk")

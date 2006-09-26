@@ -22,13 +22,13 @@ bool Shop::Save(BecherGameSave &w)
 	return true;
 }
 
-/*bool Shop::Load(BecherGameLoad &r)
+bool Shop::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
 	r.ReadReservedWords(10);
 	OnUpdateSur();
 	return true;
-}*/
+}
 
 #ifndef BECHER_EDITOR
 void Shop::Update(const float t)

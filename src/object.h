@@ -74,14 +74,14 @@ public:
 	virtual bool SetToWork(Troll * t); \
 	virtual void UnsetFromWork(Troll * t); \
 	virtual bool InsertSur(ESurType type, uint *s); \
-	virtual bool Save(BecherGameSave &w);
-	//virtual bool Load(BecherGameLoad &r);
+	virtual bool Save(BecherGameSave &w); \
+	virtual bool Load(BecherGameLoad &r);
 #else
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
 	virtual bool Select(); \
 	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi); \
-	virtual bool Save(BecherGameSave &w);
-	//virtual bool Load(BecherGameLoad &r);
+	virtual bool Save(BecherGameSave &w); \
+	virtual bool Load(BecherGameLoad &r);
 #endif
 
 /*

@@ -306,6 +306,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\terrain.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\troll.cpp"
 				>
 			</File>

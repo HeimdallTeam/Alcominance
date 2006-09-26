@@ -76,13 +76,13 @@ bool Sugar::Save(BecherGameSave &w)
 	return true;
 }
 
-/*bool Sugar::Load(BecherGameLoad &r)
+bool Sugar::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
 	r.ReadReservedWords(10);
 	OnUpdateSur();
 	return true;
-}*/
+}
 
 void Sugar::SetMode(EBuildingMode mode)
 {
