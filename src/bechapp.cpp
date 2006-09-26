@@ -6,7 +6,7 @@
 #include "screens.h"
 
 HoeGame::CVar v_level("map", "test.bm", 0);
-
+static CVar v_skipintro("skip_intro", false, 0); // maximalni kapacita pro uhli
 
 
 BechApp::BechApp(HOE_INSTANCE instance, HoeGame::Console * con) : HoeApp(instance, con)
@@ -18,10 +18,11 @@ bool BechApp::InitGame()
 {
 	{
 		// init
-
+		// ukazka loga
 	}
 	// create scen
 	// run intro
+	if (!v_skipintro.GetBool())
 	{
 		SlideShow intro;
 		SetScene(&intro);
