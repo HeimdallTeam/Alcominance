@@ -37,6 +37,9 @@ protected:
 	THoeSub_Particle m_part;
 	//WorkMode m_mode;
 	TrollList m_worked;
+    int m_wrk_cane;
+    int m_wrk_coal;
+
 	HoeGame::StopWatch m_exitdelay;
 	inline const int GetMiniStoreCount() const { return m_cane.GetNum() + m_sugar.GetNum(); }
 public:

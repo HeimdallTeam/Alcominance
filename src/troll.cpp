@@ -5,7 +5,7 @@
 #include "crr.h"
 #include "troll.h"
 
-static CVar v_speed("troll_speed", 15.f, 0);
+static CVar v_speed("troll_speed", 35.f, 0);
 static const float scale = 0.35f;
 
 Troll::Troll(IHoeScene * scn) : BecherObject(scn)
@@ -99,6 +99,7 @@ void Troll::SetJob(const TJob & j)
 	switch (m_job.type)
 	{
 	case TJob::jtWork:
+    case TJob::jtGotoOwnerWithRes:
 		assert(m_job.owner);
 		m_job.owner->UnsetFromWork(this);
 		break;
@@ -123,6 +124,7 @@ void Troll::SetJob(const TJob & j)
 			m_load.locked = true;
 		}
 		m_path.SetPosTo(m_job.from->GetOwner());
+   		m_job.owner->SetToWork(this);
 		break;
 	case TJob::jtGotoOwnerWithRes:
 		if (!m_job.to)

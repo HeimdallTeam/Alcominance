@@ -12,52 +12,62 @@ function s_cukr()
  PlaySound(model_TESTSOUND)
 end
 
---max_store kolik se vejde do skladu
---cane_avail kolik je trtiny k dispozici
---cane trtiny v miniskladu
---sugar cukro v miniskladu
---works pocet pracujicich
---works_max max. pocet pracujicich
+--b
+--max_store		kolik se vejde do skladu
+
+--cane_avail	pocet lokalit zdroje trtiny
+--cane_wrkcount	pocet zamestnancu nosici trtinu
+--cane			kolik je trtiny v miniskladu
+
+--coal_avail	pocet lokalit zdroje uhli
+--coal_wrkcount	pocet zamestnancu nosici uhli
+--coal			kolik je uhli pro kotel
+--coal_max		kolik se vejde uhli
+
+--sugar			kolik je cukru v miniskladu
+--sugar_out		pocet budov akceptujici cukr
+
+--works_count	pocet pracujicich (vyrabejicich)
+--works_max		max. pocet pracujicich
 function i_sugar(b)
- -- tady pujde hlavne o to vychytat kdy nosit a kdy pracovat
- -- jako vstup je struktura se informacema o budove
  
  info("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
  
- if b.sugar > 0 and b.sugar_out > 0 then
-     job = { type = 2, sur = EBS_Sugar, num=b.sugar,  percent = 100 }
-     if job.num > b.sugar_out then
-      job.num = b.sugar_out
-     end
-     return job 
- end
+ --zjisti se recept (kolik je treba trtiny pro jednotku/jendotky cukr/u) 
+ count, units=getReceptCount(GetVar("sugar_recept"), "C")
+ info("C",count," ",units)
  
- if b.cane > 1 and b.works == 0 then
+ -- kdyz je trtina aspon na jednu jednotku a nikdo nezpracovava, zpracuj
+ if b.cane >= count/units and b.works_count == 0 then 
      job = { type = 1, percent = 90 }
+     info("trtina aspon na jednu jednotku, zpracuji")
+     return job
+ end
+ 
+ -- kdyz je trtina aspon na dvojnasobek a jeste je misto, zpracuj
+ if b.cane >= count*2 and b.works_count < b.works_max then
+     job = { type = 1, percent = 100 }
+     info("trtina aspon na dvojnasobek a jeste je misto, zpracuji")
      return job 
  end
  
- if b.cane > 25 and b.works_max > b.works then
-      job = { type = 1, percent = 90 }
-     return job 
- end
- 
- --if b.cane_avail > 0 then
- if b.cane_avail > 0 then
-     job = { type = 0, sur = EBS_Cane, num=b.cane_avail,  percent = 100 }
-     return job    
+ -- kdyz je dostupna trtina a je dostatecne mnozstvi uhli nebo pro nej aspon nekdo chodi, 
+ -- nebo pokud neni zadne uhli dostupne, nos trtinu
+ info("dostupna trtina a je dostatecne mnozstvi uhli nebo pro nej aspon nekdo chodi, nebo pokud neni zadne uhli dostupne - ")
+ if b.cane_avail > 0 and (b.coal_avail == 0 or b.coal > 10 or b.coal_wrkcount > 0) then
+     job = { type = 0, sur = EBS_Cane, num=10,  percent = 100 }
+     info("ano, budu nosit trtinu")
+     return job     
  end 
+ info("ne, nebudu nosit trtinu")
 
- if b.coal_avail > 0 then
-     job = { type = 0, sur = EBS_Coal, num=b.coal_avail,  percent = 100 }
+ -- kdyz je dostupne uhli, nos uhli
+ if b.coal_avail > 0 and b.coal < b.coal_max then
+     job = { type = 0, sur = EBS_Coal, num=10,  percent = 100 }
+     info("dostupne uhli, prinesu")
      return job    
  end 
- 
- -- jestli je nejaka trtina tak zpracovat
- if b.cane > 0 then 
-     job = { type = 1, percent = 90 }
-     return job    
- end 
+ info("ne, nebudu nosit uhli")
  
  return nil
 end

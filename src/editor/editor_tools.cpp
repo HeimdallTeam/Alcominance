@@ -244,6 +244,25 @@ void ToolTerrain::Move(int relX, int relY, int absX, int absY, const wxMouseEven
 		BecherEdit::Get()->SetStatus(str);
 	}
 }
+
+void ToolTerrain::RightDown(const int x, const int y, const wxMouseEvent &e){
+
+    float sx,sy;
+    if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(x,y,&sx,&sy)) {
+		EditorMap & m = *BecherEdit::Get()->GetActMap();
+        m.GetTerrain()->ShowWireframe(true);
+    }
+}
+
+void ToolTerrain::RightUp(const int x, const int y, const wxMouseEvent &e){
+
+    float sx,sy;
+    if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(x,y,&sx,&sy)) {
+		EditorMap & m = *BecherEdit::Get()->GetActMap();
+        m.GetTerrain()->ShowWireframe(false);
+    }
+}
+
 //////////////////////////////////////////////////////
 // ToolTex
 ToolTerrainExp::ToolTerrainExp()

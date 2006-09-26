@@ -42,6 +42,7 @@ public:
 	//virtual bool Load(BecherGameLoad &r);
 
 	void SetJob(const TJob & j);
+    const TJob & GetJob() { return m_job; }
 	void SurIn(ESurType type, uint num);
 	void Finish();
 

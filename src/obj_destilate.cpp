@@ -4,10 +4,13 @@
 #include "troll.h"
 #include "obj_destilate.h"
 
-static CVar v_numzpr("dest_work", 1.f, 0); // rychlost zpracovani
+static CVar v_numzpr("dest_speed", 1.f, 0); // rychlost zpracovani
+static CVar v_sklad("dest_max", 5000, 0); // max. velikost miniskladu
+static CVar v_numworks("dest_maxwork", 4, 0); // maximalni pocet pracujicich
+static CVar v_recept("dest_recept", "", 0); // recept pro jednu davku
+static CVar v_coalmax("coal_max", 120, 0); // maximalni kapacita pro uhli
+
 static HoeGame::CTimer t_numzpr(v_numzpr);
-static CVar v_sklad("dest_max", 5000, 0); // velikost miniskladu, trtina muze zabirat max 95%
-static CVar v_numworks("dest_maxwork", 4, 0);
 
 #ifndef BECHER_EDITOR
 DestilateStatic Destilate::m_userhud;
@@ -57,6 +60,10 @@ Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
 	m_part.t_z = -14.f;
 	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 
+    m_wrk_sugar = 0;
+    m_wrk_alco = 0;
+    m_wrk_coal = 0;
+
 }
 
 Destilate::~Destilate()
@@ -92,15 +99,48 @@ bool Destilate::InsertSur(ESurType type, uint *s)
 
 bool Destilate::SetToWork(Troll * t)
 {
-	if (m_worked.Count() >= (uint)v_numworks.GetInt())
-		return false;
-	m_worked.Add(t);
-	return true;
+    switch (t->GetJob().type){
+    case TJob::jtWork:
+	    if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
+	    m_worked.Add(t);	
+        break;
+    case TJob::jtGotoRes:
+        switch (t->GetJob().surtype){
+        case EBS_Sugar:
+            m_wrk_sugar++;
+            break;
+        case EBS_Alco:
+            m_wrk_alco++;
+            break;
+        case EBS_Coal:
+            m_wrk_coal++;
+            break;
+        }
+        break;
+    }
+    return true;
 }
 
 void Destilate::UnsetFromWork(Troll * t)
 {
-	m_worked.Remove(t);
+    switch(t->GetJob().type){
+    case TJob::jtWork:
+	    m_worked.Remove(t);
+        break;
+    case TJob::jtGotoRes:
+        switch(t->GetJob().surtype){
+        case EBS_Sugar:
+            m_wrk_sugar--;
+            break;
+        case EBS_Alco:
+            m_wrk_alco--;
+            break;
+        case EBS_Coal:
+            m_wrk_coal--;
+            break;
+        }
+        break;
+    }
 }
 
 void Destilate::Update(const float t)
@@ -143,19 +183,32 @@ bool Destilate::Idiot(TJob * j)
 	// zjistit pripadny zdroj pro suroviny
 	// 
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
-	ResourceExp * ri = CRR::Get()->Find(EBS_Sugar, this); // urceni priorit
+	ResourceExp * ri = CRR::Get()->Find(EBS_Sugar, this);
+    ResourceExp * rc = CRR::Get()->Find(EBS_Coal, this);
 	
 	HoeGame::LuaFunc f(GetLua(), "i_alco");
 	f.PushTable();
-	// suroviny
-	// informace o surovinach
+	
 	f.SetTableInteger("max_store", v_sklad.GetInt());
+
+    // vstupni suroviny
 	f.SetTableInteger("sugar_avail", ri ? ri->GetAvail():0);
-	f.SetTableInteger("sugar", m_sugar.GetNum());
-	f.SetTableInteger("alco", m_alco.GetNum());
+    f.SetTableInteger("sugar_wrkcount", m_wrk_sugar);
+    f.SetTableInteger("sugar", m_sugar.GetNum());
+
+    f.SetTableInteger("alco_avail", ra ? ra->GetAvail():0);
+    f.SetTableInteger("alco_wrkcount", m_wrk_alco);
+    f.SetTableInteger("alco", m_alco.GetNum());
+	
+    f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
+    f.SetTableInteger("coal_wrkcount", m_wrk_coal);
+	f.SetTableInteger("coal", m_coal.GetNum());
+    f.SetTableInteger("coal_max", v_coalmax.GetInt());
+
 	// works
-	f.SetTableInteger("works", this->m_worked.Count());
+    f.SetTableInteger("works_count", this->m_worked.Count());    
 	f.SetTableInteger("works_max", v_numworks.GetInt());
+
 	f.Run(1);
 	if (f.IsNil(-1))
 	{

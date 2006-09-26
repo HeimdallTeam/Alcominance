@@ -72,7 +72,8 @@ public:
 	virtual ~ToolTerrain();
 	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
 	virtual void LeftUp(const int x, const int y, const wxMouseEvent & e);
-	//virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
+	virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
+    virtual void RightUp(const int x, const int y, const wxMouseEvent & e);
 	//virtual void Wheel( const wxMouseEvent & e);
 	virtual void Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev);
 
