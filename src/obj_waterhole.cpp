@@ -4,10 +4,13 @@
 #include "obj_waterhole.h"
 #include "troll.h"
 
-static CVar v_numzpr("water_mine", 1.f, 0); // rychlost zpracovani jedne davky (davek / vterina)
-static CVar v_numworks("water_maxwork", 1, 0);
-static CVar v_speed("water_speed", 0.21f, 0); // rychlost zpracovani jedne davky (davek / vterina)
-static CVar v_max("water_max", 50, 0);
+static CVar v_numzpr("water_mine", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
+static CVar v_cena("water_cost", 80, TVAR_SAVE);
+static CVar v_cena_drevo("water_cost_wood", 10, TVAR_SAVE);
+static CVar v_cena_cena("water_cost_stone", 35,TVAR_SAVE);
+static CVar v_numworks("water_maxwork", 1, TVAR_SAVE);
+static CVar v_speed("water_speed", 0.21f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
+static CVar v_max("water_max", 50, TVAR_SAVE);
 
 
 #ifndef BECHER_EDITOR

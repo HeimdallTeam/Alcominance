@@ -33,6 +33,7 @@ protected:
 #endif // BECHER_EDITOR
 	// trolls
 	ResourceImp m_sugar;
+    ResourceImp m_coal;
 	ResourceExp m_alco;
 	TrollList m_worked;
     int m_wrk_sugar;

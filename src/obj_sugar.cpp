@@ -4,11 +4,14 @@
 #include "troll.h"
 #include "obj_sugar.h"
 
-static CVar v_numzpr("sugar_speed", 1.f, 0); // rychlost zpracovani jedne davky (davek / vterina)
-static CVar v_sklad("sugar_max", 50, 0); // maximalni velikost miniskladu
-static CVar v_numworks("sugar_maxwork", 4, 0); // maximalni pocet pracujicich
+static CVar v_numzpr("sugar_speed", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
+static CVar v_cost("sugar_cost", 160, );
+static CVar v_cost_wood(, 30, TVAR_SAVE);
+static CVar v_cost_stone(,40 TVAR_SAVE);
+static CVar v_sklad("sugar_max", 50, TVAR_SAVE); // maximalni velikost miniskladu
+static CVar v_numworks("sugar_maxwork", 4, TVAR_SAVE); // maximalni pocet pracujicich
 static CVar v_recept("sugar_recept", "C1=1", 0); // recept pro jednu davku
-static CVar v_coalmax("coal_max", 100, 0); // maximalni kapacita pro uhli
+static CVar v_coalmax("coal_max", 100, TVAR_SAVE); // maximalni kapacita pro uhli
 
 #ifndef BECHER_EDITOR
 SugarStatic Sugar::m_userhud;

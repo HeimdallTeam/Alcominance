@@ -4,11 +4,11 @@
 #include "troll.h"
 #include "obj_destilate.h"
 
-static CVar v_numzpr("dest_speed", 1.f, 0); // rychlost zpracovani
-static CVar v_sklad("dest_max", 5000, 0); // max. velikost miniskladu
-static CVar v_numworks("dest_maxwork", 4, 0); // maximalni pocet pracujicich
+static CVar v_numzpr("dest_speed", 1.f, TVAR_SAVE); // rychlost zpracovani
+static CVar v_sklad("dest_max", 500, TVAR_SAVE); // max. velikost miniskladu
+static CVar v_numworks("dest_maxwork", 4, TVAR_SAVE); // maximalni pocet pracujicich
 static CVar v_recept("dest_recept", "", 0); // recept pro jednu davku
-static CVar v_coalmax("coal_max", 120, 0); // maximalni kapacita pro uhli
+static CVar v_coalmax("coal_max", 120, TVAR_SAVE); // maximalni kapacita pro uhli
 
 static HoeGame::CTimer t_numzpr(v_numzpr);
 
@@ -196,10 +196,6 @@ bool Destilate::Idiot(TJob * j)
     f.SetTableInteger("sugar_wrkcount", m_wrk_sugar);
     f.SetTableInteger("sugar", m_sugar.GetNum());
 
-    //f.SetTableInteger("alco_avail", ra ? ra->GetAvail():0);
-    f.SetTableInteger("alco_wrkcount", m_wrk_alco);
-    f.SetTableInteger("alco", m_alco.GetNum());
-	
     f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
     f.SetTableInteger("coal_wrkcount", m_wrk_coal);
 	f.SetTableInteger("coal", m_w.GetNum());

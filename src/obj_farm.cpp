@@ -4,8 +4,11 @@
 #include "troll.h"
 #include "obj_farm.h"
 
-static CVar v_speed("farm_speed", 0.02f, 0); // rychlost rustu
-static CVar v_num("farm_num", 20, 0); // pocet trtiny z urody
+static CVar v_speed("farm_speed", 0.02f, TVAR_SAVE); // rychlost rustu
+static CVar v_farma("farm_cost", 130, TVAR_SAVE);
+static CVar v_farma_drevo("farm_cost_wood", 60, TVAR_SAVE);
+static CVar v_farma_kamen("farm_cost_stone", 20, TVAR_SAVE);
+static CVar v_num("farm_num", 20, TVAR_SAVE); // pocet trtiny z urody
 
 #ifndef BECHER_EDITOR
 FarmStatic Farm::m_userhud;

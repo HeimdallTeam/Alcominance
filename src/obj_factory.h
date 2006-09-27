@@ -34,9 +34,15 @@ protected:
 	ResourceImp m_alco;
 	ResourceImp m_water;
 	ResourceImp m_herbe;
+    ResourceImp m_coal;
 	ResourceExp m_becher;
 	//WorkMode m_mode;
 	TrollList m_worked;
+    int m_wrk_alco;
+    int m_wrk_sugar;
+    int m_wrk_herbe;
+    int m_wrk_water;
+    int m_wrk_coal;
 	float m_progress;
 	HoeGame::StopWatch m_exitdelay;
 	inline const int GetMiniStoreCount() const 

@@ -4,10 +4,14 @@
 #include "troll.h"
 #include "obj_factory.h"
 
-static CVar v_numzpr("factory_speed", 0.3f, 0);
-static CVar v_sklad("factory_max", 500, 0);
-static CVar v_numworks("factory_maxwork", 4, 0);
+static CVar v_numzpr("factory_speed", 0.3f, TVAR_SAVE);
+static CVar v_sklad("factory_max", 500, TVAR_SAVE);
+static CVar v_cena("factory_cost", 1000, TVAR_SAVE);
+static CVar v_cena_drevo("factory_cost_wood", 500, TVAR_SAVE);
+static CVar v_cena_kamen("factory_cost_stone", 500, TVAR_SAVE);
+static CVar v_numworks("factory_maxwork", 4, TVAR_SAVE);
 static CVar v_recept("factory_recept", "S10+A10+H3+W20=1", 0); // recept pro jednu davku
+static CVar v_coalmax("coal_max", 200, TVAR_SAVE); // maximalni kapacita pro uhli
 
 
 #ifndef BECHER_EDITOR
@@ -55,6 +59,11 @@ Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), m_becher(EBS_Becher)
 	m_w.SetRecept(&v_recept);
 	m_progress = 0.f;
 
+    m_wrk_alco = 0;
+    m_wrk_sugar = 0;
+    m_wrk_herbe = 0;
+    m_wrk_water = 0;
+    m_wrk_coal = 0;
 }
 
 Factory::~Factory()
@@ -101,15 +110,61 @@ bool Factory::InsertSur(ESurType type, uint *s)
 
 bool Factory::SetToWork(Troll * t)
 {
-	if (m_worked.Count() >= (uint)v_numworks.GetInt())
-		return false;
-	m_worked.Add(t);
+    switch (t->GetJob().type){
+    case TJob::jtWork:
+	    if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
+	    m_worked.Add(t);
+        break;
+    case TJob::jtGotoRes:
+        switch (t->GetJob().surtype){
+        case EBS_Alco:
+            m_wrk_alco++;
+            break;
+        case EBS_Sugar:
+            m_wrk_sugar++;
+            break;
+        case EBS_Herbe:
+            m_wrk_herbe++;
+            break;
+        case EBS_Water:
+            m_wrk_water++;
+            break;
+        case EBS_Coal:
+            m_wrk_coal++;
+            break;
+        }
+        break;
+
+    }
 	return true;
 }
 
 void Factory::UnsetFromWork(Troll * t)
 {
-	m_worked.Remove(t);
+    switch (t->GetJob().type){
+    case TJob::jtWork:
+	    m_worked.Remove(t);
+        break;
+    case TJob::jtGotoRes:
+        switch (t->GetJob().surtype){
+        case EBS_Alco:
+            m_wrk_alco--;
+            break;
+        case EBS_Sugar:
+            m_wrk_sugar--;
+            break;
+        case EBS_Herbe:
+            m_wrk_herbe--;
+            break;
+        case EBS_Water:
+            m_wrk_water--;
+            break;
+        case EBS_Coal:
+            m_wrk_coal--;
+            break;
+        }
+        break;
+    }
 }
 
 void Factory::Update(const float t)
@@ -181,28 +236,46 @@ bool Factory::Idiot(TJob * j)
 	// zjistit pripadny zdroj pro suroviny
 	// 
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
-	ResourceExp * ris = CRR::Get()->Find(EBS_Sugar, this); // urceni priorit
-	ResourceExp * ria = CRR::Get()->Find(EBS_Alco, this); // urceni priorit
-	ResourceExp * rih = CRR::Get()->Find(EBS_Herbe, this); // urceni priorit
-	ResourceExp * riw = CRR::Get()->Find(EBS_Water, this); // urceni priorit
+	ResourceExp * ris = CRR::Get()->Find(EBS_Sugar, this);
+	ResourceExp * ria = CRR::Get()->Find(EBS_Alco, this);
+	ResourceExp * rih = CRR::Get()->Find(EBS_Herbe, this);
+	ResourceExp * riw = CRR::Get()->Find(EBS_Water, this);
+    ResourceExp * rc = CRR::Get()->Find(EBS_Coal, this);
 	
 	HoeGame::LuaFunc f(GetLua(), "i_factory");
 	f.PushTable();
-	// suroviny
-	// informace o surovinach
+	
 	f.SetTableInteger("max_store", v_sklad.GetInt());
+
+    // vstupni suroviny
 	f.SetTableInteger("sugar_avail", ris ? ris->GetNum():0);
+    f.SetTableInteger("sugar_wrkcount", m_wrk_sugar);
 	f.SetTableInteger("sugar", m_sugar.GetNum());
-	f.SetTableInteger("alco_avail", ria ? ria->GetNum():0);
+	
+    f.SetTableInteger("alco_avail", ria ? ria->GetNum():0);
+    f.SetTableInteger("alco_wrkcount", m_wrk_alco);
 	f.SetTableInteger("alco", m_alco.GetNum());
+
 	f.SetTableInteger("herbe_avail", rih ? rih->GetNum():0);
+    f.SetTableInteger("herbe_wrkcount", m_wrk_herbe);
 	f.SetTableInteger("herbe", m_herbe.GetNum());
+
 	f.SetTableInteger("water_avail", riw ? riw->GetNum():0);
+    f.SetTableInteger("water_wrkcount", m_wrk_water);
 	f.SetTableInteger("water", m_water.GetNum());
+
+    f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
+    f.SetTableInteger("coal_wrkcount", m_wrk_coal);
+	f.SetTableInteger("coal", m_coal.GetNum());
+    f.SetTableInteger("coal_max", v_coalmax.GetInt());
+
+    // vystupni suroviny
 	f.SetTableInteger("becher", m_becher.GetNum());
+
 	// works
-	f.SetTableInteger("works", this->m_worked.Count());
+	f.SetTableInteger("works_count", this->m_worked.Count());
 	f.SetTableInteger("works_max", v_numworks.GetInt());
+
 	f.Run(1);
 	if (f.IsNil(-1))
 	{

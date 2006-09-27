@@ -4,8 +4,8 @@
 #include "obj_stonemine.h"
 #include "troll.h"
 
-static CVar v_numzpr("stone_mine", 1.f, 0); // rychlost zpracovani jedne davky (davek / vterina)
-static CVar v_numworks("stone_maxwork", 2, 0);
+static CVar v_numzpr("stone_mine", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
+static CVar v_numworks("stone_maxwork", 2, TVAR_SAVE);
 
 #ifndef BECHER_EDITOR
 StoneMineStatic StoneMine::m_userhud;

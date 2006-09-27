@@ -3,8 +3,8 @@
 #include "becher.h"
 #include "obj_herbe.h"
 
-static CVar v_time("herbe_speed", 30, 0); // za jak dlouho prileti baba
-static CVar v_num("herbe_num", 3, 0); // pocet trtiny z urody
+static CVar v_time("herbe_speed", 30, TVAR_SAVE); // za jak dlouho prileti baba
+static CVar v_num("herbe_num", 3, TVAR_SAVE); // pocet trtiny z urody
 
 #ifndef BECHER_EDITOR
 HerbeWomanStatic HerbeWoman::m_userhud;
