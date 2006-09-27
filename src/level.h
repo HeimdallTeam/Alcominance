@@ -6,12 +6,12 @@
 #include "buildings.h"
 #include "panels.h"
 #include "crr.h"
+#include "dialogs.h"
 
 #define ID_BSAVE ('b' | 's' << 8 | 'a' << 16 | 'v' << 24)
 
 class Store;
-
-
+class BaseDialog;
 
 class BecherTime : public HoeGame::Timer
 {
@@ -51,11 +51,15 @@ protected:
 	//BecherObject * m_buildinit;
 	BecherTime m_timer;
 	BecherCash m_cash; 
+	BaseDialog * m_dlg;
 	BecherObject * m_select;
 	CRR m_crr;
 	BecherObject * m_mselect;
 	HUD m_hud;
 	ObjectHud * m_selhud;
+
+	// dlgs
+	DialogBuild m_builddlg;
 	//
 	bool LoadGame(BecherGameLoad &r);
 
@@ -64,6 +68,8 @@ public:
 	virtual void OnSet();
 	void SelectObject(BecherObject* obj);
 	BecherObject * GetSelectedObject() { return m_select; }
+	void SetDialog(BaseDialog * dlg) { m_dlg = dlg; }
+
 	bool IsPaused() { return m_timer.IsPaused(); }
 	virtual void Update(float time);
 	virtual void HOEAPI _Paint(IHoe2D * h2d);

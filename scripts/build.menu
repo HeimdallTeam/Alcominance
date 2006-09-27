@@ -1,0 +1,14 @@
+static
+{
+	name = "pozadi"
+	rect = 122.879997 72.908363 666.880005 479.282867
+	alpha = false
+	picture = "ingame_pzd"
+}
+buttonusr
+{
+	name = "static"
+	rect = 500.480011 332.270905 605.440002 389.641449
+	picture = "butt_no"
+	picture_act = "butt_no_act"
+}

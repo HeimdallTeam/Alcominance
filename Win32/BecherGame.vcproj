@@ -217,6 +217,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\scripts\intro.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\scripts\load.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\scripts\main.lua"
 				>
 			</File>
@@ -536,6 +544,14 @@
 		<Filter
 			Name="controls"
 			>
+			<File
+				RelativePath="..\src\dialogs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\dialogs.h"
+				>
+			</File>
 			<File
 				RelativePath="..\src\panels.cpp"
 				>

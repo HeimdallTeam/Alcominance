@@ -1,11 +1,9 @@
 #files
 data_old/tovarna.hm
-data_old/cukrovar.hm
 data_old/czech.hx
 data_old/english.hx
 data_old/farma.hm
 data_old/chalupa.hm
-data_old/info.hm
 data_old/lihovar.hm
 data_old/most.hm
 data_old/obchod.hm
@@ -13,7 +11,6 @@ data_old/olaf.hm
 data_old/pic.hx
 data_old/sklad.hm
 data_old/staveniste.hm
-data_old/stromy.hm
 data_old/Studna.hm
 data_old/textures.hx
 data_old/dopln.hm
@@ -21,10 +18,16 @@ data_old/terrain.hm
 data_old/drevorubec.hm
 data_old/utes.hm
 data_old/hud.hx
-data_old/dul.hm
 data_old/intro.hx
-data/stromy.hm
 data/terrain.hx
+data/icons.hx
+data/menu.hx
+data/czech.hx
+data/stromy.hm
+data/dul.hm
+data/info.hm
+data/textures.hx
+data/cukrovar.hm
 #resources
 model_FACTORY="model tovarna" ; Tovarna
 model_INFO_RING="model info" ; Ring
@@ -37,11 +40,14 @@ model_FARM_POLE="model pole" ; Pole na farmu
 model_DESTILATE="model lihovar" ; Lihovar
 model_STORE="model sklad" ; Sklad
 model_SHOP="model obchod" ; Obchod
-model_STROMY="model stromy" ; Stromy
+model_STROM1="model strom1" ; Strom 1
 model_WATERHOLE="model studna" ; Studna
 model_MOST="model most" ; Most
 model_TROLL="model olaf" ; Tupoun
 model_SAW="model drevorubec" ; Pila
 model_COALMINE="model dul_uhli" ; Uhelny dul
 model_STONEMINE="model dul_kamen" ; Dul uhli
+model_STROM2="model strom2" ; Strom 2
+model_STROM3="model strom3" ; Strom 3
+model_STROM4="model strom4" ; Strom 4
 #end

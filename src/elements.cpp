@@ -8,16 +8,16 @@
 
 Tree::Tree(IHoeScene * scn) : BecherObject(scn)
 {
-#ifdef BECHER_PLUGIN
+#ifdef BECHER_EDITO
 	SetOrientation(0,1,0,(rand() % 628) * 0.01);
 	SetHeight((50+rand() % 100)*0.01f);
 #endif
 	m_infoselect.s_x = 1.f;
 	m_infoselect.t_y = 3.f;
 	m_infoselect.s_z = 1.f;
-	param.wood = 100;
-	param.height = 1.f;
-	SetTypeModel(1);
+	m_wood = 100;
+	m_height = 1.f;
+	SetTypeModel(rand() % 4);
 }
 
 Tree::~Tree()
@@ -26,7 +26,7 @@ Tree::~Tree()
 
 void Tree::SetHeight(float h)
 {
-	param.height = h;
+	m_height = h;
 	if (h != 1.f)
 	{
 		GetCtrl()->SetScale(1,h,1);
@@ -38,8 +38,20 @@ void Tree::SetHeight(float h)
 
 void Tree::SetTypeModel(int type)
 {
-	param.type = type;
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STROMY));
+	m_type = type;
+	int id = model_STROM1;
+	switch (type)
+	{
+	case 1:
+		id = model_STROM2; break;
+	case 2:
+		id = model_STROM3; break;
+	case 3:
+		id = model_STROM4; break;
+	default:
+		id = model_STROM1; break;
+	};
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(id));
 }
 
 #ifndef BECHER_EDITOR

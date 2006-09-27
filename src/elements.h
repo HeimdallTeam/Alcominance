@@ -6,24 +6,20 @@
 
 class Tree : public BecherObject
 {
-	struct ParamStruct
-	{
-		int type;
-		float height;
-		int wood;
-	} param;
-
+	int m_type;
+	float m_height;
+	int m_wood;
 public:
 	Tree(IHoeScene * scn);
 	virtual ~Tree();
 	virtual EObjType GetClass() { return EBO_Tree; }
-	int GetWood() { return param.wood; }
-	void SetWood(int w) { param.wood = w; }
-	float GetHeight() { return param.height; }
+	int GetWood() { return m_wood; }
+	void SetWood(int w) { m_wood = w; }
+	float GetHeight() { return m_height; }
 	void SetHeight(float h);
 	// nastaveni typu 1-5
 	void SetTypeModel(int type);
-	int GetTypeModel() { return param.type; }
+	int GetTypeModel() { return m_type; }
 
 #ifdef BECHER_EDITOR
 	virtual bool Select();

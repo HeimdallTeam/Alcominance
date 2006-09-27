@@ -5,6 +5,7 @@
 #include "elements.h"
 #include "level.h"
 #include "game.h"
+#include "dialogs.h"
 #include "troll.h"
 #include "obj_sugar.h"
 #include "obj_destilate.h"
@@ -23,6 +24,7 @@ BecherLevel::BecherLevel()
 	m_select = NULL;
 	m_mselect = NULL;
 	m_selhud = NULL;
+	m_dlg = NULL;
 	//m_info.Init(10.f,550.f, 50.f);
 	//m_controls.Init();
 
@@ -37,6 +39,10 @@ void BecherLevel::_Paint(IHoe2D * h2d)
 	//m_controls.Draw(h2d);
 	//m_info.Draw(h2d);
 	//GetCash()->Paint(h2d);
+	// dlg
+	if (m_dlg)
+		m_dlg->Draw(h2d);
+
 	if (GetCon()->IsActive())
         GetCon()->Draw(h2d);
 
@@ -143,6 +149,7 @@ void BecherLevel::Start()
 {
 	m_timer.Set(HoeGame::Timer::tmClock, 0);
 	m_timer.Start();
+	IHoeLight * light = m_scene->CreateLight(true);
 }
 
 void BecherLevel::MouseLeftDown(float x, float y)
@@ -268,6 +275,8 @@ bool BecherLevel::LoadGame(const char *path)
 	Store::m_storepref.Load("scripts/store.menu");
 	WaterHole::m_userhud.Load("scripts/waterhole.menu");
 	Farm::m_userhud.Load("scripts/farm.menu");
+	m_builddlg.Load("scripts/build.menu");
+	//m_dlg = &m_builddlg;
 
 	SetTerrainData();
 
@@ -369,7 +378,11 @@ void BecherLevel::OnMouseMove(float X, float Y)
         MouseLeave();
 	else*/
 	BecherObject * o = NULL;
-	if (!m_hud.Move(X,Y))
+	if (m_dlg && m_dlg->Move(X,Y))
+	{
+
+	}
+	else if (!m_hud.Move(X,Y))
 	{
 		HoeGame::Strategy::StgObject * obj = GetView()->SelObject(X,Y);
 		if (obj)
