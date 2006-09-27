@@ -55,7 +55,7 @@ function i_alco(b)
  -- nebo pokud neni zadne uhli dostupne, nos to, ceho je vic dostupno
  info("dostupne vstupni suroviny a je dostatecne mnozstvi uhli nebo pro nej aspon nekdo chodi, nebo pokud neni zadne uhli dostupne - ")
  if b.coal_avail == 0 or b.coal > 10 or b.coal_wrkcount > 0 then
-	if b.sugar_avail*countSugar > b.alco*countAlco then
+	if b.sugar_avail*countSugar > b.alco_avail*countAlco then
 		job = { type = 0, sur = EBS_Sugar, num=10, percent = 90 }
 		info("ano, budu nosit cukr (jeho vic a treba)")
 	else

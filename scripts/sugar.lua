@@ -1,6 +1,8 @@
 -- funkce pro cukrovar
 
 function c_sugar()
+
+  cost = 
   info("stav cukr")
   AddCash(456)
   SetBuilding(EBO_Sugar,1000,10,0)
