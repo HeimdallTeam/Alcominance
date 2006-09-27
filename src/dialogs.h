@@ -28,10 +28,11 @@ tovarna
 class DialogBuild : public BaseDialog
 {
 protected:
-	bool SetTip(const char * str, IHoeFont * fnt, const char * tip);
+	bool SetButton(const char * str, int id, IHoeFont * fnt, const char * tip);
 public:
 	bool Load(const char * fname);
-
+	void OnClick(HoeGame::Gui::Base * sender);
+	void OnExit(HoeGame::Gui::Base * sender);
 };
 
 #endif // _DIALOGS_H_

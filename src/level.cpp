@@ -412,10 +412,12 @@ void BecherLevel::OnWheel(long p)
 
 void BecherLevel::OnLeftButtonUp()
 {
-	BecherButton * butt = m_hud.GetButton(GetMouseX(), GetMouseY());
-	if (butt)
+	if (m_dlg && m_dlg->Click(GetMouseX(), GetMouseY()))
 	{
-		butt->OnClick();
+		return;
+	}
+	if (m_hud.Click(GetMouseX(), GetMouseY()))
+	{
 		return;
 	}
 	else

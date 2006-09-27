@@ -30,9 +30,8 @@ public:
 	void AddButton(int idres, const char * func, const char * tooltip);
 	void ShowReset();
 	/** zpracovani pohybu mysi, pokud se ma zpracovano,vraci true */
-	bool MouseMove(float X, float Y);
+	//bool MouseMove(float X, float Y);
 	bool Load(const char * fname);
-	BecherButton * GetButton(float x, float y);
 	HoeGame::Gui::InfoPanel * GetInfo() { return m_info; }
 
 	LUA_FUNCTION(l_ClearButtons);

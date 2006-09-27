@@ -91,19 +91,6 @@ void HUD::ShowReset()
 	m_num = 0;
 }
 
-BecherButton * HUD::GetButton(float X, float Y)
-{
-	for (int i=0;i < 16;i++)
-	{
-		if (!m_butt[i])
-			return NULL;
-		const THoeRect & r = m_butt[i]->GetRect();
-		if (X >= r.left && X <= r.right && Y >= r.top && Y <= r.bottom)
-			return m_butt[i];
-	}
-	return NULL;
-}
-
 /*int ControlPanel::Draw(IHoe2D * hoe2d)
 {
 	hoe2d->SetRect(800,600);

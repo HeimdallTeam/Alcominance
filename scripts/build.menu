@@ -69,6 +69,6 @@ buttonusr
 {
 	name = "exit"
 	rect = 494.079987 375.298798 605.440002 426.693237
-	picture = "butt_no"
-	picture_act = "butt_no_act"
+	picture = "butt_back"
+	picture_act = "butt_back_act"
 }
