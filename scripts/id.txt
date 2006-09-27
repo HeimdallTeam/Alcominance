@@ -5,6 +5,8 @@ ADDID(model_STROM2)
 ADDID(model_STROM3)
 ADDID(model_STROM4)
 
+// fonty
+ADDID(font_TOOLTIPS)
 
 // id modelu
 ADDID(model_TROLL)

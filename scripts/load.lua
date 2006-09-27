@@ -28,6 +28,9 @@ LoadResource(model_INFO_RING, "model info")
 LoadResource(model_INFO_RING2, "model info2")
 LoadResource(model_SUGAR, "model cukrovar")
 
+LoadResource(font_TOOLTIPS, "font 'resource/tooltips.ttf' 16")
+
+
 --files 
 AddFile("data_old/textures.hx")
 AddFile("data_old/chalupa.hm")

@@ -10,26 +10,8 @@
 
 //HoeGame::OffsetLoop off[] = { MAKELONG(25,0), MAKELONG(26,0),MAKELONG(0,0), MAKELONG(1,0), 0xffffffff, 0xffffffff };
 
-void Test()
-{
-	HoeGame::LuaFunc f(GetLua(), "i_sugar");
-	f.PushTable();
-	f.SetTableInteger("cane_avail", 0);
-	f.SetTableInteger("cane", 10);
-	f.SetTableInteger("sugar", 10);
-	f.Run(1);
-	f.Pop(1);
-}
-
-void LuaBenchmark()
-{
-	const int num = 10000;
-	HoeGame::Bench b;
-	b.Start("Lua Idiot");
-	for (int i=0;i < num;i++)
-		Test();
-	b.End(num);
-}
+HoeGame::Lang g_lang;
+BecherResources g_resmgr;
 
 IHoeResource * BecherResources::MissingResource(int id)
 {

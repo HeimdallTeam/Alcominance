@@ -276,7 +276,7 @@ bool BecherLevel::LoadGame(const char *path)
 	WaterHole::m_userhud.Load("scripts/waterhole.menu");
 	Farm::m_userhud.Load("scripts/farm.menu");
 	m_builddlg.Load("scripts/build.menu");
-	//m_dlg = &m_builddlg;
+	m_dlg = &m_builddlg;
 
 	SetTerrainData();
 

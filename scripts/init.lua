@@ -15,4 +15,4 @@ hoe("specialchars ěščřžýáíéůúďťüň")
 
 hoe("showfps")
 --hoe("wireframe 1")
-LoadLang("resource/czech.lng")
+LoadLang(GetVar("lang_file"))

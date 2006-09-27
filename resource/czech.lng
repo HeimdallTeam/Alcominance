@@ -1,4 +1,17 @@
 ﻿# chybove hlasky 
+
+# tooltips
+1001 = "Dřevorubec."
+1002 = "Důl na uhlí."
+1003 = "Důl na kámen."
+1004 = "Sklad."
+1005 = "Studna."
+1006 = "Farma."
+1007 = "Obchod."
+1008 = "Cukrovar."
+1009 = "Lihovar."
+1010 = "Továrna."
+
 1 = "Nejsou prachy!"
 2 = "Najmout dělníka"
 

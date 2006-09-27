@@ -1,7 +1,16 @@
-#english file
+# chybove hlasky 
 
-2 = "New settler"
-
+# tooltips
+1001 = "Caw."
+1002 = "Coal Mine."
+1003 = "Stone Mine."
+1004 = "Store."
+1005 = "Water."
+1006 = "Farm."
+1007 = "Shop."
+1008 = "Sugar Factory."
+1009 = "Alcohol Factory."
+1010 = "Becher Factory."
 
 5 = "%d sugar."
 6 = "%d cane."

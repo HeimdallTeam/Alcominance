@@ -113,7 +113,6 @@ void SlideShow::Run()
 	m_lua.Init();
 	m_lua.Connect(GetApp()->GetFS());
 	m_lua.Connect(GetEngine());
-	m_lua.Load("scripts/init.lua", 0, true); 
 	this->Load("scripts/intro.menu");
 	HoeGame::Gui::StaticPicture * pic = (HoeGame::Gui::StaticPicture*)m_instance->ReqItem("pozadi", HoeGame::Gui::EStatic);
 	pic->Hide();
@@ -121,7 +120,7 @@ void SlideShow::Run()
 	m_lua.AddFunc("SetText",SlideShow::l_settext);
 	m_lua.AddFunc("LoadImage",SlideShow::l_loadimage);
 	m_lua.AddFunc("Fade",SlideShow::l_fade);
-	m_lua.Load("scripts/intro.lua", 0, false); 
+	m_lua.Load("scripts/intro.lua", g_luaconst, false); 
  
 	// spusteni zvuku
 	m_sound = (IHoeSound*)GetEngine()->Create("sound 'sound/intro.ogg'");

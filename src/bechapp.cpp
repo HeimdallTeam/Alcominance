@@ -12,10 +12,22 @@ static CVar v_skipintro("skip_intro", false, 0); // maximalni kapacita pro uhli
 BechApp::BechApp(HOE_INSTANCE instance, HoeGame::Console * con) : HoeApp(instance, con)
 {
 	scene = NULL;
+	m_game = NULL;
 }
 
 bool BechApp::InitGame()
 {
+	{
+		HoeGame::LuaScript lua;
+		lua.Init();
+		lua.Connect(GetEngine());
+		lua.Connect(GetResMgr());
+		lua.Connect(GetLang());
+		lua.Connect(GetFS());
+		lua.AddFunc("SetVar", CVar::l_setvar);
+		lua.AddFunc("GetVar", CVar::l_getvar);
+		lua.Load("scripts/init.lua", g_luaconst, true);
+	}
 	{
 		// init
 		// ukazka loga

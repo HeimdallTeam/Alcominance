@@ -27,7 +27,10 @@ tovarna
 
 class DialogBuild : public BaseDialog
 {
+protected:
+	bool SetTip(const char * str, IHoeFont * fnt, const char * tip);
 public:
+	bool Load(const char * fname);
 
 };
 

@@ -5,10 +5,70 @@ static
 	alpha = false
 	picture = "ingame_pzd"
 }
+button
+{
+	name = "drevorubec"
+	rect = 317.440002 228.286850 413.440002 313.147400
+	picture = "ico_drevorubec"
+}
+button
+{
+	name = "duluhli"
+	rect = 204.800003 321.513947 304.640015 417.131470
+	picture = "ico_duluhli"
+}
+button
+{
+	name = "dulkamen"
+	rect = 313.600006 327.490051 408.320007 421.912354
+	picture = "ico_dulkamen"
+}
+button
+{
+	name = "sklad"
+	rect = 517.119995 229.482071 613.119995 316.733063
+	picture = "ico_sklad"
+}
+button
+{
+	name = "studna"
+	rect = 207.360001 225.896408 309.760010 311.952179
+	picture = "ico_studna"
+}
+button
+{
+	name = "farma"
+	rect = 208.639999 132.669327 311.040009 218.725098
+	picture = "ico_farma"
+}
+button
+{
+	name = "obchod"
+	rect = 419.839996 230.677292 512.000000 316.733063
+	picture = "ico_obchod"
+}
+button
+{
+	name = "cukrovar"
+	rect = 317.440002 135.059753 422.399994 222.310760
+	picture = "ico_cukrovar"
+}
+button
+{
+	name = "lihovar"
+	rect = 428.799988 137.450195 503.040009 223.505981
+	picture = "ico_lihovar"
+}
+button
+{
+	name = "tovarna"
+	rect = 513.280029 137.450195 614.400024 221.115540
+	picture = "ico_tovarna"
+}
 buttonusr
 {
-	name = "static"
-	rect = 500.480011 332.270905 605.440002 389.641449
+	name = "exit"
+	rect = 494.079987 375.298798 605.440002 426.693237
 	picture = "butt_no"
 	picture_act = "butt_no_act"
 }

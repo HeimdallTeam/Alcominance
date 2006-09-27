@@ -41,10 +41,10 @@ inline BGConsole * GetCon()
 	return dynamic_cast<BGConsole *>(GetApp()->GetConsole());
 }
 
-
+extern HoeGame::Lang g_lang;
 inline HoeGame::Lang * GetLang()
 {
-	return GetBecher()->GetLang();
+	return &g_lang;
 }
 
 inline HoeGame::LuaScript * GetLua()
@@ -59,9 +59,10 @@ inline BGConsole * GetGuiCon()
 	return g_bcon;
 }*/
 
+extern BecherResources g_resmgr;
 inline HoeGame::ResourceMgr * GetResMgr()
 {
-	return GetBecher()->GetResMgr();
+	return &g_resmgr;
 }
 
 #else // BECHER_PLUGIN

@@ -30,7 +30,7 @@ public:
 };
 
 static CVar v_config("config_file", CONFIG_FILE, TVAR_SSTR);
-static CVar v_lang("lang_file", "resource/english.lng", TVAR_SSTR);
+static CVar v_lang("lang_file", "resource/czech.lng", TVAR_SSTR);
 //CVar BecherConfig::m_engine("config_file", CONFIG_FILE, TVAR_SSTR);
 //CVar BecherConfig::m_resolution("config_file", CONFIG_FILE, TVAR_SSTR);
 
@@ -47,7 +47,7 @@ bool BecherConfig::ShowConfig(HINSTANCE hInst)
 	if (DialogBox(hInst,MAKEINTRESOURCE(IDD_SETTDLG), GetDesktopWindow(), DialogProc) == 0)
 		return false;
 	
-	//return true;
+	return true;
 }
 
 INT_PTR CALLBACK BecherConfig::DialogProc(HWND hwndDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)

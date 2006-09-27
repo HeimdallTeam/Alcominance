@@ -15,8 +15,6 @@ class BecherGame
 protected:
 	HoeGame::HoeMusic_Module m_music;
 	BecherLevel m_level;
-	HoeGame::Lang m_lang;
-	BecherResources m_resmgr;
 	HoeGame::LuaScript m_lua;
 public:
 	BecherGame();
@@ -26,8 +24,6 @@ public:
 	bool LoadLevel(const char * fpath);
 	void CloseLevel();
 	BecherLevel * GetLevel() { return &m_level; }
-	HoeGame::Lang * GetLang() { return &m_lang; }
-	BecherResources * GetResMgr() { return &m_resmgr; }
 	HoeGame::LuaScript * GetLua() { return &m_lua; }
 
 	static int l_PlaySound(lua_State * L);
