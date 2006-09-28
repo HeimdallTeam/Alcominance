@@ -4,6 +4,8 @@
 
 class BecherObject;
 class BecherSystemObject;
+class BecherGameLoad;
+class BecherGameSave;
 
 #include "id.h"
 

@@ -305,8 +305,16 @@ void BecherMap::AddSystemObject(BecherSystemObject * obj)
 
 void BecherMap::DeleteObject(BecherObject * obj)
 {
-	delete obj;
+	// projet vsechny a oznamit jim novinu
+	if (dynamic_cast<BecherBuilding*>(obj))
+		dynamic_cast<BecherBuilding*>(obj)->SetMode(EBM_ToDelete);
+
+	for (int i=0;i<m_obj.Count();i++)
+	{
+		m_obj[i]->OnDeleteObject(obj->GetID());
+	}
 	m_obj.Remove(obj);
+	delete obj;
 }
 
 BecherObject * BecherMap::GetObject(const int x, const int y)
