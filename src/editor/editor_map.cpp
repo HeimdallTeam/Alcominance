@@ -100,10 +100,14 @@ bool EditorMap::SaveMap()
 void EditorMap::SelectObject(const int x, const int y)
 {
 	BecherObject * o = GetObject(x,y);
+	if (o == m_select)
+		return;
+	if (m_select) m_select->Unselect();
 	if (o)
 		o->Select();
 	else
 		GetProp()->Begin(NULL);
+	m_select = o;
 }
 
 void EditorMap::SetFilePath(const wxString &path)
@@ -199,5 +203,24 @@ void EditorMap::ModelHeightUpdate()
 	}
 }
 
+void EditorMap::DeleteSelect()
+{
+	if (m_select == NULL)
+		return;
+	m_select->Unselect();
+	if (dynamic_cast<BecherSystemObject*>(m_select))
+	{
+		BecherSystemObject * sb = dynamic_cast<BecherSystemObject*>(m_select);
+		m_sysobj.Remove(sb);
+		m_select = NULL;
+		delete sb;
+	}
+	else
+	{
+		m_obj.Remove(m_select);
+		delete m_select;
+		m_select = NULL;
+	}
+}
 
 

@@ -4,6 +4,9 @@
 
 class BaseDialog : public HoeGame::Hoe2DFigure
 {
+public:
+	virtual void OnShow() {};
+	virtual void OnHide() {};
 };
 
 /*

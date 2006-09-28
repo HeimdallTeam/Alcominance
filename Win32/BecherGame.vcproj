@@ -561,6 +561,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\minimap.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\minimap.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\panels.cpp"
 				>
 			</File>

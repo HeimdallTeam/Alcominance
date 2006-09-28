@@ -1,5 +1,6 @@
 
 #include "StdAfx.h"
+#include "map.h"
 #include "terrain.h"
 
 #ifndef BECHER_EDITOR
@@ -149,10 +150,11 @@ void TTerrainSurface::GetKey(bool &a, bool &b, bool &c, bool &d, byte x, byte y)
 	d = p[3];
 }
 
-void SetTerrainGrid(IHoeEnv::GridSurface * grid,int x, int y, bool a, bool b, bool c, bool d, int index)
+void SetTerrainGrid(BecherMap * map,int x, int y, bool a, bool b, bool c, bool d, int index)
 {
+	IHoeEnv::GridSurface * grid = map->GetTerrain();
 	IHoeEnv::GridSurface::TGridDesc desc;
-	if (x < 0 || y < 0)
+	if (x < 0 || y < 0 || x >= map->m_numX || y >= map->m_numY)
 		return;
 	bool aa=true,bb=true,cc=true,dd=true;
 	grid->GetGridDesc(x,y,&desc);
@@ -189,17 +191,17 @@ void SetTerrainGrid(IHoeEnv::GridSurface * grid,int x, int y, bool a, bool b, bo
 	grid->SetGridDesc(x,y,&desc);
 }
 
-void SetTerrainTexture(IHoeEnv::GridSurface * grid, int x, int y, int index)
+void SetTerrainTexture(BecherMap * map, int x, int y, int index)
 {
 	// zkontrolovat zda neni mimo
 
 	// nastavit prizrak
 	// udelat pro vsechny 4 a nastavit hlavni texture, texturu
-	SetTerrainGrid(grid, x-1,y-1,false, true, false, false, index);
-	SetTerrainGrid(grid, x,y-1,true, false, false, false, index);
-	SetTerrainGrid(grid, x-1,y,false, false, false, true, index);
-	SetTerrainGrid(grid, x,y,false, false, true, false, index);
-	grid->Load();
+	SetTerrainGrid(map, x-1,y-1,false, true, false, false, index);
+	SetTerrainGrid(map, x,y-1,true, false, false, false, index);
+	SetTerrainGrid(map, x-1,y,false, false, false, true, index);
+	SetTerrainGrid(map, x,y,false, false, true, false, index);
+	map->GetTerrain()->Load();
 }
 
 	/*m_terrain->SetTexture(0, "trava", 4, 4);

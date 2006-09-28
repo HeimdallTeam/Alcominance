@@ -83,6 +83,7 @@ enum EBuildingMode
 	EBM_Normal,
 	EBM_None,
 	EBM_ToDelete,
+	EBM_Edit,
 };
 
 enum ESurPriority

@@ -2,6 +2,8 @@
 #ifndef _PANELS_H_
 #define _PANELS_H_
 
+class MiniMap;
+
 class ObjectHud : public HoeGame::Hoe2DFigure
 {
 public:
@@ -24,11 +26,15 @@ protected:
 	HoeGame::Gui::InfoPanel * m_info;
 	BecherButton * m_butt[16];
 	int m_num;
+	MiniMap * m_map;
 public:
 	HUD();
 	virtual HoeGame::Gui::Base * CreateGUI(const char * type);
 	void AddButton(int idres, const char * func, const char * tooltip);
 	void ShowReset();
+	void SetMap(MiniMap * map) { m_map = map; }
+	MiniMap * GetActMap() { return m_map; }
+	virtual void Draw(IHoe2D * hoe2d);
 	/** zpracovani pohybu mysi, pokud se ma zpracovano,vraci true */
 	//bool MouseMove(float X, float Y);
 	bool Load(const char * fname);

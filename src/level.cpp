@@ -108,7 +108,12 @@ void BecherLevel::Update(float time)
 	{
 		GetCon()->Update(time);
 	}
-
+	if (m_hud.GetActMap())
+	{
+		float x,y;
+		GetView()->GetTargetPosition(&x,&y);
+		m_hud.GetActMap()->SetCameraPosition(x, y);
+	}
 }
 
 void BecherLevel::MouseUpdate(float x, float y)
@@ -320,6 +325,11 @@ bool BecherLevel::LoadGame(const char *path)
 			return false;
 	}
 
+	// load minimaps
+	m_watermap.Load(this);
+	m_coalmap.Load(this);
+	m_stonemap.Load(this);
+
 	return true;
 }
 
@@ -381,12 +391,31 @@ void BecherLevel::OnKeyDown(int key)
 	}
 	else if (key == HK_SPACE)
 	{
-		LeaveBuild();
-		m_dlg = &m_builddlg;
+		SetDialog(&m_builddlg);
+	}
+	else if (key == HK_DELETE)
+	{
+		if (m_select)
+		{
+			BecherObject * o = m_select;
+			SelectObject(NULL);
+			DeleteObject(o);
+		}
 	}
 	/*if (GetCon()->IsActive())
 		GetCon()->*/
 	//m_info.Addf("key down %d",key);
+}
+
+void BecherLevel::SetDialog(BaseDialog * dlg)
+{ 
+	if (m_dlg == dlg)
+		return;
+	if (dlg) LeaveBuild();
+	// neco jako set?
+	if (m_dlg) m_dlg->OnHide();
+	if (dlg) dlg->OnShow();
+	m_dlg = dlg; 
 }
 
 void BecherLevel::OnMouseMove(float X, float Y)
@@ -409,16 +438,18 @@ void BecherLevel::OnMouseMove(float X, float Y)
 		if (obj)
 			o = dynamic_cast<BecherObject *>(obj);
 	}
-	if (m_mselect && o != m_mselect && m_mselect != m_select)
+	if (!m_build)
 	{
-		m_mselect->SetCurActive(false);
+		if (m_mselect && o != m_mselect && m_mselect != m_select)
+		{
+			m_mselect->SetCurActive(false);
+		}
+		if (o && o != m_select)
+		{
+			o->SetCurActive(true);
+		}
+		m_mselect = o;
 	}
-	if (o && o != m_select)
-	{
-		o->SetCurActive(true);
-	}
-	m_mselect = o;
-
 	MouseUpdate(X,Y);
 
 }

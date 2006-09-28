@@ -162,6 +162,8 @@ bool SystemObjectSource::Load(BecherGameLoad &r)
 	float x,y;
 	x = r.Read<float>();
 	y = r.Read<float>();
+	m_x = x;
+	m_y = y;
 	m_distance = r.Read<float>();
 	m_source = r.Read<uint>();
 #ifdef BECHER_EDITOR
@@ -173,7 +175,9 @@ bool SystemObjectSource::Load(BecherGameLoad &r)
 
 float SystemObjectSource::GetDistance(float x, float y)
 {
-	float d = sqrtf(((m_x-x)*(m_x-x)+(m_y-y)*(m_y-y)));
+	x -= m_x;
+	y -= m_y;
+	float d = sqrtf(y*y+x*x);
 	d = 1.f - (d / m_distance);
 	if (d < 0.f)
 		return 0.f;

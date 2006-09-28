@@ -8,6 +8,7 @@
 #include "crr.h"
 #include "dialogs.h"
 #include "ministry.h"
+#include "minimap.h"
 
 #define ID_BSAVE ('b' | 's' << 8 | 'a' << 16 | 'v' << 24)
 
@@ -53,6 +54,10 @@ protected:
 	BecherTime m_timer;
 	BecherCash m_cash; 
 	MinistryOfJobs m_mjobs;
+	WaterMiniMap m_watermap;
+	CoalMiniMap m_coalmap;
+	StoneMiniMap m_stonemap;
+
 	BaseDialog * m_dlg;
 	BecherObject * m_select;
 	CRR m_crr;
@@ -70,9 +75,10 @@ public:
 	virtual void OnSet();
 	void SelectObject(BecherObject* obj);
 	BecherObject * GetSelectedObject() { return m_select; }
-	void SetDialog(BaseDialog * dlg) { m_dlg = dlg; }
+	void SetDialog(BaseDialog * dlg);
 
 	bool IsPaused() { return m_timer.IsPaused(); }
+	bool IsBuild() { return m_build != NULL; }
 	virtual void Update(float time);
 	virtual void HOEAPI _Paint(IHoe2D * h2d);
 	void SetObjectHud(ObjectHud * selhud) { m_selhud = selhud; }
@@ -103,6 +109,22 @@ public:
 	void AddTroll(float x, float y);
 	void AddBuildObject(unsigned long id, int gold, int wood, int stone);
 
+	void ShowWaterMap()
+	{
+		m_hud.SetMap(&m_watermap);
+	}
+	void ShowCoalMap()
+	{
+		m_hud.SetMap(&m_coalmap);
+	}
+	void ShowStoneMap()
+	{
+		m_hud.SetMap(&m_stonemap);
+	}
+	void HideMap()
+	{
+		m_hud.SetMap(NULL);
+	}
 	static int l_AddTroll(lua_State * L);
 	static int l_SetBuilding(lua_State * L);
 	static int l_AddCash(lua_State * L);

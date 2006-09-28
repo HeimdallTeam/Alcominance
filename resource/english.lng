@@ -1,5 +1,12 @@
 # chybove hlasky 
 
+101= "This terrain is unfit for construction."
+102= "The building is too close to an another object."
+103= "The water well is to far from the supply."
+
+
+201= "Pay-day."
+
 # tooltips
 1001 = "Caw."
 1002 = "Coal Mine."

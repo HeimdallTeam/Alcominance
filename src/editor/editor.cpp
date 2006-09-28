@@ -737,6 +737,8 @@ void BecherEdit::KeyDown(wxKeyEvent& e)
 
 void BecherEdit::KeyUp(wxKeyEvent& e)
 {
+	if (e.GetKeyCode() == WXK_DELETE)
+		m_map->DeleteSelect();
 
 }
 

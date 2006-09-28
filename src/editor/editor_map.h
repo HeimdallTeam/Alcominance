@@ -8,9 +8,11 @@ class EditorMap : public BecherMap
 {
 protected:
 	wxString m_mapfilepath;
+	BecherObject * m_select;
 public:
 	EditorMap()
 	{
+		m_select = NULL;
 	}
 	~EditorMap()
 	{
@@ -27,6 +29,7 @@ public:
 	void ShowSystemObjects(bool show);
 	void ShowObjects(bool show, bool wire);
 	void ModelHeightUpdate();
+	void DeleteSelect();
 };
 
 #endif // _BECHER_EDITOR_MAP_H_

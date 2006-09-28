@@ -3,6 +3,7 @@
 #include "becher.h"
 #include "game.h"
 #include "panels.h"
+#include "minimap.h"
 
 using namespace HoeGame;
 
@@ -38,6 +39,7 @@ HUD::HUD()
 	m_info = NULL;
 	memset(m_butt,0,sizeof(m_butt));
 	m_num = 0;
+	m_map = NULL;
 }
 
 HoeGame::Gui::Base * HUD::CreateGUI(const char * type)
@@ -89,6 +91,15 @@ void HUD::ShowReset()
 		m_butt[i]->Hide();
 	}
 	m_num = 0;
+}
+
+void HUD::Draw(IHoe2D * hoe2d)
+{
+	HoeGame::Hoe2DFigure::Draw(hoe2d);
+	if (m_map)
+	{
+		m_map->Draw(hoe2d);
+	}
 }
 
 /*int ControlPanel::Draw(IHoe2D * hoe2d)

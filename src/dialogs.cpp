@@ -61,6 +61,11 @@ void DialogBuild::OnClick(HoeGame::Gui::Base * sender)
 		break;
 	case EBO_WaterHole:
 		GetLua()->func("c_stavstudna");
+		// zobrazit minimapu
+		if (GetLevel()->IsBuild())
+		{
+			GetLevel()->ShowWaterMap();
+		}
 		break;
 	default:
 		assert(!"Button not implemented.");

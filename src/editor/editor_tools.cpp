@@ -155,7 +155,7 @@ void ToolTex::LeftDown(const int x, const int y, const wxMouseEvent &e)
 		//const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
 		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
 		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
-		SetTerrainTexture(m.GetTerrain(), nx+1, ny+1, m_tex);
+		SetTerrainTexture(&m, nx+1, ny+1, m_tex);
 		m_nx = nx;
 		m_ny = ny;
 	}
@@ -166,10 +166,10 @@ void ToolTex::LeftUp(const int x, const int y, const wxMouseEvent &e)
 	m_leftdown = false;
 }
 
-void ToolTex::RightDown(const int x, const int y, const wxMouseEvent &e)
+/*void ToolTex::RightDown(const int x, const int y, const wxMouseEvent &e)
 {
 	BecherEdit::Get()->SetTool(NULL);
-}
+}*/
 
 void ToolTex::Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev)
 {
@@ -186,7 +186,7 @@ void ToolTex::Move(int relX, int relY, int absX, int absY, const wxMouseEvent & 
 		{
 
 			m_nx = nx; m_ny = ny;
-			SetTerrainTexture(m.GetTerrain(), nx+1, ny+1, m_tex);
+			SetTerrainTexture(&m, nx+1, ny+1, m_tex);
 		}
 	}
 }
@@ -203,11 +203,23 @@ void ToolTex::Wheel(const wxMouseEvent &e)
 		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
 		IHoeEnv::GridSurface::TGridDesc desc;
 		m.GetTerrain()->GetGridDesc(nx,ny,&desc);
-		int d = desc.x2 * 4 + desc.y2;
+		bool top = true;
+		if (desc.tex2 == 0xff || e.ControlDown())
+			top = false;
+		
+		int d = top ? desc.x2 * 4 + desc.y2:desc.x1 * 4 + desc.y1;
 		d += e.GetWheelRotation() > 0 ? 31:1;
 		d = d % 32;
-		desc.x2 = d / 4;
-		desc.y2 = d % 4;
+		if (top)
+		{
+			desc.x2 = d / 4;
+			desc.y2 = d % 4;
+		}
+		else
+		{
+			desc.x1 = d / 4;
+			desc.y1 = d % 4;
+		}
 		m.GetTerrain()->SetGridDesc(nx,ny,&desc);
         m.GetTerrain()->Load();
 	}
@@ -261,23 +273,23 @@ void ToolTerrain::Move(int relX, int relY, int absX, int absY, const wxMouseEven
 	}
 }
 
-void ToolTerrain::RightDown(const int x, const int y, const wxMouseEvent &e){
+/*void ToolTerrain::RightDown(const int x, const int y, const wxMouseEvent &e){
 
     float sx,sy;
     if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(x,y,&sx,&sy)) {
 		EditorMap & m = *BecherEdit::Get()->GetActMap();
         m.GetTerrain()->ShowWireframe(true);
     }
-}
+}*/
 
-void ToolTerrain::RightUp(const int x, const int y, const wxMouseEvent &e){
+/*void ToolTerrain::RightUp(const int x, const int y, const wxMouseEvent &e){
 
     float sx,sy;
     if (BecherEdit::Get()->GetActMap()->GetView()->GetPick(x,y,&sx,&sy)) {
 		EditorMap & m = *BecherEdit::Get()->GetActMap();
         m.GetTerrain()->ShowWireframe(false);
     }
-}
+}*/
 
 //////////////////////////////////////////////////////
 // ToolTex
@@ -312,10 +324,10 @@ void ToolTerrainExp::LeftDown(const int x, const int y, const wxMouseEvent &e)
 	}
 }
 
-void ToolTerrainExp::RightDown(const int x, const int y, const wxMouseEvent &e)
+/*void ToolTerrainExp::RightDown(const int x, const int y, const wxMouseEvent &e)
 {
 	BecherEdit::Get()->SetTool(NULL);
-}
+}*/
 
 void ToolTerrainExp::Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev)
 {

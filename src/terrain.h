@@ -37,7 +37,7 @@ struct TTerrainModel
 
 // funkce pro teren
 void SetTerrainData(IHoeEnv::GridSurface * grid);
-void SetTerrainTexture(IHoeEnv::GridSurface * grid, int x, int y, int index);
+void SetTerrainTexture(BecherMap * map, int x, int y, int index);
 
 #endif // _BECHER_TERRAIN_H_
 
