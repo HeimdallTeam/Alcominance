@@ -4,6 +4,11 @@
 #include "obj_herbe.h"
 
 static CVar v_time("herbe_speed", 30, TVAR_SAVE); // za jak dlouho prileti baba
+/*
+static CVar v_cena("herbe_cost", , TVAR_SAVE); // cena za stavbu
+static CVar v_cena("herbe_cost_wood", , TVAR_SAVE); // pocet dreva potrebneho na stavbu
+static CVar v_cena("herbe_cost_stone", , TVAR_SAVE); // pocet kameni potrebneho na stavbu
+*/
 static CVar v_num("herbe_num", 3, TVAR_SAVE); // pocet trtiny z urody
 
 #ifndef BECHER_EDITOR

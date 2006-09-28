@@ -1,7 +1,17 @@
 -- funkce pro sklad
 
 function c_stavsklad()
- SetBuilding(EBO_Store,5,0,5)
+ 
+ cost = GetVar("store_cost")
+ wood = GetVar("store_cost_wood")
+ stone = GetVar("store_cost_stone")
+ 
+ if cost < GetCash() then
+  info("Nedostatek penez pro stavbu")
+ end
+ 
+ AddCash(-cost)
+ SetBuilding(EBO_Store,cost,wood,stone)
 end
 
 function camerka()

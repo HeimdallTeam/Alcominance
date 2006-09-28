@@ -125,10 +125,10 @@ end
 function getReceptCount(recept, surtype)
 
  --ziskani mnozstvi dane suroviny
- count=string.match(string.match(recept, surtype.."%d"), "%d")
+ count=tonumber(string.match(string.match(recept, surtype.."%d"), "%d"))
  
  --ziskani poctu vyrobenych jednotek
- units=string.match(string.match(recept, "=%d"), "%d")
+ units=tonumber(string.match(string.match(recept, "=%d"), "%d"))
  
  return count, units
 

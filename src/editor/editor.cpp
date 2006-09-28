@@ -67,6 +67,8 @@ enum {
 	IDB_TERRUP,
 	IDB_TERRDOWN,
 	IDB_TERRPREV,
+    IDB_TERRHILLUP,
+    IDB_TERRHILLDOWN
 };
 #define EVT_BUTTON_RANGE(id1, id2, func) wx__DECLARE_EVT2(wxEVT_COMMAND_BUTTON_CLICKED, id1, id2, wxCommandEventHandler(func))
 
@@ -203,7 +205,8 @@ END_EVENT_TABLE()
 #include "../../resource/maleikony/e_terrup.xpm"
 #include "../../resource/maleikony/e_terrdown.xpm"
 #include "../../resource/maleikony/e_terrprevis.xpm"
-
+//#include "../../resource/maleikony/e_terrhillup.xpm"
+//#include "../../resource/maleikony/e_terrhilldown.xpm"
 
 TerrainObject::TerrainObject(wxWindow * parent)
 	: wxPanel(parent,wxID_ANY,wxDefaultPosition, wxSize(80,250))
@@ -219,6 +222,10 @@ TerrainObject::TerrainObject(wxWindow * parent)
 	b->SetToolTip( _("Terrain down") );
 	b = new wxBitmapButton(sb,IDB_TERRUP,wxBitmap(e_terrup_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Terrain up") );
+    //b = new wxBitmapButton(sb,IDB_TERRUP,wxBitmap(e_terrhillup_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Terrain hill up") );
+    //b = new wxBitmapButton(sb,IDB_TERRUP,wxBitmap(e_terrhilldown_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Terrain hill down") );
 	b = new wxBitmapButton(sb,IDB_TERRPREV,wxBitmap(e_terrprevis_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Terrain") );
 	topsizer->Add( sb);
@@ -274,6 +281,12 @@ void TerrainObject::OnTerrainClick(wxCommandEvent& e)
 	case IDB_TERRDOWN:
 		BecherEdit::Get()->SetTool(new ToolTerrain(-3.f,30.f));
 		break;
+    case IDB_TERRHILLUP:
+        //BecherEdit::Get()->SetTool(new ToolTerrainHill());
+        break;
+    case IDB_TERRHILLDOWN:
+        //BecherEdit::Get()->SetTool(new ToolTerrainHill());
+        break;
 	case IDB_TERRPREV:
 		BecherEdit::Get()->SetTool(new ToolTerrainExp());
 		break;

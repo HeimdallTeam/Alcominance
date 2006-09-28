@@ -3,6 +3,10 @@
 #include "becher.h"
 #include "obj_saw.h"
 
+static CVar v_cena("saw_cost", 150, TVAR_SAVE); // cena za stavbu
+static CVar v_cena("saw_cost_wood", 80, TVAR_SAVE); // pocet dreva potrebneho na stavbu
+static CVar v_cena("saw_cost_stone", 10, TVAR_SAVE); // pocet kameni potrebneho na stavbu
+
 #ifndef BECHER_EDITOR
 SawStatic Saw::m_userhud;
 

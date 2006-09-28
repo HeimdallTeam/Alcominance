@@ -4,7 +4,9 @@
 #include "troll.h"
 #include "obj_shop.h"
 
-
+static CVar v_cena("shop_cost", 200, TVAR_SAVE); // cena za stavbu
+static CVar v_cena("shop_cost_wood", 100, TVAR_SAVE); // pocet dreva potrebneho na stavbu
+static CVar v_cena("shop_cost_stone", 50, TVAR_SAVE); // pocet kameni potrebneho na stavbu
 
 /////////////////////////////////////////////////////////////
 Shop::Shop(IHoeScene * scn) : BecherBuilding(scn)

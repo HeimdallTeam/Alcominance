@@ -1,13 +1,17 @@
 ﻿-- funkce pro tovarnu
 
 function c_stavtovarna()
+
  cost = GetVar("factory_cost")
+ wood = GetVar("factory_cost_wood")
+ stone = GetVar("factory_cost_stone")
+ 
  if cost < GetCash() then
-  info("Nedostatek penez")
+  info("Nedostatek penez pro stavbu")
  end
  
  AddCash(-cost)
- SetBuilding(EBO_Factory,100,100,100)
+ SetBuilding(EBO_Factory,cost,wood,stone)
 end
 
 function s_tovarna()

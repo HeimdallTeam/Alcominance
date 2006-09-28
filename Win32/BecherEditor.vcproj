@@ -92,7 +92,7 @@
 				OutputFile="../BecherEditor_d.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="../../Hoe/bin;../../Common/lib/wx_lib"
+				AdditionalLibraryDirectories="../../Hoe/bin;../../Common/lib;../../Common/lib/wx_lib"
 				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="../BecherEditor_d.pdb"

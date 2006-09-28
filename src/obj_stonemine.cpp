@@ -6,6 +6,11 @@
 
 static CVar v_numzpr("stone_mine", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
 static CVar v_numworks("stone_maxwork", 2, TVAR_SAVE);
+static CVar v_cena("stone_cost", 150, TVAR_SAVE); // cena za stavbu
+/*
+static CVar v_cena("stone_cost_wood", 60, TVAR_SAVE); // pocet dreva potrebneho na stavbu
+static CVar v_cena("stone_cost_stone", 60, TVAR_SAVE); // pocet kameni potrebneho na stavbu
+*/
 
 #ifndef BECHER_EDITOR
 StoneMineStatic StoneMine::m_userhud;

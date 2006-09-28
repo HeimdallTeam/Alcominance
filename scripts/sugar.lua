@@ -2,10 +2,16 @@
 
 function c_sugar()
 
-  cost = 
-  info("stav cukr")
-  AddCash(456)
-  SetBuilding(EBO_Sugar,1000,10,0)
+  cost = GetVar("sugar_cost")  
+  wood = GetVar("sugar_cost_wood")
+  stone = GetVar("sugar_cost_stone")
+  
+  if cost < GetCash() then
+   info("Nedostatek penze pro stavbu")
+  end
+    
+  AddCash(-cost)
+  SetBuilding(EBO_Sugar,cost,wood,stone)
 end
 
 function s_cukr()

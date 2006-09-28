@@ -6,8 +6,10 @@
 
 static CVar v_numzpr("coal_mine", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
 static CVar v_cena("coal_cost" , 150, TVAR_SAVE);
+/*
 static CVar v_cena_drevo("coal_cost_wood" , 60, TVAR_SAVE);
 static CVar v_cena_kamen("coal_cost_stone", 60, TVAR_SAVE);
+*/
 static CVar v_numworks("coal_maxwork", 2, TVAR_SAVE);
 
 #ifndef BECHER_EDITOR

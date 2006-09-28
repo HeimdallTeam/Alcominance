@@ -1,7 +1,17 @@
 -- funkce pro lihovar
 
 function c_stavlihovar()
- SetBuilding(EBO_Destilate,10,10,0)
+
+ cost = GetVar("factory_cost")
+ wood = GetVar("factory_cost_wood")
+ stone = GetVar("factory_cost_stone")
+ 
+ if cost < GetCash() then
+  info("Nedostatek penez pro stavbu")
+ end
+ 
+ AddCash(-cost)
+ SetBuilding(EBO_Destilate,cost,wood,stone)
 end
 
 function s_lihovar()

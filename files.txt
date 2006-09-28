@@ -28,6 +28,7 @@ data/dul.hm
 data/info.hm
 data/textures.hx
 data/cukrovar.hm
+data/terrain.hx
 #resources
 model_FACTORY="model tovarna" ; Tovarna
 model_INFO_RING="model info" ; Ring

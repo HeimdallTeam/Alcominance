@@ -9,6 +9,9 @@ float getheight(IHoeModel * m);
 
 static CVar v_sklad("store_max", 160, 0);
 static CVar v_numworks("store_maxwork", 4, 0);
+static CVar v_cena("store_cost", 200, TVAR_SAVE); // cena za stavbu
+static CVar v_cena("store_cost_wood", 100, TVAR_SAVE); // pocet dreva potrebneho na stavbu
+static CVar v_cena("store_cost_stone", 150, TVAR_SAVE); // pocet kameni potrebneho na stavbu
 
 StoreStatic Store::m_storepref;
 
