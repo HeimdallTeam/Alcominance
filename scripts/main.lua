@@ -8,10 +8,6 @@
 -- function ClearButtons()
 -- function PlaySound(id)
 
-function getReceptCount()
- return 1,1
-end
-
 function c_najmout()
  AddTroll(true);
 end
@@ -124,8 +120,19 @@ function c_waterfarm()
  farm = true
 end
 
+-- vrati mnozstvi dane suroviny pro vyrobu a pocet vyrobenych jednotek
+-- napr. recept S10+A10+H3+W20=1
+function getReceptCount(recept, surtype)
 
+ --ziskani mnozstvi dane suroviny
+ count=string.match(string.match(recept, surtype.."%d"), "%d")
+ 
+ --ziskani poctu vyrobenych jednotek
+ units=string.match(string.match(recept, "=%d"), "%d")
+ 
+ return count, units
 
+end
 
 
 
