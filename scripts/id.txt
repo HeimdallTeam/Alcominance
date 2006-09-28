@@ -8,6 +8,9 @@ ADDID(model_STROM4)
 // fonty
 ADDID(font_TOOLTIPS)
 
+// zvuky
+ADDID(sound_PAYDAY)
+
 // id modelu
 ADDID(model_TROLL)
 ADDID(model_FACTORY) // tovarna

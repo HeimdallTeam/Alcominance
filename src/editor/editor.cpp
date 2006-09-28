@@ -150,6 +150,14 @@ ToolObjects::ToolObjects(wxWindow * parent)
 	wxWindow * p3  = new wxWindow(this,-1);
 	b = new wxBitmapButton(p3,IDB(EBSys_Sound),wxBitmap(Sound_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Sound instance") );
+	b = new wxBitmapButton(p3,IDB(EBSys_Place),wxBitmap(Sound_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Place instance") );
+	b = new wxBitmapButton(p3,IDB(EBSys_Water),wxBitmap(Sound_xpm),BT_P(0,1),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Water instance") );
+	b = new wxBitmapButton(p3,IDB(EBSys_Coal),wxBitmap(Sound_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Coal instance") );
+	b = new wxBitmapButton(p3,IDB(EBSys_Stone),wxBitmap(Sound_xpm),BT_P(2,1),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Stone instance") );
 
 	AddPage(p2,_("Map elements"));
 	AddPage(p,_("Buildings"));

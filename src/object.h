@@ -51,6 +51,8 @@ public:
 	virtual bool Select();
 	virtual void Unselect();
 
+	virtual const char * BuildPlace(float x, float y) { return "Budova neni hotova"; /*todo*/ }
+
 	virtual void OnDeleteObject(unsigned long id) {}; 
 #ifdef BECHER_EDITOR
 	virtual 

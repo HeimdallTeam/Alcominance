@@ -12,13 +12,13 @@
 AddFile("data/terrain.hx")
 AddFile("data/icons.hx")
 AddFile("data/menu.hx")
--- zalezi na jazyku
-AddFile("data/czech.hx")
+AddFile("data/"..GetVar("lang_file")..".hx")
 AddFile("data/textures.hx")
 AddFile("data/stromy.hm")
 AddFile("data/krajina.hm")
 AddFile("data/info.hm")
 AddFile("data/cukrovar.hm")
+AddFile("data/dul.hm")
 
 LoadResource(model_STROM1, "model strom1")
 LoadResource(model_STROM2, "model strom2")
@@ -27,8 +27,13 @@ LoadResource(model_STROM4, "model strom4")
 LoadResource(model_INFO_RING, "model info")
 LoadResource(model_INFO_RING2, "model info2")
 LoadResource(model_SUGAR, "model cukrovar")
+LoadResource(model_COALMINE, "model dul_uhli")
+LoadResource(model_STONEMINE, "model dul_kamen")
 
 LoadResource(font_TOOLTIPS, "font 'resource/tooltips.ttf' 16")
+
+-- models
+LoadResource(sound_PAYDAY, "sound 'sound/payday.ogg'")
 
 
 --files 
@@ -69,7 +74,6 @@ LoadResource(model_FARM, "model farma")
 LoadResource(model_FARM_POLE, "model pole")
 LoadResource(model_SAW, "model drevorubec")
 LoadResource(model_WATERHOLE, "model studna")
-LoadResource(model_COALMINE, "model dul_uhli")
 --LoadResource(model_TROLL, "model olaf")
 --LoadResource(model_TROLL, "generate model box 5")
 LoadResource(model_TROLL, "model tupoun")

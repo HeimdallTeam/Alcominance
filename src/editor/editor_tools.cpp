@@ -341,15 +341,13 @@ void ToolTerrainExp::Wheel(const wxMouseEvent &e)
 		//const uint ny = (uint)((sy+(m.m_sizeY+m.m_distY)*0.5f)/(m.m_distY));
 		const uint nx = (uint)((sx+(m.m_sizeX)*0.5f)/(m.m_distX));
 		const uint ny = (uint)((sy+(m.m_sizeY)*0.5f)/(m.m_distY));
-		/*IHoeEnv::GridSurface::TGridDesc desc;
-		m.GetTerrain()->GetGridDesc(nx,ny,&desc);
-		int d = desc.x2 * 4 + desc.y2;
-		d += e.GetWheelRotation() > 0 ? 31:1;
-		d = d % 32;
-		desc.x2 = d / 4;
-		desc.y2 = d % 4;
-		m.GetTerrain()->SetGridDesc(nx,ny,&desc);*/
-        //m.GetTerrain()->Load();
+		int model = m.GetTerrain()->GetGridModel(nx,ny);
+		if (model == -1)
+			return;
+		model += (e.GetWheelRotation() > 0 ? 11:1);
+		model = model % 12;
+		m.GetTerrain()->SetGridModel(nx,ny, 0.f, model);
+        m.GetTerrain()->Load();
 	}
 
 }

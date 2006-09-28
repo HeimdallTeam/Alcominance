@@ -30,7 +30,7 @@ public:
 };
 
 static CVar v_config("config_file", CONFIG_FILE, TVAR_SSTR);
-static CVar v_lang("lang_file", "resource/czech.lng", TVAR_SSTR);
+static CVar v_lang("lang_file", "czech", TVAR_SSTR);
 //CVar BecherConfig::m_engine("config_file", CONFIG_FILE, TVAR_SSTR);
 //CVar BecherConfig::m_resolution("config_file", CONFIG_FILE, TVAR_SSTR);
 

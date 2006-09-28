@@ -5,12 +5,12 @@
 #include "obj_sugar.h"
 
 static CVar v_numzpr("sugar_speed", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
-static CVar v_cost("sugar_cost", 160, );
-static CVar v_cost_wood(, 30, TVAR_SAVE);
-static CVar v_cost_stone(,40 TVAR_SAVE);
+static CVar v_cost("sugar_cost", 160, TVAR_SAVE);
+static CVar v_cost_wood("sugar_cost_wood", 30, TVAR_SAVE);
+static CVar v_cost_stone("sugar_cost_stone",40, TVAR_SAVE);
 static CVar v_sklad("sugar_max", 50, TVAR_SAVE); // maximalni velikost miniskladu
 static CVar v_numworks("sugar_maxwork", 4, TVAR_SAVE); // maximalni pocet pracujicich
-static CVar v_recept("sugar_recept", "C1=1", 0); // recept pro jednu davku
+static CVar v_recept("sugar_recept", "C1=1", TVAR_SAVE); // recept pro jednu davku
 static CVar v_coalmax("coal_max", 100, TVAR_SAVE); // maximalni kapacita pro uhli
 
 #ifndef BECHER_EDITOR
@@ -95,20 +95,54 @@ void Sugar::SetMode(EBuildingMode mode)
 	// pri buildingu nastavit kolize
 	switch (m_mode)
 	{
+	case EBM_Select:
+		GetCtrl()->SetOverColor(0xffffffff);
+		break;
 	case EBM_Normal:
 		CRR::Get()->Unregister(&m_sugar);
 		break;
 	};
+	m_mode = mode;
 	switch (mode)
 	{
 	case EBM_Normal:
+		Show(true);
 		CRR::Get()->Register(&m_sugar);
 		break;
 	};
-	m_mode = mode;
 }
 
 #ifndef BECHER_EDITOR
+
+const char * Sugar::BuildPlace(float x, float y)
+{
+	// pozice v mape
+	float min,max;
+	bool ok;
+	max = min = 0.f;
+	ok = GetLevel()->GetScene()->GetScenePhysics()->GetCamber(x,x,y,y,min,max);
+	SetPosition(x,y,min);
+	if (!ok || (max-min) > 1.f) 
+	{
+		GetCtrl()->SetOverColor(0xffff0000);
+		return GetLang()->GetString(101);
+	}
+	// zjistit zda muze byt cerveny nebo jiny
+	for (int i=0; i < GetLevel()->GetNumObj();i++)
+	{
+		float x = GetLevel()->GetObj(i)->GetPosX();
+		float y = GetLevel()->GetObj(i)->GetPosY();
+		x -= GetPosX();
+		y -= GetPosY();
+		if (x*x+y*y < 4000.f)
+		{
+			GetCtrl()->SetOverColor(0xffff0000);
+			return GetLang()->GetString(102);
+		}
+	}
+	GetCtrl()->SetOverColor(0xffffffff);
+	return NULL;
+}
 
 bool Sugar::InsertSur(ESurType type, uint *s)
 {

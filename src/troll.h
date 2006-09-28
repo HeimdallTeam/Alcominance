@@ -29,6 +29,7 @@ class Troll : public BecherObject
 	Path m_path; // jeho cesta
 	TLoad m_load; // naklad (co ma u sebe)
 	float anim;
+	float m_nextfind;
 public:
 	Troll(IHoeScene * scn);
 	~Troll();

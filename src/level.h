@@ -7,6 +7,7 @@
 #include "panels.h"
 #include "crr.h"
 #include "dialogs.h"
+#include "ministry.h"
 
 #define ID_BSAVE ('b' | 's' << 8 | 'a' << 16 | 'v' << 24)
 
@@ -51,6 +52,7 @@ protected:
 	//BecherObject * m_buildinit;
 	BecherTime m_timer;
 	BecherCash m_cash; 
+	MinistryOfJobs m_mjobs;
 	BaseDialog * m_dlg;
 	BecherObject * m_select;
 	CRR m_crr;
@@ -89,11 +91,13 @@ public:
 	virtual void OnRightButtonDown();
 
 	void SetBuildObject(BecherBuilding * bo, int gold, int wood, int stone);
+	void LeaveBuild();
 	void Start();
 	bool SaveGame(const char * path);
 	bool LoadGame(const char * path);
 
 	BecherCash * GetCash() { return &m_cash; }
+	MinistryOfJobs * GetMJobs() { return &m_mjobs; }
 
 	HUD * GetPanel() { return &m_hud; }
 	void AddTroll(float x, float y);

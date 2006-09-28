@@ -72,10 +72,10 @@ bool EditorMap::SaveMap(const wxString &path)
 	w.WriteChunkEnd();
 
 	// ulozit systemove objekty
-	for (int i=0;i < m_numsysobj;i++)
+	for (int i=0;i < m_sysobj.Count();i++)
 	{
 		// uklada se jen typ
-		w.WriteChunk(ID_CHUNK('s','y','s','o'), 1);
+		w.WriteChunk(ID_CHUNK('s','y','s','o'), 0);
 		w.WriteValue<dword>(m_sysobj[i]->GetType());
 		m_sysobj[i]->Save(w);
 		w.WriteChunkEnd();
@@ -166,13 +166,13 @@ void EditorMap::Resize(int top, int bottom, int left, int right)
 void EditorMap::ShowSystemObjects(bool show)
 {
 	// prolezt a zapnout, nebo vypnout
-	for (int i=0;i<m_numsysobj;i++)
+	for (int i=0;i<m_sysobj.Count();i++)
 		m_sysobj[i]->Show(show);
 }
 
 void EditorMap::ShowObjects(bool show, bool wire)
 {
-	for (int i=0;i<m_numobj;i++)
+	for (int i=0;i<m_obj.Count();i++)
 	{
 		m_obj[i]->Show(show);
 		if (wire)
@@ -185,13 +185,13 @@ void EditorMap::ShowObjects(bool show, bool wire)
 void EditorMap::ModelHeightUpdate()
 {
 	int i;
-	for (i=0;i<m_numobj;i++)
+	for (i=0;i<m_obj.Count();i++)
 	{
 		const float x = m_obj[i]->GetPosX();
 		const float y = m_obj[i]->GetPosY();
 		m_obj[i]->SetPosition(x,y,m_scene->GetScenePhysics()->GetHeight(x,y));
 	}	
-	for (i=0;i<m_numsysobj;i++)
+	for (i=0;i<m_sysobj.Count();i++)
 	{
 		const float x = m_sysobj[i]->GetPosX();
 		const float y = m_sysobj[i]->GetPosY();

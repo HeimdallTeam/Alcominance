@@ -8,6 +8,10 @@
 -- function ClearButtons()
 -- function PlaySound(id)
 
+function getReceptCount()
+ return 1,1
+end
+
 function c_najmout()
  AddTroll(true);
 end

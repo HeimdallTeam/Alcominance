@@ -2,7 +2,9 @@
 
 function c_stavtovarna()
  cost = GetVar("factory_cost")
- if cost < GetCash() then return 0;
+ if cost < GetCash() then
+  info("Nedostatek penez")
+ end
  
  AddCash(-cost)
  SetBuilding(EBO_Factory,100,100,100)

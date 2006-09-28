@@ -11,17 +11,12 @@ class BecherMap : public HoeGame::Strategy::Map
 {
 protected:
 	// seznam objektu
-	BecherObject * m_obj[1000]; // todo
-	int m_numobj;
-	BecherSystemObject * m_sysobj[100]; ///< @todo zmenit styl
-	int m_numsysobj;
+	HoeGame::PtrSet<BecherObject*> m_obj; // todo
+	HoeGame::PtrSet<BecherSystemObject*> m_sysobj; ///< @todo zmenit styl
 	unsigned long m_lastid;
 
 	// systemove objekty
 	
-
-	int FindObjIndex(BecherObject * bo);
-
 	// teren
 	IHoeEnv::GridSurface * m_terrain;
 
@@ -48,9 +43,10 @@ public:
 	void AddObject(BecherObject * obj);
 	void AddSystemObject(BecherSystemObject * obj);
 	void DeleteObject(BecherObject * obj);
-	void DeleteObject(int index);
-	int GetNumObj() { return m_numobj; }
-	BecherObject * GetObj(int index) { assert(index >= 0 && index < m_numobj); return m_obj[index];}
+	int GetNumObj() { return m_obj.Count(); }
+	BecherObject * GetObj(int index) { return m_obj[index];}
+	int GetNumSysObj() { return m_sysobj.Count(); }
+	BecherSystemObject * GetSysObj(int index) { return m_sysobj[index];}
 	BecherObject * GetObject(const int x, const int y);
 
 	unsigned long GenObjectID() { return ++m_lastid; }

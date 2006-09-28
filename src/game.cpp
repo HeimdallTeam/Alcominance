@@ -130,7 +130,7 @@ int BecherGame::l_PlaySound(lua_State * L)
 	{
 		IHoeSound* s = ::GetResMgr()->Get<IHoeSound>(lp.GetNum(-1));
 		if (s)
-			s->Play();
+			s->Play(false);
 		else
 			lp.Error("sound ID: %d not loaded.",lp.GetNum(-1)); 
 		return 0;

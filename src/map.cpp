@@ -22,8 +22,6 @@
 
 BecherMap::BecherMap()
 {
-	m_numobj = 0;
-	m_numsysobj = 0;
 	m_lastid = 0;
 	m_terrain = NULL;
 }
@@ -76,6 +74,14 @@ BecherSystemObject * BecherMap::CreateSystemObject(EObjType type)
 	{
 	case EBSys_Sound:
 		return new SystemObjectSound(m_scene);
+	case EBSys_Place:
+		return new SystemObjectPlace(m_scene);
+	case EBSys_Water:
+		return new SystemObjectWater(m_scene);
+	case EBSys_Coal:
+		return new SystemObjectCoal(m_scene);
+	case EBSys_Stone:
+		return new SystemObjectStone(m_scene);
 	default:
 		assert(!"Unknown becher object");
 	};
@@ -139,8 +145,10 @@ bool BecherMap::SetTerrainData()
 
 bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 {
-	this->m_numobj = 0;
-	this->m_numsysobj = 0;
+	// tady musi byt unload
+
+	//this->m_numobj = 0;
+	//this->m_numsysobj = 0;
 
 	if (!r.ReadHeader())
 		return false;
@@ -287,42 +295,18 @@ bool BecherMap::SaveAllObjects(BecherGameSave &w)
 
 void BecherMap::AddObject(BecherObject * obj)
 {
-	assert(m_numobj < 998);
-	m_obj[m_numobj++] = obj;
+	m_obj.Add(obj);
 }
 
 void BecherMap::AddSystemObject(BecherSystemObject * obj)
 {
-	assert(m_numsysobj < 99);
-	m_sysobj[m_numsysobj++] = obj;
+	m_sysobj.Add(obj);
 }
 
 void BecherMap::DeleteObject(BecherObject * obj)
 {
-	int i = FindObjIndex(obj);
-	if (i == -1)
-		return;
-	DeleteObject(i);
-}
-
-void BecherMap::DeleteObject(int index)
-{
-	// ten posledni se musi dat na smazanej
-	assert(index >= 0 && index < m_numobj);
-	delete m_obj[index];
-	if (index != m_numobj-1)
-	{
-		m_obj[index] = m_obj[m_numobj-1];
-	}
-	m_numobj--;
-}
-
-int BecherMap::FindObjIndex(BecherObject * bo)
-{
-	for (int i=0;i < m_numobj;i++)
-		if (m_obj[i] == bo)
-			return i;
-	return -1;
+	delete obj;
+	m_obj.Remove(obj);
 }
 
 BecherObject * BecherMap::GetObject(const int x, const int y)
@@ -333,7 +317,7 @@ BecherObject * BecherMap::GetObject(const int x, const int y)
 void BecherMap::ComputeLastID()
 {
 	m_lastid = 0;
-	for (int i=0;i < m_numobj;i++)
+	for (int i=0;i < m_obj.Count();i++)
 		if (m_obj[i]->id > m_lastid)
 			m_lastid = m_obj[i]->id;
 }
@@ -341,7 +325,7 @@ void BecherMap::ComputeLastID()
 // najde objekt podle id
 BecherObject * BecherMap::GetObjFromID(unsigned long id)
 {
-	for (int i=0;i < m_numobj;i++)
+	for (int i=0;i < m_obj.Count();i++)
 		if (m_obj[i]->id == id)
 			return m_obj[i];
 	return NULL;

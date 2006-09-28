@@ -57,7 +57,10 @@ SlideShow::~SlideShow()
 	m_instance = NULL;
 	// delete scene
 	if (m_sound)
+	{
+		m_sound->Stop();
 		m_sound->Delete();
+	}
 }
 
 void SlideShow::OnSet()
@@ -124,7 +127,7 @@ void SlideShow::Run()
  
 	// spusteni zvuku
 	m_sound = (IHoeSound*)GetEngine()->Create("sound 'sound/intro.ogg'");
-	m_sound->Play();
+	m_sound->Play(true);
 	lua_resume(m_lua.GetLua(),0);
 
 }

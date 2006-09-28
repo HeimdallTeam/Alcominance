@@ -3,6 +3,7 @@
 #include "becher.h"
 #include "obj_waterhole.h"
 #include "troll.h"
+#include "sysobjs.h"
 
 static CVar v_numzpr("water_mine", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
 static CVar v_cena("water_cost", 80, TVAR_SAVE);
@@ -112,6 +113,60 @@ bool WaterHole::Select()
 	if (!IsBuildMode())
         GetLua()->func("s_studna");
 	return true;
+}
+
+const char * WaterHole::BuildPlace(float x, float y)
+{
+	// pozice v mape
+	float min,max;
+	bool ok;
+	max = min = 0.f;
+	ok = GetLevel()->GetScene()->GetScenePhysics()->GetCamber(x,x,y,y,min,max);
+	SetPosition(x,y,min);
+	if (!ok || (max-min) > 1.f) 
+	{
+		GetCtrl()->SetOverColor(0xffff0000);
+		return GetLang()->GetString(101);
+	}
+	// zjistit zda muze byt cerveny nebo jiny
+	for (int i=0; i < GetLevel()->GetNumObj();i++)
+	{
+		float x = GetLevel()->GetObj(i)->GetPosX();
+		float y = GetLevel()->GetObj(i)->GetPosY();
+		x -= GetPosX();
+		y -= GetPosY();
+		if (x*x+y*y < 4000.f)
+		{
+			GetCtrl()->SetOverColor(0xffff0000);
+			return GetLang()->GetString(102);
+		}
+	}
+	// muze se postavit, ted jen najit zdroj
+	SystemObjectWater * source = NULL;
+	float maxdist = 0.f;
+	for (int i=0; i < GetLevel()->GetNumSysObj();i++)
+	{
+		BecherSystemObject * o = GetLevel()->GetSysObj(i);
+		if (o->GetType()!=EBSys_Water)
+			continue;
+		SystemObjectWater * sw = dynamic_cast<SystemObjectWater*>(o);
+		float d = sw->GetDistance(GetPosX(),GetPosY());
+		if (d > maxdist)
+		{
+			maxdist = d;
+			source = sw;
+		}
+	}	
+	if (source == NULL)
+	{
+		GetCtrl()->SetOverColor(0xffff0000);
+		return GetLang()->GetString(103);
+	}
+
+	// nejaka voda je
+	byte c = (byte)(0xff * maxdist);
+	GetCtrl()->SetOverColor(0xff000000 | (0xff-c) << 8 | c);
+	return NULL;
 }
 
 bool WaterHole::Idiot(TJob *t)

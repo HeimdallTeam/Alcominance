@@ -50,6 +50,10 @@ enum EObjType
 
 	// system
 	EBSys_Sound = 1000,
+	EBSys_Place,
+	EBSys_Water,
+	EBSys_Coal,
+	EBSys_Stone,
 	EBSys_Max,
 };
 

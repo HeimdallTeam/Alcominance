@@ -512,6 +512,14 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\src\ministry.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\ministry.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\workspace.cpp"
 					>
 				</File>

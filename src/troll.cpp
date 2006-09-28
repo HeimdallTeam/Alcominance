@@ -5,7 +5,10 @@
 #include "crr.h"
 #include "troll.h"
 
-static CVar v_speed("troll_speed", 35.f, 0);
+static CVar v_speed("troll_speed", 35.f, TVAR_SAVE);
+static CVar v_cost_work("troll_cost_work", 35.f, TVAR_SAVE);
+static CVar v_cost_bring("troll_cost_bring", 35.f, TVAR_SAVE);
+static CVar v_cost_wait("troll_cost_wait", 35.f, TVAR_SAVE);
 static const float scale = 0.35f;
 
 Troll::Troll(IHoeScene * scn) : BecherObject(scn)
@@ -23,6 +26,7 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 	m_load.surtype = EBS_None;
 
 	anim = 0.f;
+	m_nextfind = 0.f;
 }
 
 Troll::~Troll()
@@ -31,6 +35,7 @@ Troll::~Troll()
 
 void Troll::Update(const float t)
 {
+#ifndef BECHER_EDITOR
 	// pokud chodi tak chodi
 	// pokud ceka, tak nic
 	switch (m_job.type)
@@ -45,51 +50,24 @@ void Troll::Update(const float t)
 		this->SetAnimationTime(anim);
 		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
 			Finish();
+		// prachy
+		GetLevel()->GetMJobs()->AddPay(v_cost_bring.GetFloat() * t);
 		break;
 	case TJob::jtFindJob:
-		FindJob(m_job.owner);
+		if (m_nextfind > 0.f)
+			m_nextfind -= t;
+		else
+		{
+			FindJob(m_job.owner);
+			m_nextfind = 10.f;
+		}
+		GetLevel()->GetMJobs()->AddPay(v_cost_wait.GetFloat() * t);
+		break;
+	case TJob::jtWork:
+		GetLevel()->GetMJobs()->AddPay(v_cost_work.GetFloat() * t);
 		break;
 	};
-	/*EPhaseResult res;
-				{
-					m_path.SetPosTo(m_job.owner);
-					m_phase = GoToOwner;
-				}
-				else
-				{
-					FindJob(m_job.owner);
-					// dodelat aby kdyz nebude prace tak nic
-				}
-			}
-			else if (m_phase == GoToOwner)
-			{
-				
-			}
-			break;
-		case Job::jtWork:
-			if (m_phase == PhaseStart)
-			{
-				// nastavit novou cestu na misto urceni
-				m_phase = GoToOwner;
-				m_path.SetPosTo(m_job.owner);
-			}
-			else if (m_phase == GoToOwner)
-			{
-				m_job.owner->SetToWork(this);
-				m_phase = Works;
-			}
-			else if (m_phase == GoToEnd)
-			{
-				m_job.owner->UnsetFromWork(this);
-				FindJob(m_job.owner);
-			}
-			break;
-		case Job::jtNone:
-			FindJob(NULL);
-			break;
-		};
-	}
-	*/
+#endif
 }
 
 void Troll::SetJob(const TJob & j)
@@ -207,7 +185,7 @@ bool Troll::FindJob(BecherBuilding * pref)
 {
 	TJob job;
 	memset(&job,0,sizeof(job));
-	assert(pref);
+	//assert(pref);
 	if (pref->Idiot(&job))
 	{
 		SetJob(job);
@@ -217,6 +195,7 @@ bool Troll::FindJob(BecherBuilding * pref)
 	{
 		TJob j = m_job;
 		j.type = TJob::jtFindJob;
+		j.owner = pref;
 		SetJob(j);
 	}
 	return false;

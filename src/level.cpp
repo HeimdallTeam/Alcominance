@@ -74,9 +74,10 @@ void BecherLevel::Update(float time)
 	else
 	{
 		m_timer.Update(time);
+		m_mjobs.Update(time);
 		GetView()->Update(time);
 		// update objects
-		for (int i=0;i < this->m_numobj;i++)
+		for (int i=0;i < this->m_obj.Count();i++)
 		{
 			this->m_obj[i]->Update(time);
 		}
@@ -117,7 +118,11 @@ void BecherLevel::MouseUpdate(float x, float y)
 		float X,Y;
 		m_build->Show(true);
 		if (GetView()->GetPick(x,y,&X,&Y))
-			m_build->SetPosition(X,Y,0);
+		{
+			// zda postavit nebo nestavit
+			// ukazatel cervene
+			m_build->BuildPlace(X,Y);
+		}
 	}
 	else // show select
 	{
@@ -133,9 +138,7 @@ void BecherLevel::MouseLeave()
 
 void BecherLevel::SetBuildObject(BecherBuilding * bo, int gold, int wood, int stone)
 {
-	if (m_build)
-		delete m_build;
-
+	LeaveBuild();
 	m_build = bo;
 	m_buildgold = gold;
 	m_buildwood = wood;
@@ -143,6 +146,15 @@ void BecherLevel::SetBuildObject(BecherBuilding * bo, int gold, int wood, int st
 	//m_buildinit = m_select;
 	bo->SetMode(EBM_Select);
 	bo->Show(false);
+}
+
+void BecherLevel::LeaveBuild()
+{
+	if (m_build)
+	{
+		delete m_build;
+		m_build = NULL;
+	}
 }
 
 void BecherLevel::Start()
@@ -164,7 +176,12 @@ void BecherLevel::MouseLeftDown(float x, float y)
 		if (GetView()->GetPick(x,y,&X,&Y))
 		{
 			// build
-			m_build->SetPosition(X,Y,0);
+			const char * reason;
+			if (reason = m_build->BuildPlace(X,Y))
+			{
+				m_hud.GetInfo()->Add(reason);
+				return;
+			}
 			assert(GetObjectClass(m_build->GetType()));
 			if (dynamic_cast<BecherBuilding*>(m_build)->StartBuilding(m_buildgold, m_buildwood, m_buildstone))
 			{
@@ -267,6 +284,8 @@ bool BecherLevel::LoadGame(const char *path)
 {
 	Create(CreateScene());
 
+	if (!m_mjobs.Init())
+		return false;
 	m_hud.Load("scripts/hud.menu");
 	this->m_cash.Link(dynamic_cast<HoeGame::Gui::DigiCounter *>(m_hud.ReqItem("cash", HoeGame::Gui::EDigiCounter)));
 	Sugar::m_userhud.Load("scripts/sugar.menu");
@@ -276,7 +295,6 @@ bool BecherLevel::LoadGame(const char *path)
 	WaterHole::m_userhud.Load("scripts/waterhole.menu");
 	Farm::m_userhud.Load("scripts/farm.menu");
 	m_builddlg.Load("scripts/build.menu");
-	m_dlg = &m_builddlg;
 
 	SetTerrainData();
 
@@ -360,8 +378,11 @@ void BecherLevel::OnKeyDown(int key)
 				;//m_info.Add("Game saved.");
 			else
 				assert(!"game save failed");
-			
-			
+	}
+	else if (key == HK_SPACE)
+	{
+		LeaveBuild();
+		m_dlg = &m_builddlg;
 	}
 	/*if (GetCon()->IsActive())
 		GetCon()->*/

@@ -11,7 +11,7 @@ end
 function s_cukr()
  ClearButtons()
  AddButton(model_STOPPRACI,2, "c_najmout")
- PlaySound(model_TESTSOUND)
+ --PlaySound(model_TESTSOUND)
 end
 
 --b
@@ -35,8 +35,9 @@ function i_sugar(b)
  
  info("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
  
- --zjisti se recept (kolik je treba trtiny pro jednotku/jendotky cukr/u) 
- count, units=getReceptCount(GetVar("sugar_recept"), "C")
+ --zjisti se recept (kolik je treba trtiny pro jednotku/jendotky cukr/u)
+ recept =  GetVar("sugar_recept")
+ count, units=getReceptCount(recept, "C")
  info("C",count," ",units)
  
  -- kdyz je trtina aspon na jednu jednotku a nikdo nezpracovava, zpracuj

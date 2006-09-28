@@ -1,4 +1,10 @@
-﻿# chybove hlasky 
+﻿# hlasky 
+101 = "Tento terén je pro stavbu nevhodný."
+102 = "Budova je příliš blízko jinému objektu."
+103 = "Studna je moc vzdálena od zdroje."
+
+
+201 = "Výplatní den."
 
 # tooltips
 1001 = "Dřevorubec."
@@ -12,6 +18,7 @@
 1009 = "Lihovar."
 1010 = "Továrna."
 
+# stary
 1 = "Nejsou prachy!"
 2 = "Najmout dělníka"
 

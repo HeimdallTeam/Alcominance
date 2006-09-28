@@ -59,6 +59,9 @@ void DialogBuild::OnClick(HoeGame::Gui::Base * sender)
 	case EBO_Sugar:
 		GetLua()->func("c_sugar");
 		break;
+	case EBO_WaterHole:
+		GetLua()->func("c_stavstudna");
+		break;
 	default:
 		assert(!"Button not implemented.");
 		break;

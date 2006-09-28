@@ -36,8 +36,8 @@ public:
 
 #ifndef BECHER_EDITOR
 	virtual bool SetToGet(Troll * t, uint num);
-#endif // BECHER_EDITOR
-
+	virtual const char * BuildPlace(float x, float y);
+#endif
 	DECLARE_BUILDING(EBO_WaterHole)
 };
 

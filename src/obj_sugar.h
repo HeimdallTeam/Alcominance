@@ -47,7 +47,9 @@ public:
 	virtual ~Sugar();
 
 	virtual void SetMode(EBuildingMode mode);
-
+#ifndef BECHER_EDITOR
+	virtual const char * BuildPlace(float x, float y);
+#endif
 	DECLARE_BUILDING(EBO_Sugar)
 };
 
