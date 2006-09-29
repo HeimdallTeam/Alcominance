@@ -6,6 +6,28 @@
 
 201 = "Výplatní den."
 
+301 = "Město vzkvétalo"
+302 = "Město vzkvétalo, ale já si oproti té honosné fasádě"
+303 = "Já si oproti té honosné fasádě připadal jak v propadlišti"
+304 = "Lidé bohatli, ale zahodili svoje štěstí a šlapali po něm"
+305 = "Vlastně jako já"
+306 = "čím více měli, tím více pili, aby neviděli prázdnotu svých životů"
+307 = "Vlastně jako já"
+308 = "Můj děda byl jiný, neskrýval svůj smutek jako oni"
+309 = "Lidé se mu jen vysmívali, člověku ze starých dob"
+310 = "Báli se ho, jelikož  s nimi nespadl prázdnoty"
+311 = "Vlastně jako já"
+312 = "On se celý život pachtil se svým receptem"
+313 = "Věřil v jeho dobrý vliv"
+314 = "Vždy uvařil sotva pro sebe a své přátele"
+315 = "Už se asi nemohli dívat pravdě do tváře skrze jeho oči"
+316 = "Museli je zničit"
+317 = "Jako by se bál toho, co jsem považoval za vysvobození"
+318 = "Zděsil jsem se vida jak se na mě upnul"
+319 = "Děda trávil mnoho času zamčený v té sklepní komoře"
+320 = "Myslel sem, že se tam zavírá se svým žalem, nikdy sem za ním nechodil"
+320 = "Nikdy jsem za ním nechodil"
+
 # tooltips
 1001 = "Dřevorubec."
 1002 = "Důl na uhlí."
@@ -25,6 +47,8 @@
 5 = "%d cukříčku."
 6 = "%d třťiny."
 
+#konec kampane
+Dokonáno jest. Díky tobě firma rozkvetla jak úsměv nevinné krásky po první sklence becherovky. Snoubí se v ní jedinečné dary naší přírody s nejnovějšími postupy výroby. Tak můžeme dodávat mimořádný likér všem těm, kdož si oblíbili jeho chuť i prospěšné účinky. Podnik má vše potřebné pro prosperitu v novém věku. Becherovka je uchována pro další generace.
 
 
 
