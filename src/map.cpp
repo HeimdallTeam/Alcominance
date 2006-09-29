@@ -68,6 +68,26 @@ BecherObject * BecherMap::CreateObject(EObjType type)
 	return bo;
 }
 
+BecherObject * BecherMap::CreateXObject(EObjType type){
+
+    BecherObject * bo = NULL;
+
+	switch (type)
+	{
+	case EBO_Stones1:
+    case EBO_Stones2:
+    case EBO_Anthill:
+    case EBO_Row:
+		bo = new Addon(m_scene, type);
+        break;
+    default:
+		assert(!"Unknown becher X object");
+	};
+
+	bo->id = GenObjectID();
+	return bo;
+}
+
 BecherSystemObject * BecherMap::CreateSystemObject(EObjType type)
 {
 	switch (type)

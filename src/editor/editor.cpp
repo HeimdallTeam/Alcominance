@@ -161,9 +161,20 @@ ToolObjects::ToolObjects(wxWindow * parent)
 	b = new wxBitmapButton(p3,IDB(EBSys_Stone),wxBitmap(Sound_xpm),BT_P(2,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Stone instance") );
 
+    wxWindow * p4 = new wxWindow(this,-1);
+    b = new wxBitmapButton(p4,IDB(EBO_Stones1),wxBitmap(Sound_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Little stones") );
+    b = new wxBitmapButton(p4,IDB(EBO_Stones2),wxBitmap(Sound_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Stones") );
+    b = new wxBitmapButton(p4,IDB(EBO_Anthill),wxBitmap(Sound_xpm),BT_P(0,1),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Anthill") );
+    b = new wxBitmapButton(p4,IDB(EBO_Row),wxBitmap(Sound_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Row") );
+
 	AddPage(p2,_("Map elements"));
 	AddPage(p,_("Buildings"));
 	AddPage(p3,_("System tools"));
+    AddPage(p4,_("Addons"));
 
 }
 
@@ -224,7 +235,7 @@ TerrainObject::TerrainObject(wxWindow * parent)
 	b->SetToolTip( _("Terrain up") );
     //b = new wxBitmapButton(sb,IDB_TERRUP,wxBitmap(e_terrhillup_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Terrain hill up") );
-    //b = new wxBitmapButton(sb,IDB_TERRUP,wxBitmap(e_terrhilldown_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
+    //b = new wxBitmapButton(sb,IDB_TERRDOWN,wxBitmap(e_terrhilldown_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Terrain hill down") );
 	b = new wxBitmapButton(sb,IDB_TERRPREV,wxBitmap(e_terrprevis_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Terrain") );

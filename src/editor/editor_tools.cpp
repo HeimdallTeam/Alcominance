@@ -37,12 +37,17 @@ ToolCreateObject::ToolCreateObject(EObjType type, bool repeat, bool randori)
 	// vytvorit m_obj
 	if (type < EBO_Max)
 	{
-		m_obj = BecherEdit::Get()->GetActMap()->CreateObject(type);
-		m_obj->Show(false);
-		if (m_rand)
-		{
-			m_obj->SetAngle((rand() % 628) * 0.01f);
-		}
+        if(type > EBO_Addon){
+            m_xobj = BecherEdit::Get()->GetActMap()->CreateXObject(type);
+            m_xobj->Show(false);
+        }else{
+		    m_obj = BecherEdit::Get()->GetActMap()->CreateObject(type);
+            m_obj->Show(false);
+            if (m_rand)
+		    {
+			    m_obj->SetAngle((rand() % 628) * 0.01f);
+		    }
+        }			
 	}
 	else
 	{

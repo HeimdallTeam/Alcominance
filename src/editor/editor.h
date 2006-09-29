@@ -19,6 +19,13 @@ public:
 	virtual wxString FindId(int id);
 };
 
+class BecherAddons{
+public:
+    BecherAddons();
+    virtual ~BecherAddons();
+
+};
+
 struct TTerrainTexture
 {
 	enum {

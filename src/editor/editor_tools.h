@@ -31,6 +31,7 @@ class ToolCreateObject : public HoeEditor::EditorTool
 {
 protected:
 	BecherObject * m_obj;
+    XHoeObject * m_xobj;
 	EObjType m_type;
 	bool m_repeat;
 	bool m_rand;
