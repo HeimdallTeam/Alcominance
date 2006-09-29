@@ -42,6 +42,7 @@ enum EObjType
 	EBO_CoalMine,
 	EBO_StoneMine,
 	EBO_Max,
+    EBO_Addon, // class
 
 // class
 	EBC_Building = 100,

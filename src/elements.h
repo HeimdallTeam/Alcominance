@@ -50,8 +50,7 @@ class Addon : public XHoeObject
 public:
     Addon(IHoeScene * scn, int id);
     virtual EObjType GetClass() { return EBO_Addon; }
-
-    DECLARE_BASEOBJECT(EBO_Addon)
+    
 };
 
 #endif // _BECHERGAME_ELEMENTS_H_
