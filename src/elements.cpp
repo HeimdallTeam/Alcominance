@@ -117,3 +117,17 @@ void Bridge::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 
 #endif // BECHER_OBJECT
 
+Addon::Addon(IHoeScene * scn, int id)
+{
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(id));
+	m_height = 0.f;
+}
+
+#ifndef BECHER_EDITOR
+
+
+#else // BECHER_OBJECT
+
+
+
+#endif // BECHER_OBJECT

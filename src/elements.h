@@ -43,6 +43,16 @@ public:
 	DECLARE_BASEOBJECT(EBO_Bridge)
 };
 
+// doplnky, ruzna id - sutriky, sutry, mraveniste ...
+class Addon : public XHoeObject
+{
+    float m_height;
+public:
+    Addon(IHoeScene * scn, int id);
+    virtual EObjType GetClass() { return EBO_Addon; }
+
+    DECLARE_BASEOBJECT(EBO_Addon)
+};
 
 #endif // _BECHERGAME_ELEMENTS_H_
 
