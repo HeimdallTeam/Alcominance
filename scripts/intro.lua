@@ -3,7 +3,7 @@ hoe("showfps")
 
 AddFile("data_old/intro.hx")
 
-Wait(0.1)
+Wait(0.2)
 Fade("ff000000", 0.2)
 LoadImage("picture vary con:'test'")
 SetText("titulky","Město vzkvétalo")
@@ -91,9 +91,9 @@ Fade("00000000", 0)
 Wait(3)
 
 LoadImage("picture postel con:'test'")
-SetText("titulky","")
 SetText("titulky","Zděsil jsem se, vida jak se na mě upnul")
-Fade("ff000000", 4)
+Wait(3)
+Fade("ff000000", 1)
 
 LoadImage("picture sklep con:'test'")
 SetText("titulky","Děda trávil mnoho času zamčený v té sklepní komoře")
@@ -118,13 +118,13 @@ LoadImage("picture suple con:'test'")
 Wait(2)
 
 Fade("ff000000", 0.3)
-Fade("00000000", 0.3)
 
 LoadImage("picture stavba con:'test'")
-Fade("ff000000", 0.7)
+Fade("00000000", 0.3)
+Wait(1)
 
 LoadImage("picture plan con:'test'")
-Fade("00000000", 0.8)
+Wait(1)
 Fade("ff000000", 0.7)
 
 LoadImage("picture sklenice con:'test'")
