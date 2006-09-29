@@ -5,6 +5,7 @@
 #include "id.h"
 #include "troll.h"
 #include "obj_store.h"
+#include "obj_construct.h"
 
 // premistit
 void TrollList::OneStopWork()
@@ -24,17 +25,23 @@ void TrollList::OneStopWork()
 BecherBuilding::BecherBuilding(IHoeScene * scn) : BecherObject(scn)
 {
 	m_mode = EBM_None;
+	m_construct = NULL;
 }
 
 #ifndef BECHER_EDITOR
 bool BecherBuilding::StartBuilding(int gold, int wood, int stone)
 {
-	/*if (!GetBecher()->GetCash()->Add(-gold))
+	if (!GetLevel()->GetCash()->Add(-gold))
 	{
-		GetBecher()->GetInfoPanel()->Add(1);
+		GetLevel()->GetPanel()->GetInfo()->Add(GetLang()->GetString(104));
 		return false;
-	}*/
-	SetMode(EBM_Normal);
+	}
+	// build
+	SetMode(EBM_Build);
+	if (m_construct)
+		m_construct->SetResources(wood, stone);
+	else
+		SetMode(EBM_Normal);
 
 	return true;
 }
@@ -44,8 +51,7 @@ bool BecherBuilding::StartBuilding(int gold, int wood, int stone)
 bool BecherBuilding::Save(BecherGameSave &w)
 {
 	BecherObject::Save(w);
-	dword m = m_mode;
-	w.Write<dword>(m);
+	w.WriteValue<dword>(m_mode);
 	return true;
 }
 

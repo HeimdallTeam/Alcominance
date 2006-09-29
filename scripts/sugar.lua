@@ -1,22 +1,16 @@
 -- funkce pro cukrovar
 
 function c_sugar()
-
   cost = GetVar("sugar_cost")  
   wood = GetVar("sugar_cost_wood")
   stone = GetVar("sugar_cost_stone")
-  
-  if cost < GetCash() then
-   info("Nedostatek penze pro stavbu")
-  end
-    
-  AddCash(-cost)
   SetBuilding(EBO_Sugar,cost,wood,stone)
 end
 
 function s_cukr()
  ClearButtons()
- AddButton(model_STOPPRACI,2, "c_najmout")
+ AddButton(ico_TROLLNEW,"Najmout", "c_najmout")
+ AddButton(ico_TROLLFREE,"Propustit", "c_propustit")
  --PlaySound(model_TESTSOUND)
 end
 

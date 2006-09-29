@@ -11,6 +11,10 @@ ADDID(font_TOOLTIPS)
 // zvuky
 ADDID(sound_PAYDAY)
 
+// ikony
+ADDID(ico_TROLLNEW)
+ADDID(ico_TROLLFREE)
+
 // id modelu
 ADDID(model_TROLL)
 ADDID(model_FACTORY) // tovarna

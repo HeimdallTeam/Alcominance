@@ -9,9 +9,9 @@ float getheight(IHoeModel * m);
 
 static CVar v_sklad("store_max", 160, 0);
 static CVar v_numworks("store_maxwork", 4, 0);
-static CVar v_cena("store_cost", 200, TVAR_SAVE); // cena za stavbu
-static CVar v_cena("store_cost_wood", 100, TVAR_SAVE); // pocet dreva potrebneho na stavbu
-static CVar v_cena("store_cost_stone", 150, TVAR_SAVE); // pocet kameni potrebneho na stavbu
+static CVar v_cost("store_cost", 200, TVAR_SAVE); // cena za stavbu
+static CVar v_cost_wood("store_cost_wood", 100, TVAR_SAVE); // pocet dreva potrebneho na stavbu
+static CVar v_cost_stone("store_cost_stone", 150, TVAR_SAVE); // pocet kameni potrebneho na stavbu
 
 StoreStatic Store::m_storepref;
 
@@ -133,7 +133,7 @@ bool Store::Save(BecherGameSave &w)
 	BecherBuilding::Save(w);
 
 	for (int i=1;i < EBS_Max;i++)
-		w.WriteRI(m_res[i]);
+		m_res[i].Save(w);
 
 	return true;
 }
@@ -143,7 +143,7 @@ bool Store::Load(BecherGameLoad &r)
 	BecherBuilding::Load(r);
 
 	for (int i=1;i < EBS_Max;i++)
-		r.ReadRI(m_res[i]);
+		m_res[i].Load(r);
 
 	OnUpdateSur();
 	return true;
@@ -236,8 +236,7 @@ bool Store::Select()
 	BecherBuilding::Select();
 	GetLevel()->SetObjectHud(&m_storepref);
 	m_storepref.SetAct(this);
-	if (!IsBuildMode())
-        GetLua()->func("s_sklad");
+	GetLua()->func("s_sklad");
 	return true;
 }
 

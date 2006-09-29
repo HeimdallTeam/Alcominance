@@ -50,7 +50,7 @@ CoalMine::CoalMine(IHoeScene * scn) : SourceBuilding(scn), m_coal(EBS_Coal)
 bool CoalMine::Save(BecherGameSave &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteRI(m_coal);
+	m_coal.Save(w);
 	w.WriteReservedWords(9);
 	return true;
 }
@@ -58,7 +58,7 @@ bool CoalMine::Save(BecherGameSave &w)
 bool CoalMine::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
-	r.ReadRI(m_coal);
+	m_coal.Load(r);
 	r.ReadReservedWords(9);
 	return true;
 }
@@ -97,8 +97,7 @@ bool CoalMine::Select()
 	SourceBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
-	if (!IsBuildMode())
-        GetLua()->func("s_coalmine");
+	GetLua()->func("s_coalmine");
 	return true;
 }
 

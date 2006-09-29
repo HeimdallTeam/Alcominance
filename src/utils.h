@@ -22,7 +22,6 @@ class BecherGameSave : public HoeFileWriter
 	size_t m_lastsizepos;
 public:
 	BecherGameSave(XHoeFile * f) : HoeFileWriter(f) {}
-	void WriteRI(ResourceExp & item);
 	void WriteChunk(unsigned long chunk, unsigned long ver);
 	void WriteChunkEnd();
 	void WriteReservedWords(int num);
@@ -45,7 +44,6 @@ public:
 			chunk.chunk = 0;
 		return chunk.chunk != 0;
 	}
-	void ReadRI(ResourceExp & item);
 	bool ReadHeader();
 	void ReadReservedWords(int num);
 };

@@ -63,9 +63,37 @@ void DialogBuild::OnClick(HoeGame::Gui::Base * sender)
 		GetLua()->func("c_stavstudna");
 		// zobrazit minimapu
 		if (GetLevel()->IsBuild())
-		{
 			GetLevel()->ShowWaterMap();
-		}
+		break;
+	case EBO_CoalMine:
+		GetLua()->func("c_stavuhli");
+		// zobrazit minimapu
+		if (GetLevel()->IsBuild())
+			GetLevel()->ShowCoalMap();
+		break;
+	case EBO_StoneMine:
+		GetLua()->func("c_stavkamen");
+		// zobrazit minimapu
+		if (GetLevel()->IsBuild())
+			GetLevel()->ShowStoneMap();
+		break;
+	case EBO_Farm:
+		GetLua()->func("c_farm");
+		break;
+	case EBO_Factory:
+		GetLua()->func("c_stavtovarna");
+		break;
+	case EBO_Store:
+		GetLua()->func("c_stavtovarna");
+		break;
+	case EBO_Destilate:
+		GetLua()->func("c_stavsklad");
+		break;
+	case EBO_Shop:
+		GetLua()->func("c_stavobchod");
+		break;
+	case EBO_Saw:
+		GetLua()->func("c_stavdrevorubec");
 		break;
 	default:
 		assert(!"Button not implemented.");

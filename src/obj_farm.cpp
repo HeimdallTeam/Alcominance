@@ -77,23 +77,6 @@ bool Farm::Load(BecherGameLoad &r)
 
 void Farm::Update(const float dtime)
 {
-	/*static bool hl = false;
-	if (!hl)
-	{
-		GetBecher()->GetInfoPanel()->Add("Farma potrebuje delnika!");
-		hl = true;
-	}
-	if (worked && worked->GetActJob() == Job::jtWork)
-	{
-		rust += (float)dtime * v_rust.GetFloat();
-		if (rust > 1.f)
-		{
-			skliz = 50;
-			rust = 0;
-			Idiot(worked);
-		}
-	}*/
-	//if (worked) // roste
 	{
 		m_grow += v_speed.GetFloat() * dtime;
 		if (m_grow >= 1.f)
@@ -104,6 +87,37 @@ void Farm::Update(const float dtime)
 	}
 	m_growinfo.t_y = 5.f * m_grow - 5.f;
 }
+
+const char * Farm::BuildPlace(float x, float y)
+{
+	// pozice v mape
+	float min,max;
+	bool ok;
+	max = min = 0.f;
+	ok = GetLevel()->GetScene()->GetScenePhysics()->GetCamber(x,x,y,y,min,max);
+	SetPosition(x,y,min);
+	if (!ok || (max-min) > 1.f) 
+	{
+		GetCtrl()->SetOverColor(0xffff0000);
+		return GetLang()->GetString(101);
+	}
+	// zjistit zda muze byt cerveny nebo jiny
+	for (int i=0; i < GetLevel()->GetNumObj();i++)
+	{
+		float x = GetLevel()->GetObj(i)->GetPosX();
+		float y = GetLevel()->GetObj(i)->GetPosY();
+		x -= GetPosX();
+		y -= GetPosY();
+		if (x*x+y*y < 4000.f)
+		{
+			GetCtrl()->SetOverColor(0xffff0000);
+			return GetLang()->GetString(102);
+		}
+	}
+	GetCtrl()->SetOverColor(0xffffffff);
+	return NULL;
+}
+
 bool Farm::InsertSur(ESurType type, uint *s)
 {
 	return false;
@@ -130,8 +144,7 @@ bool Farm::Select()
 	SourceBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
-	if (!IsBuildMode())
-		GetLua()->func("s_farma");
+	GetLua()->func("s_farma");
 	return true;
 }
 

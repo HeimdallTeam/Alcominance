@@ -4,9 +4,9 @@
 #include "troll.h"
 #include "obj_shop.h"
 
-static CVar v_cena("shop_cost", 200, TVAR_SAVE); // cena za stavbu
-static CVar v_cena("shop_cost_wood", 100, TVAR_SAVE); // pocet dreva potrebneho na stavbu
-static CVar v_cena("shop_cost_stone", 50, TVAR_SAVE); // pocet kameni potrebneho na stavbu
+static CVar v_cost("shop_cost", 200, TVAR_SAVE); // cena za stavbu
+static CVar v_cost_wood("shop_cost_wood", 100, TVAR_SAVE); // pocet dreva potrebneho na stavbu
+static CVar v_cost_stone("shop_cost_stone", 50, TVAR_SAVE); // pocet kameni potrebneho na stavbu
 
 /////////////////////////////////////////////////////////////
 Shop::Shop(IHoeScene * scn) : BecherBuilding(scn)
@@ -54,8 +54,7 @@ void Shop::UnsetFromWork(Troll * t)
 bool Shop::Select()
 {
 	BecherBuilding::Select();
-	if (!IsBuildMode())
-        GetLua()->func("s_shop");
+	GetLua()->func("s_shop");
 	return true;
 }
 

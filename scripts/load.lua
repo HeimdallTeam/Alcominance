@@ -20,6 +20,8 @@ AddFile("data/info.hm")
 AddFile("data/cukrovar.hm")
 AddFile("data/dul.hm")
 
+AddFile("data/voda.hm")
+
 LoadResource(model_STROM1, "model strom1")
 LoadResource(model_STROM2, "model strom2")
 LoadResource(model_STROM3, "model strom3")
@@ -32,10 +34,13 @@ LoadResource(model_STONEMINE, "model dul_kamen")
 
 LoadResource(font_TOOLTIPS, "font 'resource/tooltips.ttf' 16")
 
--- models
 LoadResource(sound_PAYDAY, "sound 'sound/payday.ogg'")
 
+LoadResource(ico_TROLLNEW, "picture com_go")
+LoadResource(ico_TROLLFREE, "picture com_release")
 
+
+-- stary
 --files 
 AddFile("data_old/textures.hx")
 AddFile("data_old/chalupa.hm")

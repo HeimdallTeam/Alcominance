@@ -6,9 +6,9 @@
 
 static CVar v_numzpr("dest_speed", 1.f, TVAR_SAVE); // rychlost zpracovani
 static CVar v_sklad("dest_max", 500, TVAR_SAVE); // max. velikost miniskladu
-static CVar v_cena("dest_cost", 180, TVAR_SAVE); // cena za stavbu
-static CVar v_cena("dest_cost_wood", 40, TVAR_SAVE); // pocet dreva potrebneho na stavbu
-static CVar v_cena("dest_cost_stone", 30, TVAR_SAVE); // pocet kameni potrebneho na stavbu
+static CVar v_cost("dest_cost", 180, TVAR_SAVE); // cena za stavbu
+static CVar v_cost_wood("dest_cost_wood", 40, TVAR_SAVE); // pocet dreva potrebneho na stavbu
+static CVar v_cost_stone("dest_cost_stone", 30, TVAR_SAVE); // pocet kameni potrebneho na stavbu
 static CVar v_numworks("dest_maxwork", 4, TVAR_SAVE); // maximalni pocet pracujicich
 static CVar v_recept("dest_recept", "", 0); // recept pro jednu davku
 static CVar v_coalmax("coal_max", 120, TVAR_SAVE); // maximalni kapacita pro uhli
@@ -176,8 +176,7 @@ bool Destilate::Select()
 	FactoryBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
-	if (!IsBuildMode())
-        GetLua()->func("s_lihovar");
+	GetLua()->func("s_lihovar");
 	return true;
 }
 

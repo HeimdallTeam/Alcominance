@@ -3,6 +3,7 @@
 #include "becher.h"
 #include "troll.h"
 #include "obj_sugar.h"
+#include "obj_construct.h"
 
 static CVar v_numzpr("sugar_speed", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
 static CVar v_cost("sugar_cost", 160, TVAR_SAVE);
@@ -76,6 +77,8 @@ bool Sugar::Save(BecherGameSave &w)
 {
 	BecherBuilding::Save(w);
 	w.WriteReservedWords(10);
+	if (m_construct)
+		m_construct->Save(w);
 	return true;
 }
 
@@ -83,6 +86,8 @@ bool Sugar::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
 	r.ReadReservedWords(10);
+	if (m_construct)
+		m_construct->Load(r);
 	OnUpdateSur();
 	return true;
 }
@@ -95,6 +100,10 @@ void Sugar::SetMode(EBuildingMode mode)
 	// pri buildingu nastavit kolize
 	switch (m_mode)
 	{
+	case EBM_Build:
+		m_construct = NULL;
+		GetCtrl()->SetOverColor(0xffffffff);
+		break;
 	case EBM_Select:
 		GetCtrl()->SetOverColor(0xffffffff);
 		break;
@@ -105,6 +114,11 @@ void Sugar::SetMode(EBuildingMode mode)
 	m_mode = mode;
 	switch (mode)
 	{
+	case EBM_Build:
+		GetCtrl()->SetOverColor(0xffffff00);
+		m_construct = new Construct(this);
+		m_construct->SetBuildTime(5.f);
+		break;
 	case EBM_Normal:
 		Show(true);
 		CRR::Get()->Register(&m_sugar);
@@ -146,12 +160,15 @@ const char * Sugar::BuildPlace(float x, float y)
 
 bool Sugar::InsertSur(ESurType type, uint *s)
 {
+	if (m_construct)
+		return m_construct->InsertSur(type,s);
 	switch (type)
 	{
 	case EBS_Cane:
 		return m_cane.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
 	case EBS_Coal:
 		return m_w.Add(s,*s);
+	// vlozit drevo a sutr
 	default:
 		assert(!"insert bad type");
 		return false;
@@ -160,7 +177,10 @@ bool Sugar::InsertSur(ESurType type, uint *s)
 
 bool Sugar::SetToWork(Troll * t)
 {
-    switch (t->GetJob().type){
+	if (m_construct)
+		return m_construct->SetToWork(t);
+    switch (t->GetJob().type)
+	{
     case TJob::jtWork:
 	    if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
 	    m_worked.Add(t);
@@ -181,6 +201,8 @@ bool Sugar::SetToWork(Troll * t)
 
 void Sugar::UnsetFromWork(Troll * t)
 {
+	if (m_construct)
+		return m_construct->UnsetFromWork(t);
     switch (t->GetJob().type){
     case TJob::jtWork:
 	    m_worked.Remove(t);
@@ -199,6 +221,11 @@ void Sugar::UnsetFromWork(Troll * t)
 
 void Sugar::Update(const float t)
 {
+	if (m_construct)
+	{
+		return m_construct->Update(t);
+	}
+
 	// update
 	float prog = m_w.InProcess() ? m_worked.Count()*v_numzpr.GetFloat():0.f;
 
@@ -248,15 +275,18 @@ void Sugar::Update(const float t)
 bool Sugar::Select()
 {
 	FactoryBuilding::Select();
+	if (m_construct)
+		return m_construct->Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
-	if (!IsBuildMode())
-        GetLua()->func("s_cukr");
+	GetLua()->func("s_cukr");
 	return true;
 }
 
 bool Sugar::Idiot(TJob * j)
 {
+	if (m_construct)
+		return m_construct->Idiot(j);
 	// zjistit pripadny zdroj pro suroviny
 	// 
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste

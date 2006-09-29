@@ -1,7 +1,14 @@
+
+function s_construct()
+ ClearButtons()
+ AddButton(ico_TROLLNEW,"Najmout", "c_najmout")
+ AddButton(ico_TROLLFREE,"Propustit", "c_propustit")
+end
+
 --Idiot pro staveni budov
 --b
---rem_wood			mnozstvi dreva zbyvajici pro dokonceni stavby
---rem_stone			mnozstvi kamene zbyvajici pro dokonceni stavby
+--wood_rem			mnozstvi dreva zbyvajici pro dokonceni stavby
+--stone_rem			mnozstvi kamene zbyvajici pro dokonceni stavby
 --wrk_count			pocet stavejicich tupounu
 --wrk_count_wood	pocet tupounu nosicich drevo
 --wrk_stone_stone	pocet tupounu nosicich kamen
@@ -15,26 +22,26 @@ function i_construct(b)
  end
  
  --chybi jenom jedna surovina a nikdo ji nenosi
- if b.rem_wood == 0 and b.wrk_count_stone == 0 then
+ if b.wood_rem == 0 and b.wrk_count_stone == 0 then
   return { type = 0, sur = EBS_Stone, num=10, percent = 90 }
  end
- if b.rem_stone == 0 and b.wrk_count_wood == 0 then
+ if b.stone_rem == 0 and b.wrk_count_wood == 0 then
   return { type = 0, sur = EBS_Wood, num=10, percent = 90 }
  end
  
- w_coef = b.wrk_count_wood / b.rem_wood
- s_coef = b.wrk_count_stone / b.rem_stone
+ w_coef = b.wrk_count_wood / b.wood_rem
+ s_coef = b.wrk_count_stone / b.stone_rem
  b_coef = b.wrk_count / (b.wood+b.stone)
  min = math.min(w_coef, s_coef, b_coef)
  
  --rozlozeni podle poctu zbyvajicich surovin
- if min = w_coef then
-  return { type = 0, sur = EBS_Wood, percent = 90 }
+ if min == w_coef then
+  return { type = 0, sur = EBS_Wood, num = 10, percent = 90 }
  end
- if min = s_coef then
-  return { type = 0, sur = EBS_Stone, percent = 90 }
+ if min == s_coef then
+  return { type = 0, sur = EBS_Stone, num = 10, percent = 90 }
  end
- if min = b_coef then
+ if min == b_coef then
   return { type = 1, percent = 100 }
  end
  

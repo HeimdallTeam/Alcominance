@@ -258,6 +258,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\obj_construct.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\obj_construct.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\obj_destilate.cpp"
 				>
 			</File>

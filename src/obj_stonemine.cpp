@@ -91,8 +91,7 @@ bool StoneMine::Select()
 	SourceBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
-	if (!IsBuildMode())
-        GetLua()->func("s_stonemine");
+	GetLua()->func("s_stonemine");
 	return true;
 }
 

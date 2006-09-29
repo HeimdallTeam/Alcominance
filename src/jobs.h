@@ -17,6 +17,7 @@ struct TJob
 		jtWork,
 		jtWaitToRes,
 		jtFindJob,
+		jtFly,
 	} type;
 	// parametry
 	BecherBuilding * owner;

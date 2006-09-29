@@ -103,6 +103,8 @@ bool BecherGame::LoadLevel(const char * fpath)
 		return false;
 	if (!GetLua()->Load("scripts/mine.lua",g_luaconst))
 		return false;
+	if (!GetLua()->Load("scripts/construct.lua",g_luaconst))
+		return false;
 
 	// benchamrk
 	// LuaBenchmark();

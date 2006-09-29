@@ -2,7 +2,7 @@
 101 = "Tento terén je pro stavbu nevhodný."
 102 = "Budova je příliš blízko jinému objektu."
 103 = "Studna je moc vzdálena od zdroje."
-
+104 = "Nejsou prachy."
 
 201 = "Výplatní den."
 
@@ -48,7 +48,7 @@
 6 = "%d třťiny."
 
 #konec kampane
-Dokonáno jest. Díky tobě firma rozkvetla jak úsměv nevinné krásky po první sklence becherovky. Snoubí se v ní jedinečné dary naší přírody s nejnovějšími postupy výroby. Tak můžeme dodávat mimořádný likér všem těm, kdož si oblíbili jeho chuť i prospěšné účinky. Podnik má vše potřebné pro prosperitu v novém věku. Becherovka je uchována pro další generace.
+#Dokonáno jest. Díky tobě firma rozkvetla jak úsměv nevinné krásky po první sklence becherovky. Snoubí se v ní jedinečné dary naší přírody s nejnovějšími postupy výroby. Tak můžeme dodávat mimořádný likér všem těm, kdož si oblíbili jeho chuť i prospěšné účinky. Podnik má vše potřebné pro prosperitu v novém věku. Becherovka je uchována pro další generace.
 
 
 

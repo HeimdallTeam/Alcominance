@@ -30,6 +30,7 @@ protected:
 	THoeSub_Model m_info;
 	ResourceExp m_herbe;
 	float m_wait;
+	bool m_ocup;
 public:
 	HerbeWoman(IHoeScene * scn);
 	virtual void OnUpdateSur();

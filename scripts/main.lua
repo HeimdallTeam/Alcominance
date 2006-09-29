@@ -8,24 +8,23 @@
 -- function ClearButtons()
 -- function PlaySound(id)
 
+-- hotovo
+function c_farm()
+ SetBuilding(EBO_Farm,GetVar("farm_cost"),GetVar("farm_cost_wood"),GetVar("farm_cost_stone"))
+end
+
+function c_stavdrevorubec()
+ SetBuilding(EBO_Saw,GetVar("saw_cost"),GetVar("saw_cost_wood"),GetVar("saw_cost_stone"))
+end
+
+-- stare
+
 function c_najmout()
  AddTroll(true);
 end
 
 function s_studna()
  ClearButtons()
- AddButton(model_JDI,"Send him somewhere", "c_go")
- AddButton(model_PRACUJ,"We have a work to do?", "c_work")
- AddButton(model_CUKROVAR_ICO,"Build Sugar factory", "c_stavcukr")
- AddButton(model_FARMA_ICO,"Build Sugar farm", "c_stavfarma")
- AddButton(model_CHALOUPKA_ICO,"Build Herbwomen", "c_stavkorenarka")
- AddButton(model_LIHOVAR_ICO,"Build Alcoholic house", "c_stavlihovar")
- AddButton(model_OBCHOD_ICO,"Build Market", "c_stavobchod")
- AddButton(model_SKLAD_ICO,"Build Storage", "c_stavsklad")
- AddButton(model_STUDNA_ICO,"Build Waterpump", "c_stavstudna")
- AddButton(model_TOVARNA_ICO,"Build Facility", "c_stavtovarna")
- AddButton(model_KAMENYDUL_ICO,"Build Stone Mine", "c_stavkamen")
- AddButton(model_STUDNA_ICO,"Build Coal Mine", "c_stavuhli")
 end
 
 function s_kamen()
@@ -59,12 +58,7 @@ end
 
 --builds
 
-function c_stavfarma()
- SetBuilding(EBO_Farm,15,0,0)
-end
-function c_stavkorenarka()
- SetBuilding(EBO_HerbeWoman,10,0,0)
-end
+
 
 function c_stavobchod()
  SetBuilding(EBO_Shop,5,15,20)
@@ -74,10 +68,6 @@ function c_stavstudna()
  SetBuilding(EBO_WaterHole,5,5,0)
 end
 
-function c_stavkamen()
-end
-function c_stavuhli()
-end
 
 --commands
 function c_go()

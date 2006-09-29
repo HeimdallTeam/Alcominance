@@ -330,6 +330,18 @@ bool BecherLevel::LoadGame(const char *path)
 	m_coalmap.Load(this);
 	m_stonemap.Load(this);
 
+	IHoeModel * m = (IHoeModel*)GetEngine()->Create("model voda");
+	// voda
+	for (int x=0; x < this->m_numX;x+=1)
+	for (int y=0; y < this->m_numY;y+=1)
+	{
+	XHoeObject * obj = new XHoeObject;
+	m_scene->RegisterObject(obj);
+	obj->SetModel(m);
+	obj->SetPosition( x * 20.f + 10.f - this->m_sizeX * 0.5f, -15, y * 20.f + 10.f - this->m_sizeY * 0.5f);
+	obj->Show(true);
+	}
+
 	return true;
 }
 

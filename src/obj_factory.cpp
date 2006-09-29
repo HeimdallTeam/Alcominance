@@ -226,8 +226,7 @@ bool Factory::Select()
 	FactoryBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
-	if (!IsBuildMode())
-        GetLua()->func("s_tovarna");
+	GetLua()->func("s_tovarna");
 	return true;
 }
 

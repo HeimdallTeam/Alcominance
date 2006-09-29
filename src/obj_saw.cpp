@@ -3,9 +3,9 @@
 #include "becher.h"
 #include "obj_saw.h"
 
-static CVar v_cena("saw_cost", 150, TVAR_SAVE); // cena za stavbu
-static CVar v_cena("saw_cost_wood", 80, TVAR_SAVE); // pocet dreva potrebneho na stavbu
-static CVar v_cena("saw_cost_stone", 10, TVAR_SAVE); // pocet kameni potrebneho na stavbu
+static CVar v_cost("saw_cost", 150, TVAR_SAVE); // cena za stavbu
+static CVar v_cost_wood("saw_cost_wood", 80, TVAR_SAVE); // pocet dreva potrebneho na stavbu
+static CVar v_cost_stone("saw_cost_stone", 10, TVAR_SAVE); // pocet kameni potrebneho na stavbu
 
 #ifndef BECHER_EDITOR
 SawStatic Saw::m_userhud;
@@ -66,8 +66,7 @@ bool Saw::Select()
 	SourceBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
-	if (!IsBuildMode())
-        GetLua()->func("s_saw");
+	GetLua()->func("s_saw");
 	return true;
 }
 

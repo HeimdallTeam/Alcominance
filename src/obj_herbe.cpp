@@ -63,14 +63,20 @@ HerbeWoman::HerbeWoman(IHoeScene * scn) : SourceBuilding(scn), m_herbe(EBS_Herbe
 bool HerbeWoman::Save(BecherGameSave &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteReservedWords(10);
+	m_herbe.Save(w);
+	w.Write<float>(m_wait);
+	w.WriteValue<dword>(m_ocup ? 1:0);
+	w.WriteReservedWords(8);
 	return true;
 }
 
 bool HerbeWoman::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
-	r.ReadReservedWords(10);
+	m_herbe.Load(r);
+	m_wait = r.Read<float>();
+	m_ocup = r.Read<dword>() != 0;
+	r.ReadReservedWords(8);
 	OnUpdateSur();
 	return true;
 }
@@ -96,8 +102,7 @@ bool HerbeWoman::Select()
 	SourceBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
-	if (!IsBuildMode())
-        GetLua()->func("s_herbe");
+	GetLua()->func("s_herbe");
 	return true;
 }
 

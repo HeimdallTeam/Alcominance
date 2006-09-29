@@ -6,9 +6,10 @@
 #include "troll.h"
 
 static CVar v_speed("troll_speed", 35.f, TVAR_SAVE);
-static CVar v_cost_work("troll_cost_work", 35.f, TVAR_SAVE);
-static CVar v_cost_bring("troll_cost_bring", 35.f, TVAR_SAVE);
-static CVar v_cost_wait("troll_cost_wait", 35.f, TVAR_SAVE);
+static CVar v_num("troll_num", 10, TVAR_SAVE);
+static CVar v_cost_work("troll_cost_work", 0.1f, TVAR_SAVE);
+static CVar v_cost_bring("troll_cost_bring", 0.1f, TVAR_SAVE);
+static CVar v_cost_wait("troll_cost_wait", 0.1f, TVAR_SAVE);
 static const float scale = 0.35f;
 
 Troll::Troll(IHoeScene * scn) : BecherObject(scn)
@@ -40,6 +41,15 @@ void Troll::Update(const float t)
 	// pokud ceka, tak nic
 	switch (m_job.type)
 	{
+	case TJob::jtFly:
+		// jde pryc
+		anim += ((t * v_speed.GetFloat()) / (scale * 20.f)) ;
+		if (anim > 1.f)
+			anim = 0.f;
+		this->SetAnimationTime(anim);
+		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
+			Finish();
+		break;
 	case TJob::jtGotoRes:
 	case TJob::jtGotoOwnerWithRes:
 	case TJob::jtGotoWork:
@@ -77,6 +87,9 @@ void Troll::SetJob(const TJob & j)
 	switch (m_job.type)
 	{
 	case TJob::jtWork:
+	case TJob::jtGotoRes:
+		if (j.type != TJob::jtFly)
+			break;
     case TJob::jtGotoOwnerWithRes:
 		assert(m_job.owner);
 		m_job.owner->UnsetFromWork(this);
@@ -86,7 +99,7 @@ void Troll::SetJob(const TJob & j)
 	// nastavit novy
 	if (m_load.locked)
 	{
-		m_job.from->Unlock(j.num);
+		m_job.from->Unlock(m_load.numlocked);
 		m_load.numlocked = 0;
 		m_load.locked = false;
 	}
@@ -96,9 +109,11 @@ void Troll::SetJob(const TJob & j)
 	switch (j.type)
 	{
 	case TJob::jtGotoRes:
+		if (m_job.num > v_num.GetInt())
+			m_job.num = v_num.GetInt();
 		if (m_job.from->GetPriority() != EBSP_TimeWork)
 		{ 
-			m_load.numlocked = m_job.from->Lock(j.num);
+			m_load.numlocked = m_job.from->Lock(m_job.num);
 			m_load.locked = true;
 		}
 		m_path.SetPosTo(m_job.from->GetOwner());
@@ -115,6 +130,10 @@ void Troll::SetJob(const TJob & j)
 	case TJob::jtWork:
 		assert(m_job.owner);
 		m_job.owner->SetToWork(this);
+		break;
+	case TJob::jtFly:
+		// nastavit na padaka
+
 		break;
 	};
 }

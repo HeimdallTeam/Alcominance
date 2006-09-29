@@ -112,8 +112,7 @@ bool WaterHole::Select()
 	SourceBuilding::Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
-	if (!IsBuildMode())
-        GetLua()->func("s_studna");
+	GetLua()->func("s_studna");
 	return true;
 }
 

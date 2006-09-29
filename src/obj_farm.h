@@ -37,7 +37,9 @@ protected:
 	Troll * m_work;
 public:
 	Farm(IHoeScene * scn);
-
+#ifndef BECHER_EDITOR
+	virtual const char * BuildPlace(float x, float y);
+#endif
 	DECLARE_BUILDING(EBO_Farm)
 
 };

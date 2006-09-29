@@ -7,6 +7,7 @@
 
 class Troll;
 struct TJob;
+class Construct;
 
 /**
 * Vsechno co ma spolecneho s funkcni budovou
@@ -16,9 +17,10 @@ class BecherBuilding : public BecherObject
 {
 protected:
 	EBuildingMode m_mode;
+	Construct * m_construct;
 public:
 	BecherBuilding(IHoeScene * scn);
-	bool IsBuildMode() { return false; }
+	//bool IsBuildMode() { return m_mode == ; }
 	bool StartBuilding(int gold, int wood, int stone);
 	virtual void SetMode(EBuildingMode mode) { m_mode = mode; }
 	virtual bool Save(BecherGameSave &w);

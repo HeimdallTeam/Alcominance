@@ -54,6 +54,17 @@ bool ResourceBase::Add(uint *s, int max)
 	}
 }
 
+bool ResourceBase::Save(BecherGameSave &w)
+{
+	return w.Write<uint>(m_actual);
+}
+
+bool ResourceBase::Load(BecherGameLoad &r)
+{
+	m_actual = r.Read<uint>();
+	return true;
+}
+
 ////////////////////////////////////////////
 ResourceExp::ResourceExp(ESurType type)
 {
@@ -68,6 +79,14 @@ ResourceExp::ResourceExp(ESurType type)
 uint ResourceExp::Lock(uint num)
 {
 	// zalockovat surovinu
+	// muze zamknout malo
+	if ((m_locked+num) > m_actual)
+	{
+		num = m_actual - m_locked;
+		m_locked = m_actual;
+		return num;
+	}
+
 	m_locked += num;
 	// kontrola
 	if (m_locked < 0)
@@ -99,6 +118,25 @@ void ResourceExp::Unlock(uint num)
 		m_locked -= num;
 	// kontrola
 
+}
+
+bool ResourceExp::Save(BecherGameSave &w)
+{
+	if (!ResourceBase::Save(w))
+		return false;
+	w.WriteValue<uint>(m_priority);
+	w.WriteValue<uint>(m_locked);
+	w.WriteReservedWords(1);
+}
+
+bool ResourceExp::Load(BecherGameLoad &r)
+{
+	if(!ResourceBase::Load(r))
+		return false;
+	m_priority = (ESurPriority)r.Read<uint>();
+	m_locked = r.Read<uint>();
+	r.ReadReservedWords(1);
+	return true;
 }
 
 //////////////////////////////////////////
