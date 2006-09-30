@@ -302,7 +302,8 @@ bool BecherLevel::LoadGame(const char *path)
 		{
 			r.Skip(r.Chunk().size);
 			// prvni musi byt chunk s nazvem hry
-			if (!r.ReadNext())
+			
+			if (r.Read<dword>() != 123456789 || !r.ReadNext())
 				return false;
 		}
 		if (r.Chunk().chunk != ID_CHUNK('m','a','p',' '))
@@ -311,17 +312,18 @@ bool BecherLevel::LoadGame(const char *path)
 		// zjistit prvni chunk a nahrat mapu
 		char mapname[1024] = {0};
 		r.Read(mapname, r.Chunk().size);
-
+		if (r.Read<dword>() != 123456789)
+				return false;
 		// nacist mapu
 		HoeGame::HoeFile filemap;
-		if (!file.Open(mapname))
+		if (!filemap.Open(mapname))
 		{
 			GetCon()->Printf("Open file %s failed.", path);
 			return false;
 		}
 
 		BecherGameLoad rr(&filemap);
-		if (!r.ReadHeader())
+		if (!rr.ReadHeader())
 			return false;
 
 		if (!Load( rr, true))
