@@ -1,14 +1,18 @@
 Heimdall
 Becher
-Version 1.0a
-September 2005
+Release 1 (30.9)
+September 2006
 
 Thank you.
 
-
 Really thank you for downloading our little game.  This document contains information you
 might find useful, and we think will help you to get as much enjoyment out of this game as 
-possible.  We hope you have as much fun playing Becher game ! as we had making it !.
+possible.  We hope you have as much fun playing Becher game as we had making it !
+(not true at all :-)
+
+First thing to say about Alcominance- this release is barely an alpha-stage cooked fastly 
+for Becherovka Game competition, so please bear this in mind when complaining about quality
+of this grand piece of software. Hopefully there will be updates avalaible.
 
 -------------------------- TABLE OF CONTENTS -------------------------------
 
@@ -48,17 +52,19 @@ If these requirements are not met, the game may not work properly.
 Computer System:  IBM PC and 100% compatibles
 Operating System: Windows® Windows 2000 Service Pack 4 and Windows XP.
 		  The Game should run on other Windows systems from
-		  Windows 98 to XP 64. At the time you are reading this
+		  Windows 98 to Windows 2003-64. At the time you are reading this
 		  there should be linux version avalaible on our website.
-Video Card:  	Any DirectX 7.0a capable, though we tested it on those chipsets only:
-		GeForce 2 MX, GeForce FX5600, Radeon 8500/9100, Radeon 9550/9600.
+Video Card:  	Any DirectX 9.0 compatible, though we tested it on those chipsets only:
+		GeForce 2 MX, GeForce FX5600, Radeon 8500/9100, Radeon 9550/9600 and
+		Radeon 9800 series.
 		Fully DirectX8 compliant chipsets recommended
 CPU:		Pentium/K6-2® 400 (Pentium III 800/ Duron 800 recommended)
-Memory:  	64 Megabytes RAM
-Free Hard Disk Space: 20 MB Megabytes (minimum) free hard drive space 
+Memory:  	64 Megabytes RAM at minimum
+		256 MB for latest operating systems
+Free Hard Disk Space: 30 MB Megabytes (minimum) free hard drive space 
 Sound Card:  	All major DirectX® 9.0 compatible Sound Cards
-Peripherals:  	Keyboard and mouse
-Extra:		For stereo view, you should have some kind of 3D glasses.
+Peripherals:  	Keyboard and mouse with wheel
+Extra:		For stereo view, you should have some kind of 3D glasses :=)
 
 ----------------------------------------------------------------------------
 
@@ -71,7 +77,7 @@ We probably did not have enough time.
 
 	Stereoscopy
 
-	This game was created with 3D glasses in mind,
+	This game was created with 3D glasses at mind,
 	so go have a check for some serious 3D!
 
 ----------------------------------------------------------------------------
@@ -99,26 +105,12 @@ bad effects, as it is independent on registry and keep configs in its directory.
 
 7)   Troubleshooting:
 
-Installation Issues
-
-Problem:	The CD is in the CD-ROM drive, but the computer is not 
-		recognizing it. 
-Answers: 	The CD may be dirty or scratched.
-Solutions: 	Make sure that the data side of the CD (shiny side) is not 
-		dirty or scratched. If it is dirty, take a lint free 
-		non-abrasive cloth and wipe gently to clean it (always wipe 
-		from the inside of the CD to the outside edges).  If the 
-		data side of the CD appears to be scratched, return the 
-		game to the store that you bought it from, and exchange it 
-		for a new copy. If you are unable to exchange the game at 
-		the store that you bought it from, please call Customer 
-		Support for information on our exchange policy.
-
 To free up Resources:
  - Close all unnecessary programs running in the Background.  
  - Windows users can click on the 'Start' button, then the 
    "Run..." option.  At the command line type msconfig.  Click on the 
    startup tab and you can shut off many programs (except the system ones).
+ - In Windows 2000/XP stop/disable useless services if you know it is safe.
  - Check for malware, remove the crap!
  - Keep at least 1MB free on the hard drive/partition where the game is installed 
    or few hundreds more if swap file is placed there too.
@@ -126,7 +118,7 @@ To free up Resources:
    Recycle Bin.
  - Run ScanDisk
  - Defrag your hard drive
- - Overclock (if you are not afraid and poweruser)
+ - Overclock (if you are poweruser and you know what you are doing)
 
 Launching the Game I
 
@@ -164,21 +156,20 @@ NOTE:  The DirectX Diagnostic tool may not recognize if your current
        will support the new version of DirectX.
 
 
-
 General Guidelines
 
 If you are experiencing video trouble, difficulties launching the 
 game, or getting kicked-back to the desktop, you may need to make 
-some changes to the Display Settings.  All of our newer games are 
-designed to run in 16/32 bit color.  It may be better if you are 
-running your desktop color resolution similar to games.  
+some changes to the Display Settings.  Alcominance is designed to
+run in 32 bit color.
 
 Most of our newer games are designed to run at a resolution of 
 640x480 at least.  If your monitor is not capable of switching to this 
 resolution, the game will fail to launch. You must not be lame them and
 edit the configuration file.
 
-
+You can set the resolution and other parameters by editing becher.conf
+file placed in games directory
 ----------------------------------------------------------------------------
 
 8)   Goods on the web:
@@ -199,21 +190,17 @@ For XGI Volari Series go to
     http://www.xgitech.com  
 
 
-The Official Becher game website is located at: http://www.becher.com
 Please feel free to stop by and check out our site. In fact you might find it usefull.
 
 For technical problems or questions:
 
-Heimdall Customer Support Website:
-http://www.heimdall.com/support
-
 E-mail:
-manstein@quick.cz
+glatter@seznam.cz
 
 
 ----------------------------------------------------------------------------
 
-Copyright 2005 The Heimdall.  All Rights Reserved.  All other 
+Copyright 2006 Heimdall.  All Rights Reserved.  All other 
 trademarks belong to their respective owners.
 
 --The End--
