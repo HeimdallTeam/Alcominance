@@ -68,9 +68,11 @@ BecherObject * BecherMap::CreateObject(EObjType type)
 	return bo;
 }
 
-/*BecherObject * BecherMap::CreateXObject(EObjType type){
 
-    BecherObject * bo = NULL;
+XHoeObject * BecherMap::CreateXObject(EObjType type){
+
+
+    XHoeObject * bo = NULL;
 
 	switch (type)
 	{
@@ -84,9 +86,9 @@ BecherObject * BecherMap::CreateObject(EObjType type)
 		assert(!"Unknown becher X object");
 	};
 
-	bo->id = GenObjectID();
+	//bo->id = GenObjectID();
 	return bo;
-}*/
+}
 
 BecherSystemObject * BecherMap::CreateSystemObject(EObjType type)
 {
@@ -312,6 +314,10 @@ void BecherMap::AddSystemObject(BecherSystemObject * obj)
 	m_sysobj.Add(obj);
 }
 
+void BecherMap::AddAddonObject(XHoeObject * obj){
+    m_addon.Add(obj);
+}
+
 void BecherMap::DeleteObject(BecherObject * obj)
 {
 	// projet vsechny a oznamit jim novinu
@@ -323,6 +329,12 @@ void BecherMap::DeleteObject(BecherObject * obj)
 		m_obj[i]->OnDeleteObject(obj->GetID());
 	}
 	m_obj.Remove(obj);
+	delete obj;
+}
+
+void BecherMap::DeleteObject(XHoeObject * obj)
+{	
+	m_addon.Remove(obj);
 	delete obj;
 }
 

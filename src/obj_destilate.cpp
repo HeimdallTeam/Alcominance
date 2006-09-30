@@ -63,8 +63,7 @@ Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
 	m_part.t_z = -14.f;
 	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 
-    m_wrk_sugar = 0;
-    m_wrk_alco = 0;
+    m_wrk_sugar = 0;    
     m_wrk_coal = 0;
 
 }
@@ -179,10 +178,7 @@ bool Destilate::SetToWork(Troll * t)
         switch (t->GetJob().surtype){
         case EBS_Sugar:
             m_wrk_sugar++;
-            break;
-        case EBS_Alco:
-            m_wrk_alco++;
-            break;
+            break;        
         case EBS_Coal:
             m_wrk_coal++;
             break;
@@ -205,9 +201,6 @@ void Destilate::UnsetFromWork(Troll * t)
         switch(t->GetJob().surtype){
         case EBS_Sugar:
             m_wrk_sugar--;
-            break;
-        case EBS_Alco:
-            m_wrk_alco--;
             break;
         case EBS_Coal:
             m_wrk_coal--;

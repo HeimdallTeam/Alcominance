@@ -15,7 +15,7 @@ protected:
 	// seznam objektu
 	HoeGame::PtrSet<BecherObject*> m_obj; // todo	
     HoeGame::PtrSet<BecherSystemObject*> m_sysobj; ///< @todo zmenit styl
-    HoeGame::PtrSet<BecherObject*> m_objects; // doplnky
+    HoeGame::PtrSet<XHoeObject*> m_addon; // doplnky
 
 	unsigned long m_lastid;
 
@@ -42,11 +42,14 @@ public:
 	IHoeScene * GetScene() { return m_scene; }
 
 	BecherObject * CreateObject(EObjType type);
+    XHoeObject * CreateXObject(EObjType type);
 	BecherSystemObject * CreateSystemObject(EObjType type);
 	static EObjType GetObjectClass(EObjType type);
 	void AddObject(BecherObject * obj);
 	void AddSystemObject(BecherSystemObject * obj);
+    void AddAddonObject(XHoeObject * obj);
 	void DeleteObject(BecherObject * obj);
+    void DeleteObject(XHoeObject * obj);
 	int GetNumObj() { return m_obj.Count(); }
 	BecherObject * GetObj(int index) { return m_obj[index];}
 	int GetNumSysObj() { return m_sysobj.Count(); }

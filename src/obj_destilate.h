@@ -37,8 +37,7 @@ protected:
 	ResourceExp m_alco;
 	TrollList m_worked;
 	float m_progress;
-    int m_wrk_sugar;
-    int m_wrk_alco;
+    int m_wrk_sugar;    
     int m_wrk_coal;
 	THoeSub_Particle m_part;
 	HoeGame::StopWatch m_exitdelay;
