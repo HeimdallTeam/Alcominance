@@ -68,7 +68,7 @@ BecherObject * BecherMap::CreateObject(EObjType type)
 	return bo;
 }
 
-BecherObject * BecherMap::CreateXObject(EObjType type){
+/*BecherObject * BecherMap::CreateXObject(EObjType type){
 
     BecherObject * bo = NULL;
 
@@ -86,7 +86,7 @@ BecherObject * BecherMap::CreateXObject(EObjType type){
 
 	bo->id = GenObjectID();
 	return bo;
-}
+}*/
 
 BecherSystemObject * BecherMap::CreateSystemObject(EObjType type)
 {

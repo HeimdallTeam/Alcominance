@@ -236,7 +236,6 @@ bool BecherLevel::SaveGame(const char * path)
 	// chunks
 	// save map info (ktera mapa)
 	size_t sfn = strlen(m_filename);
-	w.Write(&sfn, sizeof(sfn));
 	w.Write(m_filename, sfn);
 	w.WriteChunkEnd();
 
@@ -295,12 +294,38 @@ bool BecherLevel::LoadGame(const char *path)
 	}
 	else 
 	{
-		// prvni musi byt chunk s nazvem hry
+		// jmeno hry
 		if (!r.ReadNext())
 			return false;
 
+		if (r.Chunk().chunk == ID_CHUNK('n','a','m','e'))
+		{
+			r.Skip(r.Chunk().size);
+			// prvni musi byt chunk s nazvem hry
+			if (!r.ReadNext())
+				return false;
+		}
 		if (r.Chunk().chunk != ID_CHUNK('m','a','p',' '))
 			return false;
+
+		// zjistit prvni chunk a nahrat mapu
+		char mapname[1024] = {0};
+		r.Read(mapname, r.Chunk().size);
+
+		// nacist mapu
+		HoeGame::HoeFile filemap;
+		if (!file.Open(mapname))
+		{
+			GetCon()->Printf("Open file %s failed.", path);
+			return false;
+		}
+
+		BecherGameLoad rr(&filemap);
+		if (!r.ReadHeader())
+			return false;
+
+		if (!Load( rr, true))
+				return false;		
 
 		if (!Load(r, false))
 			return false;
