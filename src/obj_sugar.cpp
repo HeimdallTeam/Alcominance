@@ -128,6 +128,21 @@ void Sugar::SetMode(EBuildingMode mode)
 
 #ifndef BECHER_EDITOR
 
+ResourceBase * Sugar::GetResource(ESurType type)
+{
+	switch (type)
+	{
+	case EBS_Sugar:
+		return &m_sugar;
+	case EBS_Coal:
+		return &m_w;
+	case EBS_Cane:
+		return &m_cane;
+	default:
+		return NULL;
+	};
+}
+
 const char * Sugar::BuildPlace(float x, float y)
 {
 	return BecherBuilding::BuildPlace(x,y, (IHoeModel*)GetResMgr()->ReqResource(model_SUGAR), 5.f, 200.f); 

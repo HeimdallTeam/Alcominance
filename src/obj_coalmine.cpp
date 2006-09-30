@@ -65,6 +65,17 @@ bool CoalMine::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
+ResourceBase * CoalMine::GetResource(ESurType type)
+{
+	switch (type)
+	{
+	case EBS_Coal:
+		return &m_coal;
+	default:
+		return NULL;
+	};
+}
+
 const char * CoalMine::BuildPlace(float x, float y)
 {
 	// pozice v mape

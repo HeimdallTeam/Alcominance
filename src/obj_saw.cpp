@@ -57,6 +57,15 @@ bool Saw::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
+ResourceBase * Saw::GetResource(ESurType type)
+{
+	switch (type)
+	{
+	default:
+		return NULL;
+	};
+}
+
 const char * Saw::BuildPlace(float x, float y)
 {
 	// pozice v mape
@@ -89,6 +98,7 @@ const char * Saw::BuildPlace(float x, float y)
 
 void Saw::Update(const float dtime)
 {
+
 }
 
 bool Saw::Select()

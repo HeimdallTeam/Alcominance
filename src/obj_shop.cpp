@@ -33,6 +33,15 @@ bool Shop::Load(BecherGameLoad &r)
 }
 
 #ifndef BECHER_EDITOR
+ResourceBase * Shop::GetResource(ESurType type)
+{
+	switch (type)
+	{
+	default:
+		return NULL;
+	};
+}
+
 const char * Shop::BuildPlace(float x, float y)
 {
 	// pozice v mape

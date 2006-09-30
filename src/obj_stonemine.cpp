@@ -64,6 +64,17 @@ bool StoneMine::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
+ResourceBase * StoneMine::GetResource(ESurType type)
+{
+	switch (type)
+	{
+	case EBS_Stone:
+		return &m_stone;
+	default:
+		return NULL;
+	};
+}
+
 const char * StoneMine::BuildPlace(float x, float y)
 {
 	// pozice v mape

@@ -33,7 +33,8 @@ public:
 	virtual void SetCurActive(bool active);
 	virtual uint AcceptSur(ESurType type) { return 0; }
 	const char * BuildPlace(float x, float y, IHoeModel * m, float dest, float dobj);
-	virtual const char * BuildPlace(float x, float y) { return BecherObject::BuildPlace(x,y); } 
+	virtual const char * BuildPlace(float x, float y) { return BecherObject::BuildPlace(x,y); }
+	virtual ResourceBase * GetResource(ESurType type) { return NULL; }
 };
 
 class FactoryBuilding : public BecherBuilding

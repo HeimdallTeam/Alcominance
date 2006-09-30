@@ -56,6 +56,7 @@ Farm::Farm(IHoeScene * scn) : SourceBuilding(scn), m_cane(EBS_Cane)
 	GetCtrl()->Link(THoeSubObject::Object, &m_growinfo);
 	m_grow = 0.f;
 	m_growinfo.t_y = 5.f * m_grow - 5.f;
+	m_work = NULL;
 }
 
 bool Farm::Save(BecherGameSave &w)
@@ -84,6 +85,17 @@ bool Farm::Load(BecherGameLoad &r)
 }
 
 #ifndef BECHER_EDITOR
+
+ResourceBase * Farm::GetResource(ESurType type)
+{
+	switch (type)
+	{
+	case EBS_Cane:
+		return &m_cane;
+	default:
+		return NULL;
+	};
+}
 
 void Farm::Update(const float dtime)
 {

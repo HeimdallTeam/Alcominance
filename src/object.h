@@ -78,7 +78,8 @@ public:
 	virtual bool InsertSur(ESurType type, uint *s); \
 	virtual bool Save(BecherGameSave &w); \
 	virtual bool Load(BecherGameLoad &r); \
-	virtual const char * BuildPlace(float x, float y);
+	virtual const char * BuildPlace(float x, float y); \
+	virtual ResourceBase * GetResource(ESurType type);
 #else
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
 	virtual bool Select(); \

@@ -123,6 +123,21 @@ void Destilate::SetMode(EBuildingMode mode)
 
 #ifndef BECHER_EDITOR
 
+ResourceBase * Destilate::GetResource(ESurType type)
+{
+	switch (type)
+	{
+	case EBS_Sugar:
+		return &m_sugar;
+	case EBS_Coal:
+		return &m_w;
+	case EBS_Alco:
+		return &m_alco;
+	default:
+		return NULL;
+	};
+}
+
 const char * Destilate::BuildPlace(float x, float y)
 {
 	// pozice v mape

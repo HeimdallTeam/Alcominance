@@ -121,6 +121,11 @@ bool Store::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
+ResourceBase * Store::GetResource(ESurType type)
+{
+	return &m_res[type];
+}
+
 const char * Store::BuildPlace(float x, float y)
 {
 	// pozice v mape

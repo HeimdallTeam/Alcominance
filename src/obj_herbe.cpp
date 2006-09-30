@@ -83,6 +83,17 @@ bool HerbeWoman::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
+ResourceBase * HerbeWoman::GetResource(ESurType type)
+{
+	switch (type)
+	{
+	case EBS_Herbe:
+		return &m_herbe;
+	default:
+		return NULL;
+	};
+}
+
 const char * HerbeWoman::BuildPlace(float x, float y)
 {
 	return "";

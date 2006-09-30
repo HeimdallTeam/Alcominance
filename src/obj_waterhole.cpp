@@ -72,6 +72,17 @@ bool WaterHole::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
+ResourceBase * WaterHole::GetResource(ESurType type)
+{
+	switch (type)
+	{
+	case EBS_Water:
+		return &m_water;
+	default:
+		return NULL;
+	};
+}
+
 void WaterHole::Update(const float dtime)
 {
 	// update cekajicich tupounu

@@ -5,6 +5,8 @@
 class BecherBuilding;
 class Troll;
 class ResourceExp;
+class BecherGameSave;
+class BecherGameLoad;
 
 struct TJob
 {
@@ -26,6 +28,8 @@ struct TJob
 	ESurType surtype;
 	int num;
 	float percent;
+	bool Save(BecherGameSave &w);
+	bool Load(BecherGameLoad &r);
 };
 
 

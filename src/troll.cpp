@@ -35,6 +35,33 @@ Troll::~Troll()
 {
 }
 
+bool Troll::Save(BecherGameSave &w)
+{
+	BecherObject::Save(w);
+	// ulozit job a path
+	this->m_job.Save(w);
+	w.WriteValue<bool>(m_load.locked);
+	w.WriteValue<uint>(m_load.numlocked);
+	w.WriteValue<uint>(m_load.numsur);
+	w.WriteValue<dword>(m_load.surtype);
+	// path
+	w.WriteValue<bool>(false);
+	return true;
+}
+
+bool Troll::Load(BecherGameLoad &r)
+{
+	BecherObject::Load(r);
+	m_job.Load(r);	
+	m_load.locked = r.Read<bool>();
+	m_load.numlocked = r.Read<uint>();
+	m_load.numsur = r.Read<uint>();
+	m_load.surtype = (ESurType)r.Read<dword>();
+	// path
+	r.Read<bool>();
+	return true;
+}
+
 void Troll::Update(const float t)
 {
 #ifndef BECHER_EDITOR
