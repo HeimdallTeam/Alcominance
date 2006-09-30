@@ -2,21 +2,17 @@
 
 function c_stavlihovar()
 
- cost = GetVar("factory_cost")
- wood = GetVar("factory_cost_wood")
- stone = GetVar("factory_cost_stone")
+ cost = GetVar("dest_cost")
+ wood = GetVar("dest_cost_wood")
+ stone = GetVar("dest_cost_stone")
  
- if cost < GetCash() then
-  info("Nedostatek penez pro stavbu")
- end
- 
- AddCash(-cost)
  SetBuilding(EBO_Destilate,cost,wood,stone)
 end
 
 function s_lihovar()
  ClearButtons()
- AddButton(model_STOPPRACI,2, "c_najmout")
+ AddButton(ico_TROLLNEW,"Najmout", "c_najmout")
+ AddButton(ico_TROLLFREE,"Propustit", "c_propustit")
  AddButton(model_LAHVARNA,"People pay more for nice bottles", "c_bottles")
 
 end
@@ -45,7 +41,7 @@ function i_alco(b)
  
  --zjisti se recept (kolik je treba cukru a lihu pro jednotku/jendotky alkoholu)
  countSugar, units = getReceptCount(GetVar("dest_recept"), "S")
- countAlco = getReceptCount(GetVar("dest_recept"), "A")
+ countAlco = 1
  
  -- pokud je dostatek surovin na vyrobu jedne jednotky a nikdo nezpracovava, zpracuj
  if b.sugar >= countSugar/units and b.alco >= countAlco/units and b.works == 0 then

@@ -98,36 +98,6 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn)
 	}
 }
 
-/*void Store::AdvPaint(IHoePaint3D * h3)
-{
-	// info
-	if (this->IsCurActive() || this->IsSelected())
-	{
-		static IHoeModel * mod_i = dynamic_cast<IHoeModel*>(GetEngine()->Create("model info"));
-		h3->ResetPos();
-		h3->Scale(2.5, 0, 2.5);
-		h3->Move(0,2,0);
-		h3->Paint(mod_i);
-	}
-
-	static IHoeModel * mod[] = {
-	static float p = getheight(this->GetModel());
-	int m = 0;
-	for (int i=0;i<4;i++)
-		for(int j=0;j<4;j++)
-		{
-			IHoeModel * model = mod[(m++)%8];
-			if (model)
-			{
-				h3->ResetPos();
-				//h3->RotateY(GetEngine()->SysFloatTime()*2);
-				h3->Move((float)8*i-12, p, (float)8*j-12);
-				h3->Paint(model);
-			}
-		}
-
-}*/
-
 bool Store::Save(BecherGameSave &w)
 {
 	BecherBuilding::Save(w);
@@ -150,6 +120,36 @@ bool Store::Load(BecherGameLoad &r)
 }
 
 #ifndef BECHER_EDITOR
+
+const char * Store::BuildPlace(float x, float y)
+{
+	// pozice v mape
+	float min,max;
+	bool ok;
+	max = min = 0.f;
+	ok = GetLevel()->GetScene()->GetScenePhysics()->GetCamber(x,x,y,y,min,max);
+	SetPosition(x,y,min);
+	if (!ok || (max-min) > 1.f) 
+	{
+		GetCtrl()->SetOverColor(0xffff0000);
+		return GetLang()->GetString(101);
+	}
+	// zjistit zda muze byt cerveny nebo jiny
+	for (int i=0; i < GetLevel()->GetNumObj();i++)
+	{
+		float x = GetLevel()->GetObj(i)->GetPosX();
+		float y = GetLevel()->GetObj(i)->GetPosY();
+		x -= GetPosX();
+		y -= GetPosY();
+		if (x*x+y*y < 4000.f)
+		{
+			GetCtrl()->SetOverColor(0xffff0000);
+			return GetLang()->GetString(102);
+		}
+	}
+	GetCtrl()->SetOverColor(0xffffffff);
+	return NULL;
+}
 
 bool Store::InsertSur(ESurType type, uint *s)
 {

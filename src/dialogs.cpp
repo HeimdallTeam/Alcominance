@@ -84,10 +84,10 @@ void DialogBuild::OnClick(HoeGame::Gui::Base * sender)
 		GetLua()->func("c_stavtovarna");
 		break;
 	case EBO_Store:
-		GetLua()->func("c_stavtovarna");
+		GetLua()->func("c_stavsklad");
 		break;
 	case EBO_Destilate:
-		GetLua()->func("c_stavsklad");
+		GetLua()->func("c_stavlihovar");
 		break;
 	case EBO_Shop:
 		GetLua()->func("c_stavobchod");

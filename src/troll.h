@@ -5,14 +5,21 @@
 #include "object.h"
 #include "jobs.h"
 
+struct Point;
+
 class Path
 {
-	float x,y;
 public:
+	float x,y;
+	HoeGame::PtrList<Point> m_points;
+	int act;
+
 	bool GetNextPos(float l,float &px, float &py);
 	bool Step(Troll * t, const float time);
-	void SetPosTo(float X, float Y);
-	void SetPosTo(BecherObject * bo);
+	//void SetPosTo(float X, float Y);
+	bool FindPath(float fx, float fy, float tx, float ty);
+	bool FindPath(BecherObject * from, BecherObject * to);
+	//void SetPosTo(BecherObject * bo);
 };
 
 struct TLoad

@@ -13,6 +13,7 @@
 #include "obj_store.h"
 #include "obj_waterhole.h"
 #include "obj_farm.h"
+#include "phys_prov.h"
 
 static CVar v_camera("camera_speed", 0.9f, 0);
 
@@ -230,24 +231,25 @@ bool BecherLevel::SaveGame(const char * path)
 		return false;
 	BecherGameSave w(&file);
 
-	MapChunk head = {ID_BSAVE, ID_BECHERVER, GetNumObj()};
-	w.Write(&head, sizeof(head));
-
+	w.WriteChunk(ID_BSAVE, ID_BECHERVER);
+	w.WriteChunk(ID_CHUNK('m','a','p',' '),0);
+	// chunks
 	// save map info (ktera mapa)
 	size_t sfn = strlen(m_filename);
 	w.Write(&sfn, sizeof(sfn));
 	w.Write(m_filename, sfn);
+	w.WriteChunkEnd();
 
 	// save timer
-	m_cash.Save(w);
-	m_timer.Save(w);
+	//m_cash.Save(w);
+	//m_timer.Save(w);
 
 	// save view
-	float view[4];
+	/*float view[4];
 	GetView()->GetTargetPosition( &view[0], &view[1]);
 	view[2] = GetView()->GetAngle();
 	view[3] = GetView()->GetDistance();
-	w.Write(view, sizeof(view));
+	w.Write(view, sizeof(view));*/
 
 	// save objects
 	SaveAllObjects(w);
@@ -255,38 +257,9 @@ bool BecherLevel::SaveGame(const char * path)
 	return true;
 }
 
-bool BecherLevel::LoadGame(BecherGameLoad &r)
-{
-	int ver = r.Chunk().ver;
-	size_t sfn;
-	r.Read(&sfn, sizeof(sfn));
-	r.Read(m_filename, sfn);
-	m_filename[sfn] = '\0';
-
-	HoeGame::HoeFile file;
-	file.Open(m_filename);
-	BecherGameLoad rr(&file);
-	Load( rr, true);
-
-	// load timer and casch
-	m_cash.Load( ver, r);
-	m_timer.Load( ver, r);
-
-	float view[4];
-	r.Read(view, sizeof(view));
-	GetView()->SetTargetPosition( view[0], view[1]);
-	GetView()->SetAngle(view[2]);
-	GetView()->SetDistance(view[3]);
-
-	r.ReadNext();
-	//LoadObjects(r);
-	assert(0);
-
-	return true;
-}
-
 bool BecherLevel::LoadGame(const char *path)
 {
+	// unload stare
 	Create(CreateScene());
 
 	if (!m_mjobs.Init())
@@ -313,6 +286,7 @@ bool BecherLevel::LoadGame(const char *path)
 	BecherGameLoad r(&file);
 	if (!r.ReadHeader())
 		return false;
+
 	if (!r.IsSaveGame())
 	{
 		strncpy(m_filename, path, sizeof(m_filename));
@@ -321,7 +295,14 @@ bool BecherLevel::LoadGame(const char *path)
 	}
 	else 
 	{
-		if (!LoadGame(r))
+		// prvni musi byt chunk s nazvem hry
+		if (!r.ReadNext())
+			return false;
+
+		if (r.Chunk().chunk != ID_CHUNK('m','a','p',' '))
+			return false;
+
+		if (!Load(r, false))
 			return false;
 	}
 
@@ -330,16 +311,22 @@ bool BecherLevel::LoadGame(const char *path)
 	m_coalmap.Load(this);
 	m_stonemap.Load(this);
 
+	// 
+	Phys::Get()->ParseLevel(this, &m_termap);
+	m_hud.SetMap(&m_termap);
+
 	IHoeModel * m = (IHoeModel*)GetEngine()->Create("model voda");
 	// voda
 	for (int x=0; x < this->m_numX;x+=1)
 	for (int y=0; y < this->m_numY;y+=1)
 	{
-	XHoeObject * obj = new XHoeObject;
-	m_scene->RegisterObject(obj);
-	obj->SetModel(m);
-	obj->SetPosition( x * 20.f + 10.f - this->m_sizeX * 0.5f, -15, y * 20.f + 10.f - this->m_sizeY * 0.5f);
-	obj->Show(true);
+		if (!Phys::Get()->IsWater(x,y))
+			continue;
+		XHoeObject * obj = new XHoeObject;
+		m_scene->RegisterObject(obj);
+		obj->SetModel(m);
+		obj->SetPosition( x * 20.f + 10.f - this->m_sizeX * 0.5f, -15, y * 20.f + 10.f - this->m_sizeY * 0.5f);
+		obj->Show(true);
 	}
 
 	return true;
@@ -397,7 +384,7 @@ void BecherLevel::OnKeyDown(int key)
 	else if (key == HK_F9)
 	{
 			if (SaveGame("a.sav"))
-				;//m_info.Add("Game saved.");
+				m_hud.GetInfo()->Add("Game saved.");
 			else
 				assert(!"game save failed");
 	}

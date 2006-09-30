@@ -36,6 +36,7 @@ protected:
     ResourceImp m_coal;
 	ResourceExp m_alco;
 	TrollList m_worked;
+	float m_progress;
     int m_wrk_sugar;
     int m_wrk_alco;
     int m_wrk_coal;
@@ -45,6 +46,7 @@ protected:
 public:
 	Destilate(IHoeScene * scn);
 	virtual ~Destilate();
+	virtual void SetMode(EBuildingMode mode);
 
 	DECLARE_BUILDING(EBO_Destilate)
 };

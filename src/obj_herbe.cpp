@@ -83,6 +83,11 @@ bool HerbeWoman::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
+const char * HerbeWoman::BuildPlace(float x, float y)
+{
+	return "";
+}
+
 void HerbeWoman::Update(const float dtime)
 {
 	if (m_wait > 0.f)

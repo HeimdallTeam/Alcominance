@@ -310,6 +310,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\phys_prov.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\sysobjs.cpp"
 				>
 			</File>

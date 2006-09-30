@@ -3,6 +3,7 @@
 #include "becher.h"
 #include "troll.h"
 #include "obj_destilate.h"
+#include "obj_construct.h"
 
 static CVar v_numzpr("dest_speed", 1.f, TVAR_SAVE); // rychlost zpracovani
 static CVar v_sklad("dest_max", 500, TVAR_SAVE); // max. velikost miniskladu
@@ -10,10 +11,9 @@ static CVar v_cost("dest_cost", 180, TVAR_SAVE); // cena za stavbu
 static CVar v_cost_wood("dest_cost_wood", 40, TVAR_SAVE); // pocet dreva potrebneho na stavbu
 static CVar v_cost_stone("dest_cost_stone", 30, TVAR_SAVE); // pocet kameni potrebneho na stavbu
 static CVar v_numworks("dest_maxwork", 4, TVAR_SAVE); // maximalni pocet pracujicich
-static CVar v_recept("dest_recept", "", 0); // recept pro jednu davku
-static CVar v_coalmax("coal_max", 120, TVAR_SAVE); // maximalni kapacita pro uhli
+static CVar v_recept("dest_recept", "S1=1", TVAR_SAVE); // recept pro jednu davku
+static CVar v_coalmax("dest_coal_max", 120, TVAR_SAVE); // maximalni kapacita pro uhli
 
-static HoeGame::CTimer t_numzpr(v_numzpr);
 
 #ifndef BECHER_EDITOR
 DestilateStatic Destilate::m_userhud;
@@ -55,7 +55,7 @@ Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
 	//m_mode = wmIn;
 	m_sugar.SetOwner(this);
 	m_w.SetOwner(this);
-	m_alco.SetOwner(this); CRR::Get()->Register(&m_alco);
+	m_alco.SetOwner(this); 
 
 	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
 	m_part.t_x = 4.f;
@@ -88,11 +88,76 @@ bool Destilate::Load(BecherGameLoad &r)
 	return true;
 }
 
+void Destilate::SetMode(EBuildingMode mode)
+{
+	// odmazat
+	if (mode == m_mode)
+		return;
+	// pri buildingu nastavit kolize
+	switch (m_mode)
+	{
+	case EBM_Build:
+		m_construct = NULL;
+		GetCtrl()->SetOverColor(0xffffffff);
+		break;
+	case EBM_Select:
+		GetCtrl()->SetOverColor(0xffffffff);
+		break;
+	case EBM_Normal:
+		CRR::Get()->Unregister(&m_alco);
+		break;
+	};
+	m_mode = mode;
+	switch (mode)
+	{
+	case EBM_Build:
+		GetCtrl()->SetOverColor(0xffffff00);
+		m_construct = new Construct(this);
+		m_construct->SetBuildTime(5.f);
+		break;
+	case EBM_Normal:
+		Show(true);
+		CRR::Get()->Register(&m_alco);
+		break;
+	};
+}
+
 #ifndef BECHER_EDITOR
+
+const char * Destilate::BuildPlace(float x, float y)
+{
+	// pozice v mape
+	float min,max;
+	bool ok;
+	max = min = 0.f;
+	ok = GetLevel()->GetScene()->GetScenePhysics()->GetCamber(x,x,y,y,min,max);
+	SetPosition(x,y,min);
+	if (!ok || (max-min) > 1.f) 
+	{
+		GetCtrl()->SetOverColor(0xffff0000);
+		return GetLang()->GetString(101);
+	}
+	// zjistit zda muze byt cerveny nebo jiny
+	for (int i=0; i < GetLevel()->GetNumObj();i++)
+	{
+		float x = GetLevel()->GetObj(i)->GetPosX();
+		float y = GetLevel()->GetObj(i)->GetPosY();
+		x -= GetPosX();
+		y -= GetPosY();
+		if (x*x+y*y < 4000.f)
+		{
+			GetCtrl()->SetOverColor(0xffff0000);
+			return GetLang()->GetString(102);
+		}
+	}
+	GetCtrl()->SetOverColor(0xffffffff);
+	return NULL;
+}
 
 bool Destilate::InsertSur(ESurType type, uint *s)
 {
-	assert(type==EBS_Sugar);
+	if (m_construct)
+		return m_construct->InsertSur(type,s);
 	if (type==EBS_Sugar)
 	// max
 		return m_sugar.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
@@ -102,6 +167,9 @@ bool Destilate::InsertSur(ESurType type, uint *s)
 
 bool Destilate::SetToWork(Troll * t)
 {
+	if (m_construct)
+		return m_construct->SetToWork(t);
+
     switch (t->GetJob().type){
     case TJob::jtWork:
 	    if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
@@ -126,7 +194,10 @@ bool Destilate::SetToWork(Troll * t)
 
 void Destilate::UnsetFromWork(Troll * t)
 {
-    switch(t->GetJob().type){
+	if (m_construct)
+		return m_construct->UnsetFromWork(t);
+
+	switch(t->GetJob().type){
     case TJob::jtWork:
 	    m_worked.Remove(t);
         break;
@@ -148,32 +219,62 @@ void Destilate::UnsetFromWork(Troll * t)
 
 void Destilate::Update(const float t)
 {
+	if (m_construct)
+	{
+		return m_construct->Update(t);
+	}
+
+	// update
+	float prog = m_w.InProcess() ? m_worked.Count()*v_numzpr.GetFloat():0.f;
+
 	if (m_worked.Count() > 0)
 	{
-		if (m_sugar.GetNum() > 0)
+		m_w.Update(t*prog);
+
+		if (m_w.CanOut() && ((int)m_w.Out(false)<=(v_sklad.GetInt() - GetMiniStoreCount())))
 		{
-			uint p = t_numzpr.Compute((const float)t * m_worked.Count());
-			p=m_sugar.Get(p,true);
-			m_alco.Add(&p, v_sklad.GetInt() - GetMiniStoreCount());
-			m_exitdelay.Reset();
+			uint p = m_w.Out(true);
+			m_alco.Add(&p, p);
 		}
-		else
+
+		// naplneni
+		if (m_w.CanIn() && m_w.In(&m_sugar, 'S', true))
 		{
-			// postupne propoustet
-			if (m_exitdelay.AddTime((const float)t, 3.f))
-			{
-				m_exitdelay.Reset();
-				// propustit jednoho workera
-				m_worked.OneStopWork();
-			}
+			m_w.ToProcess();
 		}
 	}
+
+	if (m_progress != prog)
+	{
+		// update 
+		m_progress = prog;
+		// pokud neni progress a nemuze se delat
+		if (m_progress > 0.f)
+			m_part.emitor->Start();
+		else
+			m_part.emitor->Stop();
+	}
+
+	if (m_worked.Count() > 0)
+	{
+		if (prog > 0.f)
+			m_exitdelay.Reset();
+		else if (m_exitdelay.AddTime((const float)t, m_worked.Count() == 1 ? 3.f:1.f))
+		{
+			m_exitdelay.Reset();
+					// propustit jednoho workera
+			m_worked.OneStopWork();
+		}
+	}
+
 }
 
 
 bool Destilate::Select()
 {
 	FactoryBuilding::Select();
+	if (m_construct)
+		return m_construct->Select();
 	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	GetLua()->func("s_lihovar");
@@ -187,6 +288,7 @@ bool Destilate::Idiot(TJob * j)
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
 	ResourceExp * ri = CRR::Get()->Find(EBS_Sugar, this);
     ResourceExp * rc = CRR::Get()->Find(EBS_Coal, this);
+	// odnaseni!
 	
 	HoeGame::LuaFunc f(GetLua(), "i_alco");
 	f.PushTable();

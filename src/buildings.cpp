@@ -70,6 +70,40 @@ void BecherBuilding::SetCurActive(bool active)
 		BecherObject::SetCurActive(active);
 }
 
+const char * BecherBuilding::BuildPlace(float x, float y, IHoeModel * m, float height, float dobj)
+{
+	// pozice v mape
+	float min,max;
+	bool ok;
+	THoeParameter par;
+	m->GetParameter("boundbox",&par);
+	max = min = 0.f;
+	// 177 132
+	ok = GetLevel()->GetScene()->GetScenePhysics()->GetCamber(
+		x+par.box.left,x+par.box.right,y+par.box.front,y+par.box.back,min,max);
+	SetPosition(x,y,max);
+	if (!ok || (max-min) > height) 
+	{
+		GetCtrl()->SetOverColor(0xffff0000);
+		return GetLang()->GetString(101);
+	}
+	// zjistit zda muze byt cerveny nebo jiny
+	for (int i=0; i < GetLevel()->GetNumObj();i++)
+	{
+		float x = GetLevel()->GetObj(i)->GetPosX();
+		float y = GetLevel()->GetObj(i)->GetPosY();
+		x -= GetPosX();
+		y -= GetPosY();
+		if (x*x+y*y < dobj)
+		{
+			GetCtrl()->SetOverColor(0xffff0000);
+			return GetLang()->GetString(102);
+		}
+	}
+	GetCtrl()->SetOverColor(0xffffffff);
+	return NULL;
+}
+
 float getheight(IHoeModel*m)
 {
 	THoeParameter p;

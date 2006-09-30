@@ -49,6 +49,16 @@ bool BecherGameLoad::ReadHeader()
 		GetCon()->Printf("Error: Bad format file");
 		return false;
 	}
+	if (chunk.ver < ID_BECHERVER)
+	{
+		GetCon()->Printf("Error: Otevirani prilis stare mapy.");
+		return false;
+	}
+	if (chunk.ver > ID_BECHERVER)
+	{
+		GetCon()->Printf("Version is big (%d, req: %d). Update your executables.", chunk.ver, ID_BECHERVER);
+		return false;
+	}
 
 	return true;
 }

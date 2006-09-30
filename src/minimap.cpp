@@ -139,3 +139,41 @@ bool StoneMiniMap::Load(BecherMap * map)
 	return true;
 }
 
+
+bool TerrainMiniMap::Load(BecherMap * map, byte * bmap)
+{
+	m_kriz = (IHoePicture*)GetEngine()->Create("picture krizek");
+	m_map = map;
+	uint sx = map->m_numX;
+	uint sy = map->m_numY;
+	
+	// nahrat minimapu
+	dword * p = new dword[sx*sx];
+	for (int y=0;y < sx;y++)
+	{
+		int yy = y;//y * sy / sizemap;
+		for (int x=0;x < sx;x++)
+		{
+			int xx = x;//x * sx / sizemap;
+			byte col = bmap[yy*sy+xx];
+			switch (col)
+			{
+			case 0x10:
+				p[y*sx+x] = 0xffffff00;break;
+			case 0x20:
+				p[y*sx+x] = 0xff00ffff; break;
+			case 2:
+				p[y*sx+x] = 0xff0000ff; break;
+			case 1:
+				p[y*sx+x] = 0xffff0000; break;
+			//case 0:
+			//	p[y*sx+x] = 0xff800000; break;
+			default:
+				p[y*sx+x] = 0xffffffff; break;
+			};
+		}
+	}
+	m_pic = GetEngine()->CreatePicture(sx, sy, p);
+	delete p;
+	return true;
+}

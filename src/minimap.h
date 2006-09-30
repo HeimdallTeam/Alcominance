@@ -46,5 +46,11 @@ public:
 
 };
 
+class TerrainMiniMap : public MiniMap
+{
+public:
+	bool Load(BecherMap * map, byte * bmap);
+};
+
 #endif
 

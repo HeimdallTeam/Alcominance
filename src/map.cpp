@@ -121,13 +121,19 @@ EObjType BecherMap::GetObjectClass(EObjType type)
 	case EBO_Store:
 	case EBO_Shop:
 	case EBO_Saw:
+	case EBO_CoalMine:
+	case EBO_StoneMine:
+	case EBO_WaterHole:
 		return EBC_Building;
 	case EBO_Bridge:
-	case EBO_WaterHole:
 	case EBO_Troll:
 	case EBO_Tree:
 		return type;
 	case EBSys_Sound:
+	case EBSys_Place:
+	case EBSys_Water:
+	case EBSys_Coal:
+	case EBSys_Stone:
 		return EBC_System;
 	default:
 		assert(!"Unknown becher object");
@@ -169,25 +175,7 @@ bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 
 	//this->m_numobj = 0;
 	//this->m_numsysobj = 0;
-
-	if (!r.ReadHeader())
-		return false;
-	if (r.IsSaveGame())
-	{
-		return false;
-	}
-	if (r.Chunk().ver < 5)
-	{
-		GetCon()->Printf("Error: Otevirani prilis stare mapy.");
-		return false;
-	}
-	if (r.Chunk().ver > ID_BECHERVER)
-	{
-		GetCon()->Printf("Version is big (%d, req: %d). Update your executables.", r.Chunk(), ID_BECHERVER);
-		return false;
-	}
 	r.ReadNext();
-
 	while (r.Chunk().chunk != ID_CHUNK('e','n','d',' '))
 	{
 		size_t st = r.GetFile()->Tell();
@@ -236,6 +224,7 @@ bool BecherMap::Load(BecherGameLoad & r, bool savegame)
 				r.Skip(r.Chunk().size);
 			break;
 		default:
+			// nahrat //
 			r.Skip(r.Chunk().size);
 			break;
 		};

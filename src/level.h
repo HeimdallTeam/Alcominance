@@ -57,6 +57,7 @@ protected:
 	WaterMiniMap m_watermap;
 	CoalMiniMap m_coalmap;
 	StoneMiniMap m_stonemap;
+	TerrainMiniMap m_termap;
 
 	BaseDialog * m_dlg;
 	BecherObject * m_select;
@@ -68,8 +69,6 @@ protected:
 	// dlgs
 	DialogBuild m_builddlg;
 	//
-	bool LoadGame(BecherGameLoad &r);
-
 public:
 	BecherLevel();
 	virtual void OnSet();

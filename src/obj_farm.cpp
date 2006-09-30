@@ -61,14 +61,24 @@ Farm::Farm(IHoeScene * scn) : SourceBuilding(scn), m_cane(EBS_Cane)
 bool Farm::Save(BecherGameSave &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteReservedWords(10);
+	// ulozit rust
+	m_cane.Save(w);
+	w.Write<float>(m_grow);
+	w.WriteValue<uint>(m_work ? m_work->GetID():0);
+	w.WriteReservedWords(5);
 	return true;
 }
 
 bool Farm::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
-	r.ReadReservedWords(10);
+	m_cane.Load(r);
+	m_grow = r.Read<float>();
+	m_growinfo.t_y = 5.f * m_grow - 5.f;
+	uint it = r.Read<uint>();
+	m_work = dynamic_cast<Troll*>(GetLevel()->GetObjFromID(it));
+	r.ReadReservedWords(5);
+	// 
 	OnUpdateSur();
 	return true;
 }
@@ -90,32 +100,8 @@ void Farm::Update(const float dtime)
 
 const char * Farm::BuildPlace(float x, float y)
 {
+	return BecherBuilding::BuildPlace(x,y, (IHoeModel*)GetResMgr()->ReqResource(model_FARM), 4.f, 200.f); 
 	// pozice v mape
-	float min,max;
-	bool ok;
-	max = min = 0.f;
-	ok = GetLevel()->GetScene()->GetScenePhysics()->GetCamber(x,x,y,y,min,max);
-	SetPosition(x,y,min);
-	if (!ok || (max-min) > 1.f) 
-	{
-		GetCtrl()->SetOverColor(0xffff0000);
-		return GetLang()->GetString(101);
-	}
-	// zjistit zda muze byt cerveny nebo jiny
-	for (int i=0; i < GetLevel()->GetNumObj();i++)
-	{
-		float x = GetLevel()->GetObj(i)->GetPosX();
-		float y = GetLevel()->GetObj(i)->GetPosY();
-		x -= GetPosX();
-		y -= GetPosY();
-		if (x*x+y*y < 4000.f)
-		{
-			GetCtrl()->SetOverColor(0xffff0000);
-			return GetLang()->GetString(102);
-		}
-	}
-	GetCtrl()->SetOverColor(0xffffffff);
-	return NULL;
 }
 
 bool Farm::InsertSur(ESurType type, uint *s)

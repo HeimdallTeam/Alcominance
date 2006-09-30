@@ -4,6 +4,7 @@
 #include "buildings.h"
 #include "crr.h"
 #include "troll.h"
+#include "phys_prov.h"
 
 static CVar v_speed("troll_speed", 35.f, TVAR_SAVE);
 static CVar v_num("troll_num", 10, TVAR_SAVE);
@@ -64,13 +65,13 @@ void Troll::Update(const float t)
 		GetLevel()->GetMJobs()->AddPay(v_cost_bring.GetFloat() * t);
 		break;
 	case TJob::jtFindJob:
-		if (m_nextfind > 0.f)
-			m_nextfind -= t;
-		else
-		{
+		//if (m_nextfind > 0.f)
+		//	m_nextfind -= t;
+		//else
+		//{
 			FindJob(m_job.owner);
-			m_nextfind = 10.f;
-		}
+		//	m_nextfind = 10.f;
+		//}
 		GetLevel()->GetMJobs()->AddPay(v_cost_wait.GetFloat() * t);
 		break;
 	case TJob::jtWork:
@@ -116,16 +117,16 @@ void Troll::SetJob(const TJob & j)
 			m_load.numlocked = m_job.from->Lock(m_job.num);
 			m_load.locked = true;
 		}
-		m_path.SetPosTo(m_job.from->GetOwner());
+		m_path.FindPath(this, m_job.from->GetOwner());
    		m_job.owner->SetToWork(this);
 		break;
 	case TJob::jtGotoOwnerWithRes:
 		if (!m_job.to)
 			m_job.to = m_job.owner;
-		m_path.SetPosTo(m_job.to);
+		m_path.FindPath(this, m_job.to);
 		break;
 	case TJob::jtGotoWork:
-		m_path.SetPosTo(m_job.owner);
+		m_path.FindPath(this,m_job.owner);
 		break;
 	case TJob::jtWork:
 		assert(m_job.owner);
@@ -281,35 +282,69 @@ void JobEx::SetNone()
 // Path
 bool Path::GetNextPos(float l,float &px, float &py)
 {
-	while (l > 0)
+	float ux = x - px;
+	float uy = y - py;
+	float mag = sqrt(ux * ux + uy * uy);
+	ux /= mag;
+	uy /= mag;
+	if (l < mag)
 	{
-		float ux = x - px;
-		float uy = y - py;
-		float mag = sqrt(ux * ux + uy * uy);
-		ux /= mag;
-		uy /= mag;
-		if (l < mag)
-		{
-			px += ux * l;
-			py += uy * l;
-			break;
-		}
-		px = x;
-		py = y;
-		return true;
+		px += ux * l;
+		py += uy * l;
+		return false;
 	}
+	px = x;
+	py = y;
+
+	// dalsi to
+	act++;
+	if (act >= this->m_points.Count())
+		return true;
+	x = m_points[act].x;
+	y = m_points[act].y;
+
 	return false;
 }
 
-void Path::SetPosTo(float X, float Y)
+bool Path::FindPath(float fx, float fy, float tx, float ty)
 {
-	x = X;y = Y;
+	x = ty;y = ty;
+	// vymazat 
+	// najit 
+	Point from,to;
+	from.x = fx;
+	from.y = fy;
+	to.x = tx;
+	to.y = ty;
+	TPathPart * p = Phys::Get()->Find(from, to);
+	if (p)
+	{
+		m_points.SetCount(0);
+		p->Copy(this);
+		assert(m_points.Count()>0);
+		act = 0;
+		x = m_points[0].x;
+		y = m_points[0].y;
+		delete p;
+	}
+	else
+		return false;
+	return true;
+}
+
+bool Path::FindPath(BecherObject * from, BecherObject * to)
+{
+	return FindPath(from->GetPosX(), from->GetPosY(), to->GetPosX(), to->GetPosY());
+}
+
+/*void Path::SetPosTo(float X, float Y)
+{
 }
 
 void Path::SetPosTo(BecherObject * bo)
 {
 	SetPosTo( bo->GetPosX(), bo->GetPosY());
-}
+}*/
 
 bool Path::Step(Troll * t, const float time)
 {
