@@ -46,11 +46,9 @@ public:
 // doplnky, ruzna id - sutriky, sutry, mraveniste ...
 class Addon : public XHoeObject
 {
-    float m_height;
 public:
-    Addon(IHoeScene * scn, int id);
-    virtual EObjType GetClass() { return EBO_Addon; }
-    
+    Addon(IHoeScene * scn, int resource);
+  
 };
 
 #endif // _BECHERGAME_ELEMENTS_H_
