@@ -48,9 +48,7 @@ void DestilateStatic::Draw(IHoe2D * h2d)
 Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_DESTILATE));
-	m_infoselect.s_x = 4.5f;
-	m_infoselect.t_y = 2.f;
-	m_infoselect.s_z = 4.5f;
+	SetRingParam(4.5f, 4.5f, 2.f);
 	//GetCtrl()->SetFlags(HOF_SHOW);
 	//m_mode = wmIn;
 	m_sugar.SetOwner(this);
@@ -58,9 +56,7 @@ Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
 	m_alco.SetOwner(this); 
 
 	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
-	m_part.t_x = 4.f;
-	m_part.t_y = 13.f;
-	m_part.t_z = -14.f;
+	m_part.pos.Set(4.f,13.f,-14.f);
 	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 
     m_wrk_sugar = 0;    

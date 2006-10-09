@@ -41,20 +41,15 @@ void HerbeWomanStatic::Draw(IHoe2D * h2d)
 float getheight(IHoeModel *);
 
 ////////////////////////////////////////////////////////////
-HerbeWoman::HerbeWoman(IHoeScene * scn) : SourceBuilding(scn), m_herbe(EBS_Herbe)
+HerbeWoman::HerbeWoman(IHoeScene * scn) : SourceBuilding(scn), m_herbe(EBS_Herbe), m_jaga(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_BABA));
-	m_infoselect.s_x = 1.4f;
-	m_infoselect.t_y = 2.f;
-	m_infoselect.s_z = 2.f;
+	SetRingParam(1.4f,2.f,2.f);
 	m_info.model = NULL;
-	m_info.t_x = 0.f;
-	m_info.t_y = getheight(this->GetModel()) + 3.f;
-	m_info.t_z = 0.f;
-	m_info.s_x = 2.f;
-	m_info.s_y = 4.f;
-	m_info.s_z = 2.f;
-	m_info.rotate = true;
+	m_info.pos.Scale(2.f,4.f,2.f);
+	HoeMath::MATRIX a;
+	a.Translate(0.f,getheight(this->GetModel()) + 3.f,0.f);
+	m_info.pos.Multiply(a);
 	GetCtrl()->Link(THoeSubObject::Object, &m_info);
 	m_herbe.SetOwner(this); CRR::Get()->Register(&m_herbe);
 	m_wait = (float)v_time.GetInt();
@@ -101,6 +96,9 @@ const char * HerbeWoman::BuildPlace(float x, float y)
 
 void HerbeWoman::Update(const float dtime)
 {
+	// update baba
+	
+
 	if (m_wait > 0.f)
 	{
 		m_wait -= dtime;
@@ -166,6 +164,19 @@ void HerbeWoman::OnUpdateSur()
 	if (m_herbe.GetNum() == 0)
 		m_wait = (float)v_time.GetInt();
 
+}
+
+//////////////////////////////////////////////////////
+BabaJaga::BabaJaga(IHoeScene * scn) : BaseObject(scn)
+{
+	// nastaveni modelu
+	// ifndef editor
+	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_BABAJAGA));
+	GetCtrl()->SetPosition(HoeMath::VECTOR3(0,30,0));
+	GetCtrl()->SetScale(HoeMath::VECTOR3(.03f,.03f,.03f));
+	GetCtrl()->SetFlags(HOF_SCALED);
+
+	Show(true);
 }
 
 

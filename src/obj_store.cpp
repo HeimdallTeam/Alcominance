@@ -73,21 +73,15 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn)
 {
 	// set owners
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STORE));
-	m_infoselect.s_x = 2.5f;
-	m_infoselect.t_y = 3.f;
-	m_infoselect.s_z = 2.5f;
-
+	SetRingParam(2.5f,2.5f,3.f);
 	memset(&m_info, 0, sizeof(m_info));
 	const float p = getheight(GetModel()); 
 	m_storepref.LoadModels();
 	for (int i=0;i < 16;i++)
 	{
 		m_info[i].model = NULL;
-		m_info[i].s_x = m_info[i].s_y = m_info[i].s_z = 1.f;
-		m_info[i].t_x = (float)8*(i/4)-12;
-		m_info[i].t_y = p;
-		m_info[i].t_z = (float)8*(i%4)-12;
-		
+		m_info[i].pos.Translate((float)8*(i/4)-12,p,(float)8*(i%4)-12);
+	
 		GetCtrl()->Link(THoeSubObject::Object, &m_info[i]);
 	}
 

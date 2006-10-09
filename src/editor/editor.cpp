@@ -1,4 +1,5 @@
 
+
 #include "../StdAfx.h"
 #include "../becher.h"
 //#include "../../resource/logo.xpm"
@@ -12,6 +13,7 @@
 #include "../terrain.h"
 
 #include <wx/arrimpl.cpp>
+
 
 IMPLEMENT_APP(BecherEditApp)
 

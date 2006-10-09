@@ -13,9 +13,9 @@ class BecherMap : public HoeGame::Strategy::Map
 {
 protected:
 	// seznam objektu
-	HoeGame::PtrSet<BecherObject*> m_obj; // todo	
-    HoeGame::PtrSet<BecherSystemObject*> m_sysobj; ///< @todo zmenit styl
-    HoeGame::PtrSet<XHoeObject*> m_addon; // doplnky
+	HoeCore::Set<BecherObject*> m_obj; // todo	
+    HoeCore::Set<BecherSystemObject*> m_sysobj; ///< @todo zmenit styl
+    HoeCore::Set<XHoeObject*> m_addon; // doplnky
 
 	unsigned long m_lastid;
 

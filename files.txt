@@ -5,7 +5,6 @@ data_old/english.hx
 data_old/farma.hm
 data_old/chalupa.hm
 data_old/lihovar.hm
-data_old/most.hm
 data_old/obchod.hm
 data_old/olaf.hm
 data_old/pic.hx
@@ -30,6 +29,7 @@ data/textures.hx
 data/cukrovar.hm
 data/terrain.hx
 data/voda.hm
+data/most.hm
 #resources
 model_FACTORY="model tovarna" ; Tovarna
 model_INFO_RING="model info" ; Ring

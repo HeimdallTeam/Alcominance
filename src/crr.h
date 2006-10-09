@@ -13,7 +13,7 @@ class CRR
 {
 private:
     static CRR* this_;
-	HoeGame::PtrSet<ResourceExp*> m_items[EBS_Max];
+	HoeCore::Set<ResourceExp*> m_items[EBS_Max];
 public:
     CRR();
     ~CRR();

@@ -39,6 +39,8 @@ public:
 	virtual bool Select();
 	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
 #endif
+	virtual bool Save(BecherGameSave &w);
+	virtual bool Load(BecherGameLoad &r);
 
 	DECLARE_BASEOBJECT(EBO_Bridge)
 };

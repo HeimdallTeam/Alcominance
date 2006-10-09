@@ -32,23 +32,15 @@ struct Kruh
 	float x,y;
 };
 
-struct Point
-{
-	float x,y;
-	Point() {}
-	Point(float X, float Y) { x=X;y=Y; }
-	Point(const Point &p) { x=p.x;y=p.y; }
-};
-
 struct TPolygon
 {
-	Point max;
-	Point min;
-	HoeGame::PtrList<Point> points;
+	HoeMath::VECTOR2 max;
+	HoeMath::VECTOR2 min;
+	HoeCore::List<HoeMath::VECTOR2> points;
 	void End();
-	bool IsSkrz(Point from, Point to);
-	bool ToLeft(Point &from, Point &to, Point &res);
-	bool ToRight(Point &from, Point &to, Point &res);
+	bool IsSkrz(HoeMath::VECTOR2 from, HoeMath::VECTOR2 to);
+	bool ToLeft(HoeMath::VECTOR2 &from, HoeMath::VECTOR2 &to, HoeMath::VECTOR2 &res);
+	bool ToRight(HoeMath::VECTOR2 &from, HoeMath::VECTOR2 &to, HoeMath::VECTOR2 &res);
 };
 
 struct PointInt
@@ -84,34 +76,34 @@ struct OkrajLine
 // 
 struct TPathPart
 {
-	Point to;
+	HoeMath::VECTOR2 to;
 	TPathPart * next;
 	TPathPart * child;
 	float distance;
-	TPathPart * Find(Point from);
+	TPathPart * Find(HoeMath::VECTOR2 from);
 	void Copy(Path * path);
 };
 
 struct TPathBridge
 {
 	byte a;
-	Point pa;
+	HoeMath::VECTOR2 pa;
 	byte b;
-	Point pb;
+	HoeMath::VECTOR2 pb;
 };
 
 class PhysGroup
 {
 	byte id;
-	HoeGame::PtrSet<TPolygon*> m_poly;
-	HoeGame::PtrSet<Obdelnik*> m_obd;
-	HoeGame::PtrSet<Kruh*> m_kruh;
-	TPolygon * CreatePolygon(HoeGame::PtrSet<OkrajLine> & lines);
+	HoeCore::Set<TPolygon*> m_poly;
+	HoeCore::Set<Obdelnik*> m_obd;
+	HoeCore::Set<Kruh*> m_kruh;
+	TPolygon * CreatePolygon(HoeCore::Set<OkrajLine> & lines);
 	TPolygon *m_obal;
 
 public:
 	PhysGroup(byte id);
-	HoeGame::PtrSet<TPolygon*> & GetPolygons() { return m_poly; }
+	HoeCore::Set<TPolygon*> & GetPolygons() { return m_poly; }
 	bool IsOk(const Obdelnik * o)
 	{
 		for (size_t i=0;i < m_kruh.Count();i++)
@@ -131,7 +123,7 @@ public:
 class Phys
 {
 protected:
-	HoeGame::PtrSet<TPathBridge> m_bridges;
+	HoeCore::Set<TPathBridge> m_bridges;
 	static Phys m_instance;
 	byte * m_gridmap;
 	PhysGroup * m_groups[20];
@@ -139,10 +131,10 @@ public:
 	static Phys * Get() { return &m_instance; }
 	void ParseLevel(BecherMap * map, TerrainMiniMap * minimap);
 	void ClearAll();
-	TPathPart * Find(Point from, Point to);
+	TPathPart * Find(HoeMath::VECTOR2 from, HoeMath::VECTOR2 to);
 	void Pisek(IHoeEnv::GridSurface * grid, int x, int y);
 	void Pisek2(byte * grid, int x, int y, byte obl, byte vypln);
-	void AddLines(HoeGame::PtrSet<OkrajLine> & lines, byte grp);
+	void AddLines(HoeCore::Set<OkrajLine> & lines, byte grp);
 	bool IsWater(int x, int y);
 	byte GetGroup(float x, float y);
 	TPathBridge * FindBridge(byte a, byte b);

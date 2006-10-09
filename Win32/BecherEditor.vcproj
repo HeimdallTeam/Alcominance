@@ -59,7 +59,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../Hoe/Hoe3D/include;../../Hoe/Hoe3D/utils/sdk;../../Hoe/HoeGame;../../Common;../../Hoe/HoeEditor/include"
+				AdditionalIncludeDirectories="../../Hoe/Hoe3D/include;../../Hoe/HoeCore/include;../../Hoe/HoeGame/include;../../Hoe/HoeEditor/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;BECHER_EDITOR;_CRT_SECURE_NO_DEPRECATE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -167,7 +167,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="../../Hoe/Hoe3D/include;../../Hoe/HoeGame;../../Common;../../Hoe/HoeEditor/include"
+				AdditionalIncludeDirectories="../../Hoe/Hoe3D/include;../../Hoe/HoeCore/include;../../Hoe/HoeGame/include;../../Hoe/HoeEditor/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;BECHER_EDITOR;_CRT_SECURE_NO_DEPRECATE"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -247,6 +247,10 @@
 			</File>
 			<File
 				RelativePath="..\src\elements.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\jobs.cpp"
 				>
 			</File>
 			<File

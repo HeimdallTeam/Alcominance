@@ -46,7 +46,7 @@ public:
 	bool IsSelected() { return false; }
 	bool IsCurActive() { return false; }
 
-	virtual void Update(const float) {}
+	virtual void Update(const float);
 
 	virtual bool Select();
 	virtual void Unselect();
@@ -63,8 +63,7 @@ public:
 
 	unsigned long GetID() { return id; }
 
-	// smazat
-	void SetProperty(const char * prop, const char * value);
+	void SetRingParam(float sx, float sy, float height);
 };
 
 #define DECLARE_BASEOBJECT(type) virtual EObjType GetType() { return type; }

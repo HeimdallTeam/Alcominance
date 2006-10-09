@@ -30,7 +30,7 @@ protected:
 #endif // BECHER_EDITOR
 	ResourceExp m_water;
 	float m_kap;
-	HoeGame::PtrSet<TTrollWorkSlot> m_worked;
+	HoeCore::Set<TTrollWorkSlot> m_worked;
 public:
 	WaterHole(IHoeScene * scn);
 

@@ -47,9 +47,7 @@ void FactoryStatic::Draw(IHoe2D * h2d)
 Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), m_becher(EBS_Becher)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_FACTORY));
-	m_infoselect.s_x = 6.7f;
-	m_infoselect.t_y = 2.f;
-	m_infoselect.s_z = 6.7f;
+	SetRingParam(6.7f,6.7f,2.f);
 	m_sugar.SetOwner(this);
 	m_alco.SetOwner(this);
 	m_herbe.SetOwner(this);

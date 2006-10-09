@@ -18,6 +18,12 @@ public:
 };
 #endif // BECHER_EDITOR
 
+class BabaJaga : public HoeGame::BaseObject
+{
+public:
+	BabaJaga(IHoeScene * scn);
+};
+
 class HerbeWoman : public SourceBuilding
 {
 	friend class BecherLevel;
@@ -31,6 +37,7 @@ protected:
 	ResourceExp m_herbe;
 	float m_wait;
 	bool m_ocup;
+	BabaJaga m_jaga;
 public:
 	HerbeWoman(IHoeScene * scn);
 	virtual void OnUpdateSur();

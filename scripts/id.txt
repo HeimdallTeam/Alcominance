@@ -21,6 +21,7 @@ ADDID(model_FACTORY) // tovarna
 ADDID(model_SUGAR) // cukrovar
 ADDID(model_DESTILATE) // lihovar
 ADDID(model_BABA) // chalupa babky korenarky
+ADDID(model_BABAJAGA) // babka korenarka
 ADDID(model_STORE) // sklad
 ADDID(model_FARM) // farma
 ADDID(model_FARM_POLE)

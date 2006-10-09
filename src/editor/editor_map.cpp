@@ -49,6 +49,9 @@ bool EditorMap::LoadMap(const wxString &path)
 	CreateScene();
 	GetEngine()->SetActiveScene(m_scene);
 	SetTerrainData();
+	// nahrat hlavicku
+	if (!r.ReadHeader())
+		return false;
 	return Load( r, false);
 }
 

@@ -16,11 +16,9 @@ static const float scale = 0.35f;
 Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_TROLL));
-	GetCtrl()->SetScale(scale,scale,scale);
+	GetCtrl()->SetScale(HoeMath::VECTOR3(scale,scale,scale));
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE|HOF_SCALED);
-	m_infoselect.s_x = .8f;
-	m_infoselect.t_y = 2.f;
-	m_infoselect.s_z = .8f;
+	SetRingParam(.8f,.8f,2.f);
 	memset(&m_job, 0, sizeof(m_job));
 	m_job.type = TJob::jtNone;
 	m_load.locked = false;
@@ -338,7 +336,7 @@ bool Path::FindPath(float fx, float fy, float tx, float ty)
 	x = ty;y = ty;
 	// vymazat 
 	// najit 
-	Point from,to;
+	HoeMath::VECTOR2 from,to;
 	from.x = fx;
 	from.y = fy;
 	to.x = tx;

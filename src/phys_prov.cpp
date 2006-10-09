@@ -122,7 +122,7 @@ void Phys::ParseLevel(BecherMap *map, TerrainMiniMap * minimap)
 #endif
 }
 
-TPathPart * Phys::Find(Point from, Point to)
+TPathPart * Phys::Find(HoeMath::VECTOR2 from, HoeMath::VECTOR2 to)
 {
 	//
 	TPathPart * main = new TPathPart;
@@ -169,7 +169,7 @@ PhysGroup::PhysGroup(byte grp)
 	id = grp;
 }
 
-void Print(HoeGame::PtrSet<OkrajLine> & lines)
+void Print(HoeCore::Set<OkrajLine> & lines)
 {
 	FILE * f = fopen("lines.txt","wt");
 	for (int i=0;i < lines.Count();i++)
@@ -199,7 +199,7 @@ void PhysGroup::Parse(BecherMap * map, byte * grids)
 			g_cache[i] = 1;
 	}
 	byte pisk = 2;
-	HoeGame::PtrSet<OkrajLine> lines;
+	HoeCore::Set<OkrajLine> lines;
 	OkrajLine line;
 	uint m_numX = map->m_numX;
 	uint m_numY = map->m_numY;
@@ -294,7 +294,7 @@ void PhysGroup::Parse(BecherMap * map, byte * grids)
 		}
 }
 
-TPolygon * PhysGroup::CreatePolygon(HoeGame::PtrSet<OkrajLine> & lines)
+TPolygon * PhysGroup::CreatePolygon(HoeCore::Set<OkrajLine> & lines)
 {
 	// vzit prvni lajnu
 	TPolygon * p = new TPolygon;
@@ -312,7 +312,7 @@ TPolygon * PhysGroup::CreatePolygon(HoeGame::PtrSet<OkrajLine> & lines)
 		// polygon add  act
 		// 
 		if (bsave)
-			p->points.Add(Point((act.x * m_distX)-m_sizeX*0.5f,(act.y * m_distY)-m_sizeY*0.5f));
+			p->points.Add(HoeMath::VECTOR2((act.x * m_distX)-m_sizeX*0.5f,(act.y * m_distY)-m_sizeY*0.5f));
 		//if (bsave)
 		//	fprintf(f,"(%d,%d)\n", act.x,act.y);
 		// najit index dalsi cary
@@ -345,7 +345,7 @@ TPolygon * PhysGroup::CreatePolygon(HoeGame::PtrSet<OkrajLine> & lines)
 	return p;
 }
 
-void Phys::AddLines(HoeGame::PtrSet<OkrajLine> & lines, byte grp)
+void Phys::AddLines(HoeCore::Set<OkrajLine> & lines, byte grp)
 {
 	OkrajLine line;
 	// add from cache
@@ -384,7 +384,7 @@ void Phys::AddLines(HoeGame::PtrSet<OkrajLine> & lines, byte grp)
 
 /////////////////////////////////////////////
 
-TPathPart * TPathPart::Find(Point from)
+TPathPart * TPathPart::Find(HoeMath::VECTOR2 from)
 {
 	// nejdriv zcheckovat jestli jsou ve stejne grupe
 	// pokud ne, tak najit most a rozdelit na casti vcetne mostu
@@ -411,7 +411,7 @@ TPathPart * TPathPart::Find(Point from)
 	// najit v polygonech
 	// vzit seznam
 	TPathPart * part = NULL;
-	HoeGame::PtrSet<TPolygon*> &poly = g->GetPolygons();
+	HoeCore::Set<TPolygon*> &poly = g->GetPolygons();
 	// najit vsechny polygony a zjistit zda stoji v ceste
 	{
 		TPolygon* pp[50];
@@ -422,8 +422,8 @@ TPathPart * TPathPart::Find(Point from)
 			{
 				// ukazatel na vlozeni prvniho
 				TPathPart ** up = &part;
-				Point f = from;
-				Point r = f;
+				HoeMath::VECTOR2 f = from;
+				HoeMath::VECTOR2 r = f;
 				while (poly[i]->ToRight(f, to, r))
 				//for (int j=0;j<poly[i]->points.Count();j++)
 				{
@@ -474,7 +474,7 @@ void TPolygon::End()
 	}
 }
 
-inline bool InLine(Point &a1,Point &a2, Point &b1, Point &b2)
+inline bool InLine(HoeMath::VECTOR2 &a1,HoeMath::VECTOR2 &a2, HoeMath::VECTOR2 &b1, HoeMath::VECTOR2 &b2)
 {
 	// b bude vzdy pravouhle
 	/*a2.x -= a1.x;a2.y -= a1.y;
@@ -490,7 +490,7 @@ inline bool InLine(Point &a1,Point &a2, Point &b1, Point &b2)
 	return true;
 }
 
-bool TPolygon::IsSkrz(Point from, Point to)
+bool TPolygon::IsSkrz(HoeMath::VECTOR2 from, HoeMath::VECTOR2 to)
 {
 	if (from.x < min.x && to.x < min.x)
 		return false;
@@ -520,7 +520,7 @@ inline float Angl(float ax, float ay, float bx, float by)
 	return (ax*bx+ay*by) / (mag1*mag2);
 }
 
-bool TPolygon::ToLeft(Point &from, Point &to, Point &res)
+bool TPolygon::ToLeft(HoeMath::VECTOR2 &from, HoeMath::VECTOR2 &to, HoeMath::VECTOR2 &res)
 {
 	// najit nejlevejsi bod
 	bool ret = false;
@@ -550,7 +550,7 @@ bool TPolygon::ToLeft(Point &from, Point &to, Point &res)
 	return ret;
 }
 
-bool TPolygon::ToRight(Point &from, Point &to, Point &res)
+bool TPolygon::ToRight(HoeMath::VECTOR2 &from, HoeMath::VECTOR2 &to, HoeMath::VECTOR2 &res)
 {
 	// najit nejlevejsi bod
 	bool ret = false;

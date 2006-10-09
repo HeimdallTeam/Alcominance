@@ -5,13 +5,11 @@
 #include "object.h"
 #include "jobs.h"
 
-struct Point;
-
 class Path
 {
 public:
 	float x,y;
-	HoeGame::PtrList<Point> m_points;
+	HoeCore::List<HoeMath::VECTOR2> m_points;
 	int act;
 
 	bool GetNextPos(float l,float &px, float &py);

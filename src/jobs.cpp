@@ -3,10 +3,11 @@
 #include "id.h"
 #include "jobs.h"
 #include "becher.h"
-#include "game.h"
+//#include "game.h"
 
 bool TJob::Save(BecherGameSave &w)
 {
+#ifndef BECHER_EDITOR
 	//
 	w.WriteValue<dword>(this->type);
 	w.WriteValue<dword>(owner ? this->owner->GetID():0);
@@ -15,11 +16,13 @@ bool TJob::Save(BecherGameSave &w)
 	w.WriteValue<float>(this->percent);
 	w.WriteValue<dword>(from ? this->from->GetOwner()->GetID():0);
 	w.WriteValue<dword>(to ? this->to->GetID():0);
+#endif
 	return true;
 }
 
 bool TJob::Load(BecherGameLoad &r)
 {
+#ifndef BECHER_EDITOR
 	type = (Type)r.Read<dword>();
 	dword id = r.Read<dword>();
 	if (id)
@@ -40,6 +43,7 @@ bool TJob::Load(BecherGameLoad &r)
 		to = dynamic_cast<BecherBuilding*>(GetLevel()->GetObjFromID(id));
 	else
 		to = NULL;
+#endif //BECHER_EDITOR
 	return true;
 }
 

@@ -89,7 +89,7 @@ public:
 * Dokaze jim davat rozkazy
 * Prideluje praci
 */
-class TrollList : public HoeGame::PtrSet<Troll *>
+class TrollList : public HoeCore::Set<Troll *>
 {
 public:
 	TrollList() { }

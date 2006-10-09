@@ -70,6 +70,8 @@ void BecherBuilding::SetCurActive(bool active)
 		BecherObject::SetCurActive(active);
 }
 
+#ifndef BECHER_EDITOR
+
 const char * BecherBuilding::BuildPlace(float x, float y, IHoeModel * m, float height, float dobj)
 {
 	// pozice v mape
@@ -103,6 +105,8 @@ const char * BecherBuilding::BuildPlace(float x, float y, IHoeModel * m, float h
 	GetCtrl()->SetOverColor(0xffffffff);
 	return NULL;
 }
+
+#endif // BECHER_EDITOR
 
 float getheight(IHoeModel*m)
 {

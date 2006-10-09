@@ -48,7 +48,7 @@ bool IsBetterStore(ResourceExp * p, ResourceExp * n)
 ResourceExp * CRR::Find(ESurType type, BecherObject * owner)
 {
 	// kdyztak assert
-	HoeGame::PtrSet<ResourceExp*> & item = m_items[type];
+	HoeCore::Set<ResourceExp*> & item = m_items[type];
 	bool (*cmp)(ResourceExp * p, ResourceExp * n);
 
 	if (owner->GetType() == EBO_Store)

@@ -48,19 +48,13 @@ void SugarStatic::Draw(IHoe2D * h2d)
 Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SUGAR));
-	m_infoselect.s_x = 3.5f;
-	m_infoselect.t_y = 2.f;
-	m_infoselect.s_z = 3.5f;
-	//GetCtrl()->SetFlags(HOF_SHOW);
-	//m_mode = wmIn;
+	SetRingParam(3.5f, 3.5f, 2.f);
 	m_w.SetOwner(this);
 	m_cane.SetOwner(this);
 	m_sugar.SetOwner(this);
 
 	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
-	m_part.t_x = -14.f;
-	m_part.t_y = 23.f;
-	m_part.t_z = 10.f;
+	m_part.pos.Set(-14.f, 23.f, 10.f);
 	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 
 	m_w.SetRecept(&v_recept);

@@ -19,6 +19,8 @@ AddFile("data/krajina.hm")
 AddFile("data/info.hm")
 AddFile("data/cukrovar.hm")
 AddFile("data/dul.hm")
+AddFile("data/most.hm")
+AddFile("data/baba.hm")
 
 AddFile("data/voda.hm")
 
@@ -31,6 +33,9 @@ LoadResource(model_INFO_RING2, "model info2")
 LoadResource(model_SUGAR, "model cukrovar")
 LoadResource(model_COALMINE, "model dul_uhli")
 LoadResource(model_STONEMINE, "model dul_kamen")
+
+-- baba jaga
+LoadResource(model_BABAJAGA, "model babajaga")
 
 LoadResource(font_TOOLTIPS, "font 'resource/tooltips.ttf' 16")
 
@@ -46,7 +51,6 @@ AddFile("data_old/textures.hx")
 AddFile("data_old/chalupa.hm")
 AddFile("data_old/farma.hm")
 AddFile("data_old/lihovar.hm")
-AddFile("data_old/most.hm")
 -- tupoun
 -- AddFile("data_old/olaf.hm")
 AddFile("data_old/tupoun.hm")

@@ -27,7 +27,7 @@ protected:
 	ResourceExp m_stone;
 #ifndef BECHER_EDITOR
 	static StoneMineStatic m_userhud;
-	HoeGame::PtrSet<TTrollWorkSlot> m_worked;
+	HoeCore::Set<TTrollWorkSlot> m_worked;
 #endif // BECHER_EDITOR
 public:
 	StoneMine(IHoeScene * scn);

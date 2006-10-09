@@ -28,7 +28,7 @@ protected:
 	static CoalMineStatic m_userhud;
 #endif // BECHER_EDITOR
 	ResourceExp m_coal;
-	HoeGame::PtrSet<TTrollWorkSlot> m_worked;
+	HoeCore::Set<TTrollWorkSlot> m_worked;
 public:
 	CoalMine(IHoeScene * scn);
 

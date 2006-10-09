@@ -46,9 +46,7 @@ void WaterHoleStatic::Draw(IHoe2D * h2d)
 WaterHole::WaterHole(IHoeScene * scn) : SourceBuilding(scn), m_water(EBS_Water)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_WATERHOLE));
-	m_infoselect.s_x = 1.f;
-	m_infoselect.t_y = 2.f;
-	m_infoselect.s_z = 1.f;
+	SetRingParam(1.f,1.f,2.f);
 	m_water.SetOwner(this); CRR::Get()->Register(&m_water);
 	m_water.SetPriority(EBSP_TimeWork);
 	m_water.SetNum(v_max.GetInt());

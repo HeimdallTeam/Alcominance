@@ -12,9 +12,7 @@ Tree::Tree(IHoeScene * scn) : BecherObject(scn)
 	SetOrientation(0,1,0,(rand() % 628) * 0.01);
 	SetHeight((50+rand() % 100)*0.01f);
 #endif
-	m_infoselect.s_x = 1.f;
-	m_infoselect.t_y = 3.f;
-	m_infoselect.s_z = 1.f;
+	m_infoselect.pos.Translate(0,3,0);
 	m_wood = 100;
 	m_height = 1.f;
 	SetTypeModel(rand() % 4);
@@ -29,7 +27,7 @@ void Tree::SetHeight(float h)
 	m_height = h;
 	if (h != 1.f)
 	{
-		GetCtrl()->SetScale(1,h,1);
+		GetCtrl()->SetScale(HoeMath::VECTOR3(1,h,1));
 		GetCtrl()->SetFlags(HOF_SCALED);
 	}
 	else
@@ -88,6 +86,21 @@ Bridge::Bridge(IHoeScene * scn) : BecherObject(scn)
 	m_height = 0.f;
 }
 
+bool Bridge::Save(BecherGameSave &w)
+{
+	BecherObject::Save(w);
+	w.Write<float>(m_height);
+	return true;
+}
+
+bool Bridge::Load(BecherGameLoad &r)
+{
+	BecherObject::Load(r);
+	m_height = r.Read<float>();
+	SetPosition(GetPosX(), GetPosY(), m_height);
+	return true;
+}
+
 
 #ifndef BECHER_EDITOR
 
@@ -115,12 +128,13 @@ void Bridge::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 	};
 }
 
+
 #endif // BECHER_OBJECT
 
 Addon::Addon(IHoeScene * scn, int id)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(id));
-	m_height = 0.f;
+	//m_height = 0.f;
 }
 
 #ifndef BECHER_EDITOR

@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				UseUnicodeResponseFiles="false"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../Hoe/Hoe3D/include"
+				AdditionalIncludeDirectories="../../Hoe/Hoe3D/include;../../Hoe/HoeCore/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -128,7 +128,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories="../../Hoe/Hoe3D/include"
+				AdditionalIncludeDirectories="../../Hoe/Hoe3D/include;../../Hoe/HoeCore/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -636,6 +636,10 @@
 			>
 			<File
 				RelativePath="..\resource\logo.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\resource\logo2.ico"
 				>
 			</File>
 			<File

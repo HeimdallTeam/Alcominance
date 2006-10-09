@@ -40,22 +40,17 @@ void FarmStatic::Draw(IHoe2D * h2d)
 Farm::Farm(IHoeScene * scn) : SourceBuilding(scn), m_cane(EBS_Cane)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_FARM));
-	m_infoselect.s_x = 4.5f;
-	m_infoselect.t_y = 2.f;
-	m_infoselect.s_z = 3.5f;
+	SetRingParam(4.5f,3.5f,2.f);
 	m_cane.SetOwner(this); CRR::Get()->Register(&m_cane);
 	//worked = NULL;
 	//rust = 0.f;
 	//skliz = 0;
 	memset(&m_growinfo,0, sizeof(m_growinfo));
 	m_growinfo.model = (IHoeModel*)GetResMgr()->ReqResource(model_FARM_POLE);
-	m_growinfo.s_x = 1.f;
-	m_growinfo.s_y = 1.f;
-	m_growinfo.s_z = 1.f;
-	m_growinfo.t_y = -5.f;
+	m_growinfo.pos.Translate(0, -5.f,0);
 	GetCtrl()->Link(THoeSubObject::Object, &m_growinfo);
 	m_grow = 0.f;
-	m_growinfo.t_y = 5.f * m_grow - 5.f;
+	m_growinfo.pos.Translate(0,5.f * m_grow - 5.f,0);
 	m_work = NULL;
 }
 
@@ -75,7 +70,7 @@ bool Farm::Load(BecherGameLoad &r)
 	BecherBuilding::Load(r);
 	m_cane.Load(r);
 	m_grow = r.Read<float>();
-	m_growinfo.t_y = 5.f * m_grow - 5.f;
+	m_growinfo.pos.Translate(0,5.f * m_grow - 5.f,0);
 	uint it = r.Read<uint>();
 	m_work = dynamic_cast<Troll*>(GetLevel()->GetObjFromID(it));
 	r.ReadReservedWords(5);
@@ -99,6 +94,7 @@ ResourceBase * Farm::GetResource(ESurType type)
 
 void Farm::Update(const float dtime)
 {
+	BecherObject::Update(dtime);
 	{
 		m_grow += v_speed.GetFloat() * dtime;
 		if (m_grow >= 1.f)
@@ -107,7 +103,7 @@ void Farm::Update(const float dtime)
 			m_grow = 0.f;
 		}
 	}
-	m_growinfo.t_y = 5.f * m_grow - 5.f;
+	m_growinfo.pos.Translate(0,5.f * m_grow - 5.f,0);
 }
 
 const char * Farm::BuildPlace(float x, float y)

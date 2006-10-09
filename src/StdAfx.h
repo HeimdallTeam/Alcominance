@@ -25,6 +25,9 @@
 #endif
 
 #include <assert.h>
+#include <hoe_types.h>
+#include <hoe_math.h>
+#include <hoe_structures.h>
 
 #include <hoe3d.h>
 #include "../../Hoe/HoeGame/include/hoe_utils.h"
@@ -45,10 +48,8 @@
 #include "../../Hoe/HoeGame/include/hoe_timer.h"
 #include "../../Hoe/HoeGame/include/hoe_vars.h"
 
-typedef HoeGame::CVar CVar;
 
-#include <vector>
-#include <list>
+typedef HoeGame::CVar CVar;
 
 #ifdef BECHER_EDITOR
 
