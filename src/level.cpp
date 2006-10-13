@@ -57,6 +57,7 @@ void BecherLevel::OnSet()
 		//	HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Cursored, this);
 		//else
 	HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Background, this);
+	HoeGetInput(GetEngine())->SetWindowRect(800,600);
 
 	GetScene()->Set2DCallback(this);
 	GetEngine()->SetActiveScene(GetScene());	

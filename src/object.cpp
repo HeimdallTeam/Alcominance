@@ -36,7 +36,7 @@ void BecherObject::SetPosition(const float x, const float y, const float h)
 	assert(GetCtrl());
 	posX = x;
 	posY = y;
-	GetCtrl()->SetPosition(HoeMath::VECTOR3(x, h, y));
+	GetCtrl()->SetPosition(HoeMath::Vector3(x, h, y));
 }
 
 bool BecherObject::Select()
@@ -59,7 +59,7 @@ void BecherObject::SetCurActive(bool active)
 void BecherObject::SetRingParam(float sx, float sy, float h)
 {
 	m_infoselect.pos.Scale(sx,1,sy);
-	HoeMath::MATRIX m;
+	HoeMath::Matrix m;
 	m.Translate(0,h,0);
 	m_infoselect.pos.Multiply(m);
 }
@@ -68,7 +68,7 @@ void BecherObject::Update(const float u)
 {
 	if (m_infoselect.model)
 	{
-		HoeMath::MATRIX m;
+		HoeMath::Matrix m;
 		m.RotationY(u);
 		m_infoselect.pos.MultiplyLeft(m);
 	}

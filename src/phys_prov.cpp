@@ -122,7 +122,7 @@ void Phys::ParseLevel(BecherMap *map, TerrainMiniMap * minimap)
 #endif
 }
 
-TPathPart * Phys::Find(HoeMath::VECTOR2 from, HoeMath::VECTOR2 to)
+TPathPart * Phys::Find(HoeMath::Vector2 from, HoeMath::Vector2 to)
 {
 	//
 	TPathPart * main = new TPathPart;
@@ -312,7 +312,7 @@ TPolygon * PhysGroup::CreatePolygon(HoeCore::Set<OkrajLine> & lines)
 		// polygon add  act
 		// 
 		if (bsave)
-			p->points.Add(HoeMath::VECTOR2((act.x * m_distX)-m_sizeX*0.5f,(act.y * m_distY)-m_sizeY*0.5f));
+			p->points.Add(HoeMath::Vector2((act.x * m_distX)-m_sizeX*0.5f,(act.y * m_distY)-m_sizeY*0.5f));
 		//if (bsave)
 		//	fprintf(f,"(%d,%d)\n", act.x,act.y);
 		// najit index dalsi cary
@@ -384,7 +384,7 @@ void Phys::AddLines(HoeCore::Set<OkrajLine> & lines, byte grp)
 
 /////////////////////////////////////////////
 
-TPathPart * TPathPart::Find(HoeMath::VECTOR2 from)
+TPathPart * TPathPart::Find(HoeMath::Vector2 from)
 {
 	// nejdriv zcheckovat jestli jsou ve stejne grupe
 	// pokud ne, tak najit most a rozdelit na casti vcetne mostu
@@ -422,8 +422,8 @@ TPathPart * TPathPart::Find(HoeMath::VECTOR2 from)
 			{
 				// ukazatel na vlozeni prvniho
 				TPathPart ** up = &part;
-				HoeMath::VECTOR2 f = from;
-				HoeMath::VECTOR2 r = f;
+				HoeMath::Vector2 f = from;
+				HoeMath::Vector2 r = f;
 				while (poly[i]->ToRight(f, to, r))
 				//for (int j=0;j<poly[i]->points.Count();j++)
 				{
@@ -474,7 +474,7 @@ void TPolygon::End()
 	}
 }
 
-inline bool InLine(HoeMath::VECTOR2 &a1,HoeMath::VECTOR2 &a2, HoeMath::VECTOR2 &b1, HoeMath::VECTOR2 &b2)
+inline bool InLine(HoeMath::Vector2 &a1,HoeMath::Vector2 &a2, HoeMath::Vector2 &b1, HoeMath::Vector2 &b2)
 {
 	// b bude vzdy pravouhle
 	/*a2.x -= a1.x;a2.y -= a1.y;
@@ -490,7 +490,7 @@ inline bool InLine(HoeMath::VECTOR2 &a1,HoeMath::VECTOR2 &a2, HoeMath::VECTOR2 &
 	return true;
 }
 
-bool TPolygon::IsSkrz(HoeMath::VECTOR2 from, HoeMath::VECTOR2 to)
+bool TPolygon::IsSkrz(HoeMath::Vector2 from, HoeMath::Vector2 to)
 {
 	if (from.x < min.x && to.x < min.x)
 		return false;
@@ -520,7 +520,7 @@ inline float Angl(float ax, float ay, float bx, float by)
 	return (ax*bx+ay*by) / (mag1*mag2);
 }
 
-bool TPolygon::ToLeft(HoeMath::VECTOR2 &from, HoeMath::VECTOR2 &to, HoeMath::VECTOR2 &res)
+bool TPolygon::ToLeft(HoeMath::Vector2 &from, HoeMath::Vector2 &to, HoeMath::Vector2 &res)
 {
 	// najit nejlevejsi bod
 	bool ret = false;
@@ -550,7 +550,7 @@ bool TPolygon::ToLeft(HoeMath::VECTOR2 &from, HoeMath::VECTOR2 &to, HoeMath::VEC
 	return ret;
 }
 
-bool TPolygon::ToRight(HoeMath::VECTOR2 &from, HoeMath::VECTOR2 &to, HoeMath::VECTOR2 &res)
+bool TPolygon::ToRight(HoeMath::Vector2 &from, HoeMath::Vector2 &to, HoeMath::Vector2 &res)
 {
 	// najit nejlevejsi bod
 	bool ret = false;

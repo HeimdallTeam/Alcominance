@@ -34,13 +34,13 @@ struct Kruh
 
 struct TPolygon
 {
-	HoeMath::VECTOR2 max;
-	HoeMath::VECTOR2 min;
-	HoeCore::List<HoeMath::VECTOR2> points;
+	HoeMath::Vector2 max;
+	HoeMath::Vector2 min;
+	HoeCore::List<HoeMath::Vector2> points;
 	void End();
-	bool IsSkrz(HoeMath::VECTOR2 from, HoeMath::VECTOR2 to);
-	bool ToLeft(HoeMath::VECTOR2 &from, HoeMath::VECTOR2 &to, HoeMath::VECTOR2 &res);
-	bool ToRight(HoeMath::VECTOR2 &from, HoeMath::VECTOR2 &to, HoeMath::VECTOR2 &res);
+	bool IsSkrz(HoeMath::Vector2 from, HoeMath::Vector2 to);
+	bool ToLeft(HoeMath::Vector2 &from, HoeMath::Vector2 &to, HoeMath::Vector2 &res);
+	bool ToRight(HoeMath::Vector2 &from, HoeMath::Vector2 &to, HoeMath::Vector2 &res);
 };
 
 struct PointInt
@@ -76,20 +76,20 @@ struct OkrajLine
 // 
 struct TPathPart
 {
-	HoeMath::VECTOR2 to;
+	HoeMath::Vector2 to;
 	TPathPart * next;
 	TPathPart * child;
 	float distance;
-	TPathPart * Find(HoeMath::VECTOR2 from);
+	TPathPart * Find(HoeMath::Vector2 from);
 	void Copy(Path * path);
 };
 
 struct TPathBridge
 {
 	byte a;
-	HoeMath::VECTOR2 pa;
+	HoeMath::Vector2 pa;
 	byte b;
-	HoeMath::VECTOR2 pb;
+	HoeMath::Vector2 pb;
 };
 
 class PhysGroup
@@ -131,7 +131,7 @@ public:
 	static Phys * Get() { return &m_instance; }
 	void ParseLevel(BecherMap * map, TerrainMiniMap * minimap);
 	void ClearAll();
-	TPathPart * Find(HoeMath::VECTOR2 from, HoeMath::VECTOR2 to);
+	TPathPart * Find(HoeMath::Vector2 from, HoeMath::Vector2 to);
 	void Pisek(IHoeEnv::GridSurface * grid, int x, int y);
 	void Pisek2(byte * grid, int x, int y, byte obl, byte vypln);
 	void AddLines(HoeCore::Set<OkrajLine> & lines, byte grp);

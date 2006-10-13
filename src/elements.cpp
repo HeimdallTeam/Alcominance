@@ -27,7 +27,7 @@ void Tree::SetHeight(float h)
 	m_height = h;
 	if (h != 1.f)
 	{
-		GetCtrl()->SetScale(HoeMath::VECTOR3(1,h,1));
+		GetCtrl()->SetScale(HoeMath::Vector3(1,h,1));
 		GetCtrl()->SetFlags(HOF_SCALED);
 	}
 	else

@@ -47,7 +47,7 @@ HerbeWoman::HerbeWoman(IHoeScene * scn) : SourceBuilding(scn), m_herbe(EBS_Herbe
 	SetRingParam(1.4f,2.f,2.f);
 	m_info.model = NULL;
 	m_info.pos.Scale(2.f,4.f,2.f);
-	HoeMath::MATRIX a;
+	HoeMath::Matrix a;
 	a.Translate(0.f,getheight(this->GetModel()) + 3.f,0.f);
 	m_info.pos.Multiply(a);
 	GetCtrl()->Link(THoeSubObject::Object, &m_info);
@@ -172,8 +172,8 @@ BabaJaga::BabaJaga(IHoeScene * scn) : BaseObject(scn)
 	// nastaveni modelu
 	// ifndef editor
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_BABAJAGA));
-	GetCtrl()->SetPosition(HoeMath::VECTOR3(0,30,0));
-	GetCtrl()->SetScale(HoeMath::VECTOR3(.03f,.03f,.03f));
+	GetCtrl()->SetPosition(HoeMath::Vector3(0,30,0));
+	GetCtrl()->SetScale(HoeMath::Vector3(.03f,.03f,.03f));
 	GetCtrl()->SetFlags(HOF_SCALED);
 
 	Show(true);

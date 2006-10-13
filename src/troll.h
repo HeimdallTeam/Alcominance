@@ -9,7 +9,7 @@ class Path
 {
 public:
 	float x,y;
-	HoeCore::List<HoeMath::VECTOR2> m_points;
+	HoeCore::List<HoeMath::Vector2> m_points;
 	int act;
 
 	bool GetNextPos(float l,float &px, float &py);
