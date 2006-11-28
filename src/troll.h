@@ -5,19 +5,14 @@
 #include "object.h"
 #include "jobs.h"
 
-class Path
+struct TrollPath : public HoeGame::AI::Path
 {
-public:
 	float x,y;
-	HoeCore::List<HoeMath::Vector2> m_points;
-	int act;
-
 	bool GetNextPos(float l,float &px, float &py);
 	bool Step(Troll * t, const float time);
 	//void SetPosTo(float X, float Y);
 	bool FindPath(float fx, float fy, float tx, float ty);
 	bool FindPath(BecherObject * from, BecherObject * to);
-	//void SetPosTo(BecherObject * bo);
 };
 
 struct TLoad
@@ -31,7 +26,7 @@ struct TLoad
 class Troll : public BecherObject
 {
 	TJob m_job; // co ma aktualne na praci
-	Path m_path; // jeho cesta
+	TrollPath m_path; // jeho cesta
 	TLoad m_load; // naklad (co ma u sebe)
 	float anim;
 	float m_nextfind;

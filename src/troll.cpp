@@ -305,7 +305,7 @@ void JobEx::SetNone()
 
 /////////////////////////////////////////
 // Path
-bool Path::GetNextPos(float l,float &px, float &py)
+bool TrollPath::GetNextPos(float l,float &px, float &py)
 {
 	float ux = x - px;
 	float uy = y - py;
@@ -322,16 +322,16 @@ bool Path::GetNextPos(float l,float &px, float &py)
 	py = y;
 
 	// dalsi to
-	act++;
-	if (act >= this->m_points.Count())
+	if (points.IsEmpty())
 		return true;
-	x = m_points[act].x;
-	y = m_points[act].y;
+	HoeGame::AI::PathPoint next = points.Pop();
+	x = next.to.x;
+	y = next.to.y;
 
 	return false;
 }
 
-bool Path::FindPath(float fx, float fy, float tx, float ty)
+bool TrollPath::FindPath(float fx, float fy, float tx, float ty)
 {
 	x = ty;y = ty;
 	// vymazat 
@@ -344,12 +344,6 @@ bool Path::FindPath(float fx, float fy, float tx, float ty)
 	TPathPart * p = Phys::Get()->Find(from, to);
 	if (p)
 	{
-		m_points.SetCount(0);
-		p->Copy(this);
-		assert(m_points.Count()>0);
-		act = 0;
-		x = m_points[0].x;
-		y = m_points[0].y;
 		delete p;
 	}
 	else
@@ -357,7 +351,7 @@ bool Path::FindPath(float fx, float fy, float tx, float ty)
 	return true;
 }
 
-bool Path::FindPath(BecherObject * from, BecherObject * to)
+bool TrollPath::FindPath(BecherObject * from, BecherObject * to)
 {
 	return FindPath(from->GetPosX(), from->GetPosY(), to->GetPosX(), to->GetPosY());
 }
@@ -371,7 +365,7 @@ void Path::SetPosTo(BecherObject * bo)
 	SetPosTo( bo->GetPosX(), bo->GetPosY());
 }*/
 
-bool Path::Step(Troll * t, const float time)
+bool TrollPath::Step(Troll * t, const float time)
 {
 	bool finish;
 	float posX = t->GetPosX();

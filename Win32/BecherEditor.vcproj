@@ -13,7 +13,7 @@
 	</Platforms>
 	<ToolFiles>
 		<ToolFile
-			RelativePath="..\..\Common\tools.rules"
+			RelativePath="..\..\Common\bin\tools.rules"
 		/>
 	</ToolFiles>
 	<Configurations>

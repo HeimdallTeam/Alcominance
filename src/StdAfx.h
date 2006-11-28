@@ -47,6 +47,7 @@
 #include "../../Hoe/HoeGame/include/lua_script.h"
 #include "../../Hoe/HoeGame/include/hoe_timer.h"
 #include "../../Hoe/HoeGame/include/hoe_vars.h"
+#include "../../Hoe/HoeGame/include/hoe_ai.h"
 
 
 typedef HoeGame::CVar CVar;

@@ -323,6 +323,13 @@
 			<File
 				RelativePath="..\src\phys_prov.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\src\phys_prov.h"

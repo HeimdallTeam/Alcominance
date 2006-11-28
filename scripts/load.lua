@@ -20,6 +20,7 @@ AddFile("data/info.hm")
 AddFile("data/cukrovar.hm")
 AddFile("data/dul.hm")
 AddFile("data/most.hm")
+AddFile("data/chalupa.hm")
 AddFile("data/baba.hm")
 
 AddFile("data/voda.hm")
@@ -35,7 +36,7 @@ LoadResource(model_COALMINE, "model dul_uhli")
 LoadResource(model_STONEMINE, "model dul_kamen")
 
 -- baba jaga
-LoadResource(model_BABAJAGA, "model babajaga")
+LoadResource(model_BABAJAGA, "model babajaga file:'baba'")
 
 LoadResource(font_TOOLTIPS, "font 'resource/tooltips.ttf' 16")
 
@@ -48,7 +49,6 @@ LoadResource(ico_TROLLFREE, "picture com_release")
 -- stary
 --files 
 AddFile("data_old/textures.hx")
-AddFile("data_old/chalupa.hm")
 AddFile("data_old/farma.hm")
 AddFile("data_old/lihovar.hm")
 -- tupoun

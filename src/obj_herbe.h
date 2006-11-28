@@ -22,6 +22,7 @@ class BabaJaga : public HoeGame::BaseObject
 {
 public:
 	BabaJaga(IHoeScene * scn);
+	void Update(const float dtime);
 };
 
 class HerbeWoman : public SourceBuilding

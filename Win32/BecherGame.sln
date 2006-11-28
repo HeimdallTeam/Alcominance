@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hoe3D", "..\..\Hoe\Hoe3D\Wi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hoe2DEditor", "..\..\Hoe\HoeUtils\Hoe2DEditor\Hoe2DEditor.vcproj", "{CE0E450D-E046-4ED8-9FB3-25EC58C2A821}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HoeCore", "..\..\Hoe\HoeCore\Win32\HoeCore.vcproj", "{02382848-C357-45E3-BFAA-BCB7B197C6F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -159,6 +161,26 @@ Global
 		{CE0E450D-E046-4ED8-9FB3-25EC58C2A821}.ReleaseD3D9|Win32.Build.0 = Release|Win32
 		{CE0E450D-E046-4ED8-9FB3-25EC58C2A821}.ReleaseGL|Win32.ActiveCfg = Release|Win32
 		{CE0E450D-E046-4ED8-9FB3-25EC58C2A821}.ReleaseGL|Win32.Build.0 = Release|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.Debug|Win32.Build.0 = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.DebugD3D8|Win32.ActiveCfg = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.DebugD3D8|Win32.Build.0 = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.DebugD3D9 (static)|Win32.ActiveCfg = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.DebugD3D9 (static)|Win32.Build.0 = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.DebugD3D9|Win32.ActiveCfg = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.DebugD3D9|Win32.Build.0 = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.DebugGL (static)|Win32.ActiveCfg = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.DebugGL (static)|Win32.Build.0 = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.DebugGL|Win32.ActiveCfg = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.DebugGL|Win32.Build.0 = Debug|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.Release|Win32.ActiveCfg = Release|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.Release|Win32.Build.0 = Release|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.ReleaseD3D8|Win32.ActiveCfg = Release|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.ReleaseD3D8|Win32.Build.0 = Release|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.ReleaseD3D9|Win32.ActiveCfg = Release|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.ReleaseD3D9|Win32.Build.0 = Release|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.ReleaseGL|Win32.ActiveCfg = Release|Win32
+		{02382848-C357-45E3-BFAA-BCB7B197C6F6}.ReleaseGL|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

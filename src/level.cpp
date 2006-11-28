@@ -79,7 +79,7 @@ void BecherLevel::Update(float time)
 		m_mjobs.Update(time);
 		GetView()->Update(time);
 		// update objects
-		for (int i=0;i < this->m_obj.Count();i++)
+		for (uint i=0;i < this->m_obj.Count();i++)
 		{
 			this->m_obj[i]->Update(time);
 		}
@@ -345,8 +345,8 @@ bool BecherLevel::LoadGame(const char *path)
 
 	IHoeModel * m = (IHoeModel*)GetEngine()->Create("model voda");
 	// voda
-	for (int x=0; x < this->m_numX;x+=1)
-	for (int y=0; y < this->m_numY;y+=1)
+	for (uint x=0; x < this->m_numX;x+=1)
+	for (uint y=0; y < this->m_numY;y+=1)
 	{
 		if (!Phys::Get()->IsWater(x,y))
 			continue;
@@ -455,15 +455,18 @@ void BecherLevel::OnMouseMove(float X, float Y)
         MouseLeave();
 	else*/
 	BecherObject * o = NULL;
-	if (m_dlg && m_dlg->Move(X,Y))
-	{
-
-	}
-	else if (!m_hud.Move(X,Y))
+	bool act = false;
+	if (m_dlg)
+		m_dlg->Move(X,Y, act);
+	m_hud.Move(X,Y,act);
+	if (!act)
 	{
 		HoeGame::Strategy::StgObject * obj = GetView()->SelObject(X,Y);
 		if (obj)
+		{
 			o = dynamic_cast<BecherObject *>(obj);
+			act = true;
+		}
 	}
 	if (!m_build)
 	{
@@ -478,7 +481,6 @@ void BecherLevel::OnMouseMove(float X, float Y)
 		m_mselect = o;
 	}
 	MouseUpdate(X,Y);
-
 }
 
 void BecherLevel::OnWheel(long p)
@@ -623,7 +625,7 @@ int BecherLevel::l_Camera(lua_State * L)
 	}
 	else if (lp.GetNumParam() == 2 && lp.CheckPar(2,"nn", "Camera"))
 	{
-		level->GetView()->SetTrack(lp.GetNum(-2), lp.GetNum(-1), v_camera.GetFloat());
+		level->GetView()->SetTrack(lp.GetFloat(-2), lp.GetFloat(-1), v_camera.GetFloat());
 	}
 	return 0;
 }

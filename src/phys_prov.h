@@ -12,7 +12,7 @@ seznam cvercu a kruhu, kde se nemue stavet a kde se nemuze chodit
 
 */
 
-class Path;
+struct TrollPath;
 class BecherMap;
 class TerrainMiniMap;
 
@@ -32,47 +32,6 @@ struct Kruh
 	float x,y;
 };
 
-struct TPolygon
-{
-	HoeMath::Vector2 max;
-	HoeMath::Vector2 min;
-	HoeCore::List<HoeMath::Vector2> points;
-	void End();
-	bool IsSkrz(HoeMath::Vector2 from, HoeMath::Vector2 to);
-	bool ToLeft(HoeMath::Vector2 &from, HoeMath::Vector2 &to, HoeMath::Vector2 &res);
-	bool ToRight(HoeMath::Vector2 &from, HoeMath::Vector2 &to, HoeMath::Vector2 &res);
-};
-
-struct PointInt
-{
-	int x,y;
-	PointInt() {}
-	PointInt(int X, int Y) { x=X;y=Y; }
-	PointInt(const PointInt &p) { x=p.x;y=p.y; }
-	bool operator == (const PointInt &p) { return (x==p.x)&&(y==p.y); }
-};
-
-struct OkrajLine
-{
-	PointInt a;
-	PointInt b;
-	bool IsLine(PointInt &pnt)
-	{
-		if(a == pnt)
-		{
-			pnt = b;
-			return true;
-		}
-		if(b == pnt)
-		{
-			pnt = a;
-			return true;
-		}
-		return false;
-	}
-};
-
-
 // 
 struct TPathPart
 {
@@ -81,7 +40,6 @@ struct TPathPart
 	TPathPart * child;
 	float distance;
 	TPathPart * Find(HoeMath::Vector2 from);
-	void Copy(Path * path);
 };
 
 struct TPathBridge
@@ -95,16 +53,15 @@ struct TPathBridge
 class PhysGroup
 {
 	byte id;
-	HoeCore::Set<TPolygon*> m_poly;
+	HoeCore::Set<HoeMath::Polygon2*> m_poly;
 	HoeCore::Set<Obdelnik*> m_obd;
 	HoeCore::Set<Kruh*> m_kruh;
-	TPolygon * CreatePolygon(HoeCore::Set<OkrajLine> & lines);
-	TPolygon *m_obal;
+	HoeMath::Polygon2 *m_obal;
 
 public:
 	PhysGroup(byte id);
-	HoeCore::Set<TPolygon*> & GetPolygons() { return m_poly; }
-	bool IsOk(const Obdelnik * o)
+	HoeCore::Set<HoeMath::Polygon2*> & GetPolygons() { return m_poly; }
+	/*bool IsOk(const Obdelnik * o)
 	{
 		for (size_t i=0;i < m_kruh.Count();i++)
 		{
@@ -116,7 +73,7 @@ public:
 
 			// hodne blizko
 		}
-	}
+	}*/
 	void Parse(BecherMap * map, byte * grids);
 };
 
@@ -132,9 +89,6 @@ public:
 	void ParseLevel(BecherMap * map, TerrainMiniMap * minimap);
 	void ClearAll();
 	TPathPart * Find(HoeMath::Vector2 from, HoeMath::Vector2 to);
-	void Pisek(IHoeEnv::GridSurface * grid, int x, int y);
-	void Pisek2(byte * grid, int x, int y, byte obl, byte vypln);
-	void AddLines(HoeCore::Set<OkrajLine> & lines, byte grp);
 	bool IsWater(int x, int y);
 	byte GetGroup(float x, float y);
 	TPathBridge * FindBridge(byte a, byte b);

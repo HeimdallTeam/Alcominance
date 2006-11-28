@@ -53,6 +53,14 @@ HerbeWoman::HerbeWoman(IHoeScene * scn) : SourceBuilding(scn), m_herbe(EBS_Herbe
 	GetCtrl()->Link(THoeSubObject::Object, &m_info);
 	m_herbe.SetOwner(this); CRR::Get()->Register(&m_herbe);
 	m_wait = (float)v_time.GetInt();
+
+	static THoeSub_Particle part;
+	part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
+	part.pos.Set(-6.681629, 23.211294, 17.630821);
+	GetCtrl()->Link(THoeSubObject::Particle, &part);
+	part.emitor->Start();
+
+	m_jaga.GetCtrl()->SetPosition(HoeMath::Vector3(0,30,0));
 }
 
 bool HerbeWoman::Save(BecherGameSave &w)
@@ -73,6 +81,10 @@ bool HerbeWoman::Load(BecherGameLoad &r)
 	m_ocup = r.Read<dword>() != 0;
 	r.ReadReservedWords(8);
 	OnUpdateSur();
+
+	// nastaveni pozice
+	//HoeMath::Vector3 p = GetCtrl()->GetPosition() + HoeMath::Vector3(-6.681629, 23.211294, 17.630821);
+	//m_jaga.GetCtrl()->SetPosition(p);
 	return true;
 }
 
@@ -97,7 +109,7 @@ const char * HerbeWoman::BuildPlace(float x, float y)
 void HerbeWoman::Update(const float dtime)
 {
 	// update baba
-	
+	m_jaga.Update(dtime);
 
 	if (m_wait > 0.f)
 	{
@@ -167,18 +179,23 @@ void HerbeWoman::OnUpdateSur()
 }
 
 //////////////////////////////////////////////////////
+float g_angl = 0.f;
+
 BabaJaga::BabaJaga(IHoeScene * scn) : BaseObject(scn)
 {
 	// nastaveni modelu
 	// ifndef editor
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_BABAJAGA));
-	GetCtrl()->SetPosition(HoeMath::Vector3(0,30,0));
-	GetCtrl()->SetScale(HoeMath::Vector3(.03f,.03f,.03f));
-	GetCtrl()->SetFlags(HOF_SCALED);
 
 	Show(true);
 }
 
+void BabaJaga::Update(const float dtime)
+{
+	g_angl += dtime;
+	this->SetPosition(sinf(g_angl)*100,30,cosf(g_angl)*100);
+	SetOrientation(0,1,0,-g_angl+HoeMath::HOE_PIF/2);
 
+}
 
 
