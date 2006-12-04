@@ -5,7 +5,7 @@
 #include "object.h"
 #include "jobs.h"
 
-struct TrollPath : public HoeGame::AI::Path
+struct TrollPath/* : public HoeGame::AI::Path*/
 {
 	float x,y;
 	bool GetNextPos(float l,float &px, float &py);

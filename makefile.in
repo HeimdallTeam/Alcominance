@@ -5,7 +5,7 @@ OUTPUT_BINARY = $(OUTPUT_DIR)/Becher
 
 CC=gcc
 GCC=g++
-C_FLAGS= -D_LINUX -ggdb3 -I../Hoe/Hoe3D/include -I../Hoe/HoeGame/include
+C_FLAGS= -D_LINUX -ggdb3 -I../Hoe/Hoe3D/include -I../Hoe/HoeGame/include -I../Hoe/HoeCore/include 
 LINK=g++
 L_FLAGS= -L/usr/X11R6/lib -L../Hoe/bin
 LINK_LIBRARIES = -ll -lHoeGame -llua -ldl ./libbassmod.so -lX11 -lfl

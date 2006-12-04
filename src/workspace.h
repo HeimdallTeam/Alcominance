@@ -106,3 +106,5 @@ struct TTrollWorkSlot
 };
 
 #endif // _WORKSPACE_H_
+
+
