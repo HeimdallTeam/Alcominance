@@ -130,7 +130,7 @@ bool BecherConfig::Conf()
 {
 	if (!m_continue)
 		return false;
-	Load(m_config.GetString());
+	Load(v_config.GetString());
 
 	return m_continue;
 }

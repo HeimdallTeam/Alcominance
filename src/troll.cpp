@@ -303,68 +303,7 @@ void JobEx::SetNone()
 	type = jtNone;
 }*/
 
-/////////////////////////////////////////
-// Path
-bool TrollPath::GetNextPos(float l,float &px, float &py)
-{
-	float ux = x - px;
-	float uy = y - py;
-	float mag = sqrt(ux * ux + uy * uy);
-	ux /= mag;
-	uy /= mag;
-	if (l < mag)
-	{
-		px += ux * l;
-		py += uy * l;
-		return false;
-	}
-	px = x;
-	py = y;
-
-	// dalsi to
-	if (points.IsEmpty())
-		return true;
-	HoeGame::AI::PathPoint next = points.Pop();
-	x = next.to.x;
-	y = next.to.y;
-
-	return false;
-}
-
-bool TrollPath::FindPath(float fx, float fy, float tx, float ty)
-{
-	x = ty;y = ty;
-	// vymazat 
-	// najit 
-	HoeMath::Vector2 from,to;
-	from.x = fx;
-	from.y = fy;
-	to.x = tx;
-	to.y = ty;
-	TPathPart * p = Phys::Get()->Find(from, to);
-	if (p)
-	{
-		delete p;
-	}
-	else
-		return false;
-	return true;
-}
-
-bool TrollPath::FindPath(BecherObject * from, BecherObject * to)
-{
-	return FindPath(from->GetPosX(), from->GetPosY(), to->GetPosX(), to->GetPosY());
-}
-
-/*void Path::SetPosTo(float X, float Y)
-{
-}
-
-void Path::SetPosTo(BecherObject * bo)
-{
-	SetPosTo( bo->GetPosX(), bo->GetPosY());
-}*/
-
+/*
 bool TrollPath::Step(Troll * t, const float time)
 {
 	bool finish;
@@ -380,4 +319,4 @@ bool TrollPath::Step(Troll * t, const float time)
 	return finish;
 }
 
-
+*/
