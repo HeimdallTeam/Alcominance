@@ -19435,7 +19435,7 @@ CXXFLAGS="$CXXFLAGS $WX_CPPFLAGS"
 
 
 
-ac_config_files="$ac_config_files unix/Makefile src/Makefile src/editor/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile src/editor/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -20024,7 +20024,7 @@ for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
-    "unix/Makefile") CONFIG_FILES="$CONFIG_FILES unix/Makefile" ;;
+    "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/editor/Makefile") CONFIG_FILES="$CONFIG_FILES src/editor/Makefile" ;;
 
