@@ -73,7 +73,7 @@ void Troll::Update(const float t)
 		if (anim > 1.f)
 			anim = 0.f;
 		this->SetAnimationTime(anim);
-		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
+		//if (m_path.Step(this, (float)t*v_speed.GetFloat()))
 			Finish();
 		break;
 	case TJob::jtGotoRes:
@@ -84,7 +84,7 @@ void Troll::Update(const float t)
 		if (anim > 1.f)
 			anim = 0.f;
 		this->SetAnimationTime(anim);
-		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
+		//if (m_path.Step(this, (float)t*v_speed.GetFloat()))
 			Finish();
 		// prachy
 		GetLevel()->GetMJobs()->AddPay(v_cost_bring.GetFloat() * t);
@@ -142,16 +142,16 @@ void Troll::SetJob(const TJob & j)
 			m_load.numlocked = m_job.from->Lock(m_job.num);
 			m_load.locked = true;
 		}
-		m_path.FindPath(this, m_job.from->GetOwner());
+		//m_path.FindPath(this, m_job.from->GetOwner());
    		m_job.owner->SetToWork(this);
 		break;
 	case TJob::jtGotoOwnerWithRes:
 		if (!m_job.to)
 			m_job.to = m_job.owner;
-		m_path.FindPath(this, m_job.to);
+		//m_path.FindPath(this, m_job.to);
 		break;
 	case TJob::jtGotoWork:
-		m_path.FindPath(this,m_job.owner);
+		//m_path.FindPath(this,m_job.owner);
 		break;
 	case TJob::jtWork:
 		assert(m_job.owner);

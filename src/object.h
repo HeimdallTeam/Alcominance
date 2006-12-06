@@ -4,6 +4,7 @@
 
 #include "id.h"
 #include <hoefs.h>
+#include "utils.h"
 
 class Troll;
 
