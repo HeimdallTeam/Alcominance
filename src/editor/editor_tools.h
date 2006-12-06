@@ -2,6 +2,9 @@
 #ifndef _BECHER_EDITOR_TOOLS_H_
 #define _BECHER_EDITOR_TOOLS_H_
 
+#include <he/undolist.h>
+
+
 class BecherObject;
 
 ////////////////////////////////////////////////////////////////////////

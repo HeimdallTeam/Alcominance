@@ -24,7 +24,6 @@ jobs.cpp \
 level.cpp \
 main.cpp \
 map.cpp \
-map_loader.cpp \
 minimap.cpp \
 ministry.cpp \
 obj_coalmine.cpp \
@@ -46,7 +45,6 @@ phys_prov.cpp \
 screens.cpp \
 sysobjs.cpp \
 terrain.cpp \
-titule.cpp \
 troll.cpp \
 utils.cpp \
 workspace.cpp
