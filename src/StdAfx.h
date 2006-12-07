@@ -30,7 +30,9 @@
 #include <hoe_structures.h>
 
 #include <hoe3d.h>
-#include "../../Hoe/HoeGame/include/hoe_utils.h"
+
+#include "../../Hoe/HoeCore/include/hoe_core.h"
+//
 #include "../../Hoe/HoeGame/include/hoe_console.h"
 #include "../../Hoe/HoeGame/include/hoe_engine.h"
 #include "../../Hoe/HoeGame/include/hoe_app.h"
@@ -48,7 +50,7 @@
 #include "../../Hoe/HoeGame/include/hoe_timer.h"
 #include "../../Hoe/HoeGame/include/hoe_vars.h"
 #include "../../Hoe/HoeGame/include/hoe_ai.h"
-
+#include "../../Hoe/HoeGame/include/hoe_land.h"
 
 typedef HoeGame::CVar CVar;
 

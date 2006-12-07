@@ -3,7 +3,6 @@ data_old/tovarna.hm
 data_old/czech.hx
 data_old/english.hx
 data_old/farma.hm
-data_old/chalupa.hm
 data_old/lihovar.hm
 data_old/obchod.hm
 data_old/olaf.hm
@@ -30,6 +29,8 @@ data/cukrovar.hm
 data/terrain.hx
 data/voda.hm
 data/most.hm
+data/baba.hm
+data/chalupa.hm
 #resources
 model_FACTORY="model tovarna" ; Tovarna
 model_INFO_RING="model info" ; Ring
@@ -52,4 +53,5 @@ model_STONEMINE="model dul_kamen" ; Dul uhli
 model_STROM2="model strom2" ; Strom 2
 model_STROM3="model strom3" ; Strom 3
 model_STROM4="model strom4" ; Strom 4
+model_BABAJAGA="model babajaga" ; Babka
 #end

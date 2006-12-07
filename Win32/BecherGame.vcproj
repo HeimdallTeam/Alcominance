@@ -66,7 +66,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="true"
 				AdditionalOptions="/fixed:no"
-				AdditionalDependencies="winmm.lib bassmod.lib lua5.1.lib libfl.a ../../Hoe/bin/HoeGame_d.lib User32.lib Gdi32.lib"
+				AdditionalDependencies="winmm.lib bassmod.lib lua5.1.lib libfl.a ../../Hoe/bin/HoeGame_d.lib ../../Hoe/bin/HoeCore_d.lib  User32.lib Gdi32.lib"
 				OutputFile="../BecherGame_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
@@ -323,13 +323,6 @@
 			<File
 				RelativePath="..\src\phys_prov.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\src\phys_prov.h"

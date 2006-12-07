@@ -50,7 +50,7 @@ bool Troll::Save(BecherGameSave &w)
 bool Troll::Load(BecherGameLoad &r)
 {
 	BecherObject::Load(r);
-	m_job.Load(r);	
+	//m_job.Load(r);	
 	m_load.locked = r.Read<bool>();
 	m_load.numlocked = r.Read<uint>();
 	m_load.numsur = r.Read<uint>();
@@ -73,18 +73,19 @@ void Troll::Update(const float t)
 		if (anim > 1.f)
 			anim = 0.f;
 		this->SetAnimationTime(anim);
-		//if (m_path.Step(this, (float)t*v_speed.GetFloat()))
+		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
 			Finish();
 		break;
 	case TJob::jtGotoRes:
 	case TJob::jtGotoOwnerWithRes:
 	case TJob::jtGotoWork:
+	case TJob::jtGoto:
 		// update cesty, pokud cesta hotova tak finish
 		anim += ((t * v_speed.GetFloat()) / (scale * 20.f)) ;
 		if (anim > 1.f)
 			anim = 0.f;
 		this->SetAnimationTime(anim);
-		//if (m_path.Step(this, (float)t*v_speed.GetFloat()))
+		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
 			Finish();
 		// prachy
 		GetLevel()->GetMJobs()->AddPay(v_cost_bring.GetFloat() * t);
@@ -108,7 +109,7 @@ void Troll::Update(const float t)
 
 void Troll::SetJob(const TJob & j)
 {
-	assert(j.owner != NULL);
+	//assert(m_job.type == TJob::jtGoto || j.owner != NULL);
 	// opustit stary job
 	switch (m_job.type)
 	{
@@ -209,6 +210,14 @@ void Troll::Finish()
 			SetJob(j);
 		}
 		break;
+	case TJob::jtGoto:
+		{
+			//this->ToBuilding();
+			TJob j = m_job;
+			j.type = TJob::jtNone;
+			SetJob(j);
+		}
+		break;
 	};
 }
 
@@ -253,6 +262,15 @@ void Troll::StopWork()
 	// pokud nenalezen, zajit k budove
 	TJob j = m_job;
 	j.type = TJob::jtFindJob;
+	SetJob(j);
+}
+
+void Troll::Go(float x, float y)
+{
+	// nastavit na chuzi
+	TJob j = m_job;
+	j.type = TJob::jtGoto;
+	this->m_path.Go(x,y);
 	SetJob(j);
 }
 
@@ -303,7 +321,7 @@ void JobEx::SetNone()
 	type = jtNone;
 }*/
 
-/*
+
 bool TrollPath::Step(Troll * t, const float time)
 {
 	bool finish;
@@ -319,4 +337,35 @@ bool TrollPath::Step(Troll * t, const float time)
 	return finish;
 }
 
-*/
+
+
+bool TrollPath::Go(float tx, float ty)
+{
+	Insert(tx, ty, true);
+	return true;
+}
+
+bool TrollPath::GetNextPos(float l,float &px, float &py)
+{
+	if (this->m_stack.IsEmpty())
+		return true;
+	const Point &p = m_stack.GetTop();
+	float ux = p.pos.x - px;
+	float uy = p.pos.y - py;
+	float mag = sqrt(ux * ux + uy * uy);
+	ux /= mag;
+	uy /= mag;
+	if (l < mag)
+	{
+		px += ux * l;
+		py += uy * l;
+		return false;
+	}
+	px = p.pos.x;
+	py = p.pos.y;
+
+	m_stack.Pop();
+
+	return m_stack.IsEmpty();
+}
+

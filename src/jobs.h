@@ -20,6 +20,7 @@ struct TJob
 		jtWaitToRes,
 		jtFindJob,
 		jtFly,
+		jtGoto,
 	} type;
 	// parametry
 	BecherBuilding * owner;
@@ -30,6 +31,9 @@ struct TJob
 	float percent;
 	bool Save(BecherGameSave &w);
 	bool Load(BecherGameLoad &r);
+
+	// function for build job
+	void Go(float x, float y);
 };
 
 

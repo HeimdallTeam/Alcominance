@@ -5,14 +5,15 @@
 #include "object.h"
 #include "jobs.h"
 
-struct TrollPath/* : public HoeGame::AI::Path*/
+struct TrollPath : public HoeGame::LandPath
 {
 	float x,y;
 	bool GetNextPos(float l,float &px, float &py);
 	bool Step(Troll * t, const float time);
 	//void SetPosTo(float X, float Y);
-	bool FindPath(float fx, float fy, float tx, float ty);
-	bool FindPath(BecherObject * from, BecherObject * to);
+	// nastavi vnitrni promeny na chozeni, k urcenemu mistu
+	bool Go(float tx, float ty);
+	bool Go(BecherObject * to);
 };
 
 struct TLoad
@@ -50,6 +51,7 @@ public:
 	// prace s tupounem
 	void StopWork();
 	bool FindJob(BecherBuilding * prior);
+	void Go(float x, float y);
 };
 
 

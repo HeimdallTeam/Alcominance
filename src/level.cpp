@@ -514,12 +514,14 @@ void BecherLevel::OnLeftButtonDown()
 
 void BecherLevel::OnRightButtonUp()
 {
-	/*if (GetSelectionCount() > 0 && GetSelectedObject(0)->GetType() ==  EBO_Troll)
+	if (GetSelectedObject() && GetSelectedObject()->GetType() ==  EBO_Troll)
 	{
 		float x,y;
 		if (GetView()->GetPick(GetMouseX(), GetMouseY(), &x, &y))
-            reinterpret_cast<Troll*>(GetSelectedObject(0))->Go(x,y);
-	}*/
+		{
+            reinterpret_cast<Troll*>(GetSelectedObject())->Go(x,y);
+		}
+	}
 }
 
 void BecherLevel::OnRightButtonDown()
