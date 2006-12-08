@@ -7,7 +7,7 @@
 
 struct TrollPath : public HoeGame::LandPath
 {
-	float x,y;
+	Point act;
 	bool GetNextPos(float l,float &px, float &py);
 	bool Step(Troll * t, const float time);
 	//void SetPosTo(float X, float Y);

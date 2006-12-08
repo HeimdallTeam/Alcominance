@@ -563,6 +563,17 @@ void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone
 		SetBuildObject( bb, gold, wood, stone);
 }
 
+/////////////////////////////////////////////
+// Path finding
+bool BecherLevel::FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 &to, TrollPath &path)
+{
+    path.Insert(to.x, to.y, false);
+    return true;
+}
+
+//////////////////////////////////////////////
+// Lua
+
 int BecherLevel::l_AddTroll(lua_State * L)
 {
 	HoeGame::LuaParam lp(L);

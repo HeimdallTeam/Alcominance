@@ -341,7 +341,9 @@ bool TrollPath::Step(Troll * t, const float time)
 
 bool TrollPath::Go(float tx, float ty)
 {
+	m_stack.SetCount(0);
 	Insert(tx, ty, true);
+	act.virt = true;
 	return true;
 }
 
@@ -349,7 +351,20 @@ bool TrollPath::GetNextPos(float l,float &px, float &py)
 {
 	if (this->m_stack.IsEmpty())
 		return true;
+	
 	const Point &p = m_stack.GetTop();
+	if (p.virt)
+	{
+		// cesta je virtualni, musi by se dohledat
+		// napojeni na mapu a ziskani zeme
+		// nejspis u levelu
+        	HoeMath::Vector2 to = p.pos;
+        	m_stack.Pop();
+        	// najit cestu k to a vlozit
+        	if (!GetLevel()->FindPath(HoeMath::Vector2(px,py),to,*this))
+			return true; // todo
+		return false;
+	}
 	float ux = p.pos.x - px;
 	float uy = p.pos.y - py;
 	float mag = sqrt(ux * ux + uy * uy);

@@ -14,6 +14,7 @@
 
 class Store;
 class BaseDialog;
+class TrollPath;
 
 class BecherTime : public HoeGame::Timer
 {
@@ -124,6 +125,10 @@ public:
 	{
 		m_hud.SetMap(NULL);
 	}
+	// hledani cest
+	// vychytavka: vrati to cestu pokud byla nalezena, ale dokaze vratit 
+	// i virtualni cestu, ktera prinut, zeptat se znova
+	bool FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 &to, TrollPath &path);
 	static int l_AddTroll(lua_State * L);
 	static int l_SetBuilding(lua_State * L);
 	static int l_AddCash(lua_State * L);
