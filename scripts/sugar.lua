@@ -38,7 +38,7 @@ function i_sugar(b)
  --zjisti se recept (kolik je treba trtiny pro jednotku/jendotky cukr/u)
  recept =  GetVar("sugar_recept")
  count, units=getReceptCount(recept, "C")
- info("C",count," ",units)
+ print("C",count," ",units)
  
  -- kdyz je trtina aspon na jednu jednotku a nikdo nezpracovava, zpracuj
  if b.cane >= count/units and b.works_count == 0 then 

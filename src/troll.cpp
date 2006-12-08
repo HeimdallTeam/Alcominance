@@ -143,16 +143,16 @@ void Troll::SetJob(const TJob & j)
 			m_load.numlocked = m_job.from->Lock(m_job.num);
 			m_load.locked = true;
 		}
-		//m_path.FindPath(this, m_job.from->GetOwner());
+		m_path.Go(m_job.from->GetOwner());
    		m_job.owner->SetToWork(this);
 		break;
 	case TJob::jtGotoOwnerWithRes:
 		if (!m_job.to)
 			m_job.to = m_job.owner;
-		//m_path.FindPath(this, m_job.to);
+		m_path.Go(m_job.to);
 		break;
 	case TJob::jtGotoWork:
-		//m_path.FindPath(this,m_job.owner);
+		m_path.Go(m_job.owner);
 		break;
 	case TJob::jtWork:
 		assert(m_job.owner);
@@ -345,6 +345,11 @@ bool TrollPath::Go(float tx, float ty)
 	Insert(tx, ty, true);
 	act.virt = true;
 	return true;
+}
+
+bool TrollPath::Go(BecherObject *to)
+{
+	return Go(to->GetPosX(), to->GetPosY());
 }
 
 bool TrollPath::GetNextPos(float l,float &px, float &py)

@@ -14,7 +14,7 @@
 
 class Store;
 class BaseDialog;
-class TrollPath;
+struct TrollPath;
 
 class BecherTime : public HoeGame::Timer
 {

@@ -13,14 +13,14 @@ struct TJob
 	enum Type
 	{
 		jtNone = 0,
-		jtGotoRes,
-		jtGotoOwnerWithRes,
-		jtGotoWork,
-		jtWork,
-		jtWaitToRes,
-		jtFindJob,
-		jtFly,
-		jtGoto,
+		jtGotoRes, // jit pro suroviny
+		jtGotoOwnerWithRes, // odevzdat suroviny
+		jtGotoWork, // jit pracovat
+		jtWork, // pracovat
+		jtWaitToRes, // cekat na suroviny
+		jtFindJob, // najit praci (v budove)
+		jtFly, // dostane padaka
+		jtGoto, // nekam jit
 	} type;
 	// parametry
 	BecherBuilding * owner;
