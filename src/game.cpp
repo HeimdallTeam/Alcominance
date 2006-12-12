@@ -153,6 +153,31 @@ int BecherGame::c_map(int argc, const char * argv[], void * param)
 	return 0;
 }
 
+// messages
+int SendGameMsg(BecherObject * o, int msg, void * param, uint nump)
+{
+	static int level = 0;
+	level++;
+	// log message
+	GetCon()->Printf("L%d:Message %s to obj %d nump=%d", level, FindIDString(msg), o->GetID(), nump);
+	int ret = o->GameMsg(msg, param, nump);
+	GetCon()->Printf("return=%d", ret);
+	level--;
+	return ret;
+}
+
+int SendGameMsg(unsigned long id, int msg, void * param, uint nump)
+{
+	// find id
+	return SendGameMsg(GetLevel()->GetObjFromID(id),msg,param,nump);
+}
+
+
+
+
+
+
+
 
 
 

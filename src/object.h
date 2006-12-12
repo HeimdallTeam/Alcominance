@@ -65,6 +65,8 @@ public:
 	unsigned long GetID() { return id; }
 
 	void SetRingParam(float sx, float sy, float height);
+
+	virtual int GameMsg(int msg, void * param, uint params) { return 0; }
 };
 
 #define DECLARE_BASEOBJECT(type) virtual EObjType GetType() { return type; }

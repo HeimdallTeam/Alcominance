@@ -38,6 +38,16 @@ public:
 	void Link(HoeGame::Gui::DigiCounter * cnt) { cnt->Set(&m_cash); }
 };
 
+// objekt pro hleedani cesty atd..
+class BecherLand
+{
+	HoeCore::WordTileMap m_tiles;
+	HoeGame::Land m_land;
+public:
+	bool Create(BecherMap * map);
+	bool FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 &to, TrollPath &path);
+};
+
 class BecherLevel : public BecherMap, 
 	public HoeGame::Scene, 
 	public XHoe2DCallback, 
@@ -59,6 +69,7 @@ protected:
 	CoalMiniMap m_coalmap;
 	StoneMiniMap m_stonemap;
 	TerrainMiniMap m_termap;
+	BecherLand m_land;
 
 	BaseDialog * m_dlg;
 	BecherObject * m_select;

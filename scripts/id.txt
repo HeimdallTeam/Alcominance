@@ -113,3 +113,8 @@ ADDID(model_DIGITFONT)
 ADDID(model_CONSOLE_BACK)
 ADDID(model_INFO_FONT) // info
 
+// messages!!!
+ADDID(BMSG_Go)
+ADDID(BMSG_RightClick)
+
+

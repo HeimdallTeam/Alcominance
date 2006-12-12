@@ -14,6 +14,7 @@
 #include "obj_waterhole.h"
 #include "obj_farm.h"
 #include "phys_prov.h"
+#include "b_msg.h"
 
 static CVar v_camera("camera_speed", 0.9f, 0);
 
@@ -334,13 +335,15 @@ bool BecherLevel::LoadGame(const char *path)
 			return false;
 	}
 
+	// 
+	m_land.Create(this);
 	// load minimaps
 	m_watermap.Load(this);
 	m_coalmap.Load(this);
 	m_stonemap.Load(this);
+	//m_termap.Load(this);
 
-	// 
-	Phys::Get()->ParseLevel(this, &m_termap);
+
 	m_hud.SetMap(&m_termap);
 
 	IHoeModel * m = (IHoeModel*)GetEngine()->Create("model voda");
@@ -519,7 +522,7 @@ void BecherLevel::OnRightButtonUp()
 		float x,y;
 		if (GetView()->GetPick(GetMouseX(), GetMouseY(), &x, &y))
 		{
-            reinterpret_cast<Troll*>(GetSelectedObject())->Go(x,y);
+			SendGameMsg(GetSelectedObject(),BMSG_Go,&HoeMath::Vector2(x,y),2);
 		}
 	}
 }
@@ -567,8 +570,7 @@ void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone
 // Path finding
 bool BecherLevel::FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 &to, TrollPath &path)
 {
-    path.Insert(to.x, to.y, false);
-    return true;
+	return m_land.FindPath(from, to, path);
 }
 
 //////////////////////////////////////////////
@@ -643,6 +645,42 @@ int BecherLevel::l_Camera(lua_State * L)
 	return 0;
 }
 
+/////////////////////////////////////////////
+// Path finding
+bool BecherLand::Create(BecherMap * map)
+{
+	m_tiles.Create(map->m_numX, map->m_numY);
+	IHoeEnv::GridSurface * grid = map->GetTerrain();
+	// nejak vypiskovat
+	IHoeEnv::GridSurface::TGridDesc desc;
+	for (int y=0;y < map->m_numY;y++)
+	{
+		for (int x=0;x < map->m_numX;x++)
+		{
+			if (grid->GetGridModel(x,y) != -1)
+			{
+				m_tiles.Set(x,y,0);
+				continue;
+			}
+			float min = 0.f;
+			grid->GetAvgHeight(x,y,&min,NULL);
+			m_tiles.Set(x,y, (min >= -15.f) ? 1:0);
+		}
+	}
+	THoeRect rect;
+	rect.top = - (map->m_sizeY*0.5f);
+	rect.left = - (map->m_sizeX*0.5f);
+	rect.right = (map->m_sizeX*0.5f);
+	rect.bottom = (map->m_sizeY*0.5f);
+	m_land.Create(map->m_numX,map->m_numY, rect);
+	m_land.Preprocess(m_tiles);
+	return true;
+}
+
+bool BecherLand::FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 &to, TrollPath &path)
+{
+	return m_land.Find(from,to,path);
+}
 
 
 

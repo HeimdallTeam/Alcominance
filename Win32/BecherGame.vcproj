@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="winmm.lib bassmod.lib lua5.1.lib libfl.a ../../Hoe/bin/HoeGame.lib"
+				AdditionalDependencies="winmm.lib bassmod.lib lua5.1.lib libfl.a ../../Hoe/bin/HoeGame.lib ../../Hoe/bin/HoeCore.lib"
 				OutputFile="../BecherGame.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
@@ -292,6 +292,10 @@
 		<Filter
 			Name="game"
 			>
+			<File
+				RelativePath="..\src\b_msg.h"
+				>
+			</File>
 			<File
 				RelativePath="..\src\game.cpp"
 				>

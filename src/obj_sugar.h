@@ -47,6 +47,9 @@ public:
 	virtual ~Sugar();
 
 	virtual void SetMode(EBuildingMode mode);
+
+	virtual int GameMsg(int msg, void * param, uint params);
+
 	DECLARE_BUILDING(EBO_Sugar)
 };
 

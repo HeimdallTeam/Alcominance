@@ -5,6 +5,7 @@
 #include "crr.h"
 #include "troll.h"
 #include "phys_prov.h"
+#include "b_msg.h"
 
 static CVar v_speed("troll_speed", 35.f, TVAR_SAVE);
 static CVar v_num("troll_num", 10, TVAR_SAVE);
@@ -265,15 +266,6 @@ void Troll::StopWork()
 	SetJob(j);
 }
 
-void Troll::Go(float x, float y)
-{
-	// nastavit na chuzi
-	TJob j = m_job;
-	j.type = TJob::jtGoto;
-	this->m_path.Go(x,y);
-	SetJob(j);
-}
-
 #ifndef BECHER_EDITOR
 bool Troll::Select()
 {
@@ -289,6 +281,27 @@ bool Troll::Select()
 }
 
 #endif
+
+int Troll::GameMsg(int msg, void * param, uint params)
+{
+	switch (msg)
+	{
+	case BMSG_Go:
+		{ hoe_assert(params == 2);
+		const HoeMath::Vector2 * pos = (HoeMath::Vector2 *)param;
+		TJob j = m_job;
+		j.type = TJob::jtGoto;
+		this->m_path.Go(pos->x, pos->y);
+		SetJob(j);
+		return 0; }
+	case BMSG_RightClick:
+
+		return 0;
+	default:
+		return BecherObject::GameMsg(msg, param, params);
+	};
+	return -1;
+}
 
 ////////////////////////////////////////////////
 /*JobEx::JobEx()
@@ -367,7 +380,7 @@ bool TrollPath::GetNextPos(float l,float &px, float &py)
         	m_stack.Pop();
         	// najit cestu k to a vlozit
         	if (!GetLevel()->FindPath(HoeMath::Vector2(px,py),to,*this))
-			return true; // todo
+				return true; // todo
 		return false;
 	}
 	float ux = p.pos.x - px;

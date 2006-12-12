@@ -51,7 +51,8 @@ public:
 	// prace s tupounem
 	void StopWork();
 	bool FindJob(BecherBuilding * prior);
-	void Go(float x, float y);
+
+	virtual int GameMsg(int msg, void * param, uint params);
 };
 
 
