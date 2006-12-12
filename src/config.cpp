@@ -17,6 +17,8 @@ public:
 		m_continue = true;
 		m_showdlg = false;
 	}
+    /** Automaticke parsovani parametry, 
+     * vraci pocet zpracovanych parametru (vola se do zpracovani vsech parametru) */
 	virtual int Arg(int argc,char * argv[]);
 	void ShowUsage(const char * usage);
 #ifdef _WIN32
@@ -141,11 +143,38 @@ int BecherConfig::Arg(int argc, char *argv[])
 {
 	if (strcmp(argv[0],"-h") == 0)
 	{
-		ShowUsage("Becher [-c <config>]");
+		ShowUsage("Becher [-c <config>] [-d <root>]");
 		m_continue = false;
 		return argc;
 	}
 
+    if (strcmp(argv[0],"-c") == 0)
+    {
+        // nastaveni konfigu
+        if (argc < 2)
+        {
+            HoeGame::BaseConsole::Printf("Config file requied.");
+            return -1;
+        }
+        v_config.Set(argv[1]); 
+        // nastaveni na konfig
+        return 2;
+    }
+
+    if (strcmp(argv[0],"-d") == 0)
+    {
+        // nastaveni konfigu
+        if (argc < 2)
+        {
+            HoeGame::BaseConsole::Printf("Directory requied.");
+            return -1;
+        }
+        HoeGame::BaseConsole::Printf("Changing directory to '%s'", argv[1]);
+        // nastaveni cesty
+        HoeGame::SetRootDir(argv[1]);
+        return 2;
+    }
+    
 	// posledni
 	if (argc == 1)
 	{

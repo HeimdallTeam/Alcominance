@@ -120,6 +120,11 @@ void Sugar::SetMode(EBuildingMode mode)
 	};
 }
 
+int Sugar::GameMsg(int msg, void * param, uint params)
+{
+    return 1;
+}
+
 #ifndef BECHER_EDITOR
 
 ResourceBase * Sugar::GetResource(ESurType type)
