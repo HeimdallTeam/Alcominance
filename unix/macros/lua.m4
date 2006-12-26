@@ -27,11 +27,11 @@ for x in $test_paths ; do
         save_LDFLAGS=$LDFLAGS
         CFLAGS="$CFLAGS"
         LDFLAGS="-L$x/lib $LDFLAGS"
-        AC_CHECK_LIB(lua5.1, luaL_newstate,
-            [
+dnl        AC_CHECK_LIB(lua5.1, luaL_newstate,
+dnl            [
             LUA_LIBS="-L$x/lib -llua5.1"
             LUA_CFLAGS="-I$x/include/lua5.1"
-            ])
+dnl            ])
         CFLAGS=$save_CFLAGS
         LDFLAGS=$save_LDFLAGS
         break
@@ -45,11 +45,11 @@ for x in $test_paths ; do
         save_LDFLAGS=$LDFLAGS
         CFLAGS="$CFLAGS"
         LDFLAGS="-L$x/lib $LDFLAGS"
-        AC_CHECK_LIB(lua, luaL_newstate,
-            [
+dnl        AC_CHECK_LIB(lua, luaL_newstate,
+dnl            [
             LUA_LIBS="-L$x/lib -llua"
             LUA_CFLAGS="-I$x/include"
-            ])
+dnl            ])
         CFLAGS=$save_CFLAGS
         LDFLAGS=$save_LDFLAGS
         break

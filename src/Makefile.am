@@ -49,6 +49,6 @@ troll.cpp \
 utils.cpp \
 workspace.cpp
 
-
+___Alcominance_CPPFLAGS = -I../../Hoe/HoeCore/include
 ___Alcominance_LDADD = -ll -lHoeGame -lHoeCore $(LUA_LIBS) -ldl -lbassmod -lX11 -lfl
 
