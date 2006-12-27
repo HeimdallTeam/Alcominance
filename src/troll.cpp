@@ -334,6 +334,7 @@ void JobEx::SetNone()
 	type = jtNone;
 }*/
 
+#ifndef BECHER_EDITOR
 
 bool TrollPath::Step(Troll * t, const float time)
 {
@@ -401,4 +402,6 @@ bool TrollPath::GetNextPos(float l,float &px, float &py)
 
 	return m_stack.IsEmpty();
 }
+
+#endif
 

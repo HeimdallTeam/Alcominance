@@ -52,8 +52,6 @@ public:
 	virtual bool Select();
 	virtual void Unselect();
 
-	virtual const char * BuildPlace(float x, float y) { return NULL;}//"Budova neni hotova"; /*todo*/ }
-
 	virtual void OnDeleteObject(unsigned long id) {}; 
 #ifdef BECHER_EDITOR
 	virtual 
@@ -66,7 +64,7 @@ public:
 
 	void SetRingParam(float sx, float sy, float height);
 
-	virtual int GameMsg(int msg, void * param, uint params) { return 0; }
+	virtual int GameMsg(int msg, void * param, uint params);
 };
 
 #define DECLARE_BASEOBJECT(type) virtual EObjType GetType() { return type; }
@@ -80,7 +78,6 @@ public:
 	virtual bool InsertSur(ESurType type, uint *s); \
 	virtual bool Save(BecherGameSave &w); \
 	virtual bool Load(BecherGameLoad &r); \
-	virtual const char * BuildPlace(float x, float y); \
 	virtual ResourceBase * GetResource(ESurType type);
 #else
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \

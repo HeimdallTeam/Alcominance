@@ -6,6 +6,7 @@
 #include "troll.h"
 #include "obj_store.h"
 #include "obj_construct.h"
+#include "b_msg.h"
 
 // premistit
 void TrollList::OneStopWork()
@@ -72,13 +73,18 @@ void BecherBuilding::SetCurActive(bool active)
 
 #ifndef BECHER_EDITOR
 
-const char * BecherBuilding::BuildPlace(float x, float y, IHoeModel * m, float height, float dobj)
+int BecherBuilding::BuildPlace(float *pos, IHoeModel * m, float height, float dobj,bool finish)
 {
 	// pozice v mape
 	float min,max;
+	float x=pos[0];
+	float y=pos[1];
 	bool ok;
 	THoeParameter par;
-	m->GetParameter("boundbox",&par);
+	if (m)
+		m->GetParameter("boundbox",&par);
+	else
+		memset(&par,0, sizeof(par));
 	max = min = 0.f;
 	// 177 132
 	ok = GetLevel()->GetScene()->GetScenePhysics()->GetCamber(
@@ -87,7 +93,9 @@ const char * BecherBuilding::BuildPlace(float x, float y, IHoeModel * m, float h
 	if (!ok || (max-min) > height) 
 	{
 		GetCtrl()->SetOverColor(0xffff0000);
-		return GetLang()->GetString(101);
+		if (finish)
+			SendGameMsg(0, BMSG_Info, (void*)GetLang()->GetString(101), 1);
+		return 0;
 	}
 	// zjistit zda muze byt cerveny nebo jiny
 	for (int i=0; i < GetLevel()->GetNumObj();i++)
@@ -99,11 +107,13 @@ const char * BecherBuilding::BuildPlace(float x, float y, IHoeModel * m, float h
 		if (x*x+y*y < dobj)
 		{
 			GetCtrl()->SetOverColor(0xffff0000);
-			return GetLang()->GetString(102);
+			if (finish)
+				SendGameMsg(0, BMSG_Info, (void*)GetLang()->GetString(102), 1);
+			return 0;
 		}
 	}
 	GetCtrl()->SetOverColor(0xffffffff);
-	return NULL;
+	return 1;
 }
 
 #endif // BECHER_EDITOR
@@ -115,6 +125,13 @@ float getheight(IHoeModel*m)
 	return p.box.top;
 }
 
+int BecherBuilding::GameMsg(int msg, void * param, uint params)
+{
+	switch (msg)
+	{
+	};
+	return 0;
+}
 
 
 

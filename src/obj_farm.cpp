@@ -106,12 +106,6 @@ void Farm::Update(const float dtime)
 	m_growinfo.pos.Translate(0,5.f * m_grow - 5.f,0);
 }
 
-const char * Farm::BuildPlace(float x, float y)
-{
-	return BecherBuilding::BuildPlace(x,y, (IHoeModel*)GetResMgr()->ReqResource(model_FARM), 4.f, 200.f); 
-	// pozice v mape
-}
-
 bool Farm::InsertSur(ESurType type, uint *s)
 {
 	return false;

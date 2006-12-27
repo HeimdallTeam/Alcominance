@@ -43,6 +43,7 @@ public:
 	HerbeWoman(IHoeScene * scn);
 	virtual void OnUpdateSur();
 
+	virtual int GameMsg(int msg, void * param, uint params);
 	DECLARE_BUILDING(EBO_HerbeWoman)
 };
 

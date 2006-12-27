@@ -122,7 +122,17 @@ void Sugar::SetMode(EBuildingMode mode)
 
 int Sugar::GameMsg(int msg, void * param, uint params)
 {
-    return 1;
+	switch (msg)
+	{
+	case BMSG_Select:
+		Select();
+		break;
+	case BMSG_SelectPlace:
+	case BMSG_StartBuilding:
+		return BuildPlace((float*)param, 
+			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
+	}
+	return BecherBuilding::GameMsg(msg, param, params);
 }
 
 #ifndef BECHER_EDITOR
@@ -140,12 +150,6 @@ ResourceBase * Sugar::GetResource(ESurType type)
 	default:
 		return NULL;
 	};
-}
-
-const char * Sugar::BuildPlace(float x, float y)
-{
-	return BecherBuilding::BuildPlace(x,y, (IHoeModel*)GetResMgr()->ReqResource(model_SUGAR), 5.f, 200.f); 
-	// pozice v mape
 }
 
 bool Sugar::InsertSur(ESurType type, uint *s)

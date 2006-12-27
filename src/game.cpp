@@ -157,19 +157,33 @@ int BecherGame::c_map(int argc, const char * argv[], void * param)
 int SendGameMsg(BecherObject * o, int msg, void * param, uint nump)
 {
 	static int level = 0;
+	int ret=0;
 	level++;
 	// log message
-	GetCon()->Printf("L%d:Message %s to obj %d nump=%d", level, FindIDString(msg), o->GetID(), nump);
-	int ret = o->GameMsg(msg, param, nump);
-	GetCon()->Printf("return=%d", ret);
+	if (o)
+	{
+		GetCon()->Printf("L%d:Message %s to obj %d nump=%d", level, FindIDString(msg), o->GetID(), nump);
+		ret = o->GameMsg(msg, param, nump);
+	}
+	else
+	{
+		GetCon()->Printf("L%d:Message %s to system nump=%d", level, FindIDString(msg), nump);
+		switch (msg)
+		{
+		case BMSG_Info:
+			hoe_assert(param && nump == 1);
+			GetLevel()->GetPanel()->GetInfo()->Add((const char *)param);
+			break;
+		};
+	}
 	level--;
 	return ret;
 }
 
-int SendGameMsg(unsigned long id, int msg, void * param, uint nump)
+int SendGameMsgId(unsigned long id, int msg, void * param, uint nump)
 {
 	// find id
-	return SendGameMsg(GetLevel()->GetObjFromID(id),msg,param,nump);
+	return SendGameMsg(id ? GetLevel()->GetObjFromID(id):NULL,msg,param,nump);
 }
 
 

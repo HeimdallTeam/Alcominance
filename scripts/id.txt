@@ -114,7 +114,19 @@ ADDID(model_CONSOLE_BACK)
 ADDID(model_INFO_FONT) // info
 
 // messages!!!
+// sys
+ADDID(BMSG_Info)
+
 ADDID(BMSG_Go)
+ADDID(BMSG_LeftClick)
 ADDID(BMSG_RightClick)
+
+
+// mody budovy
+ADDID(BMSG_SelectPlace)
+ADDID(BMSG_StartBuilding)
+
+ADDID(BMSG_Select)
+ADDID(BMSG_Unselect)
 
 

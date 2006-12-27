@@ -18,6 +18,7 @@ class BecherBuilding : public BecherObject
 protected:
 	EBuildingMode m_mode;
 	Construct * m_construct;
+	int BuildPlace(float *pos, IHoeModel * m, float dest, float dobj, bool finish);
 public:
 	BecherBuilding(IHoeScene * scn);
 	//bool IsBuildMode() { return m_mode == ; }
@@ -32,9 +33,9 @@ public:
 	virtual void OnUpdateSur() {}
 	virtual void SetCurActive(bool active);
 	virtual uint AcceptSur(ESurType type) { return 0; }
-	const char * BuildPlace(float x, float y, IHoeModel * m, float dest, float dobj);
-	virtual const char * BuildPlace(float x, float y) { return BecherObject::BuildPlace(x,y); }
 	virtual ResourceBase * GetResource(ESurType type) { return NULL; }
+
+	virtual int GameMsg(int msg, void * param, uint params);
 };
 
 class FactoryBuilding : public BecherBuilding

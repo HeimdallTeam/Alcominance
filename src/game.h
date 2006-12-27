@@ -3,6 +3,7 @@
 #define _BECHER_GAME_H_
 
 #include "level.h"
+#include "b_msg.h"
 
 class BecherResources : public HoeGame::ResourceMgr
 {

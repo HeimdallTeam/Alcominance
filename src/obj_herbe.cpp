@@ -101,11 +101,6 @@ ResourceBase * HerbeWoman::GetResource(ESurType type)
 	};
 }
 
-const char * HerbeWoman::BuildPlace(float x, float y)
-{
-	return "";
-}
-
 void HerbeWoman::Update(const float dtime)
 {
 	// update baba
@@ -125,10 +120,6 @@ void HerbeWoman::Update(const float dtime)
 
 bool HerbeWoman::Select()
 {
-	SourceBuilding::Select();
-	GetLevel()->SetObjectHud(&m_userhud);
-	m_userhud.SetAct(this);
-	GetLua()->func("s_herbe");
 	return true;
 }
 
@@ -175,7 +166,19 @@ void HerbeWoman::OnUpdateSur()
 		m_info.model = NULL;
 	if (m_herbe.GetNum() == 0)
 		m_wait = (float)v_time.GetInt();
+}
 
+int HerbeWoman::GameMsg(int msg, void * param, uint params)
+{
+	switch (msg)
+	{
+	case BMSG_Select:
+		GetLevel()->SetObjectHud(&m_userhud);
+		m_userhud.SetAct(this);
+		GetLua()->func("s_herbe");
+		break;
+	};
+	return BecherBuilding::GameMsg(msg, param, params);
 }
 
 //////////////////////////////////////////////////////

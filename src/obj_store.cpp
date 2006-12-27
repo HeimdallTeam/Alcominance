@@ -120,36 +120,6 @@ ResourceBase * Store::GetResource(ESurType type)
 	return &m_res[type];
 }
 
-const char * Store::BuildPlace(float x, float y)
-{
-	// pozice v mape
-	float min,max;
-	bool ok;
-	max = min = 0.f;
-	ok = GetLevel()->GetScene()->GetScenePhysics()->GetCamber(x,x,y,y,min,max);
-	SetPosition(x,y,min);
-	if (!ok || (max-min) > 1.f) 
-	{
-		GetCtrl()->SetOverColor(0xffff0000);
-		return GetLang()->GetString(101);
-	}
-	// zjistit zda muze byt cerveny nebo jiny
-	for (int i=0; i < GetLevel()->GetNumObj();i++)
-	{
-		float x = GetLevel()->GetObj(i)->GetPosX();
-		float y = GetLevel()->GetObj(i)->GetPosY();
-		x -= GetPosX();
-		y -= GetPosY();
-		if (x*x+y*y < 4000.f)
-		{
-			GetCtrl()->SetOverColor(0xffff0000);
-			return GetLang()->GetString(102);
-		}
-	}
-	GetCtrl()->SetOverColor(0xffffffff);
-	return NULL;
-}
-
 bool Store::InsertSur(ESurType type, uint *s)
 {
 	bool ret = m_res[type].Add(s, *s);

@@ -47,7 +47,7 @@ function s_shop()
  AddButton(model_STOPPRACI,"Najmout delnika", "c_najmout")
 end
 
-function s_korenarka()
+function s_herbe()
  ClearButtons()
 end
 

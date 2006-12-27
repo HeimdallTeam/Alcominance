@@ -129,7 +129,9 @@ void BecherLevel::MouseUpdate(float x, float y)
 		{
 			// zda postavit nebo nestavit
 			// ukazatel cervene
-			m_build->BuildPlace(X,Y);
+			PAR_BuildPlace bp = {X,Y,NULL,0,0};
+			m_build->SetAngle(1);
+			SendGameMsg(m_build, BMSG_SelectPlace, &bp, 5);
 		}
 	}
 	else // show select
@@ -152,7 +154,7 @@ void BecherLevel::SetBuildObject(BecherBuilding * bo, int gold, int wood, int st
 	m_buildwood = wood;
 	m_buildstone = stone;
 	//m_buildinit = m_select;
-	bo->SetMode(EBM_Select);
+	//todomsg bo->SetMode(EBM_Select);
 	bo->Show(false);
 }
 
@@ -181,17 +183,12 @@ void BecherLevel::MouseLeftDown(float x, float y)
 		//assert(this->GetSelectedObject(0)->GetType() == EBO_Troll);
 		//reinterpret_cast<Troll*>(this->GetSelectedObject(0))->Build(reinterpret_cast<BecherBuilding*>(o));
 		float X,Y;
+		m_build->Show(true);
 		if (GetView()->GetPick(x,y,&X,&Y))
 		{
-			// build
-			const char * reason;
-			if (reason = m_build->BuildPlace(X,Y))
-			{
-				m_hud.GetInfo()->Add(reason);
-				return;
-			}
-			assert(GetObjectClass(m_build->GetType()));
-			if (dynamic_cast<BecherBuilding*>(m_build)->StartBuilding(m_buildgold, m_buildwood, m_buildstone))
+			PAR_BuildPlace bp = {X,Y,NULL,0,0};
+			if (SendGameMsg(m_build, BMSG_StartBuilding,&bp,5)) 
+			//if (dynamic_cast<BecherBuilding*>(m_build)->StartBuilding(m_buildgold, m_buildwood, m_buildstone))
 			{
 				this->AddObject(m_build);
 				//if (m_buildinit && m_buildinit->GetType() == EBO_Troll)
@@ -213,12 +210,14 @@ void BecherLevel::SelectObject(BecherObject * so)
 {
 	if (m_select && m_select != so)
 	{
-		m_select->Unselect();
+		//m_select->Unselect();
+		SendGameMsg(m_select, BMSG_Unselect, NULL, 0);
 		SetObjectHud(NULL);
 		m_hud.ShowReset();
 	}
-	if (so && so->Select())
+	if (so)
 	{
+		SendGameMsg(so, BMSG_Select, NULL,0);
 		GetView()->SetTrack(so->GetPosX(), so->GetPosY(), v_camera.GetFloat());
 		m_select = so;
 	}
