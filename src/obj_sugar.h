@@ -6,29 +6,10 @@
 
 class Sugar;
 
-#ifndef BECHER_EDITOR
-class SugarStatic : public ObjectHud
-{
-protected:
-	char m_sugarinfo[256];
-	char m_trtinainfo[256];
-	Sugar * m_act;
-public:
-	SugarStatic();
-	void SetAct(Sugar * act);
-	virtual void Draw(IHoe2D * h2d);
-};
-#endif // BECHER_EDITOR
-
 class Sugar : public FactoryBuilding, TrollList
 {
 	friend class BecherLevel;
-	friend class SugarStatic;
 protected:
-	// panel
-#ifndef BECHER_EDITOR
-	static SugarStatic m_userhud;
-#endif // BECHER_EDITOR
 	// trolls
 	ResourceImp m_cane;
 	ResourceExp m_sugar;
@@ -47,8 +28,8 @@ public:
 	virtual ~Sugar();
 
 	virtual void SetMode(EBuildingMode mode);
-
-	virtual int GameMsg(int msg, void * param, uint params);
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 
 	DECLARE_BUILDING(EBO_Sugar)
 };

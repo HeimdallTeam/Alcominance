@@ -16,7 +16,7 @@ bool DialogBuild::SetButton(const char * str, int id, IHoeFont * fnt, const char
 	if (fnt)
 		b->SetToolTipFont(fnt);
 	b->SetToolTip(tip);
-	b->SetHandler(this, static_cast<HoeGame::Hoe2DControl::FUNC>(&DialogBuild::OnClick));
+	b->SetHandler(this, static_cast<HoeGame::Hoe2DControl::FUNC_CMD>(&DialogBuild::OnClick));
 	b->SetID(id);
 	return true; 
 }
@@ -45,7 +45,7 @@ bool DialogBuild::Load(const char * fname)
 	Button * b = dynamic_cast<Button*>(item);
 	if (b==NULL)
 		return false;
-	b->SetHandler(this, static_cast<HoeGame::Hoe2DControl::FUNC>(&DialogBuild::OnExit));
+	b->SetHandler(this, static_cast<HoeGame::Hoe2DControl::FUNC_CMD>(&DialogBuild::OnExit));
 	// 
 	return true;
 }

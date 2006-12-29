@@ -27,6 +27,9 @@ protected:
 	BecherButton * m_butt[16];
 	int m_num;
 	MiniMap * m_map;
+	HoeGame::Hoe2DFigure * m_selhud;
+	char m_olverlapedtext[1024];
+	BecherObject * m_selobj;
 public:
 	HUD();
 	virtual HoeGame::Gui::Base * CreateGUI(const char * type);
@@ -38,7 +41,11 @@ public:
 	/** zpracovani pohybu mysi, pokud se ma zpracovano,vraci true */
 	//bool MouseMove(float X, float Y);
 	bool Load(const char * fname);
+	bool SetObjectHud(const char * fname, BecherObject * obj);
 	HoeGame::Gui::InfoPanel * GetInfo() { return m_info; }
+
+	virtual void ReplaceVar(char * text, size_t n);
+	const char *InfoOverlap(HoeGame::Gui::Base * sender, const char * text);
 
 	LUA_FUNCTION(l_ClearButtons);
 	LUA_FUNCTION(l_AddButton);

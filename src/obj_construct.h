@@ -2,30 +2,10 @@
 #ifndef _CONSTRUCT_H_
 #define _CONSTRUCT_H_
 
-class Construct;
-
-#ifndef BECHER_EDITOR
-class ConstructStatic : public ObjectHud
-{
-protected:
-	//char m_sugarinfo[256];
-	//char m_trtinainfo[256];
-	Construct * m_act;
-public:
-	ConstructStatic();
-	void SetAct(Construct * act);
-	virtual void Draw(IHoe2D * h2d);
-};
-#endif // BECHER_EDITOR
-
-class Construct
+class Construct : public XHoeObject
 {
 	friend class BecherLevel;
-	friend class SugarStatic;
 protected:
-#ifndef BECHER_EDITOR
-	static ConstructStatic m_userhud;
-#endif // BECHER_EDITOR
 	BecherBuilding * m_owner;
 	uint m_reqwood;
 	uint m_reqstone;

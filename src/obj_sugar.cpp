@@ -14,36 +14,6 @@ static CVar v_numworks("sugar_maxwork", 4, TVAR_SAVE); // maximalni pocet pracuj
 static CVar v_recept("sugar_recept", "C1=1", TVAR_SAVE); // recept pro jednu davku
 static CVar v_coalmax("sugar_coal_max", 100, TVAR_SAVE); // maximalni kapacita pro uhli
 
-#ifndef BECHER_EDITOR
-SugarStatic Sugar::m_userhud;
-
-SugarStatic::SugarStatic()
-{
-	m_act = NULL;
-}
-
-void SugarStatic::SetAct(Sugar * act)
-{
-	m_act = act;
-	// pripojit 
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetText(m_trtinainfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetText(m_sugarinfo);
-
-}
-
-void SugarStatic::Draw(IHoe2D * h2d)
-{
-	if (m_act)
-	{
-		
-		sprintf(m_sugarinfo,GetLang()->GetString(5), m_act->m_sugar.GetNum());
-		sprintf(m_trtinainfo,GetLang()->GetString(6), m_act->m_cane.GetNum());
-
-		ObjectHud::Draw(h2d);
-	}
-}
-#endif // BECHER_EDITOR
-
 ////////////////////////////////////////////////////////
 Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 {
@@ -120,7 +90,35 @@ void Sugar::SetMode(EBuildingMode mode)
 	};
 }
 
-int Sugar::GameMsg(int msg, void * param, uint params)
+int Sugar::GetInfo(int type, char * str, size_t n)
+{
+	register int ret = 0;
+	if (type==BINFO_Custom && str)
+	{
+		if (strcmp(str, "cane") == 0)
+			type = BINFO_NumCane;
+		else if (strcmp(str, "sugar") == 0)
+			type = BINFO_NumSugar;
+	}
+	switch (type)
+	{
+	case BINFO_NumCane:
+		ret = (int)this->m_cane.GetNum();
+		if (str)
+			_snprintf(str, n, "%d", ret);
+		return ret;
+	case BINFO_NumSugar:
+		ret = (int)this->m_sugar.GetNum();
+		if (str)
+			_snprintf(str, n, "%d", ret);
+		return ret;
+	default:
+		return BecherBuilding::GetInfo(type, str, n);
+	};
+	return 0;
+}
+
+int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
 	switch (msg)
 	{
@@ -129,28 +127,13 @@ int Sugar::GameMsg(int msg, void * param, uint params)
 		break;
 	case BMSG_SelectPlace:
 	case BMSG_StartBuilding:
-		return BuildPlace((float*)param, 
+		return BuildPlace((float*)par2, 
 			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
 	}
-	return BecherBuilding::GameMsg(msg, param, params);
+	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
 #ifndef BECHER_EDITOR
-
-ResourceBase * Sugar::GetResource(ESurType type)
-{
-	switch (type)
-	{
-	case EBS_Sugar:
-		return &m_sugar;
-	case EBS_Coal:
-		return &m_w;
-	case EBS_Cane:
-		return &m_cane;
-	default:
-		return NULL;
-	};
-}
 
 bool Sugar::InsertSur(ESurType type, uint *s)
 {
@@ -271,8 +254,7 @@ bool Sugar::Select()
 	FactoryBuilding::Select();
 	if (m_construct)
 		return m_construct->Select();
-	GetLevel()->SetObjectHud(&m_userhud);
-	m_userhud.SetAct(this);
+	GetLevel()->GetPanel()->SetObjectHud("scripts/sugar.menu", this);	
 	GetLua()->func("s_cukr");
 	return true;
 }

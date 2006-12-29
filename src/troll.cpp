@@ -282,13 +282,13 @@ bool Troll::Select()
 
 #endif
 
-int Troll::GameMsg(int msg, void * param, uint params)
+int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
 	switch (msg)
 	{
 	case BMSG_Go:
-		{ hoe_assert(params == 2);
-		const HoeMath::Vector2 * pos = (HoeMath::Vector2 *)param;
+		{ hoe_assert(npar2 == 2);
+		const HoeMath::Vector2 * pos = (HoeMath::Vector2 *)par2;
 		TJob j = m_job;
 		j.type = TJob::jtGoto;
 		this->m_path.Go(pos->x, pos->y);
@@ -298,7 +298,7 @@ int Troll::GameMsg(int msg, void * param, uint params)
 
 		return 0;
 	default:
-		return BecherObject::GameMsg(msg, param, params);
+		return BecherObject::GameMsg(msg, par1, par2, npar2);
 	};
 	return -1;
 }
@@ -334,6 +334,19 @@ void JobEx::SetNone()
 	type = jtNone;
 }*/
 
+bool TrollPath::Go(float tx, float ty)
+{
+	m_stack.SetCount(0);
+	Insert(tx, ty, true);
+	act.virt = true;
+	return true;
+}
+
+bool TrollPath::Go(BecherObject *to)
+{
+	return Go(to->GetPosX(), to->GetPosY());
+}
+
 #ifndef BECHER_EDITOR
 
 bool TrollPath::Step(Troll * t, const float time)
@@ -349,21 +362,6 @@ bool TrollPath::Step(Troll * t, const float time)
 	// nastavit pozici podle terenu
 	t->SetPosition( posX, posY, GetLevel()->GetScene()->GetScenePhysics()->GetHeight(posX,posY));
 	return finish;
-}
-
-
-
-bool TrollPath::Go(float tx, float ty)
-{
-	m_stack.SetCount(0);
-	Insert(tx, ty, true);
-	act.virt = true;
-	return true;
-}
-
-bool TrollPath::Go(BecherObject *to)
-{
-	return Go(to->GetPosX(), to->GetPosY());
 }
 
 bool TrollPath::GetNextPos(float l,float &px, float &py)

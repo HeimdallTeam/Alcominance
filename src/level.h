@@ -76,7 +76,6 @@ protected:
 	CRR m_crr;
 	BecherObject * m_mselect;
 	HUD m_hud;
-	ObjectHud * m_selhud;
 
 	// dlgs
 	DialogBuild m_builddlg;
@@ -92,7 +91,6 @@ public:
 	bool IsBuild() { return m_build != NULL; }
 	virtual void Update(float time);
 	virtual void HOEAPI _Paint(IHoe2D * h2d);
-	void SetObjectHud(ObjectHud * selhud) { m_selhud = selhud; }
 
 	void MouseUpdate(float x, float y);
 	void MouseLeave();

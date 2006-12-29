@@ -64,17 +64,6 @@ bool StoneMine::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
-ResourceBase * StoneMine::GetResource(ESurType type)
-{
-	switch (type)
-	{
-	case EBS_Stone:
-		return &m_stone;
-	default:
-		return NULL;
-	};
-}
-
 void StoneMine::Update(const float dtime)
 {
 	for (uint i=0;i<m_worked.Count();i++)
@@ -100,7 +89,6 @@ void StoneMine::Update(const float dtime)
 bool StoneMine::Select()
 {
 	SourceBuilding::Select();
-	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	GetLua()->func("s_stonemine");
 	return true;

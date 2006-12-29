@@ -120,7 +120,7 @@ ADDID(BMSG_Info)
 ADDID(BMSG_Go)
 ADDID(BMSG_LeftClick)
 ADDID(BMSG_RightClick)
-
+ADDID(BMSG_DeleteObject)
 
 // mody budovy
 ADDID(BMSG_SelectPlace)
@@ -129,4 +129,13 @@ ADDID(BMSG_StartBuilding)
 ADDID(BMSG_Select)
 ADDID(BMSG_Unselect)
 
+ADDID(BMSG_InsertSur)
+
+// infos !!!
+ADDID(BINFO_Production)
+ADDID(BINFO_NumCane)
+ADDID(BINFO_NumSugar)
+ADDID(BINFO_NumAlco)
+ADDID(BINFO_NumCoal)
+ADDID(BINFO_Custom)
 

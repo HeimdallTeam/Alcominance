@@ -154,36 +154,49 @@ int BecherGame::c_map(int argc, const char * argv[], void * param)
 }
 
 // messages
-int SendGameMsg(BecherObject * o, int msg, void * param, uint nump)
+static int level = 0;
+
+int SendGameMsg(BecherObject * o, int msg, int par1, void * par2, uint npar2)
 {
-	static int level = 0;
+	hoe_assert(o!=NULL);
+	int ret=0;
+	level++;
+	GetCon()->Printf("L%d:Message %s to obj %d nump=%d", level, FindIDString(msg), o->GetID(), npar2);
+	ret = o->GameMsg(msg, par1, par2, npar2);
+	level--;
+	return ret;
+}
+
+int SendGameMsgId(unsigned long id, int msg, int par1, void * par2, uint npar2)
+{
+	// find id
+	if (id > 0 && id < IDMSG_ALL)
+		return SendGameMsg(GetLevel()->GetObjFromID(id),msg,par1,par2,npar2);
 	int ret=0;
 	level++;
 	// log message
-	if (o)
+	if (id==IDMSG_ALL)
 	{
-		GetCon()->Printf("L%d:Message %s to obj %d nump=%d", level, FindIDString(msg), o->GetID(), nump);
-		ret = o->GameMsg(msg, param, nump);
+		GetCon()->Printf("L%d:Message %s to all nump=%d", level, FindIDString(msg), npar2);
+		for (int i=0;i<GetLevel()->GetNumObj();i++)
+		{
+			GetLevel()->GetObj(i)->GameMsg(msg, par1, par2, npar2);
+		}
 	}
 	else
 	{
-		GetCon()->Printf("L%d:Message %s to system nump=%d", level, FindIDString(msg), nump);
+		GetCon()->Printf("L%d:Message %s to system nump=%d", level, FindIDString(msg), npar2);
 		switch (msg)
 		{
 		case BMSG_Info:
-			hoe_assert(param && nump == 1);
-			GetLevel()->GetPanel()->GetInfo()->Add((const char *)param);
+			hoe_assert(par2 && npar2 == 1);
+			GetLevel()->GetPanel()->GetInfo()->Add((const char *)par2);
 			break;
 		};
 	}
 	level--;
 	return ret;
-}
-
-int SendGameMsgId(unsigned long id, int msg, void * param, uint nump)
-{
-	// find id
-	return SendGameMsg(id ? GetLevel()->GetObjFromID(id):NULL,msg,param,nump);
+	
 }
 
 

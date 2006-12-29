@@ -31,6 +31,7 @@ void BecherButton::SetButt(int idres, const char * func, const char * tp)
         strncpy(tooltip,tp,sizeof(tooltip)-1);
 	else
 		tooltip[0] = '\0';
+	SetToolTip(tooltip);
 	Show();
 }
 
@@ -40,6 +41,8 @@ HUD::HUD()
 	memset(m_butt,0,sizeof(m_butt));
 	m_num = 0;
 	m_map = NULL;
+	m_selhud = NULL;
+	m_selobj = NULL;
 }
 
 HoeGame::Gui::Base * HUD::CreateGUI(const char * type)
@@ -97,29 +100,93 @@ void HUD::Draw(IHoe2D * hoe2d)
 {
 	HoeGame::Hoe2DFigure::Draw(hoe2d);
 	if (m_map)
-	{
 		m_map->Draw(hoe2d);
-	}
+	if (m_selhud)
+		m_selhud->Draw(hoe2d);
 }
 
-/*int ControlPanel::Draw(IHoe2D * hoe2d)
+bool HUD::SetObjectHud(const char * fname, BecherObject * obj)
 {
-	hoe2d->SetRect(800,600);
-	for (int i=0;i < this->m_numbuttons;i++)
+	m_selobj = obj;
+	if (!fname)
 	{
-		THoeRect * r = &this->m_buttons[i].rect;
-		hoe2d->PaintRect(r->left-3,r->right+3,r->top-3,r->bottom+3,i==m_selbutton ? 0xffff0000:0x80ff0000,true);
-        hoe2d->Blt(r,this->m_buttons[i].picture);
+		if (m_selhud)
+		{
+			delete m_selhud;
+			m_selhud = NULL;
+		}
+		return true;
 	}
-	// tooltip
-	if (m_selbutton != -1)
+		
+	if (!m_selhud)
+		m_selhud = new HoeGame::Hoe2DFigure();
+	m_selhud->Clear();
+	if (!m_selhud->Load(fname))
+		return false;
+	// najit vsechny texty a nastavit jim overlap
+	const HoeCore::List<Gui::Item*> & list = m_selhud->GetItems();
+	for (uint i=0;i < list.Count();i++)
+		if (list.Get(i)->GetType()==HoeGame::Gui::EText)
+		{
+			dynamic_cast<HoeGame::Gui::Font*>(list.Get(i))->SetTextOverlaper(
+				this, H2DC_TEXTOVERLAP(HUD::InfoOverlap));
+		}
+	return true;
+}
+
+const char * HUD::InfoOverlap(HoeGame::Gui::Base * sender, const char * text)
+{
+	//if (m_act)
 	{
-		static IHoeFont * f= (IHoeFont*)GetResMgr()->GetResource(ID_INFO_FONT);
-		f->DrawText(m_buttons[m_selbutton].rect.left, m_buttons[m_selbutton].rect.top+60,
-			0xbbb0b0b0, m_buttons[m_selbutton].tooltip);
+		//sprintf(m_sugarinfo,"%d cukru.", m_act->m_sugar.GetNum());
+		//sprintf(m_produkce,"Produkce je z %d%% hotova.", int(farm->m_grow * 100.f));
+		// prevorat podle toho puvodniho stringu
+		const char * po = text;
+		char * pp = m_olverlapedtext;
+		while (*po) 
+		{
+			// preskoceni znaku lomitkem
+			if (*po == '\\' && po[1] == '$')
+			{
+				po+=2; *pp++ = '$';
+			}
+			else if (*po == '$')
+			{
+				// nahrazeni promene
+				po++;
+				char *pv = pp;
+				while (*po && *po != '$') *pv++ = *po++;
+				*pv = '\0';
+				if (*po != '$') // reject
+				{
+					sprintf(pp, "$unclosed");
+					return m_olverlapedtext;
+				}
+				po++;
+				ReplaceVar(pp, 256);
+				while (*pp) pp++;
+			}
+			else
+				*pp++ = *po++;
+		}
+		*pp = '\0';
+		return m_olverlapedtext;
 	}
-	return 0;
-}*/
+	return text;
+}
+
+void HUD::ReplaceVar(char * text, size_t n)
+{
+	if (m_selobj)
+	{
+		m_selobj->GetInfo( BINFO_Custom, text, n);
+	}
+	else
+	{
+		text[0] = 'X';
+		text[1] = 0;
+	}
+}
 
 int HUD::l_AddButton(lua_State * L)
 {
@@ -158,186 +225,4 @@ int HUD::l_info(lua_State * L)
 		GetLevel()->GetPanel()->GetInfo()->Add(lp.GetString(-1));
 	return 0;
 }
-
-/*bool ControlPanel::MouseMove(float X, float Y)
-{
-	this->m_selbutton = GetButton(X,Y);
-	return (this->m_selbutton != -1);
-}*/
-
-/////////////////////////////////////
-
-/*void ControlPanel::PanelSprite::CreateRect(int nx,int ny,int a)
-{
-	rect.left = float(a % nx) / nx;
-	rect.right = float(a % nx + 1) / nx;
-	rect.top = float (a / ny) / nx;
-	rect.bottom = float ((a / ny) + 1) / ny;
-}
-//////////////////////////////////////
-
-ControlPanel::ControlPanel()
-{
-	m_source = NULL;
-	m_nsprites = 0;
-	m_nlists = 0;
-	m_tooltip = NULL;
-	m_tooltip_font = NULL;
-}
-
-ControlPanel::~ControlPanel()
-{
-}
-
-
-
-void ControlPanel::SetSource(int idsrc,int nx,int ny)
-{
-	this->m_source = (iHoePicture *)Becher::GetResMgr()->ReqResource(idsrc);
-	this->m_src_nx = nx;
-	this->m_src_ny = ny;
-}
-
-void ControlPanel::CreateSprite(int id,int source,int id_tooltip,const char * script)
-{
-	memset(&m_sprites[m_nsprites],0,sizeof(PanelSprite));
-
-	m_sprites[m_nsprites].id = id;
-	m_sprites[m_nsprites].pic = m_source;
-	if (id_tooltip)
-		m_sprites[m_nsprites].tooltip = Becher::GetLang()->Get(id_tooltip);
-	strncpy(m_sprites[m_nsprites].script,script,32);
-	m_sprites[m_nsprites].CreateRect(m_src_nx,m_src_ny,source);
-	
-	m_nsprites++;
-}
-
-int ControlPanel::Draw(iHoe2D * hoe2d)
-{
-	HOE_RECT rect = {100,0,150,50};
-	hoe2d->SetRect(0,0);
-
-	// get list
-	int idlist;
-	if (Becher::GetBecher()->GetSelectedObject())
-		idlist = Becher::GetBecher()->GetSelectedObject()->GetTypeID();
-	else
-		idlist = 0;
-
-	PanelList * l = GetList(idlist);
-	if (l)
-	{
-		for (int i=0;i < l->numsprites;i++)
-		{
-			hoe2d->Blt(&rect,l->sprites[i]->pic,&l->sprites[i]->rect);
-			rect.left += 50;rect.right += 50;
-		}
-	}
-
-	if (m_tooltip_font && m_tooltip)
-		m_tooltip_font->DrawText(100,100,0xff0000ff,m_tooltip);
-
-	return 0;
-}
-
-ControlPanel::PanelSprite * ControlPanel::GetSprite(float x, float y)
-{
-	HOE_RECT rect = {100,0,150,50};
-
-	// get list
-	int idlist;
-	if (Becher::GetBecher()->GetSelectedObject())
-		idlist = Becher::GetBecher()->GetSelectedObject()->GetTypeID();
-	else
-		idlist = 0;
-
-	PanelList * l = GetList(idlist);
-	if (l)
-	{
-		for (int i=0;i < l->numsprites;i++)
-		{
-			if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom)
-			{
-				return l->sprites[i];
-			}
-			rect.left += 50;rect.right += 50;
-		}
-	}
-
-	return NULL;
-}
-
-bool ControlPanel::Move(float x,float y)
-{
-	const PanelSprite * ps = GetSprite(x,y);
-	if (ps)
-	{
-		m_tooltip = ps->tooltip;
-		return true;
-	}
-
-	m_tooltip = NULL;
-	return false;
-}
-
-bool ControlPanel::Click(float x,float y)
-{
-	const PanelSprite * ps = GetSprite(x,y);
-	if (ps && ps->script[0])
-	{
-		lua_run(ps->script);
-		return true;
-	}
-	return false;
-}
-
-ControlPanel::PanelSprite * ControlPanel::GetSprite(int id)
-{
-	for (int i=0; i < this->m_nsprites;i++)
-		if (this->m_sprites[i].id == id)
-			return &this->m_sprites[i];
-	return NULL;
-}
-
-ControlPanel::PanelList * ControlPanel::GetList(int id)
-{
-	for (int i=0; i < this->m_nlists;i++)
-		if (this->m_lists[i].id == id)
-			return &this->m_lists[i];
-	return NULL;	
-}
-
-bool ControlPanel::AddSpriteToList(PanelList * pl, int id)
-{
-	// kontrola jestli uz tu davno neni
-	for (int i=0;i < pl->numsprites;i++)
-		if (pl->sprites[i]->id == id)
-			return false;
-	
-	assert(pl->numsprites < CP_SPRITESINLIST);
-	PanelSprite * ps = this->GetSprite(id);
-	if (!ps)
-		return false;
-
-	pl->sprites[pl->numsprites++] = ps;
-	return true;
-
-}
-
-bool ControlPanel::AddToList(int idlist, int id)
-{
-	PanelList * l = this->GetList(idlist);
-	if (!l)
-	{
-		assert(this->m_nlists < CP_NUMLIST);
-		m_lists[m_nlists].id = idlist;
-		m_lists[m_nlists].numsprites = 0;
-		l = &m_lists[m_nlists];
-		m_nlists++;
-	}
-	return AddSpriteToList(l,id);
-}
-*/
-
-
 

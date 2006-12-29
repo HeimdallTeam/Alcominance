@@ -10,32 +10,6 @@ static CVar v_farma_drevo("farm_cost_wood", 60, TVAR_SAVE);
 static CVar v_farma_kamen("farm_cost_stone", 20, TVAR_SAVE);
 static CVar v_num("farm_num", 20, TVAR_SAVE); // pocet trtiny z urody
 
-#ifndef BECHER_EDITOR
-FarmStatic Farm::m_userhud;
-
-FarmStatic::FarmStatic()
-{
-	m_act = NULL;
-}
-
-void FarmStatic::SetAct(Farm * act)
-{
-	m_act = act;
-	// pripojit 
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("produkce", HoeGame::Gui::EText))->SetText(m_produkce);
-}
-
-void FarmStatic::Draw(IHoe2D * h2d)
-{
-	if (m_act)
-	{
-		//sprintf(m_sugarinfo,"%d cukru.", m_act->m_sugar.GetNum());
-		sprintf(m_produkce,"Produkce je z %d%% hotova.", int(m_act->m_grow * 100.f));
-		ObjectHud::Draw(h2d);
-	}
-}
-#endif // BECHER_EDITOR
-
 ////////////////////////////////////////////////////////////
 Farm::Farm(IHoeScene * scn) : SourceBuilding(scn), m_cane(EBS_Cane)
 {
@@ -79,29 +53,52 @@ bool Farm::Load(BecherGameLoad &r)
 	return true;
 }
 
-#ifndef BECHER_EDITOR
-
-ResourceBase * Farm::GetResource(ESurType type)
+int Farm::GetInfo(int type, char * str, size_t n)
 {
+	register int ret = 0;
+	if (type==BINFO_Custom && str)
+	{
+		if (strcmp(str, "prod") == 0)
+			type = BINFO_Production;
+	}
 	switch (type)
 	{
-	case EBS_Cane:
-		return &m_cane;
+	case BINFO_Production:
+		ret = int(this->m_grow * 100.f);
+		if (str)
+			_snprintf(str, n, "%d", ret);
+		return ret;
 	default:
-		return NULL;
+		return BecherBuilding::GetInfo(type, str, n);
 	};
+	return 0;
 }
+
+int Farm::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+	switch (msg)
+	{
+	case BMSG_Select:
+		Select();
+		break;
+	case BMSG_SelectPlace:
+	case BMSG_StartBuilding:
+		return BuildPlace((float*)par2, 
+			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
+	}
+	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
+}
+
+#ifndef BECHER_EDITOR
 
 void Farm::Update(const float dtime)
 {
 	BecherObject::Update(dtime);
+	m_grow += v_speed.GetFloat() * dtime;
+	if (m_grow >= 1.f)
 	{
-		m_grow += v_speed.GetFloat() * dtime;
-		if (m_grow >= 1.f)
-		{
-			m_cane.SetNum(v_num.GetInt());
-			m_grow = 0.f;
-		}
+		m_cane.SetNum(v_num.GetInt());
+		m_grow = 0.f;
 	}
 	m_growinfo.pos.Translate(0,5.f * m_grow - 5.f,0);
 }
@@ -130,8 +127,7 @@ void Farm::UnsetFromWork(Troll * t)
 bool Farm::Select()
 {
 	SourceBuilding::Select();
-	GetLevel()->SetObjectHud(&m_userhud);
-	m_userhud.SetAct(this);
+	GetLevel()->GetPanel()->SetObjectHud("scripts/farm.menu",this);
 	GetLua()->func("s_farma");
 	return true;
 }

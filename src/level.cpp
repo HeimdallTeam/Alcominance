@@ -25,7 +25,6 @@ BecherLevel::BecherLevel()
 	m_filename[0] = '\0';
 	m_select = NULL;
 	m_mselect = NULL;
-	m_selhud = NULL;
 	m_dlg = NULL;
 	//m_info.Init(10.f,550.f, 50.f);
 	//m_controls.Init();
@@ -36,12 +35,6 @@ void BecherLevel::_Paint(IHoe2D * h2d)
 {
 	// hud
 	m_hud.Draw(h2d);
-	if (m_selhud)
-		m_selhud->Draw(h2d);
-	//m_controls.Draw(h2d);
-	//m_info.Draw(h2d);
-	//GetCash()->Paint(h2d);
-	// dlg
 	if (m_dlg)
 		m_dlg->Draw(h2d);
 
@@ -131,7 +124,7 @@ void BecherLevel::MouseUpdate(float x, float y)
 			// ukazatel cervene
 			PAR_BuildPlace bp = {X,Y,NULL,0,0};
 			m_build->SetAngle(1);
-			SendGameMsg(m_build, BMSG_SelectPlace, &bp, 5);
+			SendGameMsg(m_build, BMSG_SelectPlace, 0, &bp, 5);
 		}
 	}
 	else // show select
@@ -187,7 +180,7 @@ void BecherLevel::MouseLeftDown(float x, float y)
 		if (GetView()->GetPick(x,y,&X,&Y))
 		{
 			PAR_BuildPlace bp = {X,Y,NULL,0,0};
-			if (SendGameMsg(m_build, BMSG_StartBuilding,&bp,5)) 
+			if (SendGameMsg(m_build, BMSG_StartBuilding,0,&bp,5)) 
 			//if (dynamic_cast<BecherBuilding*>(m_build)->StartBuilding(m_buildgold, m_buildwood, m_buildstone))
 			{
 				this->AddObject(m_build);
@@ -212,7 +205,7 @@ void BecherLevel::SelectObject(BecherObject * so)
 	{
 		//m_select->Unselect();
 		SendGameMsg(m_select, BMSG_Unselect, NULL, 0);
-		SetObjectHud(NULL);
+		m_hud.SetObjectHud(NULL,NULL);
 		m_hud.ShowReset();
 	}
 	if (so)
@@ -266,12 +259,6 @@ bool BecherLevel::LoadGame(const char *path)
 		return false;
 	m_hud.Load("scripts/hud.menu");
 	this->m_cash.Link(dynamic_cast<HoeGame::Gui::DigiCounter *>(m_hud.ReqItem("cash", HoeGame::Gui::EDigiCounter)));
-	Sugar::m_userhud.Load("scripts/sugar.menu");
-	Destilate::m_userhud.Load("scripts/alco.menu");
-	Factory::m_userhud.Load("scripts/factory.menu");
-	Store::m_storepref.Load("scripts/store.menu");
-	WaterHole::m_userhud.Load("scripts/waterhole.menu");
-	Farm::m_userhud.Load("scripts/farm.menu");
 	m_builddlg.Load("scripts/build.menu");
 
 	SetTerrainData();
@@ -521,7 +508,7 @@ void BecherLevel::OnRightButtonUp()
 		float x,y;
 		if (GetView()->GetPick(GetMouseX(), GetMouseY(), &x, &y))
 		{
-			SendGameMsg(GetSelectedObject(),BMSG_Go,&HoeMath::Vector2(x,y),2);
+			SendGameMsg(GetSelectedObject(),BMSG_Go,0,&HoeMath::Vector2(x,y),2);
 		}
 	}
 }

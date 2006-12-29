@@ -7,29 +7,11 @@
 class Troll;
 class Farm;
 
-#ifndef BECHER_EDITOR
-class FarmStatic : public ObjectHud
-{
-protected:
-	//char m_sugarinfo[256];
-	char m_produkce[256];
-	Farm * m_act;
-public:
-	FarmStatic();
-	void SetAct(Farm * act);
-	virtual void Draw(IHoe2D * h2d);
-};
-#endif // BECHER_EDITOR
-
 class Farm : public SourceBuilding
 {
 	friend class BecherLevel;
 	friend class FarmStatic;
 protected:
-	// panel
-#ifndef BECHER_EDITOR
-	static FarmStatic m_userhud;
-#endif // BECHER_EDITOR
 	THoeSub_Model m_growinfo;
 	// parametry pro rust farmy
 	float m_grow;
@@ -37,6 +19,8 @@ protected:
 	Troll * m_work;
 public:
 	Farm(IHoeScene * scn);
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 	DECLARE_BUILDING(EBO_Farm)
 
 };

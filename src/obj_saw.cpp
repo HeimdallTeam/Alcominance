@@ -57,15 +57,6 @@ bool Saw::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
-ResourceBase * Saw::GetResource(ESurType type)
-{
-	switch (type)
-	{
-	default:
-		return NULL;
-	};
-}
-
 void Saw::Update(const float dtime)
 {
 
@@ -74,7 +65,6 @@ void Saw::Update(const float dtime)
 bool Saw::Select()
 {
 	SourceBuilding::Select();
-	GetLevel()->SetObjectHud(&m_userhud);
 	m_userhud.SetAct(this);
 	GetLua()->func("s_saw");
 	return true;

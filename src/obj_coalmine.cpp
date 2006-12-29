@@ -12,33 +12,6 @@ static CVar v_cena_kamen("coal_cost_stone", 60, TVAR_SAVE);
 */
 static CVar v_numworks("coal_maxwork", 2, TVAR_SAVE);
 
-#ifndef BECHER_EDITOR
-CoalMineStatic CoalMine::m_userhud;
-
-CoalMineStatic::CoalMineStatic()
-{
-	m_act = NULL;
-}
-
-void CoalMineStatic::SetAct(CoalMine * act)
-{
-	m_act = act;
-	// pripojit 
-	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetText(m_trtinainfo);
-	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetText(m_sugarinfo);
-}
-
-void CoalMineStatic::Draw(IHoe2D * h2d)
-{
-	if (m_act)
-	{
-		//sprintf(m_sugarinfo,"%d cukru.", m_act->m_sugar.GetNum());
-		//sprintf(m_trtinainfo,"%d trtina.", m_act->m_cane.GetNum());
-		ObjectHud::Draw(h2d);
-	}
-}
-#endif // BECHER_EDITOR
-
 ////////////////////////////////////////////////////////////
 CoalMine::CoalMine(IHoeScene * scn) : SourceBuilding(scn), m_coal(EBS_Coal)
 {
@@ -61,19 +34,6 @@ bool CoalMine::Load(BecherGameLoad &r)
 	m_coal.Load(r);
 	r.ReadReservedWords(9);
 	return true;
-}
-
-#ifndef BECHER_EDITOR
-
-ResourceBase * CoalMine::GetResource(ESurType type)
-{
-	switch (type)
-	{
-	case EBS_Coal:
-		return &m_coal;
-	default:
-		return NULL;
-	};
 }
 
 void CoalMine::Update(const float dtime)
@@ -103,34 +63,47 @@ void CoalMine::Update(const float dtime)
 	}
 }
 
-bool CoalMine::Select()
+
+int CoalMine::GetInfo(int type, char * str, size_t n)
 {
-	SourceBuilding::Select();
-	GetLevel()->SetObjectHud(&m_userhud);
-	m_userhud.SetAct(this);
-	GetLua()->func("s_coalmine");
-	return true;
+	register int ret = 0;
+	if (type==BINFO_Custom && str)
+	{
+		if (strcmp(str, "coal") == 0)
+			type = BINFO_NumCoal;
+	}
+	switch (type)
+	{
+	case BINFO_NumCoal:
+		ret = m_coal.GetNum();
+		if (str)
+			_snprintf(str, n, "%d", ret);
+		return ret;
+	default:
+		return BecherBuilding::GetInfo(type, str, n);
+	};
+	return 0;
 }
 
-bool CoalMine::Idiot(TJob *t)
+int CoalMine::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
-	// idiot bude vzdycku false,protoze pro dul nikdo nepracuje
-	return false;
+#ifndef BECHER_EDITOR
+	switch (msg)
+	{
+	case BMSG_Select:
+		GetLevel()->GetPanel()->SetObjectHud("scripts/mine.menu",this);
+		GetLua()->func("s_coalmine");
+		break;
+	case BMSG_SelectPlace:
+	case BMSG_StartBuilding:
+		return BuildPlace((float*)par2, 
+			(IHoeModel*)GetResMgr()->ReqResource(model_COALMINE),50.f,200.f,msg==BMSG_StartBuilding);
+	}
+#endif
+	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
-bool CoalMine::InsertSur(ESurType type, uint *s)
-{
-	return false;
-}
-
-bool CoalMine::SetToWork(Troll * t)
-{
-	return false;
-}
-
-void CoalMine::UnsetFromWork(Troll * t)
-{
-}
+#ifndef BECHER_EDITOR
 
 bool CoalMine::SetToGet(Troll * t, uint num)
 {

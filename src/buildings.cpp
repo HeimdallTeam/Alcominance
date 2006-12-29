@@ -71,11 +71,10 @@ void BecherBuilding::SetCurActive(bool active)
 		BecherObject::SetCurActive(active);
 }
 
-#ifndef BECHER_EDITOR
-
 int BecherBuilding::BuildPlace(float *pos, IHoeModel * m, float height, float dobj,bool finish)
 {
 	// pozice v mape
+#ifndef BECHER_EDITOR
 	float min,max;
 	float x=pos[0];
 	float y=pos[1];
@@ -94,7 +93,7 @@ int BecherBuilding::BuildPlace(float *pos, IHoeModel * m, float height, float do
 	{
 		GetCtrl()->SetOverColor(0xffff0000);
 		if (finish)
-			SendGameMsg(0, BMSG_Info, (void*)GetLang()->GetString(101), 1);
+			SendGameMsgId(0, BMSG_Info, 0,(void*)GetLang()->GetString(101), 1);
 		return 0;
 	}
 	// zjistit zda muze byt cerveny nebo jiny
@@ -108,15 +107,14 @@ int BecherBuilding::BuildPlace(float *pos, IHoeModel * m, float height, float do
 		{
 			GetCtrl()->SetOverColor(0xffff0000);
 			if (finish)
-				SendGameMsg(0, BMSG_Info, (void*)GetLang()->GetString(102), 1);
+				SendGameMsgId(0, BMSG_Info, 0,(void*)GetLang()->GetString(102), 1);
 			return 0;
 		}
 	}
 	GetCtrl()->SetOverColor(0xffffffff);
+#endif
 	return 1;
 }
-
-#endif // BECHER_EDITOR
 
 float getheight(IHoeModel*m)
 {
@@ -125,12 +123,9 @@ float getheight(IHoeModel*m)
 	return p.box.top;
 }
 
-int BecherBuilding::GameMsg(int msg, void * param, uint params)
+int BecherBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
-	switch (msg)
-	{
-	};
-	return 0;
+	return BecherObject::GameMsg(msg, par1, par2, npar2);
 }
 
 

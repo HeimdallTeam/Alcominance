@@ -6,31 +6,10 @@
 
 class Troll;
 
-class Destilate;
-
-#ifndef BECHER_EDITOR
-class DestilateStatic : public ObjectHud
-{
-protected:
-	char m_sugarinfo[256];
-	char m_alcoinfo[256];
-	Destilate * m_act;
-public:
-	DestilateStatic();
-	void SetAct(Destilate * act);
-	virtual void Draw(IHoe2D * h2d);
-};
-#endif // BECHER_EDITOR
-
 class Destilate : public FactoryBuilding
 {
 	friend class BecherLevel;
-	friend class DestilateStatic;
 protected:
-	// panel
-#ifndef BECHER_EDITOR
-	static DestilateStatic m_userhud;
-#endif // BECHER_EDITOR
 	// trolls
 	ResourceImp m_sugar;
     ResourceImp m_coal;
@@ -46,6 +25,9 @@ public:
 	Destilate(IHoeScene * scn);
 	virtual ~Destilate();
 	virtual void SetMode(EBuildingMode mode);
+
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 
 	DECLARE_BUILDING(EBO_Destilate)
 };

@@ -35,7 +35,7 @@ public:
 	virtual uint AcceptSur(ESurType type) { return 0; }
 	virtual ResourceBase * GetResource(ESurType type) { return NULL; }
 
-	virtual int GameMsg(int msg, void * param, uint params);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 };
 
 class FactoryBuilding : public BecherBuilding

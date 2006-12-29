@@ -6,35 +6,6 @@
 
 static CVar v_numzpr("construct_speed", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
 
-#ifndef BECHER_EDITOR
-ConstructStatic Construct::m_userhud;
-
-ConstructStatic::ConstructStatic()
-{
-	m_act = NULL;
-}
-
-void ConstructStatic::SetAct(Construct * act)
-{
-	m_act = act;
-	// pripojit 
-	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetText(m_trtinainfo);
-	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetText(m_sugarinfo);
-}
-
-void ConstructStatic::Draw(IHoe2D * h2d)
-{
-	if (m_act)
-	{
-		
-		//sprintf(m_sugarinfo,GetLang()->GetString(5), m_act->m_sugar.GetNum());
-		//sprintf(m_trtinainfo,GetLang()->GetString(6), m_act->m_cane.GetNum());
-
-		ObjectHud::Draw(h2d);
-	}
-}
-#endif // BECHER_EDITOR
-
 Construct::Construct(BecherBuilding * owner)
 {
 	m_owner = owner;
@@ -69,8 +40,6 @@ void Construct::Update(const float t)
 
 bool Construct::Select()
 {
-	GetLevel()->SetObjectHud(&m_userhud);
-	m_userhud.SetAct(this);
 	GetLua()->func("s_construct");
 	return true;
 }

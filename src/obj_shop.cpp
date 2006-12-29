@@ -31,16 +31,6 @@ bool Shop::Load(BecherGameLoad &r)
 }
 
 #ifndef BECHER_EDITOR
-ResourceBase * Shop::GetResource(ESurType type)
-{
-	switch (type)
-	{
-	default:
-		return NULL;
-	};
-}
-
-
 
 void Shop::Update(const float t)
 {

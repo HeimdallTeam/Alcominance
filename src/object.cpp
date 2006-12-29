@@ -74,7 +74,7 @@ void BecherObject::Update(const float u)
 	}
 }
 
-int BecherObject::GameMsg(int msg, void * param, uint params)
+int BecherObject::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
 	return 0;
 }

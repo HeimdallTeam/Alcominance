@@ -85,27 +85,6 @@ bool Factory::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
-ResourceBase * Factory::GetResource(ESurType type)
-{
-	switch (type)
-	{
-	case EBS_Coal:
-		return &m_w;
-	case EBS_Sugar:
-		return &m_sugar;
-	case EBS_Alco:
-		return &m_alco;
-	case EBS_Water:
-		return &m_water;
-	case EBS_Herbe:
-		return &m_herbe;
-	case EBS_Becher:
-		return &m_becher;
-	default:
-		return NULL;
-	};
-}
-
 bool Factory::InsertSur(ESurType type, uint *s)
 {
 	switch (type)
@@ -243,7 +222,7 @@ void Factory::Update(const float t)
 bool Factory::Select()
 {
 	FactoryBuilding::Select();
-	GetLevel()->SetObjectHud(&m_userhud);
+	GetLevel()->GetPanel()->SetObjectHud("scripts/factory.menu", this);
 	m_userhud.SetAct(this);
 	GetLua()->func("s_tovarna");
 	return true;

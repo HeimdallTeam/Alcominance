@@ -70,17 +70,6 @@ bool WaterHole::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
-ResourceBase * WaterHole::GetResource(ESurType type)
-{
-	switch (type)
-	{
-	case EBS_Water:
-		return &m_water;
-	default:
-		return NULL;
-	};
-}
-
 void WaterHole::Update(const float dtime)
 {
 	// update cekajicich tupounu
@@ -119,7 +108,7 @@ void WaterHole::Update(const float dtime)
 bool WaterHole::Select()
 {
 	SourceBuilding::Select();
-	GetLevel()->SetObjectHud(&m_userhud);
+	GetLevel()->GetPanel()->SetObjectHud("scripts/waterhole.menu", this);	
 	m_userhud.SetAct(this);
 	GetLua()->func("s_studna");
 	return true;

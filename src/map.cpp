@@ -19,6 +19,7 @@
 #include "map.h"
 #include "sysobjs.h"
 #include "terrain.h"
+#include "b_msg.h"
 
 BecherMap::BecherMap()
 {
@@ -324,10 +325,8 @@ void BecherMap::DeleteObject(BecherObject * obj)
 	if (dynamic_cast<BecherBuilding*>(obj))
 		dynamic_cast<BecherBuilding*>(obj)->SetMode(EBM_ToDelete);
 
-	for (int i=0;i<m_obj.Count();i++)
-	{
-		m_obj[i]->OnDeleteObject(obj->GetID());
-	}
+	int id = obj->GetID();
+	SendGameMsgId(IDMSG_ALL, BMSG_DeleteObject, id);
 	m_obj.Remove(obj);
 	delete obj;
 }

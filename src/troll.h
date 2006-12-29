@@ -52,7 +52,7 @@ public:
 	void StopWork();
 	bool FindJob(BecherBuilding * prior);
 
-	virtual int GameMsg(int msg, void * param, uint params);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 };
 
 

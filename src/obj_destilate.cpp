@@ -15,35 +15,6 @@ static CVar v_recept("dest_recept", "S1=1", TVAR_SAVE); // recept pro jednu davk
 static CVar v_coalmax("dest_coal_max", 120, TVAR_SAVE); // maximalni kapacita pro uhli
 
 
-#ifndef BECHER_EDITOR
-DestilateStatic Destilate::m_userhud;
-
-DestilateStatic::DestilateStatic()
-{
-	m_act = NULL;
-}
-
-void DestilateStatic::SetAct(Destilate * act)
-{
-	m_act = act;
-	// pripojit 
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetText(m_sugarinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("lih", HoeGame::Gui::EText))->SetText(m_alcoinfo);
-
-}
-
-void DestilateStatic::Draw(IHoe2D * h2d)
-{
-	if (m_act)
-	{
-		sprintf(m_sugarinfo,"%d cukru.", m_act->m_sugar.GetNum());
-		sprintf(m_alcoinfo,"%d lihu.", m_act->m_alco.GetNum());
-
-		ObjectHud::Draw(h2d);
-	}
-}
-#endif // BECHER_EDITOR
-
 ////////////////////////////////////////////////////////
 Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
 {
@@ -83,6 +54,49 @@ bool Destilate::Load(BecherGameLoad &r)
 	return true;
 }
 
+int Destilate::GetInfo(int type, char * str, size_t n)
+{
+	register int ret = 0;
+	if (type==BINFO_Custom && str)
+	{
+		if (strcmp(str, "alco") == 0)
+			type = BINFO_NumAlco;
+		else if (strcmp(str, "sugar") == 0)
+			type = BINFO_NumSugar;
+	}
+	switch (type)
+	{
+	case BINFO_NumAlco:
+		ret = (int)this->m_alco.GetNum();
+		if (str)
+			_snprintf(str, n, "%d", ret);
+		return ret;
+	case BINFO_NumSugar:
+		ret = (int)this->m_sugar.GetNum();
+		if (str)
+			_snprintf(str, n, "%d", ret);
+		return ret;
+	default:
+		return BecherBuilding::GetInfo(type, str, n);
+	};
+	return 0;
+}
+
+int Destilate::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+	switch (msg)
+	{
+	case BMSG_Select:
+		Select();
+		break;
+	case BMSG_SelectPlace:
+	case BMSG_StartBuilding:
+		return BuildPlace((float*)par2, 
+			(IHoeModel*)GetResMgr()->ReqResource(model_DESTILATE),50.f,200.f,msg==BMSG_StartBuilding);
+	}
+	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
+}
+
 void Destilate::SetMode(EBuildingMode mode)
 {
 	// odmazat
@@ -118,22 +132,6 @@ void Destilate::SetMode(EBuildingMode mode)
 }
 
 #ifndef BECHER_EDITOR
-
-ResourceBase * Destilate::GetResource(ESurType type)
-{
-	switch (type)
-	{
-	case EBS_Sugar:
-		return &m_sugar;
-	case EBS_Coal:
-		return &m_w;
-	case EBS_Alco:
-		return &m_alco;
-	default:
-		return NULL;
-	};
-}
-
 
 bool Destilate::InsertSur(ESurType type, uint *s)
 {
@@ -250,8 +248,7 @@ bool Destilate::Select()
 	FactoryBuilding::Select();
 	if (m_construct)
 		return m_construct->Select();
-	GetLevel()->SetObjectHud(&m_userhud);
-	m_userhud.SetAct(this);
+	GetLevel()->GetPanel()->SetObjectHud("scripts/alco.menu",this);
 	GetLua()->func("s_lihovar");
 	return true;
 }

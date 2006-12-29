@@ -115,11 +115,6 @@ bool Store::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
-ResourceBase * Store::GetResource(ESurType type)
-{
-	return &m_res[type];
-}
-
 bool Store::InsertSur(ESurType type, uint *s)
 {
 	bool ret = m_res[type].Add(s, *s);
@@ -203,7 +198,7 @@ bool Store::Idiot(TJob *t)
 bool Store::Select()
 {
 	BecherBuilding::Select();
-	GetLevel()->SetObjectHud(&m_storepref);
+	GetLevel()->GetPanel()->SetObjectHud("scripts/store.menu", this);
 	m_storepref.SetAct(this);
 	GetLua()->func("s_sklad");
 	return true;

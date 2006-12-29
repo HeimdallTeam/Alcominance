@@ -90,17 +90,6 @@ bool HerbeWoman::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
-ResourceBase * HerbeWoman::GetResource(ESurType type)
-{
-	switch (type)
-	{
-	case EBS_Herbe:
-		return &m_herbe;
-	default:
-		return NULL;
-	};
-}
-
 void HerbeWoman::Update(const float dtime)
 {
 	// update baba
@@ -168,17 +157,19 @@ void HerbeWoman::OnUpdateSur()
 		m_wait = (float)v_time.GetInt();
 }
 
-int HerbeWoman::GameMsg(int msg, void * param, uint params)
+int HerbeWoman::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
+#ifndef BECHER_EDITOR
 	switch (msg)
 	{
 	case BMSG_Select:
-		GetLevel()->SetObjectHud(&m_userhud);
+		GetLevel()->GetPanel()->SetObjectHud("scripts/herbe.menu",this);
 		m_userhud.SetAct(this);
 		GetLua()->func("s_herbe");
 		break;
 	};
-	return BecherBuilding::GameMsg(msg, param, params);
+#endif
+	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
 //////////////////////////////////////////////////////

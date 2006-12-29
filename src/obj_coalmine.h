@@ -4,39 +4,30 @@
 
 #include "buildings.h"
 
-class CoalMine;
-
-#ifndef BECHER_EDITOR
-class CoalMineStatic : public ObjectHud
-{
-protected:
-	CoalMine * m_act;
-public:
-	CoalMineStatic();
-	void SetAct(CoalMine * act);
-	virtual void Draw(IHoe2D * h2d);
-};
-#endif // BECHER_EDITOR
-
 class CoalMine : public SourceBuilding
 {
 	friend class BecherLevel;
-	friend class CoalMineStatic;
 protected:
 	// panel
-#ifndef BECHER_EDITOR
-	static CoalMineStatic m_userhud;
-#endif // BECHER_EDITOR
 	ResourceExp m_coal;
 	HoeCore::Set<TTrollWorkSlot> m_worked;
 public:
 	CoalMine(IHoeScene * scn);
 
+	virtual EObjType GetType() { return EBO_CoalMine; } 
+	virtual void Update(const float t); 
+	virtual bool Save(BecherGameSave &w); 
+	virtual bool Load(BecherGameLoad &r); 
+
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
+
 #ifndef BECHER_EDITOR
 	virtual bool SetToGet(Troll * t, uint num);
+#else
+	virtual bool Select();
+	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
 #endif // BECHER_EDITOR
-
-	DECLARE_BUILDING(EBO_CoalMine)
 };
 
 
