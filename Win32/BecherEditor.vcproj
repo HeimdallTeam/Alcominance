@@ -30,13 +30,16 @@
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
-				Name="HTML help"
-			/>
-			<Tool
 				Name="NASM"
 			/>
 			<Tool
+				Name="Bison"
+			/>
+			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="HTML help"
 			/>
 			<Tool
 				Name="Flex"
@@ -88,7 +91,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="HoeUtils_d.lib HoeGame_d.lib HoeEditor_d.lib Lua5.1.lib libfl.a wxbase26d.lib wxmsw26d_core.lib wxmsw26d_adv.lib wxmsw26d_propgrid.lib wxbase26d_xml.lib wxmsw26d_stc.lib wxexpatd.lib rpcrt4.lib comctl32.lib User32.lib Gdi32.lib"
+				AdditionalDependencies="HoeCore_d.lib HoeUtils_d.lib HoeGame_d.lib HoeEditor_d.lib Lua5.1.lib libfl.a wxbase26d.lib wxmsw26d_core.lib wxmsw26d_adv.lib wxmsw26d_propgrid.lib wxbase26d_xml.lib wxmsw26d_stc.lib wxexpatd.lib rpcrt4.lib comctl32.lib User32.lib Gdi32.lib oldnames.lib"
 				OutputFile="../BecherEditor_d.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -137,13 +140,16 @@
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
-				Name="HTML help"
-			/>
-			<Tool
 				Name="NASM"
 			/>
 			<Tool
+				Name="Bison"
+			/>
+			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="HTML help"
 			/>
 			<Tool
 				Name="Flex"
@@ -195,7 +201,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="HoeUtils.lib HoeGame.lib HoeEditor.lib Lua5.1.lib wxbase26.lib wxmsw26_core.lib wxmsw26_adv.lib wxmsw26_propgrid.lib wxbase26_xml.lib wxmsw26_stc.lib wxexpat.lib rpcrt4.lib comctl32.lib User32.lib Gdi32.lib"
+				AdditionalDependencies="HoeCore.lib HoeUtils.lib HoeGame.lib HoeEditor.lib libfl.a Lua5.1.lib wxbase26.lib wxmsw26_core.lib wxmsw26_adv.lib wxmsw26_propgrid.lib wxbase26_xml.lib wxmsw26_stc.lib wxexpat.lib rpcrt4.lib comctl32.lib User32.lib Gdi32.lib"
 				OutputFile="../BecherEditor.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

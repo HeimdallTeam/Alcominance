@@ -113,6 +113,63 @@ bool Store::Load(BecherGameLoad &r)
 	return true;
 }
 
+int Store::GetInfo(int type, char * str, size_t n)
+{
+	register int ret = 0;
+	if (type==BINFO_Custom && str)
+	{
+#define STRREP(res, name) if (strcmp(str, name) == 0) type = BINFO_Num##res;
+		STRREP(Cane,"cane")
+		else STRREP(Sugar,"sugar")
+		else STRREP(Coal,"coal")
+		else STRREP(Stone,"stone")
+		else STRREP(Alco,"alco")
+		else STRREP(Becher,"becher")
+		else STRREP(Wood,"wood")
+		else STRREP(Water,"water")
+		else STRREP(Herbe,"herbe")
+#undef STRREP
+	}
+	switch (type)
+	{
+#define TYPECASE(res) case BINFO_Num##res: \
+	ret = (int)this->m_res[EBS_##res].GetNum(); \
+		if (str)\
+			_snprintf(str, n, "%d", ret); \
+		return ret;
+
+	TYPECASE(Sugar)
+	TYPECASE(Coal)
+	TYPECASE(Stone)
+	TYPECASE(Alco)
+	TYPECASE(Becher)
+	TYPECASE(Wood)
+	TYPECASE(Herbe)
+	TYPECASE(Water)
+#undef TYPECASE
+	default:
+		return BecherBuilding::GetInfo(type, str, n);
+	};
+	return 0;
+}
+
+int Store::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+	switch (msg)
+	{
+	case BMSG_Select:
+		GetLevel()->GetPanel()->SetObjectHud("scripts/store.menu", this);
+		GetLua()->func("s_sklad");
+		break;
+	case BMSG_SelectPlace:
+	case BMSG_StartBuilding:
+		return BuildPlace((float*)par2, 
+			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
+	}
+	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
+}
+
+
 #ifndef BECHER_EDITOR
 
 bool Store::InsertSur(ESurType type, uint *s)
@@ -198,9 +255,6 @@ bool Store::Idiot(TJob *t)
 bool Store::Select()
 {
 	BecherBuilding::Select();
-	GetLevel()->GetPanel()->SetObjectHud("scripts/store.menu", this);
-	m_storepref.SetAct(this);
-	GetLua()->func("s_sklad");
 	return true;
 }
 
