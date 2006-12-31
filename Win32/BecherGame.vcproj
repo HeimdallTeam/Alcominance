@@ -67,7 +67,7 @@
 				LinkLibraryDependencies="true"
 				AdditionalOptions="/fixed:no"
 				AdditionalDependencies="winmm.lib bassmod.lib lua5.1.lib libfl.a ../../Hoe/bin/HoeGame_d.lib ../../Hoe/bin/HoeCore_d.lib  User32.lib Gdi32.lib"
-				OutputFile="../BecherGame_d.exe"
+				OutputFile="../Alcominance_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="LIBC.lib;LIBCD.lib;LIBCMTD.lib"
@@ -150,7 +150,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="winmm.lib bassmod.lib lua5.1.lib libfl.a ../../Hoe/bin/HoeGame.lib ../../Hoe/bin/HoeCore.lib"
-				OutputFile="../BecherGame.exe"
+				OutputFile="../Alcominance.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="LIBC.lib;LIBCD.lib;LIBCMTD.lib"

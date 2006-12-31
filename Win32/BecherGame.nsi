@@ -34,6 +34,8 @@ InstallDirRegKey HKLM "Software\Alcominance" "Install_Dir"
   !define MUI_HEADERIMAGE
   !define MUI_HEADERIMAGE_BITMAP "..\resource\nsis.bmp" ; optional
   !define MUI_ABORTWARNING
+  !define MUI_ICON "..\resource\install.ico"
+  !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\orange-uninstall.ico"
 
 ;--------------------------------
 ;Pages
@@ -70,18 +72,25 @@ Section "Game files"
   SetOutPath $INSTDIR
   
   ; exe files
-  File "..\BecherGame_d.exe"
+  File "..\Alcominance_d.exe"
+  File "..\Alcominance.exe"
+  File "..\BecherEditor_d.exe"
+  File "..\BecherEditor.exe"
   File "..\..\Common\bin\BASSMOD.dll"
   File "..\..\Common\bin\OpenAL32.dll"
   File "..\..\Common\bin\wrap_oal.dll"
-  File "..\..\Hoe\bin\Hoe3Dd_GL.dll"
+  ; File "..\..\Hoe\bin\Hoe3Dd_GL.dll"
   File "..\..\Hoe\bin\Hoe3Dd_D3D9.dll"
   
-  File "..\becher.conf"
-  File "..\a.sav" 
+  File "install\becher.conf"
+  File "..\docs\Readme.txt"
+  File "..\docs\Napoveda.doc"
+  File "..\docs\Napoveda_en.doc"
   
   SetOutPath "$INSTDIR\data"
   File "..\data\*"
+  SetOutPath "$INSTDIR\data_old"
+  File "..\data_old\*"
   SetOutPath "$INSTDIR\maps"
   File "..\maps\*"
   SetOutPath "$INSTDIR\resource"
@@ -91,6 +100,8 @@ Section "Game files"
   SetOutPath "$INSTDIR\sound"
   File "..\sound\*.ogg"
   File "..\sound\music\*"
+  SetOutPath "$INSTDIR\save"
+  SetOutPath $INSTDIR
   
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\Alcominance "Install_Dir" "$INSTDIR"
@@ -109,7 +120,11 @@ Section "Start Menu Shortcuts"
 
   CreateDirectory "$SMPROGRAMS\Alcominance"
   CreateShortCut "$SMPROGRAMS\Alcominance\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\Alcominance\Alcominance.lnk" "$INSTDIR\BecherGame_d.exe" "" "$INSTDIR\BecherGame_d.exe" 0
+  CreateShortCut "$SMPROGRAMS\Alcominance\Alcominance.lnk" "$INSTDIR\Alcominance_d.exe" "" "$INSTDIR\Alcominance_d.exe" 0
+  CreateShortCut "$SMPROGRAMS\Alcominance\Editor.lnk" "$INSTDIR\BecherEditor_d.exe" "" "$INSTDIR\BecherEditor_d.exe" 0
+  CreateShortCut "$SMPROGRAMS\Alcominance\Nastaveni.lnk" "$INSTDIR\Alcominance_d.exe -h" "" "$INSTDIR\Alcominance_d.exe -h" 0
+  CreateShortCut "$SMPROGRAMS\Alcominance\Readme.lnk" "$INSTDIR\readme.txt" "" "$INSTDIR\readme.txt" 0
+  CreateShortCut "$SMPROGRAMS\Alcominance\Heimdall on web.lnk" "http://www.gejza.net" "" "http://www.gejza.net" 0
   
 SectionEnd
 
@@ -117,11 +132,11 @@ SectionEnd
 ;--------------------------------
 ;Installer Functions
 
-;Function .onInit
+Function .onInit
 
-  ;!insertmacro MUI_LANGDLL_DISPLAY
+  !insertmacro MUI_LANGDLL_DISPLAY
 
-;FunctionEnd
+FunctionEnd
 
 
 ;--------------------------------
@@ -141,13 +156,13 @@ Section "Uninstall"
   Delete "$INSTDIR\sound\*.*"
 	
   ; Remove files and uninstaller
-  Delete $INSTDIR\BecherGame_d.exe
-  Delete $INSTDIR\Uninstall.exe
-  Delete $INSTDIR\BASSMOD.dll
-  Delete $INSTDIR\OpenAL32.dll
-  Delete $INSTDIR\wrap_oal.dll
-  Delete $INSTDIR\Hoe3Dd_GL.dll
-  Delete $INSTDIR\Hoe3Dd_D3D9.dll
+  Delete $INSTDIR\*.exe
+  ;Delete $INSTDIR\Uninstall.exe
+  Delete $INSTDIR\*.dll
+  ;Delete $INSTDIR\OpenAL32.dll
+  ;Delete $INSTDIR\wrap_oal.dll
+  ;Delete $INSTDIR\Hoe3Dd_GL.dll
+  ;Delete $INSTDIR\Hoe3Dd_D3D9.dll
 
   ; Remove shortcuts, if any
   Delete "$SMPROGRAMS\Alcominance\*.*"
@@ -159,6 +174,7 @@ Section "Uninstall"
   RMDir "$INSTDIR\resource"
   RMDir "$INSTDIR\scripts"
   RMDir "$INSTDIR\sound"
+  RMDir "$INSTDIR\maps"
 
 
 SectionEnd
@@ -166,8 +182,8 @@ SectionEnd
 ;--------------------------------
 ;Uninstaller Functions
 
-;Function un.onInit
+Function un.onInit
 
-;  !insertmacro MUI_UNGETLANGUAGE
+  !insertmacro MUI_UNGETLANGUAGE
   
-;FunctionEnd
+FunctionEnd
