@@ -155,6 +155,7 @@ int Store::GetInfo(int type, char * str, size_t n)
 
 int Store::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
+#ifndef BECHER_EDITOR
 	switch (msg)
 	{
 	case BMSG_Select:
@@ -166,6 +167,7 @@ int Store::GameMsg(int msg, int par1, void * par2, uint npar2)
 		return BuildPlace((float*)par2, 
 			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
 	}
+#endif 
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
 }
 

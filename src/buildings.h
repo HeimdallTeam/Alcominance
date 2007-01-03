@@ -17,7 +17,6 @@ class BecherBuilding : public BecherObject
 {
 protected:
 	EBuildingMode m_mode;
-	Construct * m_construct;
 	int BuildPlace(float *pos, IHoeModel * m, float dest, float dobj, bool finish);
 public:
 	BecherBuilding(IHoeScene * scn);
@@ -26,14 +25,7 @@ public:
 	virtual void SetMode(EBuildingMode mode) { m_mode = mode; }
 	virtual bool Save(BecherGameSave &w);
 	virtual bool Load(BecherGameLoad &r);
-	virtual bool InsertSur(ESurType type, uint *s) { assert(!"add surovina"); return false; }
-	virtual bool SetToWork(Troll * t) { assert(!"add to work"); return false; }
-	virtual void UnsetFromWork(Troll * t) { assert(!"add to work"); }
-	virtual bool Idiot(TJob * t) { return false; }
 	virtual void OnUpdateSur() {}
-	virtual void SetCurActive(bool active);
-	virtual uint AcceptSur(ESurType type) { return 0; }
-	virtual ResourceBase * GetResource(ESurType type) { return NULL; }
 
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 };

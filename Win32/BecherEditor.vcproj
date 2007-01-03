@@ -360,10 +360,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\resource\logo.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\src\editor\resource.h"
 				>
 			</File>

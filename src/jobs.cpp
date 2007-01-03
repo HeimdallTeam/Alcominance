@@ -33,9 +33,9 @@ bool TJob::Load(BecherGameLoad &r)
 	surtype = (ESurType)r.Read<dword>();
 	percent = r.Read<float>();
 	id = r.Read<dword>();
-	if (id)
-		from = (ResourceExp*)
-		dynamic_cast<BecherBuilding*>(GetLevel()->GetObjFromID(id))->GetResource(surtype);
+	if (id);
+		//from = (ResourceExp*)
+		//dynamic_cast<BecherBuilding*>(GetLevel()->GetObjFromID(id))->GetResource(surtype);
 	else
 		from = NULL;
 	id = r.Read<dword>();

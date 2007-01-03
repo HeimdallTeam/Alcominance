@@ -41,8 +41,6 @@ bool Sugar::Save(BecherGameSave &w)
 {
 	BecherBuilding::Save(w);
 	w.WriteReservedWords(10);
-	if (m_construct)
-		m_construct->Save(w);
 	return true;
 }
 
@@ -50,8 +48,6 @@ bool Sugar::Load(BecherGameLoad &r)
 {
 	BecherBuilding::Load(r);
 	r.ReadReservedWords(10);
-	if (m_construct)
-		m_construct->Load(r);
 	OnUpdateSur();
 	return true;
 }
@@ -65,7 +61,6 @@ void Sugar::SetMode(EBuildingMode mode)
 	switch (m_mode)
 	{
 	case EBM_Build:
-		m_construct = NULL;
 		GetCtrl()->SetOverColor(0xffffffff);
 		break;
 	case EBM_Select:
@@ -80,8 +75,6 @@ void Sugar::SetMode(EBuildingMode mode)
 	{
 	case EBM_Build:
 		GetCtrl()->SetOverColor(0xffffff00);
-		m_construct = new Construct(this);
-		m_construct->SetBuildTime(5.f);
 		break;
 	case EBM_Normal:
 		Show(true);
@@ -137,8 +130,6 @@ int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
 
 bool Sugar::InsertSur(ESurType type, uint *s)
 {
-	if (m_construct)
-		return m_construct->InsertSur(type,s);
 	switch (type)
 	{
 	case EBS_Cane:
@@ -154,8 +145,6 @@ bool Sugar::InsertSur(ESurType type, uint *s)
 
 bool Sugar::SetToWork(Troll * t)
 {
-	if (m_construct)
-		return m_construct->SetToWork(t);
     switch (t->GetJob().type)
 	{
     case TJob::jtWork:
@@ -178,8 +167,6 @@ bool Sugar::SetToWork(Troll * t)
 
 void Sugar::UnsetFromWork(Troll * t)
 {
-	if (m_construct)
-		return m_construct->UnsetFromWork(t);
     switch (t->GetJob().type){
     case TJob::jtWork:
 	    m_worked.Remove(t);
@@ -198,10 +185,6 @@ void Sugar::UnsetFromWork(Troll * t)
 
 void Sugar::Update(const float t)
 {
-	if (m_construct)
-	{
-		return m_construct->Update(t);
-	}
 
 	// update
 	float prog = m_w.InProcess() ? m_worked.Count()*v_numzpr.GetFloat():0.f;
@@ -252,8 +235,6 @@ void Sugar::Update(const float t)
 bool Sugar::Select()
 {
 	FactoryBuilding::Select();
-	if (m_construct)
-		return m_construct->Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/sugar.menu", this);	
 	GetLua()->func("s_cukr");
 	return true;
@@ -261,8 +242,6 @@ bool Sugar::Select()
 
 bool Sugar::Idiot(TJob * j)
 {
-	if (m_construct)
-		return m_construct->Idiot(j);
 	// zjistit pripadny zdroj pro suroviny
 	// 
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
@@ -288,7 +267,7 @@ bool Sugar::Idiot(TJob * j)
 
     // vystupni suroviny
 	f.SetTableInteger("sugar", m_sugar.GetNum());
-	f.SetTableInteger("sugar_out", bout ? bout->AcceptSur(EBS_Sugar):0);
+	//f.SetTableInteger("sugar_out", bout ? bout->AcceptSur(EBS_Sugar):0);
 
 	// works
 	f.SetTableInteger("works_count", this->m_worked.Count());

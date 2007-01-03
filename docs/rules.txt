@@ -1,0 +1,20 @@
+Cil hry: 
+	splneni ukolu daneho levelem, napriklad postaveni casti pomniku
+Budovy:
+	- tovarny Tovarna, cukrovar a lihovar potrebuji uhli
+	Tovarna:
+		- produkuje becherovku
+		- potrebuje: cukr, lih, vodu, byliny
+	Cukrovar:
+		- produkuje cukr
+		- potrebuje: cukrovou trtinu (farma)
+		cukrovar najima delniky, kteri nosi trtinu, pracuji v cukrovaru a odnaseji prebytecny cukr
+		cukrovar k postaveni potrebuje kameny a sutry, stavba probiha tak, ze se nosi material, nebo se muze postavit kus cukrovaru, praci pro delniky rozdeluje idiot, po postaveni se delnici automaticky pripoji k cukrovaru
+	Lihovar:
+		- produkuje lih
+		- potrebuje: cukr
+	Farma:
+		- produkuje cukrovou trtinu
+		- trtina roste sama od sebe, za pomoci jednoho farmare, ktery se o ni stara (fake)
+
+		

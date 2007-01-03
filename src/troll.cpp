@@ -120,7 +120,6 @@ void Troll::SetJob(const TJob & j)
 			break;
     case TJob::jtGotoOwnerWithRes:
 		assert(m_job.owner);
-		m_job.owner->UnsetFromWork(this);
 		break;
 	};
 
@@ -145,7 +144,6 @@ void Troll::SetJob(const TJob & j)
 			m_load.locked = true;
 		}
 		m_path.Go(m_job.from->GetOwner());
-   		m_job.owner->SetToWork(this);
 		break;
 	case TJob::jtGotoOwnerWithRes:
 		if (!m_job.to)
@@ -157,7 +155,6 @@ void Troll::SetJob(const TJob & j)
 		break;
 	case TJob::jtWork:
 		assert(m_job.owner);
-		m_job.owner->SetToWork(this);
 		break;
 	case TJob::jtFly:
 		// nastavit na padaka
@@ -198,7 +195,7 @@ void Troll::Finish()
 		// vlozit do budovy a hledat novy job
 // odevzdat surovinu, mozna by mohl cekat dokud nebude volno ve skladu
 		assert(m_job.to);
-		m_job.to->InsertSur(m_load.surtype, &m_load.numsur);
+		//m_job.to->InsertSur(m_load.surtype, &m_load.numsur);
 		m_load.numsur = 0;
 		m_load.surtype = EBS_None;
 		FindJob(m_job.owner);
@@ -238,7 +235,7 @@ void Troll::SurIn(ESurType type, uint num)
 
 bool Troll::FindJob(BecherBuilding * pref)
 {
-	TJob job;
+	/*TJob job;
 	memset(&job,0,sizeof(job));
 	//assert(pref);
 	if (pref->Idiot(&job))
@@ -252,7 +249,7 @@ bool Troll::FindJob(BecherBuilding * pref)
 		j.type = TJob::jtFindJob;
 		j.owner = pref;
 		SetJob(j);
-	}
+	}*/
 	return false;
 }
 

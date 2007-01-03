@@ -106,7 +106,6 @@ void Destilate::SetMode(EBuildingMode mode)
 	switch (m_mode)
 	{
 	case EBM_Build:
-		m_construct = NULL;
 		GetCtrl()->SetOverColor(0xffffffff);
 		break;
 	case EBM_Select:
@@ -121,8 +120,6 @@ void Destilate::SetMode(EBuildingMode mode)
 	{
 	case EBM_Build:
 		GetCtrl()->SetOverColor(0xffffff00);
-		m_construct = new Construct(this);
-		m_construct->SetBuildTime(5.f);
 		break;
 	case EBM_Normal:
 		Show(true);
@@ -135,8 +132,6 @@ void Destilate::SetMode(EBuildingMode mode)
 
 bool Destilate::InsertSur(ESurType type, uint *s)
 {
-	if (m_construct)
-		return m_construct->InsertSur(type,s);
 	if (type==EBS_Sugar)
 	// max
 		return m_sugar.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
@@ -146,9 +141,6 @@ bool Destilate::InsertSur(ESurType type, uint *s)
 
 bool Destilate::SetToWork(Troll * t)
 {
-	if (m_construct)
-		return m_construct->SetToWork(t);
-
     switch (t->GetJob().type){
     case TJob::jtWork:
 	    if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
@@ -170,9 +162,6 @@ bool Destilate::SetToWork(Troll * t)
 
 void Destilate::UnsetFromWork(Troll * t)
 {
-	if (m_construct)
-		return m_construct->UnsetFromWork(t);
-
 	switch(t->GetJob().type){
     case TJob::jtWork:
 	    m_worked.Remove(t);
@@ -192,11 +181,6 @@ void Destilate::UnsetFromWork(Troll * t)
 
 void Destilate::Update(const float t)
 {
-	if (m_construct)
-	{
-		return m_construct->Update(t);
-	}
-
 	// update
 	float prog = m_w.InProcess() ? m_worked.Count()*v_numzpr.GetFloat():0.f;
 
@@ -246,8 +230,6 @@ void Destilate::Update(const float t)
 bool Destilate::Select()
 {
 	FactoryBuilding::Select();
-	if (m_construct)
-		return m_construct->Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/alco.menu",this);
 	GetLua()->func("s_lihovar");
 	return true;

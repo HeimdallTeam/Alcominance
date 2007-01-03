@@ -86,7 +86,7 @@ WXBITMAP_STD_COLOURS    BITMAP                  "wx/msw/colours.bmp"
 //
 // RT_MANIFEST
 //
-IDI_ICON1               ICON                    "../resource/logo.ico"
+IDI_ICON1               ICON                    "../resource/editor.ico"
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
