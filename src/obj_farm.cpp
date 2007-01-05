@@ -66,7 +66,7 @@ int Farm::GetInfo(int type, char * str, size_t n)
 	case BINFO_Production:
 		ret = int(this->m_grow * 100.f);
 		if (str)
-			_snprintf(str, n, "%d", ret);
+			snprintf(str, n, "%d", ret);
 		return ret;
 	default:
 		return BecherBuilding::GetInfo(type, str, n);

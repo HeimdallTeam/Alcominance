@@ -26,3 +26,5 @@ static int SendGameMsgId(unsigned long id, int msg, int par1=0, void * par2=NULL
 #endif
 
 #define IDMSG_ALL 0xffffffff
+
+

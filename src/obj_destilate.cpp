@@ -69,12 +69,12 @@ int Destilate::GetInfo(int type, char * str, size_t n)
 	case BINFO_NumAlco:
 		ret = (int)this->m_alco.GetNum();
 		if (str)
-			_snprintf(str, n, "%d", ret);
+			snprintf(str, n, "%d", ret);
 		return ret;
 	case BINFO_NumSugar:
 		ret = (int)this->m_sugar.GetNum();
 		if (str)
-			_snprintf(str, n, "%d", ret);
+			snprintf(str, n, "%d", ret);
 		return ret;
 	default:
 		return BecherBuilding::GetInfo(type, str, n);

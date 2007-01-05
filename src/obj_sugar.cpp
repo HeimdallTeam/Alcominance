@@ -98,12 +98,12 @@ int Sugar::GetInfo(int type, char * str, size_t n)
 	case BINFO_NumCane:
 		ret = (int)this->m_cane.GetNum();
 		if (str)
-			_snprintf(str, n, "%d", ret);
+			snprintf(str, n, "%d", ret);
 		return ret;
 	case BINFO_NumSugar:
 		ret = (int)this->m_sugar.GetNum();
 		if (str)
-			_snprintf(str, n, "%d", ret);
+			snprintf(str, n, "%d", ret);
 		return ret;
 	default:
 		return BecherBuilding::GetInfo(type, str, n);

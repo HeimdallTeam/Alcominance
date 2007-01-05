@@ -77,7 +77,7 @@ int CoalMine::GetInfo(int type, char * str, size_t n)
 	case BINFO_NumCoal:
 		ret = m_coal.GetNum();
 		if (str)
-			_snprintf(str, n, "%d", ret);
+			snprintf(str, n, "%d", ret);
 		return ret;
 	default:
 		return BecherBuilding::GetInfo(type, str, n);

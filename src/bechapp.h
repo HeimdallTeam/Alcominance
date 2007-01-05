@@ -3,8 +3,11 @@
 #define _BECHER_APP_H_
 
 class BecherGame;
-
+#ifdef D_SIM
+class BechApp : public HoeGame::HoeFakeApp
+#else
 class BechApp : public HoeGame::HoeApp
+#endif
 {
 	HoeGame::Scene * scene;
 	BecherGame *m_game;

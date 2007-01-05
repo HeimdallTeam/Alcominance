@@ -135,7 +135,7 @@ int Store::GetInfo(int type, char * str, size_t n)
 #define TYPECASE(res) case BINFO_Num##res: \
 	ret = (int)this->m_res[EBS_##res].GetNum(); \
 		if (str)\
-			_snprintf(str, n, "%d", ret); \
+			snprintf(str, n, "%d", ret); \
 		return ret;
 
 	TYPECASE(Sugar)
