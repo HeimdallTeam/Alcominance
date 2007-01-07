@@ -69,16 +69,18 @@ enum ESurType
 {
 	EBS_None = 0,
 	EBS_Becher, // B
-	EBS_Stone,
-	EBS_Wood,
+	EBS_Stone, // K
+	EBS_Wood,  // D
 	EBS_Water, // W
 	EBS_Herbe, // H
 	EBS_Sugar, // S
 	EBS_Alco, // A
 	EBS_Cane, // C
-    EBS_Coal,
+    EBS_Coal, // U
 	EBS_Max,
 };
+
+static const char s_sur[] = "_BKDWHSACU_";
 
 enum EBuildingMode
 {

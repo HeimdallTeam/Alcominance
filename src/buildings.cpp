@@ -8,20 +8,6 @@
 #include "obj_construct.h"
 #include "b_msg.h"
 
-// premistit
-void TrollList::OneStopWork()
-{
-	// kvuli optimalizaci je lepsi pozpatku, protoze oni se hned z toho seznamu vymazavaj
-	//for (int i=Count()-1;i >= 0;i--)
-	//{
-	//	Get(i)->StopWork();
-	//}
-	if (Count()>0)
-		Get(Count()-1)->StopWork();
-}
-
-
-
 /////////////////////////////////////////////////////////
 BecherBuilding::BecherBuilding(IHoeScene * scn) : BecherObject(scn)
 {

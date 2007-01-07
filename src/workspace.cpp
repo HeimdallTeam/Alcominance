@@ -5,10 +5,11 @@
 #include "buildings.h"
 
 ///////////////////////////////////////////
-ResourceBase::ResourceBase()
+ResourceBase::ResourceBase(ESurType type)
 { 
 	m_actual = 0; 
 	m_owner = NULL;
+	m_type = type;
 }
 
 void ResourceBase::SetNum(uint num)
@@ -66,9 +67,8 @@ bool ResourceBase::Load(BecherGameLoad &r)
 }
 
 ////////////////////////////////////////////
-ResourceExp::ResourceExp(ESurType type)
+ResourceExp::ResourceExp(ESurType type) : ResourceBase(type)
 {
-	m_type = type;
 	m_actual = 0;
 	m_owner = NULL;
 	m_priority = EBSP_Normal;
@@ -127,6 +127,7 @@ bool ResourceExp::Save(BecherGameSave &w)
 	w.WriteValue<uint>(m_priority);
 	w.WriteValue<uint>(m_locked);
 	w.WriteReservedWords(1);
+	return true;
 }
 
 bool ResourceExp::Load(BecherGameLoad &r)
@@ -153,7 +154,7 @@ int Workspace::GetNumber(char type)
 	assert(m_recept != NULL);
 	const char * p = m_recept->GetString();
 	int i;
-	while (*p && *p!=type) p++;
+	while (*p && *p!=type) p++; // vyjde nastejno jako hledani v tabulce
 	if (!*p) return 0; // error
 	if (sscanf(p+1, "%d", &i)==1)
 	{
@@ -204,6 +205,123 @@ uint Workspace::Out(bool remove)
 		m_out = 0;
 	return ret;
 }
+
+/////////////////////////////////////////////////////////
+// static
+int Workspace2::s_passes = 0; // znasobeni
+int Workspace2::s_num_in=0,Workspace2::s_num_out=0;
+
+Workspace2::Request Workspace2::s_req_in[20];
+Workspace2::RequestOut Workspace2::s_req_out[5];
+
+Workspace2::Workspace2(CVar * recept)
+{
+	m_recept = recept;
+	// zjistit z receptu cas a nastavit na nejakou prijemnou hodnotu (rand)
+	sscanf(m_recept->GetString(), "%f", &m_desttime);
+	m_desttime = m_desttime * HoeCore::RandFloat(0.6f,1.f);
+}
+
+int Workspace2::BeginPass(float workers, float time)
+{
+	assert(m_recept != NULL);
+	if (!workers || time <= 0.f)
+		return 0;
+	// vypocitat cas
+	m_desttime -= time * workers;
+	if (m_desttime > 0.f) // jeste neni cas
+		return 0;
+
+	float newtime;
+	sscanf(m_recept->GetString(), "%f", &newtime);
+	s_passes = (int)(-m_desttime/newtime);
+	s_passes++;
+	m_desttime += newtime * s_passes;
+
+	// odecist a nastavit na vybrani
+	s_num_in = s_num_out = 0;
+
+	return s_passes;
+}
+
+
+bool Workspace2::operator << (ResourceBase & in)
+{
+	// prenastavit s_passes na to kolik se jich tam vejde
+	if (s_passes <= 0)
+		return false;
+
+	// spocitat kolik by potreboval
+	const char type = s_sur[in.GetType()];
+	const char * p = m_recept->GetString();
+	uint req=0;
+	while (*p && *p!=type) p++; // vyjde nastejno jako hledani v tabulce
+	if (!*p || sscanf(p+1, "%d", &req)!=1)
+		return false;
+	
+	// mam req
+	// mam num
+	// muzu prenastavit passy
+	int passes = in.GetNum() / req;
+	if (passes < s_passes)
+		s_passes = passes;
+
+	s_req_in[s_num_in].res = &in;
+	s_req_in[s_num_in].num = req;
+	s_num_in++;
+
+	return true;
+}
+
+bool Workspace2::operator >> (ResourceBase & out)
+{
+	// prenastavit s_passes na to kolik se jich tam vejde
+	if (s_passes <= 0)
+		return false;
+
+	// spocitat kolik by potreboval
+	const char type = s_sur[out.GetType()];
+	const char * p = m_recept->GetString();
+	uint add=0;
+	while (*p && *p!='=') p++; // vyjde nastejno jako hledani v tabulce
+	if (!*p || sscanf(p+1, "%d", &add)!=1)
+		return false;
+	
+	// mam req
+	// mam num
+	// muzu prenastavit passy
+	// jen omezeni na velikost odebrani -- int passes = in.GetNum() / req;
+	//if (passes < s_passes)
+	//	s_passes = passes;
+
+	s_req_out[s_num_out].res = &out;
+	s_req_out[s_num_out].num = add;
+	s_num_out++;
+
+	return true;
+}
+
+void Workspace2::Commit()
+{
+	int i;
+	if (s_passes <= 0)
+		return;
+
+	// odecist
+	for (i=0;i < s_num_in;i++)
+		s_req_in[i].res->Get(s_req_in[i].num*s_passes,true);
+	for (i=0;i < s_num_out;i++)
+	{
+		uint n = s_req_out[i].num*s_passes;
+		s_req_out[i].res->Add(&n,1000);
+	}
+	s_num_in = s_num_out = 0;
+}
+
+///////////////////////////////////////////////////////////
+
+
+
 
 
 

@@ -16,14 +16,14 @@ static CVar v_coalmax("dest_coal_max", 120, TVAR_SAVE); // maximalni kapacita pr
 
 
 ////////////////////////////////////////////////////////
-Destilate::Destilate(IHoeScene * scn) : FactoryBuilding(scn), m_alco(EBS_Alco)
+Destilate::Destilate(IHoeScene * scn) 
+  : BecherBuilding(scn), m_alco(EBS_Alco), m_sugar(EBS_Sugar), m_coal(EBS_Coal)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_DESTILATE));
 	SetRingParam(4.5f, 4.5f, 2.f);
 	//GetCtrl()->SetFlags(HOF_SHOW);
 	//m_mode = wmIn;
 	m_sugar.SetOwner(this);
-	m_w.SetOwner(this);
 	m_alco.SetOwner(this); 
 
 	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
@@ -182,26 +182,9 @@ void Destilate::UnsetFromWork(Troll * t)
 void Destilate::Update(const float t)
 {
 	// update
-	float prog = m_w.InProcess() ? m_worked.Count()*v_numzpr.GetFloat():0.f;
 
-	if (m_worked.Count() > 0)
-	{
-		m_w.Update(t*prog);
 
-		if (m_w.CanOut() && ((int)m_w.Out(false)<=(v_sklad.GetInt() - GetMiniStoreCount())))
-		{
-			uint p = m_w.Out(true);
-			m_alco.Add(&p, p);
-		}
-
-		// naplneni
-		if (m_w.CanIn() && m_w.In(&m_sugar, 'S', true))
-		{
-			m_w.ToProcess();
-		}
-	}
-
-	if (m_progress != prog)
+	/*if (m_progress != prog)
 	{
 		// update 
 		m_progress = prog;
@@ -222,14 +205,14 @@ void Destilate::Update(const float t)
 					// propustit jednoho workera
 			m_worked.OneStopWork();
 		}
-	}
+	}*/
 
 }
 
 
 bool Destilate::Select()
 {
-	FactoryBuilding::Select();
+	BecherBuilding::Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/alco.menu",this);
 	GetLua()->func("s_lihovar");
 	return true;
@@ -256,7 +239,7 @@ bool Destilate::Idiot(TJob * j)
 
     f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
     f.SetTableInteger("coal_wrkcount", m_wrk_coal);
-	f.SetTableInteger("coal", m_w.GetNum());
+	//f.SetTableInteger("coal", m_w.GetNum());
     f.SetTableInteger("coal_max", v_coalmax.GetInt());
 
 	// works

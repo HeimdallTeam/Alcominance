@@ -4,15 +4,17 @@
 
 #include "buildings.h"
 
-class Sugar;
-
-class Sugar : public FactoryBuilding, TrollList
+class Sugar : public BecherBuilding
 {
-	friend class BecherLevel;
 protected:
-	// trolls
+	// staveni
+	Workspace2 m_wbuild;
+	ResourceImp m_stone;
+	ResourceImp m_wood;
+	// prace
 	ResourceImp m_cane;
 	ResourceExp m_sugar;
+	inline const int GetMiniStoreCount() const { return m_cane.GetNum() + m_sugar.GetNum(); }
 	float m_progress;
 
 	THoeSub_Particle m_part;
@@ -22,7 +24,6 @@ protected:
     int m_wrk_coal;
 
 	HoeGame::StopWatch m_exitdelay;
-	inline const int GetMiniStoreCount() const { return m_cane.GetNum() + m_sugar.GetNum(); }
 public:
 	Sugar(IHoeScene * scn);
 	virtual ~Sugar();

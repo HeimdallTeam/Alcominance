@@ -5,6 +5,12 @@
 #include "object.h"
 #include "jobs.h"
 
+/**
+ Tupoun je zakladni pracovni sila, ve skutecnosti pracuje jen jako nosic
+ prace v jednotlivych budovach je naprogramovana primo v budove
+
+*/
+
 struct TrollPath : public HoeGame::LandPath
 {
 	Point act;

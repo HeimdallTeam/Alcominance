@@ -6,14 +6,36 @@
 class BecherBuilding;
 class Troll;
 
+/**
+* Workspace se stara o spravny chod budovy
+* umi zpracovavat suroviny, a prevadet je na praci (podle urciteho receptu)
+* postup:
+* podle receptu
+* chtelo byt to tabulku pro prevod resources
+* statickou
+* napr.
+* aby to nejelo tak rychle, tak se to pousti jednou za x spusteni
+
+while (m_w.BeginPass(int nwork, float time))
+{
+	m_w << m_cane;
+	m_w << m_water;
+	m_w >> m_out;
+	m_w.Commit();
+}
+
+*/
+
 class ResourceBase
 {
 protected:
 	uint m_actual;
 	BecherBuilding * m_owner;
+	ESurType m_type;
 public:
-	ResourceBase();
+	ResourceBase(ESurType type);
 	inline uint GetNum() const { return (int)m_actual; }
+	inline ESurType GetType() { return m_type; }
 	void SetNum(uint num);
 	void SetOwner(BecherBuilding * own) { m_owner = own; }
 	inline BecherBuilding * GetOwner() { assert(m_owner); return m_owner; }
@@ -31,6 +53,7 @@ public:
 class ResourceImp : public ResourceBase
 {
 public:
+	ResourceImp(ESurType type) : ResourceBase(type) {}
 };
 
 // zamykani surovin (get odemkne)
@@ -38,13 +61,11 @@ public:
 class ResourceExp : public ResourceBase
 {
 protected:
-	ESurType m_type;
 	uint m_max;
 	ESurPriority m_priority;
 	uint m_locked;
 public:
 	ResourceExp(ESurType type);
-	inline ESurType GetType() { return m_type; }
 	inline ESurPriority GetPriority() { return m_priority; }
 	inline void SetPriority(ESurPriority p) { m_priority = p; }
 	void Register();
@@ -57,13 +78,7 @@ public:
 
 };
 
-// 
-class DrumEngine : public ResourceImp
-{
-public:
-};
-
-class Workspace : public DrumEngine
+class Workspace
 {
 	CVar * m_recept;
 	float m_progress;
@@ -83,18 +98,52 @@ public:
 	void ToProcess();
 };
 
-/**
-* Objekt ktery se stara o tupouny
-* Ma prehled o vsech tupounech kteri pro nej pracuji
-* Dokaze jim davat rozkazy
-* Prideluje praci
-*/
-class TrollList : public HoeCore::Set<Troll *>
+class Workspace2
 {
+// staticke prvky pro pocitani
+	static const int c_max_in = 20;
+	static const int c_max_out = 5;
+
+	struct Request
+	{
+		ResourceBase * res;
+		uint num;
+	};
+	struct RequestOut
+	{
+		union {
+			ResourceBase * res;
+			float * f;
+		};
+		float num;
+		enum Type {
+			EResource,
+			EFloat,
+		} type;
+	};
+	static int s_passes; // znasobeni
+	static int s_num_in,s_num_out;
+
+	static Request s_req_in[c_max_in];
+	static RequestOut s_req_out[c_max_out];
+// worspace
+	CVar * m_recept;
+	float m_desttime;
 public:
-	TrollList() { }
-	void OneStopWork();
+	Workspace2(CVar * recept);
+	/** Zacne process
+	* @param workers Kolik tupounu pracovalo
+	* @param time kolik casu ubehlo
+	* @
+	*/
+	int BeginPass(float workers, float time);
+	bool operator << (ResourceBase & in);
+	bool operator >> (ResourceBase & out);
+	bool operator >> (float & out);
+	void Commit();
 };
+
+typedef HoeCore::Set<Troll*> TrollList;
 
 struct TTrollWorkSlot
 {

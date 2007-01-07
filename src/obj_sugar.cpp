@@ -5,21 +5,23 @@
 #include "obj_sugar.h"
 #include "obj_construct.h"
 
-static CVar v_numzpr("sugar_speed", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
 static CVar v_cost("sugar_cost", 160, TVAR_SAVE);
 static CVar v_cost_wood("sugar_cost_wood", 30, TVAR_SAVE);
 static CVar v_cost_stone("sugar_cost_stone",40, TVAR_SAVE);
-static CVar v_sklad("sugar_max", 50, TVAR_SAVE); // maximalni velikost miniskladu
+static CVar v_sklad("sugar_max", 5000, TVAR_SAVE); // maximalni velikost miniskladu
 static CVar v_numworks("sugar_maxwork", 4, TVAR_SAVE); // maximalni pocet pracujicich
-static CVar v_recept("sugar_recept", "C1=1", TVAR_SAVE); // recept pro jednu davku
+static CVar v_recept("sugar_recept", "1.2:C1=1", TVAR_SAVE); // recept pro jednu davku
 static CVar v_coalmax("sugar_coal_max", 100, TVAR_SAVE); // maximalni kapacita pro uhli
+static CVar v_autowork("sugar_auto", 0.f, TVAR_SAVE);
 
 ////////////////////////////////////////////////////////
-Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
+Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn), 
+	m_wbuild(&v_recept), m_stone(EBS_Stone), m_wood(EBS_Wood),
+	m_cane(EBS_Cane),m_sugar(EBS_Sugar)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SUGAR));
 	SetRingParam(3.5f, 3.5f, 2.f);
-	m_w.SetOwner(this);
+	//m_w.SetOwner(this);
 	m_cane.SetOwner(this);
 	m_sugar.SetOwner(this);
 
@@ -27,10 +29,12 @@ Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn), m_sugar(EBS_Sugar)
 	m_part.pos.Set(-14.f, 23.f, 10.f);
 	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 
-	m_w.SetRecept(&v_recept);
 	m_progress = 0.f;
     m_wrk_cane = 0;
     m_wrk_coal = 0;
+
+	m_cane.SetNum(2000);
+
 }
 
 Sugar::~Sugar()
@@ -135,7 +139,7 @@ bool Sugar::InsertSur(ESurType type, uint *s)
 	case EBS_Cane:
 		return m_cane.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
 	case EBS_Coal:
-		return m_w.Add(s,*s);
+		//return m_w.Add(s,*s);
 	// vlozit drevo a sutr
 	default:
 		assert(!"insert bad type");
@@ -185,39 +189,17 @@ void Sugar::UnsetFromWork(Troll * t)
 
 void Sugar::Update(const float t)
 {
-
-	// update
-	float prog = m_w.InProcess() ? m_worked.Count()*v_numzpr.GetFloat():0.f;
-
-	if (m_worked.Count() > 0)
+	if (1)
 	{
-		m_w.Update(t*prog);
-
-		if (m_w.CanOut() && ((int)m_w.Out(false)<=(v_sklad.GetInt() - GetMiniStoreCount())))
+		if (m_wbuild.BeginPass(m_worked.Count()+v_autowork.GetFloat(), t))
 		{
-			uint p = m_w.Out(true);
-			m_sugar.Add(&p, p);
-		}
-
-		// naplneni
-		if (m_w.CanIn() && m_w.In(&m_cane, 'C', true))
-		{
-			m_w.ToProcess();
+			m_wbuild << m_cane;
+			m_wbuild >> m_sugar;
+			m_wbuild.Commit();
 		}
 	}
 
-	if (m_progress != prog)
-	{
-		// update 
-		m_progress = prog;
-		// pokud neni progress a nemuze se delat
-		if (m_progress > 0.f)
-			m_part.emitor->Start();
-		else
-			m_part.emitor->Stop();
-	}
-
-	if (m_worked.Count() > 0)
+	/*if (m_worked.Count() > 0)
 	{
 		if (prog > 0.f)
 			m_exitdelay.Reset();
@@ -227,14 +209,14 @@ void Sugar::Update(const float t)
 					// propustit jednoho workera
 			m_worked.OneStopWork();
 		}
-	}
+	}*/
 
 }
 
 
 bool Sugar::Select()
 {
-	FactoryBuilding::Select();
+	BecherBuilding::Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/sugar.menu", this);	
 	GetLua()->func("s_cukr");
 	return true;
@@ -262,7 +244,7 @@ bool Sugar::Idiot(TJob * j)
 
     f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
     f.SetTableInteger("coal_wrkcount", m_wrk_coal);
-    f.SetTableInteger("coal", m_w.GetNum());
+    //f.SetTableInteger("coal", m_w.GetNum());
 	f.SetTableInteger("coal_max", v_coalmax.GetInt());
 
     // vystupni suroviny

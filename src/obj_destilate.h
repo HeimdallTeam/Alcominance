@@ -6,7 +6,7 @@
 
 class Troll;
 
-class Destilate : public FactoryBuilding
+class Destilate : public BecherBuilding
 {
 	friend class BecherLevel;
 protected:

@@ -8,6 +8,15 @@ class ResourceExp;
 class BecherGameSave;
 class BecherGameLoad;
 
+/**
+* Jobs se stara o to aby vedeli tupouni co delat, je vsak udelanej
+* na kterejkoliv objekt
+* obsahuje zasobnik ukolu
+* funguje jako zasobnik
+* funguji tzv. prepisovaci pravidla
+* 
+*/
+
 struct TJob
 {
 	enum Type

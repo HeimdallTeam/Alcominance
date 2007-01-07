@@ -44,7 +44,9 @@ void FactoryStatic::Draw(IHoe2D * h2d)
 #endif // BECHER_EDITOR
 
 ////////////////////////////////////////////////////////
-Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), m_becher(EBS_Becher)
+Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), 
+ m_becher(EBS_Becher), m_water(EBS_Water), m_sugar(EBS_Sugar), m_alco(EBS_Alco),
+ m_coal(EBS_Coal), m_herbe(EBS_Herbe)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_FACTORY));
 	SetRingParam(6.7f,6.7f,2.f);
@@ -52,7 +54,6 @@ Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), m_becher(EBS_Becher)
 	m_alco.SetOwner(this);
 	m_herbe.SetOwner(this);
 	m_water.SetOwner(this);
-	m_w.SetOwner(this);
 	m_becher.SetOwner(this); CRR::Get()->Register(&m_becher);
 	m_w.SetRecept(&v_recept);
 	m_progress = 0.f;
@@ -98,7 +99,7 @@ bool Factory::InsertSur(ESurType type, uint *s)
 	case EBS_Herbe:
 		return m_herbe.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
 	case EBS_Coal:
-		return m_w.Add(s,*s);
+		//return m_w.Add(s,*s);
 	default:
 		assert(!"insert bad type");
 		return false;
@@ -213,7 +214,7 @@ void Factory::Update(const float t)
 		{
 			m_exitdelay.Reset();
 					// propustit jednoho workera
-			m_worked.OneStopWork();
+			//m_worked.OneStopWork();
 		}
 	}
 }
