@@ -288,7 +288,17 @@ bool Sugar::Idiot(TJob * j)
 	};
 		
 	f.Pop(1);
-	
+
+	// nebo lua bude posilat zpravy??
+	// to by bylo lepsi.. mozna
+	// propust, najmi, atd..
+	// propust je jasny
+	// ale to by vlastne mohla nejen lua posilat
+	// lua by byl v podstate jen takovej automat
+	// zpravy typu, propust workery -> pocet
+	// nastav volnym workerum aby nosili neco
+	// dej praci workerum
+
 	return true;
 }
 
