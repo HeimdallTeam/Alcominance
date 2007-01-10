@@ -19,7 +19,7 @@ BecherLogo::~BecherLogo()
 void BecherLogo::OnSet()
 {
 	GetEngine()->SetActiveScene(scene);
-	HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Foreground, NULL);
+	//HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Foreground, NULL);
 }
 
 void BecherLogo::OnUnset()
@@ -66,7 +66,7 @@ SlideShow::~SlideShow()
 void SlideShow::OnSet()
 {
 	GetEngine()->SetActiveScene(scene);
-	HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Foreground, NULL);
+	//HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Foreground, NULL);
 	HoeGetInput(GetEngine())->RegisterKeyboard(this);
 }
 
