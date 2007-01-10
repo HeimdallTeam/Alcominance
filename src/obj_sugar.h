@@ -11,11 +11,11 @@ protected:
 	Workspace2 m_wbuild;
 	ResourceImp m_stone;
 	ResourceImp m_wood;
+	float m_buildprogress;
 	// prace
 	ResourceImp m_cane;
 	ResourceExp m_sugar;
 	inline const int GetMiniStoreCount() const { return m_cane.GetNum() + m_sugar.GetNum(); }
-	float m_progress;
 
 	THoeSub_Particle m_part;
 	//WorkMode m_mode;

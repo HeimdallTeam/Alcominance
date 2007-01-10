@@ -11,12 +11,13 @@ static CVar v_cost_stone("sugar_cost_stone",40, TVAR_SAVE);
 static CVar v_sklad("sugar_max", 5000, TVAR_SAVE); // maximalni velikost miniskladu
 static CVar v_numworks("sugar_maxwork", 4, TVAR_SAVE); // maximalni pocet pracujicich
 static CVar v_recept("sugar_recept", "1.2:C1=1", TVAR_SAVE); // recept pro jednu davku
+static CVar v_build("sugar_build", "1.4:K13+D5=0.008", TVAR_SAVE); // recept pro staveni
 static CVar v_coalmax("sugar_coal_max", 100, TVAR_SAVE); // maximalni kapacita pro uhli
 static CVar v_autowork("sugar_auto", 0.f, TVAR_SAVE);
 
 ////////////////////////////////////////////////////////
 Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn), 
-	m_wbuild(&v_recept), m_stone(EBS_Stone), m_wood(EBS_Wood),
+	m_wbuild(&v_build), m_stone(EBS_Stone), m_wood(EBS_Wood),
 	m_cane(EBS_Cane),m_sugar(EBS_Sugar)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SUGAR));
@@ -24,17 +25,21 @@ Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn),
 	//m_w.SetOwner(this);
 	m_cane.SetOwner(this);
 	m_sugar.SetOwner(this);
+	m_wood.SetOwner(this);
+	m_stone.SetOwner(this);
+
+	// build
+	m_buildprogress = 0;
 
 	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
 	m_part.pos.Set(-14.f, 23.f, 10.f);
 	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 
-	m_progress = 0.f;
     m_wrk_cane = 0;
     m_wrk_coal = 0;
 
-	m_cane.SetNum(2000);
-
+	m_wood.SetNum(624);
+	m_stone.SetNum(1624);
 }
 
 Sugar::~Sugar()
@@ -87,32 +92,83 @@ void Sugar::SetMode(EBuildingMode mode)
 	};
 }
 
+struct CustomInfo
+{
+	const char * str;
+	int type;
+};
+
+static const CustomInfo g_info[] = {"cane",BINFO_NumCane,
+							  "sugar",BINFO_NumSugar,
+							  "stone",BINFO_NumStone,
+							  "wood",BINFO_NumWood,
+							  "build",BINFO_BuildProgress,
+							  NULL };
+
+inline int DefaultCustomInfo(const char * str)
+{
+	hoe_assert(str != NULL);
+	const CustomInfo * info = g_info;
+	while (info->str)
+	{
+		if (*info->str == *str && strcmp(info->str, str) == 0)
+			return info->type;
+		info++;
+	}
+	return BINFO_Custom;
+}
+
+uint ReqResource(const CVar & var, float progress, char r)
+{
+	const char * p = var.GetString();
+	while (*p && *p!='=') p++;
+	if (!*p)
+		return 0;
+	float dav = 0.f;
+	if (sscanf(p+1, "%f", &dav)!=1 || dav == 0.f)
+		return 0;
+	p = var.GetString();
+	while (*p && *p!=r) p++;
+	if (!*p)
+		return 0;
+	int res = 0;
+	if (sscanf(p+1, "%d", &res)!=1)
+		return 0;
+	float rem = (int)(((1.f-progress)/dav)*res);
+	if (rem < 0) return 0;
+	return (int)HoeMath::UpperRound(rem);
+}
+
 int Sugar::GetInfo(int type, char * str, size_t n)
 {
 	register int ret = 0;
 	if (type==BINFO_Custom && str)
 	{
-		if (strcmp(str, "cane") == 0)
-			type = BINFO_NumCane;
-		else if (strcmp(str, "sugar") == 0)
-			type = BINFO_NumSugar;
+		type = DefaultCustomInfo(str);
 	}
 	switch (type)
 	{
 	case BINFO_NumCane:
 		ret = (int)this->m_cane.GetNum();
-		if (str)
-			snprintf(str, n, "%d", ret);
-		return ret;
+		break;
 	case BINFO_NumSugar:
 		ret = (int)this->m_sugar.GetNum();
-		if (str)
-			snprintf(str, n, "%d", ret);
-		return ret;
+		break;
+	case BINFO_NumStone:
+		ret = ReqResource(v_build, m_buildprogress, 'K');//(int)this->m_stone.GetNum();
+		break;
+	case BINFO_NumWood:
+		ret = ReqResource(v_build, m_buildprogress, 'D');//(int)this->m_wood.GetNum();
+		break;
+	case BINFO_BuildProgress:
+		ret = (int)(this->m_buildprogress * 100);
+		break;
 	default:
 		return BecherBuilding::GetInfo(type, str, n);
 	};
-	return 0;
+	if (str)
+		snprintf(str, n, "%d", ret);
+	return ret;
 }
 
 int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
@@ -193,8 +249,9 @@ void Sugar::Update(const float t)
 	{
 		if (m_wbuild.BeginPass(m_worked.Count()+v_autowork.GetFloat(), t))
 		{
-			m_wbuild << m_cane;
-			m_wbuild >> m_sugar;
+			m_wbuild << m_stone;
+			m_wbuild << m_wood;
+			m_wbuild >> m_buildprogress;
 			m_wbuild.Commit();
 		}
 	}
@@ -217,7 +274,7 @@ void Sugar::Update(const float t)
 bool Sugar::Select()
 {
 	BecherBuilding::Select();
-	GetLevel()->GetPanel()->SetObjectHud("scripts/sugar.menu", this);	
+	GetLevel()->GetPanel()->SetObjectHud("scripts/sugar_build.menu", this);	
 	GetLua()->func("s_cukr");
 	return true;
 }

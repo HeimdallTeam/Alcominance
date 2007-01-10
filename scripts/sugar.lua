@@ -31,6 +31,10 @@ end
 
 --works_count	pocet pracujicich (vyrabejicich)
 --works_max		max. pocet pracujicich
+
+-- zjisti pripadne zmeny a odesle budove zpravy
+-- napr. neni trtina a je spousta pracujicich
+
 function i_sugar(b)
  
  info("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")

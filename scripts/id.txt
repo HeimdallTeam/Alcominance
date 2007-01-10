@@ -133,6 +133,7 @@ ADDID(BMSG_InsertSur)
 
 // infos !!!
 ADDID(BINFO_Production)
+ADDID(BINFO_BuildProgress)
 ADDID(BINFO_NumCane)
 ADDID(BINFO_NumSugar)
 ADDID(BINFO_NumAlco)

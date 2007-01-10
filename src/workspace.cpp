@@ -295,7 +295,36 @@ bool Workspace2::operator >> (ResourceBase & out)
 	//	s_passes = passes;
 
 	s_req_out[s_num_out].res = &out;
+	s_req_out[s_num_out].num = (float)add;
+	s_req_out[s_num_out].type = RequestOut::EResource;
+	s_num_out++;
+
+	return true;
+}
+
+bool Workspace2::operator >> (float & out)
+{
+	// prenastavit s_passes na to kolik se jich tam vejde
+	if (s_passes <= 0)
+		return false;
+
+	// spocitat kolik by potreboval
+	const char * p = m_recept->GetString();
+	float add=0;
+	while (*p && *p!='=') p++; // vyjde nastejno jako hledani v tabulce
+	if (!*p || sscanf(p+1, "%f", &add)!=1)
+		return false;
+	
+	// mam req
+	// mam num
+	// muzu prenastavit passy
+	// jen omezeni na velikost odebrani -- int passes = in.GetNum() / req;
+	//if (passes < s_passes)
+	//	s_passes = passes;
+
+	s_req_out[s_num_out].f = &out;
 	s_req_out[s_num_out].num = add;
+	s_req_out[s_num_out].type = RequestOut::EFloat;
 	s_num_out++;
 
 	return true;
@@ -312,8 +341,16 @@ void Workspace2::Commit()
 		s_req_in[i].res->Get(s_req_in[i].num*s_passes,true);
 	for (i=0;i < s_num_out;i++)
 	{
-		uint n = s_req_out[i].num*s_passes;
-		s_req_out[i].res->Add(&n,1000);
+		switch (s_req_out[i].type)
+		{
+		case RequestOut::EResource: {
+			uint n = (uint)s_req_out[i].num*s_passes;
+			s_req_out[i].res->Add(&n,1000);
+			} break;
+		case RequestOut::EFloat: {
+			*s_req_out[i].f += s_req_out[i].num*s_passes;
+			} break;
+		};
 	}
 	s_num_in = s_num_out = 0;
 }
