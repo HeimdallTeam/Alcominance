@@ -62,6 +62,8 @@ public:
 
 	virtual int GetInfo(int type, char * str=NULL, size_t n=0) { return 0; }
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
+
+	static int DefaultCustomInfo(const char * str);
 };
 
 #define DECLARE_BASEOBJECT(type) virtual EObjType GetType() { return type; }

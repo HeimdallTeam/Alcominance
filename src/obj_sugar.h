@@ -16,6 +16,8 @@ protected:
 	ResourceImp m_cane;
 	ResourceExp m_sugar;
 	inline const int GetMiniStoreCount() const { return m_cane.GetNum() + m_sugar.GetNum(); }
+	
+	ResourceImp m_coal;
 
 	THoeSub_Particle m_part;
 	//WorkMode m_mode;

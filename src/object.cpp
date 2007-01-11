@@ -3,6 +3,22 @@
 #include "becher.h"
 #include "object.h"
 
+struct CustomInfo
+{
+	const char * str;
+	int type;
+};
+
+static const CustomInfo g_info[] = {"cane",BINFO_NumCane,
+							  "sugar",BINFO_NumSugar,
+							  "stone",BINFO_NumStone,
+							  "wood",BINFO_NumWood,
+							  "coal",BINFO_NumCoal,
+							  "reqstone", BINFO_ReqStone,
+							  "reqwood", BINFO_ReqWood,
+							  "build",BINFO_BuildProgress,
+							  NULL };
+
 BecherObject::BecherObject(IHoeScene * scn) : HoeGame::Strategy::StgObject(scn)
 {
 	m_angle = 0.f;
@@ -78,6 +94,21 @@ int BecherObject::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
 	return 0;
 }
+
+int BecherObject::DefaultCustomInfo(const char * str)
+{
+	hoe_assert(str != NULL);
+	const CustomInfo * info = g_info;
+	while (info->str)
+	{
+		if (*info->str == *str && strcmp(info->str, str) == 0)
+			return info->type;
+		info++;
+	}
+	return BINFO_Custom;
+}
+
+
 
 
 

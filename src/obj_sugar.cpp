@@ -18,15 +18,16 @@ static CVar v_autowork("sugar_auto", 0.f, TVAR_SAVE);
 ////////////////////////////////////////////////////////
 Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn), 
 	m_wbuild(&v_build), m_stone(EBS_Stone), m_wood(EBS_Wood),
-	m_cane(EBS_Cane),m_sugar(EBS_Sugar)
+	m_cane(EBS_Cane),m_sugar(EBS_Sugar), m_coal(EBS_Coal)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SUGAR));
-	SetRingParam(3.5f, 3.5f, 2.f);
+	SetRingParam(4.5f, 4.5f, 2.f);
 	//m_w.SetOwner(this);
 	m_cane.SetOwner(this);
 	m_sugar.SetOwner(this);
 	m_wood.SetOwner(this);
 	m_stone.SetOwner(this);
+	m_coal.SetOwner(this);
 
 	// build
 	m_buildprogress = 0;
@@ -38,8 +39,8 @@ Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn),
     m_wrk_cane = 0;
     m_wrk_coal = 0;
 
-	m_wood.SetNum(624);
-	m_stone.SetNum(1624);
+	m_wood.SetNum(625);
+	m_stone.SetNum(1625);
 }
 
 Sugar::~Sugar()
@@ -92,32 +93,6 @@ void Sugar::SetMode(EBuildingMode mode)
 	};
 }
 
-struct CustomInfo
-{
-	const char * str;
-	int type;
-};
-
-static const CustomInfo g_info[] = {"cane",BINFO_NumCane,
-							  "sugar",BINFO_NumSugar,
-							  "stone",BINFO_NumStone,
-							  "wood",BINFO_NumWood,
-							  "build",BINFO_BuildProgress,
-							  NULL };
-
-inline int DefaultCustomInfo(const char * str)
-{
-	hoe_assert(str != NULL);
-	const CustomInfo * info = g_info;
-	while (info->str)
-	{
-		if (*info->str == *str && strcmp(info->str, str) == 0)
-			return info->type;
-		info++;
-	}
-	return BINFO_Custom;
-}
-
 uint ReqResource(const CVar & var, float progress, char r)
 {
 	const char * p = var.GetString();
@@ -134,9 +109,9 @@ uint ReqResource(const CVar & var, float progress, char r)
 	int res = 0;
 	if (sscanf(p+1, "%d", &res)!=1)
 		return 0;
-	float rem = (int)(((1.f-progress)/dav)*res);
+	float rem = (((1.f-progress)/dav)*res);
 	if (rem < 0) return 0;
-	return (int)HoeMath::UpperRound(rem);
+	return (uint)HoeMath::UpperRound(rem);
 }
 
 int Sugar::GetInfo(int type, char * str, size_t n)
@@ -155,10 +130,19 @@ int Sugar::GetInfo(int type, char * str, size_t n)
 		ret = (int)this->m_sugar.GetNum();
 		break;
 	case BINFO_NumStone:
-		ret = ReqResource(v_build, m_buildprogress, 'K');//(int)this->m_stone.GetNum();
+		ret = (int)this->m_stone.GetNum();
 		break;
 	case BINFO_NumWood:
-		ret = ReqResource(v_build, m_buildprogress, 'D');//(int)this->m_wood.GetNum();
+		ret = (int)this->m_wood.GetNum();
+		break;
+	case BINFO_NumCoal:
+		ret = (int)this->m_coal.GetNum();
+		break;
+	case BINFO_ReqStone:
+		ret = ReqResource(v_build, m_buildprogress, 'K');
+		break;
+	case BINFO_ReqWood:
+		ret = ReqResource(v_build, m_buildprogress, 'D');
 		break;
 	case BINFO_BuildProgress:
 		ret = (int)(this->m_buildprogress * 100);

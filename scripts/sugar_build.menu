@@ -3,14 +3,14 @@ text
 	name = "stone"
 	rect = 170.240005 507.968140 174.080002 509.163361
 	font = "font 'resource/font.ttf' 16"
-	text = "$stone$ Sutru."
+	text = "$stone$/$reqstone$ Sutru."
 }
 text
 {
 	name = "cukr"
-	rect = 305.920013 507.968140 309.760010 509.163361
+	rect = 170.920013 531.968140 309.760010 509.163361
 	font = "font 'resource/font.ttf' 16"
-	text = "$wood$ dreva."
+	text = "$wood$/$reqwood$ dreva."
 	show = true
 }
 text
