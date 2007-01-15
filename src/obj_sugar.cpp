@@ -41,6 +41,8 @@ Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn),
 
 	m_wood.SetNum(625);
 	m_stone.SetNum(1625);
+
+	m_it.Start(1.f, true);
 }
 
 Sugar::~Sugar()
@@ -238,6 +240,11 @@ void Sugar::Update(const float t)
 			m_wbuild >> m_buildprogress;
 			m_wbuild.Commit();
 		}
+	}
+	// update
+	if (m_it.Update(t))
+	{
+		// run idiot
 	}
 
 	/*if (m_worked.Count() > 0)

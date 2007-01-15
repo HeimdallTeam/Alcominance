@@ -18,6 +18,7 @@ protected:
 	inline const int GetMiniStoreCount() const { return m_cane.GetNum() + m_sugar.GetNum(); }
 	
 	ResourceImp m_coal;
+	HoeGame::CTimer m_it;
 
 	THoeSub_Particle m_part;
 	//WorkMode m_mode;
