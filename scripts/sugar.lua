@@ -37,9 +37,10 @@ end
 -- napr. neni trtina a je spousta pracujicich
 
 function i_sugar(h,i)
- 
  info("Cukrovar ma ",h," trtiny a ",i," cukru")
-
+ -- SendMsg(h, BMSG_Zprava, 1,2,3)
+ -- GetInfo(h, BINFO_
+  
  return nil
 end
 
