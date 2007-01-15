@@ -216,8 +216,18 @@ int HUD::l_ClearButtons(lua_State * L)
 int HUD::l_info(lua_State * L)
 {
 	LuaParam lp(L);
-	if (lp.GetNumParam() != 1)
-		return 0;
+    if (lp.GetNumParam() == 0)
+    {
+        lp.Error("missing info parameters");
+        return 0;
+    }
+	if (lp.GetNumParam() > 1)
+    {
+        char buff[1024];
+        lp.ToString(buff,sizeof(buff)-1,-lp.GetNumParam(),-1);
+        GetLevel()->GetPanel()->GetInfo()->Add(buff);
+        return 0;
+    }
 
 	if (lp.IsNum(-1))
 		GetLevel()->GetPanel()->GetInfo()->Add(GetLang()->GetString(lp.GetNum(-1)));

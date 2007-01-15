@@ -14,7 +14,8 @@ function s_cukr()
  --PlaySound(model_TESTSOUND)
 end
 
---b
+--b: handle na cukrovar
+--i:
 --max_store		kolik se vejde do skladu
 
 --cane_avail	pocet lokalit zdroje trtiny
@@ -35,10 +36,14 @@ end
 -- zjisti pripadne zmeny a odesle budove zpravy
 -- napr. neni trtina a je spousta pracujicich
 
-function i_sugar(b)
+function i_sugar(h,i)
  
- info("Cukrovar ma ",b.cane," trtiny a ",b.sugar," cukru")
- 
+ info("Cukrovar ma ",h," trtiny a ",i," cukru")
+
+ return nil
+end
+
+function i_fake()
  --zjisti se recept (kolik je treba trtiny pro jednotku/jendotky cukr/u)
  recept =  GetVar("sugar_recept")
  count, units=getReceptCount(recept, "C")

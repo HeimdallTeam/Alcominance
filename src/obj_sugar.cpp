@@ -15,6 +15,8 @@ static CVar v_build("sugar_build", "1.4:K13+D5=0.008", TVAR_SAVE); // recept pro
 static CVar v_coalmax("sugar_coal_max", 100, TVAR_SAVE); // maximalni kapacita pro uhli
 static CVar v_autowork("sugar_auto", 0.f, TVAR_SAVE);
 
+CVar v_idiottime("time_idiot", 1.f, 0); // jak casto se ma poustet idiot
+
 ////////////////////////////////////////////////////////
 Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn), 
 	m_wbuild(&v_build), m_stone(EBS_Stone), m_wood(EBS_Wood),
@@ -42,7 +44,7 @@ Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn),
 	m_wood.SetNum(625);
 	m_stone.SetNum(1625);
 
-	m_it.Start(1.f, true);
+	m_it.Start(v_idiottime, true);
 }
 
 Sugar::~Sugar()
@@ -244,7 +246,7 @@ void Sugar::Update(const float t)
 	// update
 	if (m_it.Update(t))
 	{
-		// run idiot
+		Idiot();
 	}
 
 	/*if (m_worked.Count() > 0)
@@ -270,7 +272,12 @@ bool Sugar::Select()
 	return true;
 }
 
-bool Sugar::Idiot(TJob * j)
+bool Sugar::Idiot(TJob * job)
+{
+    return false;
+}
+
+void Sugar::Idiot()
 {
 	// zjistit pripadny zdroj pro suroviny
 	// 
@@ -281,6 +288,7 @@ bool Sugar::Idiot(TJob * j)
 
 	// najit sklad pro 
 	HoeGame::LuaFunc f(GetLua(), "i_sugar");
+    f.PushPointer((BecherObject*)this);
 	f.PushTable();
 	
 	f.SetTableInteger("max_store", v_sklad.GetInt());    
@@ -307,9 +315,9 @@ bool Sugar::Idiot(TJob * j)
 	if (f.IsNil(-1))
 	{
 		f.Pop(1);
-		return false;
+		return;
 	}
-
+    /*
 	// prevest zpatky na job
 	int r = f.GetTableInteger("type", -1); // typ prace
 	j->percent = f.GetTableFloat("percent", -1); // na kolik procent je vyzadovano
@@ -346,8 +354,7 @@ bool Sugar::Idiot(TJob * j)
 	// zpravy typu, propust workery -> pocet
 	// nastav volnym workerum aby nosili neco
 	// dej praci workerum
-
-	return true;
+    */
 }
 
 #else
