@@ -269,6 +269,12 @@ int l_SendMsg(lua_State * L)
 		return 0;
 	}
 	
+	if (par < 0)
+		msg = lp.GetNum(par++);
+
+	if (par < 0)
+		par1 = lp.GetNum(par++);
+
 	// parse parameters
 	for (;par < 0;par++)
 	{

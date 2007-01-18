@@ -131,6 +131,8 @@ ADDID(BMSG_Unselect)
 
 ADDID(BMSG_InsertSur)
 
+ADDID(BMSG_Chief)
+
 // infos !!!
 ADDID(BINFO_Production)
 ADDID(BINFO_BuildProgress)

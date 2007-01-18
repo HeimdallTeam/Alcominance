@@ -51,6 +51,10 @@ function i_sugar(h,i)
  -- start work
  -- import
  -- export
+ -- zacit nosit
+ -- pracujici prestat pracovat
+
+ SendMsg(h, BMSG_Chief, 0, "2W>F", "3X>EC")
  
  
  return nil
