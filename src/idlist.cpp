@@ -32,6 +32,9 @@ HoeGame::LuaPreprocess::IDConst g_luaconst[] = {
 	REG_ID(EBS_Alco)
 	REG_ID(EBS_Cane)
 	REG_ID(EBS_Coal)
+
+	// register jobtype
+
 	0, NULL,
 };
 

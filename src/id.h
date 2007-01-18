@@ -106,6 +106,16 @@ enum ESurPriority
 	EBSP_Higher,
 };
 
+enum 
+{
+// job list
+	EBW_Work,
+	EBW_Import,
+	EBW_Export,
+	EBW_Wait,
+	EBW_GoIn,
+};
+
 extern HoeGame::LuaPreprocess::IDConst g_luaconst[];
 
 const char * FindIDString(int id);

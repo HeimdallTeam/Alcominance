@@ -15,7 +15,7 @@ static CVar v_build("sugar_build", "1.4:K13+D5=0.008", TVAR_SAVE); // recept pro
 static CVar v_coalmax("sugar_coal_max", 100, TVAR_SAVE); // maximalni kapacita pro uhli
 static CVar v_autowork("sugar_auto", 0.f, TVAR_SAVE);
 
-CVar v_idiottime("time_idiot", 1.f, 0); // jak casto se ma poustet idiot
+CVar v_idiottime("time_idiot", 2.f, 0); // jak casto se ma poustet idiot
 
 ////////////////////////////////////////////////////////
 Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn), 
@@ -282,26 +282,26 @@ void Sugar::Idiot()
 	// zjistit pripadny zdroj pro suroviny
 	// 
 	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
-	ResourceExp * ri = CRR::Get()->Find(EBS_Cane, this);
-	ResourceExp * rc = CRR::Get()->Find(EBS_Coal, this);
-	BecherBuilding * bout = CRR::Get()->FindAccept(EBS_Sugar, this);
+	//ResourceExp * ri = CRR::Get()->Find(EBS_Cane, this);
+	//ResourceExp * rc = CRR::Get()->Find(EBS_Coal, this);
+	//BecherBuilding * bout = CRR::Get()->FindAccept(EBS_Sugar, this);
 
 	// najit sklad pro 
 	HoeGame::LuaFunc f(GetLua(), "i_sugar");
     f.PushPointer((BecherObject*)this);
 	f.PushTable();
 	
-	f.SetTableInteger("max_store", v_sklad.GetInt());    
+	//f.SetTableInteger("max_store", v_sklad.GetInt());    
 
     // vstupni suroviny
-	f.SetTableInteger("cane_avail", ri ? ri->GetAvail():0);
-    f.SetTableInteger("cane_wrkcount", m_wrk_cane);
+	//f.SetTableInteger("cane_avail", ri ? ri->GetAvail():0);
+    //f.SetTableInteger("cane_wrkcount", m_wrk_cane);
 	f.SetTableInteger("cane", m_cane.GetNum());
 
-    f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
-    f.SetTableInteger("coal_wrkcount", m_wrk_coal);
-    //f.SetTableInteger("coal", m_w.GetNum());
-	f.SetTableInteger("coal_max", v_coalmax.GetInt());
+    //f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
+    //f.SetTableInteger("coal_wrkcount", m_wrk_coal);
+    f.SetTableInteger("coal", m_coal.GetNum());
+	//f.SetTableInteger("coal_max", v_coalmax.GetInt());
 
     // vystupni suroviny
 	f.SetTableInteger("sugar", m_sugar.GetNum());

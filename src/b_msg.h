@@ -20,6 +20,8 @@ struct PAR_BuildPlace
 // funkce pro zpravy
 int SendGameMsg(BecherObject * o, int msg, int par1=0, void * par2=NULL, uint nump=0);
 int SendGameMsgId(unsigned long id, int msg, int par1=0, void * par2=NULL, uint nump=0);
+LUA_FUNCTION(l_GetInfo);
+LUA_FUNCTION(l_SendMsg);
 #else
 static int SendGameMsg(BecherObject * o, int msg, int par1=0, void * par2=NULL, uint nump=0) { return 0; }
 static int SendGameMsgId(unsigned long id, int msg, int par1=0, void * par2=NULL, uint nump=0) { return 0; }

@@ -52,6 +52,8 @@ bool BecherGame::Init()
 	GetLua()->AddFunc("Camera",BecherLevel::l_Camera);
 	GetLua()->AddFunc("SetVar", CVar::l_setvar);
 	GetLua()->AddFunc("GetVar", CVar::l_getvar);
+	GetLua()->AddFunc("GetInfo", l_GetInfo);
+	GetLua()->AddFunc("SendMsg", l_SendMsg);
 
 
 	// load skript
@@ -199,6 +201,88 @@ int SendGameMsgId(unsigned long id, int msg, int par1, void * par2, uint npar2)
 	
 }
 
+int l_GetInfo(lua_State * L)
+{
+	HoeGame::LuaParam lp(L);
+	if (lp.GetNumParam() < 2)
+	{
+		lp.Error("GetInfo: function requie min 2 parameters.");
+		return 0;
+	}
+	int par = lp.GetNumParam();
+	BecherObject * bo = NULL;
+	if (lp.IsPointer(-par))
+		bo = (BecherObject*)(lp.GetPointer(-par));
+	else if (lp.IsNum(-par))
+		bo = GetLevel()->GetObjFromID(lp.GetNum(-par));
+	else 
+	{
+		lp.Error("Bad handle parameter");
+		return 0;
+	}
+	par--;
+	for (int i=0;i < par;i++)
+	{
+		int info = 0;
+		if (lp.IsNum(-par))
+			info = bo->GetInfo(lp.GetNum(-par), NULL, 0);
+		else if (lp.IsString(-par))
+		{
+			char buff[1024] = {0};
+			strncpy(buff, lp.GetString(-par), sizeof(buff)-1);
+			info = bo->GetInfo(BINFO_Custom, buff, sizeof(buff)-1);
+		}
+		else
+			lp.Error("type info must be id or string");
+		lp.PushNum(info);
+	}
+	return par;
+}
+
+
+int l_SendMsg(lua_State * L)
+{
+	// zjistit jak se ktery parametr ma ukladat, a ten prekonvertit z luy do pole
+	// nebo do toho formatu, ktery vyzaduje zprava
+	// podle stringu?
+	// "0bsdd"
+	HoeGame::LuaParam lp(L);
+	if (lp.GetNumParam() < 2)
+	{
+		lp.Error("Function SendMsg requied min 2 parameters.");
+		return 0;
+	}
+	unsigned long id=0;
+	BecherObject * bo = NULL;
+	int msg = 0;
+	int par1 = 0;
+	void * par2 = NULL;
+	uint npar2 = 0;
+	int par = -lp.GetNumParam()+1;
+	if (lp.IsNum(par))
+		id = lp.IsNum(par);
+	else if (lp.IsPointer(par))
+		bo = (BecherObject*)lp.GetPointer(par);
+	else if (!lp.IsNil(par))
+	{
+		lp.Error("SendMsg: First parameter must be handle.");
+		return 0;
+	}
+	
+	// parse parameters
+	for (;par < 0;par++)
+	{
+		// parse param
+		// num nebo int
+	}
+
+	if (id)
+		SendGameMsgId(id, msg, par1, par2, npar2);
+	else
+		SendGameMsg(bo, msg, par1, par2, npar2);
+
+	return 0;
+}
 
 
 

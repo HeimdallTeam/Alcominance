@@ -147,3 +147,8 @@ ADDID(BINFO_ReqStone)
 ADDID(BINFO_ReqWood)
 ADDID(BINFO_Custom)
 
+// prikazy pro chefa
+ADDID(BCMD_StartWork)
+ADDID(BCMD_StopWork)
+ADDID(BCMD_Import)
+ADDID(BCMD_Export)
