@@ -356,6 +356,41 @@ void Workspace2::Commit()
 }
 
 ///////////////////////////////////////////////////////////
+// CHIEF
+int Chief::s_stats[EBW_Max];
+Chief * Chief::s_lastupdater = NULL;
+
+Chief::Chief()
+{
+    m_worked = 0;
+}
+
+void Chief::Make(const char * cmd)
+{
+}
+
+void Chief::ComputeStatistik()
+{
+    memset(s_stats, 0, sizeof(s_stats));
+    for (int i=0;i < m_list.Count();i++)
+        s_stats[m_list[i].type]++;
+    m_worked = s_stats[EBW_Work];
+    s_lastupdater = this;
+}
+
+int Chief::GetNumWorkers(EWorkType type)
+{
+    switch ((int)type)
+    {
+    case EBW_Work:
+        return m_worked;
+    default:
+        // if stare tak prepocitat
+        if (s_lastupdater != this)
+            ComputeStatistik();
+        return s_stats[type];
+    }
+}
 
 
 

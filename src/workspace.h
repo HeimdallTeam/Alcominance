@@ -154,6 +154,30 @@ struct TTrollWorkSlot
 	bool operator == (const TTrollWorkSlot& slot) { return troll == slot.troll; }
 };
 
+
+/**
+ * Chief se stara o tupouny, prideluje praci, propousti, najima
+ */
+class Chief
+{
+    struct TTroll
+    {
+        EWorkType type;
+        Troll * troll;
+    };
+    HoeCore::Set<TTroll> m_list;
+    // troll list s hodnotami prace
+    // pocitani statistik
+    static int s_stats[EBW_Max];
+    static Chief * s_lastupdater;
+    int m_worked;
+public:
+    Chief();
+    void Make(const char * cmd);
+    void ComputeStatistik();
+    int GetNumWorkers(EWorkType type);
+};
+
 #endif // _WORKSPACE_H_
 
 

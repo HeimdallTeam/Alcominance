@@ -22,11 +22,8 @@ protected:
 
 	THoeSub_Particle m_part;
 	//WorkMode m_mode;
-	TrollList m_worked;
-    int m_wrk_cane;
-    int m_wrk_coal;
+	Chief m_chief;
 
-	HoeGame::StopWatch m_exitdelay;
 public:
 	Sugar(IHoeScene * scn);
 	virtual ~Sugar();

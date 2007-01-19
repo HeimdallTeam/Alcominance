@@ -106,15 +106,19 @@ enum ESurPriority
 	EBSP_Higher,
 };
 
-enum 
+enum EWorkType
 {
 // job list
 	EBW_Work,
-	EBW_Import,
-	EBW_Export,
-	EBW_Wait,
+	EBW_ImportStart,
+	EBW_ExportStart=EBW_ImportStart+EBS_Max,
+	EBW_Wait=EBW_ExportStart+EBS_Max,
 	EBW_GoIn,
+    EBW_Max,
 };
+
+#define EBW_Import(sur) ((EWorkType)(EBW_ImportStart+(sur)))
+#define EBW_Export(sur) ((EWorkType)(EBW_ExportStart+(sur)))
 
 extern HoeGame::LuaPreprocess::IDConst g_luaconst[];
 

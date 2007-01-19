@@ -38,8 +38,6 @@ Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn),
 	m_part.pos.Set(-14.f, 23.f, 10.f);
 	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 
-    m_wrk_cane = 0;
-    m_wrk_coal = 0;
 
 	m_wood.SetNum(625);
 	m_stone.SetNum(1625);
@@ -170,6 +168,9 @@ int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
 	case BMSG_StartBuilding:
 		return BuildPlace((float*)par2, 
 			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
+    case BMSG_Chief:
+        printf("chief!\n");
+        return 0;
 	}
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
 }
@@ -196,16 +197,16 @@ bool Sugar::SetToWork(Troll * t)
     switch (t->GetJob().type)
 	{
     case TJob::jtWork:
-	    if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
-	    m_worked.Add(t);
+	    //if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
+	    //m_worked.Add(t);
         break;
     case TJob::jtGotoRes:
         switch (t->GetJob().surtype){
         case EBS_Coal:
-            m_wrk_coal++;
+            //m_wrk_coal++;
             break;
         case EBS_Cane:
-            m_wrk_cane++;
+            //m_wrk_cane++;
             break;
         }
         break;
@@ -217,15 +218,15 @@ void Sugar::UnsetFromWork(Troll * t)
 {
     switch (t->GetJob().type){
     case TJob::jtWork:
-	    m_worked.Remove(t);
+	    //m_worked.Remove(t);
         break;
     case TJob::jtGotoRes:
         switch (t->GetJob().surtype){
         case EBS_Coal:
-            m_wrk_coal--;
+            //m_wrk_coal--;
             break;
         case EBS_Cane:
-            m_wrk_cane--;
+            //m_wrk_cane--;
             break;
         }
     }
@@ -235,7 +236,7 @@ void Sugar::Update(const float t)
 {
 	if (1)
 	{
-		if (m_wbuild.BeginPass(m_worked.Count()+v_autowork.GetFloat(), t))
+		if (m_wbuild.BeginPass(m_chief.GetNumWorkers(EBW_Work)+v_autowork.GetFloat(), t))
 		{
 			m_wbuild << m_stone;
 			m_wbuild << m_wood;
@@ -246,6 +247,8 @@ void Sugar::Update(const float t)
 	// update
 	if (m_it.Update(t))
 	{
+        // pousti se po urcitem case, kdyz se zmeni personalie, pusti se hned,
+        // ale cas se vyresetuje zase na zacatek
 		Idiot();
 	}
 
@@ -308,7 +311,11 @@ void Sugar::Idiot()
 	//f.SetTableInteger("sugar_out", bout ? bout->AcceptSur(EBS_Sugar):0);
 
 	// works
-	f.SetTableInteger("works_count", this->m_worked.Count());
+	f.SetTableInteger("works_count", m_chief.GetNumWorkers(EBW_Work));
+    f.SetTableInteger("works_cane", m_chief.GetNumWorkers(EBW_Import(EBS_Cane)));
+    f.SetTableInteger("works_coal", m_chief.GetNumWorkers(EBW_Import(EBS_Coal)));
+    f.SetTableInteger("works_sugar", m_chief.GetNumWorkers(EBW_Export(EBS_Sugar)));
+
 	f.SetTableInteger("works_max", v_numworks.GetInt());
 
 	f.Run(1);

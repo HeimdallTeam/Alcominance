@@ -160,7 +160,8 @@ static int level = 0;
 
 int SendGameMsg(BecherObject * o, int msg, int par1, void * par2, uint npar2)
 {
-	hoe_assert(o!=NULL);
+	if (o == NULL)
+        return SendGameMsgId(0, msg, par1, par2, npar2);
 	int ret=0;
 	level++;
 	GetCon()->Printf("L%d:Message %s to obj %d nump=%d", level, FindIDString(msg), o->GetID(), npar2);
@@ -258,19 +259,18 @@ int l_SendMsg(lua_State * L)
 	int par1 = 0;
 	void * par2 = NULL;
 	uint npar2 = 0;
-	int par = -lp.GetNumParam()+1;
-	if (lp.IsNum(par))
-		id = lp.IsNum(par);
-	else if (lp.IsPointer(par))
+	int par = -lp.GetNumParam();
+	if (lp.IsPointer(par))
 		bo = (BecherObject*)lp.GetPointer(par);
+    else if (lp.IsNum(par))
+		id = lp.GetNum(par);
 	else if (!lp.IsNil(par))
 	{
 		lp.Error("SendMsg: First parameter must be handle.");
 		return 0;
 	}
-	
-	if (par < 0)
-		msg = lp.GetNum(par++);
+	par++;
+	msg = lp.GetNum(par++);
 
 	if (par < 0)
 		par1 = lp.GetNum(par++);
@@ -282,10 +282,10 @@ int l_SendMsg(lua_State * L)
 		// num nebo int
 	}
 
-	if (id)
-		SendGameMsgId(id, msg, par1, par2, npar2);
-	else
+	if (bo)
 		SendGameMsg(bo, msg, par1, par2, npar2);
+	else
+		SendGameMsgId(id, msg, par1, par2, npar2);
 
 	return 0;
 }
