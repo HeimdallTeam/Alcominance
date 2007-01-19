@@ -367,6 +367,11 @@ Chief::Chief()
 
 void Chief::Make(const char * cmd)
 {
+    // rozparsovat command
+    // napr. "W=>S" - jeden tupoun prestane pracovat
+    //       "3W=>S" - tri tupouni prestanou pracovat
+    //       "2=>IC" - 2 volny tupouni pujdou pro trtinu
+
 }
 
 void Chief::ComputeStatistik()
