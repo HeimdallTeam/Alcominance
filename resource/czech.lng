@@ -4,6 +4,10 @@
 103 = "Studna je moc vzdálena od zdroje."
 104 = "Nejsou prachy."
 
+#troll
+150 = "Tupoun je na cestě."
+151 = "Již je najmuto příliš tupounů."
+
 201 = "Výplatní den."
 
 301 = "Město vzkvétalo"

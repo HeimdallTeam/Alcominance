@@ -10,7 +10,12 @@ using namespace HoeGame;
 void BecherButton::OnClick()
 {
 	if (script[0] != 0)
-		GetLua()->func(script);
+	{
+		// nastavit parametry na odesilatele
+		HoeGame::LuaFunc f(GetLua(), script);
+		f.PushPointer((BecherObject*)GetLevel()->GetSelectedObject());
+		f.Run(1);
+	}
 }
 
 void BecherButton::SetButt(int idres, const char * func, const char * tp)

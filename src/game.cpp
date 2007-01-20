@@ -24,7 +24,7 @@ IHoeResource * BecherResources::MissingResource(int id)
 }
 
 
-BecherGame::BecherGame()
+BecherGame::BecherGame() : m_mem(200)
 {
 }
 
@@ -44,7 +44,6 @@ bool BecherGame::Init()
 	GetLua()->AddFunc("AddButton",HUD::l_AddButton);
 	GetLua()->AddFunc("ClearButtons",HUD::l_ClearButtons);
 	GetLua()->AddFunc("info",HUD::l_info);
-	GetLua()->AddFunc("AddTroll",BecherLevel::l_AddTroll);
 	GetLua()->AddFunc("SetBuilding",BecherLevel::l_SetBuilding);
 	GetLua()->AddFunc("PlaySound",BecherGame::l_PlaySound);
 	GetLua()->AddFunc("AddCash",BecherLevel::l_AddCash);
@@ -54,6 +53,8 @@ bool BecherGame::Init()
 	GetLua()->AddFunc("GetVar", CVar::l_getvar);
 	GetLua()->AddFunc("GetInfo", l_GetInfo);
 	GetLua()->AddFunc("SendMsg", l_SendMsg);
+	GetLua()->AddFunc("GetMem", BecherGame::l_GetMem);
+	GetLua()->AddFunc("SetMem", BecherGame::l_SetMem);
 
 
 	// load skript
@@ -140,6 +141,57 @@ int BecherGame::l_PlaySound(lua_State * L)
 		return 0;
 	}
 
+	return 0;
+}
+
+int BecherGame::l_GetMem(lua_State * L)
+{
+	HoeGame::LuaParam lp(L);
+	if (lp.CheckPar(3,"*s*", "GetMem"))
+	{
+		int id = 0;
+		if (lp.IsPointer(-3))
+			id = reinterpret_cast<BecherObject*>(lp.GetPointer(-3))->GetID();
+		else if (lp.IsNum(-3))
+			id = lp.GetNum(-3);
+		else if (!lp.IsNil(-3))
+			lp.Error("SetMem: first param must be handle."); 
+		HoeGame::Mem::Item * i = GetBecher()->m_mem.Get(id, lp.GetString(-2), false);
+		if (i)
+		{
+			if (i->type == HoeGame::Mem::EInt)
+			{
+				lp.PushNum(i->ivalue);
+				return 1;
+			}
+		}
+		lp.PushNum(lp.GetNum(-1));
+		return 1;
+	}
+
+	return 0;
+}
+
+int BecherGame::l_SetMem(lua_State * L)
+{
+	HoeGame::LuaParam lp(L);
+	// handle
+	if (lp.CheckPar(3,"*s*", "SetMem"))
+	{
+		int id = 0;
+		if (lp.IsPointer(-3))
+			id = reinterpret_cast<BecherObject*>(lp.GetPointer(-3))->GetID();
+		else if (lp.IsNum(-3))
+			id = lp.GetNum(-3);
+		else if (!lp.IsNil(-3))
+			lp.Error("SetMem: first param must be handle."); 
+		HoeGame::Mem::Item * i = GetBecher()->m_mem.Get(id, lp.GetString(-2), true);
+		// TODO vice hodnot
+		if (lp.IsNum(-1))
+			i->Set(lp.GetNum(-1));
+		else
+			i->Set(lp.GetString(-1));
+	}
 	return 0;
 }
 
@@ -240,6 +292,24 @@ int l_GetInfo(lua_State * L)
 	return par;
 }
 
+const char * GetMsgParam(int msg)
+{
+	switch (msg)
+	{
+	case BMSG_Chief:
+		// prvni parametr do par1 a zbytek jako stringy do pole
+		return "1:s|*:[s*]"; 
+	default:
+		return NULL;
+	};
+};
+
+static union MsgParam
+{
+	int d;
+	const char * s;
+	void * p;
+} g_pars[20];;
 
 int l_SendMsg(lua_State * L)
 {
@@ -272,14 +342,98 @@ int l_SendMsg(lua_State * L)
 	par++;
 	msg = lp.GetNum(par++);
 
-	if (par < 0)
-		par1 = lp.GetNum(par++);
-
-	// parse parameters
-	for (;par < 0;par++)
+	const char * pp = GetMsgParam(msg);
+	if (!pp)
 	{
-		// parse param
-		// num nebo int
+		lp.Error("Message %s cannot call from lua.", FindIDString(msg));
+		return 0;
+	}
+
+	// najit pocet parametru
+	while (1)
+	{
+		if (pp[0] == '*')
+		{
+			pp ++; break;
+		}
+
+		if (*pp >= '0' && *pp < '9')
+		{
+			int np = 0;
+			while (*pp >= '0' && *pp < '9')
+			{
+				np = np * 10 + *pp - '0';pp++;
+			}
+			if (np == -par)
+				break;
+
+			while (*pp && *pp != '|') pp++;
+			if (*pp == '|')
+			{
+				pp++; continue;
+			}
+		}
+		lp.Error("Failed params in msg %s.", FindIDString(msg));
+		return 0;
+	}
+	hoe_assert(*pp == ':' && "Bad format for lua SendMsg");
+	pp++;
+	// rozparsovat parametry podle stringu
+	// vytvorit pole atd..
+	// parse parameters
+	if (*pp == '[')
+	{
+		pp++;
+		par2 = g_pars;
+		if (par < -10)
+			par = -10;
+		for (;par < 0;par++)
+		{
+			if (!*pp)
+				break;
+			switch (*pp)
+			{
+			case 's':
+				g_pars[npar2++].s = lp.GetString(par);
+				break;
+			case 'd':
+				g_pars[npar2++].d = lp.GetNum(par);
+				break;
+			case 'p':
+				g_pars[npar2++].p = lp.GetPointer(par);
+				break;
+			case '_':
+				par1 = lp.GetNum(par);
+				break;
+			default:
+				hoe_assert(!"Bad format for lua SendMsg");
+			};
+			if (pp[1] != '*')
+				pp++;
+		}
+	}
+	else
+	{
+		for (;par < 0;par++)
+		{
+			if (!*pp)
+				break;
+			switch (*pp)
+			{
+			case 's':
+				par2 = (void*)lp.GetString(par);npar2 = 1;
+				break;
+			case 'p':
+				par2 = lp.GetPointer(par);npar2 = 1;
+				break;
+			case '_':
+				par1 = lp.GetNum(par);
+				break;
+			default:
+				hoe_assert(!"Bad format for lua SendMsg");
+			};
+			pp++;
+		}
 	}
 
 	if (bo)

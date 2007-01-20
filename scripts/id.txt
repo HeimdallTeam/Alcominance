@@ -132,6 +132,7 @@ ADDID(BMSG_Unselect)
 ADDID(BMSG_InsertSur)
 
 ADDID(BMSG_Chief)
+ADDID(BMSG_TrollIncoming)
 
 // infos !!!
 ADDID(BINFO_Production)

@@ -17,6 +17,7 @@ protected:
 	HoeGame::HoeMusic_Module m_music;
 	BecherLevel m_level;
 	HoeGame::LuaScript m_lua;
+	HoeGame::Mem m_mem;
 public:
 	BecherGame();
 	bool Init();
@@ -27,7 +28,9 @@ public:
 	BecherLevel * GetLevel() { return &m_level; }
 	HoeGame::LuaScript * GetLua() { return &m_lua; }
 
-	static int l_PlaySound(lua_State * L);
+	LUA_FUNCTION(l_PlaySound);
+	LUA_FUNCTION(l_GetMem);
+	LUA_FUNCTION(l_SetMem);
 	static int c_map(int argc, const char * argv[], void * param);
 };
 

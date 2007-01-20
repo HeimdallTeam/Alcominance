@@ -19,8 +19,13 @@ end
 
 -- stare
 
-function c_najmout()
- AddTroll(true);
+-- najmout noveho trolla
+function c_najmout(h)
+ SendMsg(h, BMSG_Chief, "N")
+end
+
+function c_propustit(h)
+ SendMsg(h, BMSG_Chief, "D")
 end
 
 function s_studna()
@@ -77,9 +82,6 @@ end
 function c_work()
 end
 function c_workstop()
-end
-function c_addtroll()
- AddTroll(false)
 end
 
 --upgrades

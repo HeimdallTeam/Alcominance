@@ -115,7 +115,7 @@ public:
 	MinistryOfJobs * GetMJobs() { return &m_mjobs; }
 
 	HUD * GetPanel() { return &m_hud; }
-	void AddTroll(float x, float y);
+	Troll * CreateTroll();
 	void AddBuildObject(unsigned long id, int gold, int wood, int stone);
 
 	void ShowWaterMap()
@@ -138,7 +138,6 @@ public:
 	// vychytavka: vrati to cestu pokud byla nalezena, ale dokaze vratit 
 	// i virtualni cestu, ktera prinut, zeptat se znova
 	bool FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 &to, TrollPath &path);
-	static int l_AddTroll(lua_State * L);
 	static int l_SetBuilding(lua_State * L);
 	static int l_AddCash(lua_State * L);
 	static int l_GetCash(lua_State * L);

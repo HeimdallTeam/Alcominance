@@ -38,10 +38,6 @@ Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn),
 	m_part.pos.Set(-14.f, 23.f, 10.f);
 	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 
-
-	m_wood.SetNum(625);
-	m_stone.SetNum(1625);
-
 	m_it.Start(v_idiottime, true);
 }
 
@@ -169,8 +165,15 @@ int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
 		return BuildPlace((float*)par2, 
 			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
     case BMSG_Chief:
-        printf("chief!\n");
+        if (npar2 == 1)
+			m_chief.Make(reinterpret_cast<const char*>(par2));
+		else
+			for (int i=0;i < npar2;i++)
+				m_chief.Make(reinterpret_cast<const char**>(par2)[i]);
         return 0;
+	case BMSG_TrollIncoming:
+		m_chief.Incoming((Troll*)par2);
+		return 0;
 	}
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
 }

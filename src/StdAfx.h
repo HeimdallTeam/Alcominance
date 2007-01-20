@@ -52,6 +52,7 @@
 #include "../../Hoe/HoeGame/include/hoe_vars.h"
 #include "../../Hoe/HoeGame/include/hoe_ai.h"
 #include "../../Hoe/HoeGame/include/hoe_land.h"
+#include "../../Hoe/HoeGame/include/hoe_mem.h"
 
 typedef HoeGame::CVar CVar;
 

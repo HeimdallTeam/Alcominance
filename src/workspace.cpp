@@ -3,6 +3,8 @@
 #include "becher.h"
 #include "crr.h"
 #include "buildings.h"
+#include "troll.h"
+#include "panels.h"
 
 ///////////////////////////////////////////
 ResourceBase::ResourceBase(ESurType type)
@@ -371,7 +373,24 @@ void Chief::Make(const char * cmd)
     // napr. "W=>S" - jeden tupoun prestane pracovat
     //       "3W=>S" - tri tupouni prestanou pracovat
     //       "2=>IC" - 2 volny tupouni pujdou pro trtinu
-
+	if (*cmd == 'N')
+	{
+		if (m_list.Count() >= 4)
+		{
+			GetLevel()->GetPanel()->GetInfo()->Add(GetLang()->GetString(151));
+			return;
+		}
+		TTroll t;
+		t.troll = GetLevel()->CreateTroll();
+		t.type = EBW_GoIn;
+		t.troll->Show(true);
+		//t.troll->Go(100,100);
+		m_list.Add(t);
+		GetLevel()->GetPanel()->GetInfo()->Add(GetLang()->GetString(150));
+		// dat pokyn aby sel do budovy
+		ResetStat(false);
+		// dat pokyn na vchod do budovy
+	}
 }
 
 void Chief::ComputeStatistik()
@@ -396,6 +415,22 @@ int Chief::GetNumWorkers(EWorkType type)
         return s_stats[type];
     }
 }
+
+// nastavi trolla na status free
+void Chief::Incoming(Troll * t)
+{
+	for (int i=0;i < m_list.Count();i++)
+        if (m_list[i].troll == t)
+		{
+			m_list[i].type = EBW_Wait;
+			t->Show(false);
+			ResetStat(false);
+			return;
+		}
+	hoe_assert(!"Troll not registered in this building.");
+}
+
+
 
 
 

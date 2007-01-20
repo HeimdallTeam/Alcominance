@@ -171,11 +171,18 @@ class Chief
     static int s_stats[EBW_Max];
     static Chief * s_lastupdater;
     int m_worked;
+
+    void ComputeStatistik();
+	inline void ResetStat(bool recount)
+	{
+		if (s_lastupdater == this) s_lastupdater = NULL; 
+		if (recount) ComputeStatistik();
+	}
 public:
     Chief();
     void Make(const char * cmd);
-    void ComputeStatistik();
     int GetNumWorkers(EWorkType type);
+	void Incoming(Troll *);
 };
 
 #endif // _WORKSPACE_H_

@@ -524,18 +524,6 @@ void BecherLevel::OnSelectObject(EObjType type, BecherObject* obj)
 		obj->Select();
 }
 
-void BecherLevel::AddTroll(float x, float y)
-{
-	/*Troll * t = (Troll*)CreateObject(EBO_Troll);
-	t->SetPosition(-400, -400);
-
-	AddObject(t);
-	t->Go(x,y);
-	t->jobs.Reset();
-	t->jobs.Go(x,y);
-	t->jobs.Msg("Prisel novej tupoun");*/
-}
-
 void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone)
 {
 	if (GetCash()->GetLimitCash() < gold)
@@ -552,6 +540,15 @@ void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone
 		SetBuildObject( bb, gold, wood, stone);
 }
 
+Troll * BecherLevel::CreateTroll()
+{
+	Troll * t = (Troll*)GetLevel()->CreateObject(EBO_Troll);
+	t->SetPosition(0, 0, 0);
+	// TODO nastavit na pozici kde se ma objevovat podle mapy
+	GetLevel()->AddObject(t);
+	return t;
+}
+
 /////////////////////////////////////////////
 // Path finding
 bool BecherLevel::FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 &to, TrollPath &path)
@@ -561,31 +558,6 @@ bool BecherLevel::FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 
 
 //////////////////////////////////////////////
 // Lua
-
-int BecherLevel::l_AddTroll(lua_State * L)
-{
-	HoeGame::LuaParam lp(L);
-	if (lp.CheckPar(1, "b", "AddTroll"))
-	{
-		if (lp.GetBool(-1))
-		{
-			if (GetLevel()->GetSelectedObject())
-			{
-				Troll * t = (Troll*)GetLevel()->CreateObject(EBO_Troll);
-				t->SetPosition(0, 0, 0);
-				GetLevel()->AddObject(t);
-				BecherObject * b = GetLevel()->GetSelectedObject();
-				t->FindJob(dynamic_cast<BecherBuilding*>(b));
-			}
-			else
-				lp.Error("No object selected");
-		}
-		else
-			GetLevel()->AddTroll(0,0);
-	}
-	return 0;
-}
-
 int BecherLevel::l_SetBuilding(lua_State * L)
 {
 	HoeGame::LuaParam lp(L);

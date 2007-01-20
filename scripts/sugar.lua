@@ -37,24 +37,13 @@ end
 -- napr. neni trtina a je spousta pracujicich
 
 function i_sugar(h,i)
- a,b = GetInfo(h, BINFO_ReqStone, BINFO_ReqWood)
- info("Cukrovar vyzaduje ",a," sutru a ",b," dreva")
- --SendMsg(nil, BMSG_Info, "tohle je info cukrovaru")
- -- zajistuje to aby se nosila trtina a uhli
- -- zajistuje aby se pracovalo
- -- optimalni pocty
- -- automaty a gerulatory
- 
- -- kdyz se nekdo vrati, tak se prida do fronty co nic nedela
- -- vchazeni do budov atd..
- -- stop work
- -- start work
- -- import
- -- export
- -- zacit nosit
- -- pracujici prestat pracovat
+ --a,b = GetInfo(h, BINFO_ReqStone, BINFO_ReqWood)
+ id = GetMem(h, "test", 0)
+ info("Id je ",id)
+ id = id + 1
+ SetMem(h, "test", id)
 
- SendMsg(h, BMSG_Chief, 0, "2W>F", "3X>EC")
+ --SendMsg(h, BMSG_Chief, "N")
  
  
  return nil

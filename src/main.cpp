@@ -13,6 +13,9 @@ bool Configure(HINSTANCE hInstance, LPSTR lpStr);
 
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE,LPSTR lpStr,int iCmdShow)
 {
+	// tests
+	HoeGame::Mem::MemTest();
+
 	SetRootFromInstance(hInstance); 
 #else
 bool Configure(int argc,char * argv[]);
