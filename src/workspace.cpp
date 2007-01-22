@@ -367,7 +367,15 @@ Chief::Chief()
     m_worked = 0;
 }
 
-void Chief::Make(const char * cmd)
+ESurType GetSur(char n)
+{
+	for (int t=EBS_Becher;t <= EBS_Coal;t++)
+		if (s_sur[t] == n)
+			return (ESurType)t;
+	return EBS_None;
+}
+
+void Chief::Make(BecherObject * owner,const char * cmd)
 {
     // rozparsovat command
     // napr. "W=>S" - jeden tupoun prestane pracovat
@@ -384,12 +392,40 @@ void Chief::Make(const char * cmd)
 		t.troll = GetLevel()->CreateTroll();
 		t.type = EBW_GoIn;
 		t.troll->Show(true);
+		SendGameMsg(t.troll, BMSG_Go, 0, owner,1);
 		//t.troll->Go(100,100);
 		m_list.Add(t);
 		GetLevel()->GetPanel()->GetInfo()->Add(GetLang()->GetString(150));
 		// dat pokyn aby sel do budovy
 		ResetStat(false);
 		// dat pokyn na vchod do budovy
+		return;
+	}
+	// zjistit odkud..
+	EWorkType from;
+	if (*cmd == 'F')
+	{
+		from = EBW_Wait; cmd++;
+	}
+	while (*cmd == '>') cmd++;
+	// kam
+	ESurType sur = GetSur(cmd[1]);
+	// najit trolla
+	for (uint t=0;t < m_list.Count();t++)
+	{
+		if (m_list[t].type == from)
+		{
+			struct IP
+			{
+				BecherObject * owner;
+				// odkud
+				ESurType co;
+				uint num;
+			};
+			SendGameMsg(m_list[t].troll, BMSG_Import, 0, &is, 0);
+			m_list[t].type = EBW_Import(sur);
+			return;
+		}
 	}
 }
 

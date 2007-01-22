@@ -166,10 +166,10 @@ int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
 			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
     case BMSG_Chief:
         if (npar2 == 1)
-			m_chief.Make(reinterpret_cast<const char*>(par2));
+			m_chief.Make(this,reinterpret_cast<const char*>(par2));
 		else
 			for (int i=0;i < npar2;i++)
-				m_chief.Make(reinterpret_cast<const char**>(par2)[i]);
+				m_chief.Make(this,reinterpret_cast<const char**>(par2)[i]);
         return 0;
 	case BMSG_TrollIncoming:
 		m_chief.Incoming((Troll*)par2);

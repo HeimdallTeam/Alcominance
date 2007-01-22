@@ -58,6 +58,8 @@ public:
 	void StopWork();
 	bool FindJob(BecherBuilding * prior);
 
+	bool Step(float t);
+
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 };
 

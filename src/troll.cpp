@@ -61,6 +61,15 @@ bool Troll::Load(BecherGameLoad &r)
 	return true;
 }
 
+bool Troll::Step(float t)
+{
+	anim += ((t * v_speed.GetFloat()) / (scale * 20.f)) ;
+	if (anim > 1.f)
+		anim = 0.f;
+	this->SetAnimationTime(anim);
+	return m_path.Step(this, (float)t*v_speed.GetFloat());
+}
+
 void Troll::Update(const float t)
 {
 #ifndef BECHER_EDITOR
@@ -87,7 +96,10 @@ void Troll::Update(const float t)
 			anim = 0.f;
 		this->SetAnimationTime(anim);
 		if (m_path.Step(this, (float)t*v_speed.GetFloat()))
+		{
+			// job finish
 			Finish();
+		}
 		// prachy
 		GetLevel()->GetMJobs()->AddPay(v_cost_bring.GetFloat() * t);
 		break;
@@ -110,6 +122,12 @@ void Troll::Update(const float t)
 
 void Troll::SetJob(const TJob & j)
 {
+	// pracovni process
+	// prinest
+	// odnest
+	// pracovat - stavet
+	// stavet
+
 	//assert(m_job.type == TJob::jtGoto || j.owner != NULL);
 	// opustit stary job
 	switch (m_job.type)
@@ -283,12 +301,19 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
 	switch (msg)
 	{
-	case BMSG_Go:
+	case BMSG_Go: {
+		HoeMath::Vector2 pos;
+		if (npar2 == 1)
+		{
+			pos = reinterpret_cast<BecherObject*>(par2)->GetPos();
+		}
+		else
 		{ hoe_assert(npar2 == 2);
-		const HoeMath::Vector2 * pos = (HoeMath::Vector2 *)par2;
+		 pos = *(HoeMath::Vector2 *)par2;
+		}
 		TJob j = m_job;
 		j.type = TJob::jtGoto;
-		this->m_path.Go(pos->x, pos->y);
+		this->m_path.Go(pos.x, pos.y);
 		SetJob(j);
 		return 0; }
 	case BMSG_RightClick:

@@ -154,7 +154,7 @@ struct TTrollWorkSlot
 	bool operator == (const TTrollWorkSlot& slot) { return troll == slot.troll; }
 };
 
-
+class BecherObject;
 /**
  * Chief se stara o tupouny, prideluje praci, propousti, najima
  */
@@ -180,7 +180,7 @@ class Chief
 	}
 public:
     Chief();
-    void Make(const char * cmd);
+    void Make(BecherObject * owner, const char * cmd);
     int GetNumWorkers(EWorkType type);
 	void Incoming(Troll *);
 };

@@ -54,7 +54,8 @@ public:
 
 	virtual void SetPosition(const float x, const float y, const float h);
 	inline const float GetPosX() const { return posX; }  
-	inline const float GetPosY() const { return posY; }  
+	inline const float GetPosY() const { return posY; } 
+	inline const HoeMath::Vector2 GetPos() const { return HoeMath::Vector2(posX, posY); }
 
 	unsigned long GetID() { return id; }
 

@@ -118,6 +118,8 @@ ADDID(model_INFO_FONT) // info
 ADDID(BMSG_Info)
 
 ADDID(BMSG_Go)
+ADDID(BMSG_Import)
+
 ADDID(BMSG_LeftClick)
 ADDID(BMSG_RightClick)
 ADDID(BMSG_DeleteObject)

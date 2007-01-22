@@ -38,12 +38,12 @@ end
 
 function i_sugar(h,i)
  --a,b = GetInfo(h, BINFO_ReqStone, BINFO_ReqWood)
- id = GetMem(h, "test", 0)
- info("Id je ",id)
- id = id + 1
- SetMem(h, "test", id)
+ --id = GetMem(h, "test", 0)
+ --info("Id je ",id)
+ --id = id + 1
+ --SetMem(h, "test", id)
 
- --SendMsg(h, BMSG_Chief, "N")
+ SendMsg(h, BMSG_Chief, "F>ID")
  
  
  return nil
