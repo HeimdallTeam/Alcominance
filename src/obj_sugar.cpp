@@ -171,6 +171,17 @@ int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
 			for (int i=0;i < npar2;i++)
 				m_chief.Make(this,reinterpret_cast<const char**>(par2)[i]);
         return 0;
+    case BMSG_CreateImport: {
+        // vytvoreni dodavky
+        PAR_Favour * f = (PAR_Favour*)par2;
+        hoe_assert(npar2 == 5);
+        f->owner = this;
+        // vyhledani zdroje
+        ResourceExp * r = CRR::Get()->Find(f->sur, this);
+        if (r == NULL) return 0;
+        f->remote = r->GetOwner();
+        // zalockovat??? asi jo
+        } return 1;
 	case BMSG_TrollIncoming:
 		m_chief.Incoming((Troll*)par2);
 		return 0;

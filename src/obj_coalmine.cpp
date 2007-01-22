@@ -55,7 +55,7 @@ void CoalMine::Update(const float dtime)
 			slot.num += n;
 			if (slot.num >= slot.req || m_coal.GetNum() == 0)
 			{
-				slot.troll->SurIn(EBS_Coal, slot.num);
+				//slot.troll->SurIn(EBS_Coal, slot.num);
 				m_worked.Remove(slot);
 				i--;
 			}

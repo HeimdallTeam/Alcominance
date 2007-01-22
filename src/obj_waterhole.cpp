@@ -89,7 +89,7 @@ void WaterHole::Update(const float dtime)
 			slot.num += n;
 			if (slot.num >= slot.req || m_water.GetNum() == 0)
 			{
-				slot.troll->SurIn(EBS_Water, slot.num);
+				//slot.troll->SurIn(EBS_Water, slot.num);
 				m_worked.Remove(slot);
 				i--;
 			}

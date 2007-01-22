@@ -381,6 +381,7 @@ void Chief::Make(BecherObject * owner,const char * cmd)
     // napr. "W=>S" - jeden tupoun prestane pracovat
     //       "3W=>S" - tri tupouni prestanou pracovat
     //       "2=>IC" - 2 volny tupouni pujdou pro trtinu
+    GetCon()->Printf("Chief cmd `%s'",cmd);
 	if (*cmd == 'N')
 	{
 		if (m_list.Count() >= 4)
@@ -390,7 +391,7 @@ void Chief::Make(BecherObject * owner,const char * cmd)
 		}
 		TTroll t;
 		t.troll = GetLevel()->CreateTroll();
-		t.type = EBW_GoIn;
+		t.type = EBW_Wait;
 		t.troll->Show(true);
 		SendGameMsg(t.troll, BMSG_Go, 0, owner,1);
 		//t.troll->Go(100,100);
@@ -411,22 +412,24 @@ void Chief::Make(BecherObject * owner,const char * cmd)
 	// kam
 	ESurType sur = GetSur(cmd[1]);
 	// najit trolla
+    //
 	for (uint t=0;t < m_list.Count();t++)
 	{
 		if (m_list[t].type == from)
 		{
-			struct IP
-			{
-				BecherObject * owner;
-				// odkud
-				ESurType co;
-				uint num;
-			};
-			SendGameMsg(m_list[t].troll, BMSG_Import, 0, &is, 0);
-			m_list[t].type = EBW_Import(sur);
+			PAR_Favour fav = { NULL, NULL, sur, 10, 0 };
+            // nejak ziskat odkud to ma prinest
+            //
+            if (SendGameMsg(owner, BMSG_CreateImport, 0, &fav, 5))
+            {
+                SendGameMsg(m_list[t].troll, BMSG_Import, 0, &fav, 5);
+			    m_list[t].type = EBW_Import(sur);
+            }
 			return;
 		}
 	}
+    // register
+    // 
 }
 
 void Chief::ComputeStatistik()

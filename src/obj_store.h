@@ -5,30 +5,6 @@
 #include "buildings.h"
 #include "panels.h"
 
-class Store;
-
-class StoreStatic : public ObjectHud
-{
-protected:
-	char m_sugarinfo[256];
-	char m_caneinfo[256];
-	char m_woodinfo[256];
-	char m_stoneinfo[256];
-	char m_herbeinfo[256];
-	char m_waterinfo[256];
-	char m_alcoinfo[256];
-	char m_becherinfo[256];
-	char m_coalinfo[256];
-	Store * m_act;
-	IHoeModel * m_models[EBS_Max];
-public:
-	StoreStatic();
-	void SetAct(Store * act);
-	virtual void Draw(IHoe2D * h2d);
-	IHoeModel * GetModel(int i) { return m_models[i]; }
-	void LoadModels();
-};
-
 class StoreRes : public ResourceExp
 {
 	bool m_enable;
@@ -42,14 +18,13 @@ public:
 class Store : public BecherBuilding
 {
 	friend class BecherLevel;
-	friend class StoreStatic;
 protected:
 	// panel
-	static StoreStatic m_storepref;
 	// trolls
 	StoreRes m_res[EBS_Max];
 	THoeSub_Model m_info[16];
-	//WorkMode m_mode;
+	static IHoeModel * g_models[EBS_Max];
+    //WorkMode m_mode;
 	TrollList m_worked;
 	HoeGame::StopWatch m_exitdelay;
 	inline const int GetMiniStoreCount() const
@@ -66,6 +41,7 @@ public:
 	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 
+    static void LoadModels();
 	DECLARE_BUILDING(EBO_Store)
 };
 

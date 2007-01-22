@@ -16,6 +16,15 @@ struct PAR_BuildPlace
 	float dobj;
 };
 
+struct PAR_Favour
+{
+    BecherObject * owner;
+    BecherObject * remote;
+    ESurType sur;
+    uint num;
+    int locked;
+};
+
 #ifndef BECHER_EDITOR
 // funkce pro zpravy
 int SendGameMsg(BecherObject * o, int msg, int par1=0, void * par2=NULL, uint nump=0);

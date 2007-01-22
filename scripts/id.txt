@@ -118,7 +118,12 @@ ADDID(model_INFO_FONT) // info
 ADDID(BMSG_Info)
 
 ADDID(BMSG_Go)
-ADDID(BMSG_Import)
+ADDID(BMSG_CreateImport)
+ADDID(BMSG_CreateExport)
+ADDID(BMSG_Import) // PAR_Favour
+ADDID(BMSG_EXport) // PAR_Favour
+ADDID(BMSG_LockSur) // PAR_Favour
+ADDID(BMSG_UnlockSur) // PAR_Favour
 
 ADDID(BMSG_LeftClick)
 ADDID(BMSG_RightClick)

@@ -78,7 +78,7 @@ void StoneMine::Update(const float dtime)
 			slot.num += n;
 			if (slot.num >= slot.req || m_stone.GetNum() == 0)
 			{
-				slot.troll->SurIn(EBS_Stone, slot.num);
+				//slot.troll->SurIn(EBS_Stone, slot.num);
 				m_worked.Remove(slot);
 				i--;
 			}

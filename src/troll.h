@@ -36,7 +36,10 @@ class Troll : public BecherObject
 	TrollPath m_path; // jeho cesta
 	TLoad m_load; // naklad (co ma u sebe)
 	float anim;
-	float m_nextfind;
+protected:
+    void Finish();
+    bool Step(float t);
+    
 public:
 	Troll(IHoeScene * scn);
 	~Troll();
@@ -49,16 +52,8 @@ public:
 	virtual bool Save(BecherGameSave &w);
 	virtual bool Load(BecherGameLoad &r);
 
-	void SetJob(const TJob & j);
     const TJob & GetJob() { return m_job; }
-	void SurIn(ESurType type, uint num);
-	void Finish();
 
-	// prace s tupounem
-	void StopWork();
-	bool FindJob(BecherBuilding * prior);
-
-	bool Step(float t);
 
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 };

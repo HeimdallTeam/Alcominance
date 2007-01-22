@@ -13,59 +13,21 @@ static CVar v_cost("store_cost", 200, TVAR_SAVE); // cena za stavbu
 static CVar v_cost_wood("store_cost_wood", 100, TVAR_SAVE); // pocet dreva potrebneho na stavbu
 static CVar v_cost_stone("store_cost_stone", 150, TVAR_SAVE); // pocet kameni potrebneho na stavbu
 
-StoreStatic Store::m_storepref;
+IHoeModel * Store::g_models[EBS_Max] = {0};
 
-StoreStatic::StoreStatic()
+void Store::LoadModels()
 {
-	m_act = NULL;
-}
-
-void StoreStatic::SetAct(Store * act)
-{
-	m_act = act;
-	// pripojit 
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetText(m_caneinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("drevo", HoeGame::Gui::EText))->SetText(m_woodinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("kamen", HoeGame::Gui::EText))->SetText(m_stoneinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("byliny", HoeGame::Gui::EText))->SetText(m_herbeinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("voda", HoeGame::Gui::EText))->SetText(m_waterinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetText(m_sugarinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("lih", HoeGame::Gui::EText))->SetText(m_alcoinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("becher", HoeGame::Gui::EText))->SetText(m_becherinfo);
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("uhli", HoeGame::Gui::EText))->SetText(m_coalinfo);
-}
-
-void StoreStatic::Draw(IHoe2D * h2d)
-{
-	if (m_act)
-	{
-		sprintf(m_sugarinfo,"%d cukru.", m_act->GetStatus(EBS_Sugar));
-		sprintf(m_caneinfo,"%d trtina.", m_act->GetStatus(EBS_Cane));
-		sprintf(m_woodinfo,"%d dreva.", m_act->GetStatus(EBS_Wood));
-		sprintf(m_stoneinfo,"%d sutru.", m_act->GetStatus(EBS_Stone));
-		sprintf(m_herbeinfo,"%d bylin.", m_act->GetStatus(EBS_Herbe));
-		sprintf(m_waterinfo,"%d vody.", m_act->GetStatus(EBS_Water));
-		sprintf(m_alcoinfo,"%d lihu.", m_act->GetStatus(EBS_Alco));
-		sprintf(m_becherinfo,"%d flasek.", m_act->GetStatus(EBS_Becher));
-		sprintf(m_coalinfo,"%d uhli.", m_act->GetStatus(EBS_Coal));
-
-		ObjectHud::Draw(h2d);
-	}
-}
-
-void StoreStatic::LoadModels()
-{
-	for (int i=0;i < EBS_Max;i++)
-		m_models[i] = NULL;
-	m_models[EBS_Herbe] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model miska"));
-	m_models[EBS_Alco] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model sud"));
-	m_models[EBS_Stone] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model kblok"));
-	m_models[EBS_Cane] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_becher"));
-	m_models[EBS_Becher] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_becher"));
-	m_models[EBS_Sugar] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_cukr"));
-	m_models[EBS_Coal] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_dul"));
-	m_models[EBS_Wood] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model kmen"));
-	m_models[EBS_Water] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model vedro"));
+    if (g_models[EBS_Herbe] != NULL)
+        return;
+	g_models[EBS_Herbe] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model miska"));
+	g_models[EBS_Alco] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model sud"));
+	g_models[EBS_Stone] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model kblok"));
+	g_models[EBS_Cane] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_becher"));
+	g_models[EBS_Becher] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_becher"));
+	g_models[EBS_Sugar] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_cukr"));
+	g_models[EBS_Coal] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model bedna_dul"));
+	g_models[EBS_Wood] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model kmen"));
+	g_models[EBS_Water] = dynamic_cast<IHoeModel*>(GetEngine()->Create("model vedro"));
 }
 
 ////////////////////////////////////////////////////////////
@@ -76,7 +38,7 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn)
 	SetRingParam(2.5f,2.5f,3.f);
 	memset(&m_info, 0, sizeof(m_info));
 	const float p = getheight(GetModel()); 
-	m_storepref.LoadModels();
+	LoadModels();
 	for (int i=0;i < 16;i++)
 	{
 		m_info[i].model = NULL;
@@ -89,6 +51,7 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn)
 	{
 		m_res[i].SetType((ESurType)i);
 		m_res[i].SetOwner(this); CRR::Get()->Register(&m_res[i]);
+        m_res[i].SetNum(100);
 	}
 }
 
@@ -313,7 +276,7 @@ void Store::OnUpdateSur()
 		int c = m_res[i].GetNum() > 0 ? m_res[i].GetNum() / max+1:0;
 		for (;c > 0;c--)
 		{
-			m_info[p++].model = m_storepref.GetModel(i);
+			m_info[p++].model = g_models[i];
 			if (p >= 16)
 				return;
 		}

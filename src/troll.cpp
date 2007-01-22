@@ -27,7 +27,6 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 	m_load.surtype = EBS_None;
 
 	anim = 0.f;
-	m_nextfind = 0.f;
 }
 
 Troll::~Troll()
@@ -104,13 +103,6 @@ void Troll::Update(const float t)
 		GetLevel()->GetMJobs()->AddPay(v_cost_bring.GetFloat() * t);
 		break;
 	case TJob::jtFindJob:
-		//if (m_nextfind > 0.f)
-		//	m_nextfind -= t;
-		//else
-		//{
-			FindJob(m_job.owner);
-		//	m_nextfind = 10.f;
-		//}
 		GetLevel()->GetMJobs()->AddPay(v_cost_wait.GetFloat() * t);
 		break;
 	case TJob::jtWork:
@@ -120,166 +112,6 @@ void Troll::Update(const float t)
 #endif
 }
 
-void Troll::SetJob(const TJob & j)
-{
-	// pracovni process
-	// prinest
-	// odnest
-	// pracovat - stavet
-	// stavet
-
-	//assert(m_job.type == TJob::jtGoto || j.owner != NULL);
-	// opustit stary job
-	switch (m_job.type)
-	{
-	case TJob::jtWork:
-	case TJob::jtGotoRes:
-		if (j.type != TJob::jtFly)
-			break;
-    case TJob::jtGotoOwnerWithRes:
-		assert(m_job.owner);
-		break;
-	};
-
-	// nastavit novy
-	if (m_load.locked)
-	{
-		m_job.from->Unlock(m_load.numlocked);
-		m_load.numlocked = 0;
-		m_load.locked = false;
-	}
-
-	m_job = j;
-	// nastavit parametry
-	switch (j.type)
-	{
-	case TJob::jtGotoRes:
-		if (m_job.num > v_num.GetInt())
-			m_job.num = v_num.GetInt();
-		if (m_job.from->GetPriority() != EBSP_TimeWork)
-		{ 
-			m_load.numlocked = m_job.from->Lock(m_job.num);
-			m_load.locked = true;
-		}
-		m_path.Go(m_job.from->GetOwner());
-		break;
-	case TJob::jtGotoOwnerWithRes:
-		if (!m_job.to)
-			m_job.to = m_job.owner;
-		m_path.Go(m_job.to);
-		break;
-	case TJob::jtGotoWork:
-		m_path.Go(m_job.owner);
-		break;
-	case TJob::jtWork:
-		assert(m_job.owner);
-		break;
-	case TJob::jtFly:
-		// nastavit na padaka
-
-		break;
-	};
-}
-
-void Troll::Finish()
-{
-	switch (m_job.type)
-	{
-	case TJob::jtGotoRes:
-		if (m_job.from->GetPriority() == EBSP_TimeWork)
-		{
-			assert(m_load.locked == false);
-			dynamic_cast<SourceBuilding*>(m_job.from->GetOwner())->SetToGet(this, m_job.num);
-			// nastavit job na cekani
-			TJob j = m_job;
-			j.type = TJob::jtWaitToRes;
-			SetJob(j);
-		}
-		else
-		{
-			// pokud jde pro surovinu, tak vyjmout a nastavit
-			assert(m_load.locked == true);
-			m_job.from->Unlock(m_load.numlocked);
-			m_load.locked = false;
-			m_load.surtype = m_job.surtype;
-			m_load.numsur = m_job.from->Get(m_load.numlocked,true);
-			// nastavit na chuzi k zpatky
-			TJob j = m_job;
-			j.type = TJob::jtGotoOwnerWithRes;
-			SetJob(j);
-		}
-		break;
-	case TJob::jtGotoOwnerWithRes:
-		// vlozit do budovy a hledat novy job
-// odevzdat surovinu, mozna by mohl cekat dokud nebude volno ve skladu
-		assert(m_job.to);
-		//m_job.to->InsertSur(m_load.surtype, &m_load.numsur);
-		m_load.numsur = 0;
-		m_load.surtype = EBS_None;
-		FindJob(m_job.owner);
-		break;
-	case TJob::jtGotoWork:
-		{
-			//this->ToBuilding();
-			TJob j = m_job;
-			j.type = TJob::jtWork;
-			SetJob(j);
-		}
-		break;
-	case TJob::jtGoto:
-		{
-			//this->ToBuilding();
-			TJob j = m_job;
-			j.type = TJob::jtNone;
-			SetJob(j);
-		}
-		break;
-	};
-}
-
-void Troll::SurIn(ESurType type, uint num)
-{
-	//assert(type == m_job.surtype);
-	//assert(m_phase == WaitForSur);
-	//m_numsur = num;
-	//m_surtype = type;
-	// prenastavit job
-	m_load.surtype = type;
-	m_load.numsur = num;
-	TJob j = m_job;
-	j.type = TJob::jtGotoOwnerWithRes;
-	SetJob(j);
-}
-
-bool Troll::FindJob(BecherBuilding * pref)
-{
-	/*TJob job;
-	memset(&job,0,sizeof(job));
-	//assert(pref);
-	if (pref->Idiot(&job))
-	{
-		SetJob(job);
-		return true;
-	}
-	else
-	{
-		TJob j = m_job;
-		j.type = TJob::jtFindJob;
-		j.owner = pref;
-		SetJob(j);
-	}*/
-	return false;
-}
-
-void Troll::StopWork()
-{
-	// nastavit job na none
-	// hledat novy job
-	// pokud nenalezen, zajit k budove
-	TJob j = m_job;
-	j.type = TJob::jtFindJob;
-	SetJob(j);
-}
 
 #ifndef BECHER_EDITOR
 bool Troll::Select()
@@ -314,7 +146,7 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
 		TJob j = m_job;
 		j.type = TJob::jtGoto;
 		this->m_path.Go(pos.x, pos.y);
-		SetJob(j);
+		//SetJob(j);
 		return 0; }
 	case BMSG_RightClick:
 
