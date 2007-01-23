@@ -10,11 +10,18 @@ class BecherGameLoad;
 
 /**
 * Jobs se stara o to aby vedeli tupouni co delat, je vsak udelanej
-* na kterejkoliv objekt
-* obsahuje zasobnik ukolu
-* funguje jako zasobnik
-* funguji tzv. prepisovaci pravidla
-* 
+* Pole miniprogramu, pro tupouny
+* Tupoun ma v sobe ukazatel na program, podle instrukci ukolu si bere parametry
+* kazdy job ma sveho zadavatele
+* a parametry
+* napr.
+* import:
+*   jit k cilove budove
+*   vzit suroviny/vytezit suroviny
+*   jit zpatky
+*   vlozit suroviny
+*   ohlasit hotovo
+*   cekat 
 */
 
 struct TJob
