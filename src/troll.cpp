@@ -20,11 +20,11 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 	GetCtrl()->SetScale(HoeMath::Vector3(scale,scale,scale));
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE|HOF_SCALED);
 	SetRingParam(.8f,.8f,2.f);
-	memset(&m_job, 0, sizeof(m_job));
+	/*memset(&m_job, 0, sizeof(m_job));
 	m_job.type = TJob::jtNone;
 	m_load.locked = false;
 	m_load.numsur = 0;
-	m_load.surtype = EBS_None;
+	m_load.surtype = EBS_None;*/
 
 	anim = 0.f;
 }
@@ -74,7 +74,7 @@ void Troll::Update(const float t)
 #ifndef BECHER_EDITOR
 	// pokud chodi tak chodi
 	// pokud ceka, tak nic
-	switch (m_job.type)
+	/*switch (m_job.type)
 	{
 	case TJob::jtFly:
 		// jde pryc
@@ -108,7 +108,7 @@ void Troll::Update(const float t)
 	case TJob::jtWork:
 		GetLevel()->GetMJobs()->AddPay(v_cost_work.GetFloat() * t);
 		break;
-	};
+	};*/
 #endif
 }
 
@@ -144,7 +144,7 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
 		 pos = *(HoeMath::Vector2 *)par2;
 		}
 		TJob j = m_job;
-		j.type = TJob::jtGoto;
+		//j.type = TJob::jtGoto;
 		this->m_path.Go(pos.x, pos.y);
 		//SetJob(j);
 		return 0; }

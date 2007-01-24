@@ -109,7 +109,7 @@ bool Factory::InsertSur(ESurType type, uint *s)
 
 bool Factory::SetToWork(Troll * t)
 {
-    switch (t->GetJob().type){
+/*    switch (t->GetJob().type){
     case TJob::jtWork:
 	    if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
 	    m_worked.Add(t);
@@ -134,13 +134,13 @@ bool Factory::SetToWork(Troll * t)
         }
         break;
 
-    }
+    }*/
 	return true;
 }
 
 void Factory::UnsetFromWork(Troll * t)
 {
-    switch (t->GetJob().type){
+    /*switch (t->GetJob().type){
     case TJob::jtWork:
 	    m_worked.Remove(t);
         break;
@@ -163,7 +163,7 @@ void Factory::UnsetFromWork(Troll * t)
             break;
         }
         break;
-    }
+    }*/
 }
 
 void Factory::Update(const float t)
@@ -282,7 +282,7 @@ bool Factory::Idiot(TJob * j)
 	}
 
 	// prevest zpatky na job
-	int r = f.GetTableInteger("type", -1); // typ prace
+	/*int r = f.GetTableInteger("type", -1); // typ prace
 	j->percent = f.GetTableFloat("percent", -1); // na kolik procent je vyzadovano
 	j->owner = this;
 	switch (r)
@@ -310,7 +310,7 @@ bool Factory::Idiot(TJob * j)
 		break;
 	};
 		
-	f.Pop(1);
+	f.Pop(1);*/
 	
 	return true;
 

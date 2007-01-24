@@ -27,7 +27,6 @@ map.cpp \
 minimap.cpp \
 ministry.cpp \
 obj_coalmine.cpp \
-obj_construct.cpp \
 obj_destilate.cpp \
 obj_factory.cpp \
 obj_farm.cpp \

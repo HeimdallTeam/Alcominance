@@ -188,7 +188,7 @@ bool Store::Idiot(TJob *t)
 	for (int i=1;i < EBS_Max;i++)
 		req[i] = m_res[i].IsEnable() ? m_res[i].GetNum()-poc: 0xfffffff;
 	// vybirat prvni mozne
-	while (1)
+	/*while (1)
 	{
 		// vybrat nejmensi
 		int min=1;
@@ -213,7 +213,7 @@ bool Store::Idiot(TJob *t)
 		}
 		else
 			req[min] = 0xfffffff;
-	}
+	}*/
 	return false;
 }
 

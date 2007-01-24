@@ -135,12 +135,12 @@ bool Farm::Select()
 bool Farm::Idiot(TJob *t)
 {
 	// pokud nemuze pracovat tak upnout do prace, jinak neupnout
-	if (m_work)
+	/*if (m_work)
 		return false;
 	t->type = TJob::jtGotoWork;
 	t->owner = this;
 
-	return true;
+	return true;*/
 }
 
 

@@ -24,28 +24,29 @@ class BecherGameLoad;
 *   cekat 
 */
 
+// pole prikazu a parametru
+
+
 struct TJob
 {
-	enum Type
+	enum EType
 	{
-		jtNone = 0,
-		jtGotoRes, // jit pro suroviny
-		jtGotoOwnerWithRes, // odevzdat suroviny
-		jtGotoWork, // jit pracovat
-		jtWork, // pracovat
-		jtWaitToRes, // cekat na suroviny
-		jtFindJob, // najit praci (v budove)
-		jtFly, // dostane padaka
-		jtGoto, // nekam jit
+		EJT_None = 0,
+		EJT_Go,
+		EJT_Work, // pracovat
+		EJT_WaitToRes, // cekat na suroviny
+
+        EJP_Source,
+        EJP_Owner,
 	} type;
+    
 	// parametry
 	BecherBuilding * owner;
-	ResourceExp * from;
-	BecherBuilding * to;
-	ESurType surtype;
-	int num;
-	float percent;
-	bool Save(BecherGameSave &w);
+	BecherBuilding * source;
+	
+    
+    
+    bool Save(BecherGameSave &w);
 	bool Load(BecherGameLoad &r);
 
 	// function for build job

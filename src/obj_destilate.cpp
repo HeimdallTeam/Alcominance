@@ -141,7 +141,7 @@ bool Destilate::InsertSur(ESurType type, uint *s)
 
 bool Destilate::SetToWork(Troll * t)
 {
-    switch (t->GetJob().type){
+    /*switch (t->GetJob().type){
     case TJob::jtWork:
 	    if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
 	    m_worked.Add(t);	
@@ -156,13 +156,13 @@ bool Destilate::SetToWork(Troll * t)
             break;
         }
         break;
-    }
+    }*/
     return true;
 }
 
 void Destilate::UnsetFromWork(Troll * t)
 {
-	switch(t->GetJob().type){
+	/*switch(t->GetJob().type){
     case TJob::jtWork:
 	    m_worked.Remove(t);
         break;
@@ -176,7 +176,7 @@ void Destilate::UnsetFromWork(Troll * t)
             break;
         }
         break;
-    }
+    }*/
 }
 
 void Destilate::Update(const float t)
@@ -252,7 +252,7 @@ bool Destilate::Idiot(TJob * j)
 		f.Pop(1);
 		return false;
 	}
-
+/*
 	// prevest zpatky na job
 	int r = f.GetTableInteger("type", -1); // typ prace
 	j->percent = f.GetTableFloat("percent", -1); // na kolik procent je vyzadovano
@@ -271,7 +271,7 @@ bool Destilate::Idiot(TJob * j)
 	};
 		
 	f.Pop(1);
-	
+	*/
 	return true;
 }
 

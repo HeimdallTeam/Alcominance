@@ -208,7 +208,7 @@ bool Sugar::InsertSur(ESurType type, uint *s)
 
 bool Sugar::SetToWork(Troll * t)
 {
-    switch (t->GetJob().type)
+    /*switch (t->GetJob().type)
 	{
     case TJob::jtWork:
 	    //if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
@@ -224,13 +224,13 @@ bool Sugar::SetToWork(Troll * t)
             break;
         }
         break;
-    }
+    }*/
 	return true;
 }
 
 void Sugar::UnsetFromWork(Troll * t)
 {
-    switch (t->GetJob().type){
+    /*switch (t->GetJob().type){
     case TJob::jtWork:
 	    //m_worked.Remove(t);
         break;
@@ -243,7 +243,7 @@ void Sugar::UnsetFromWork(Troll * t)
             //m_wrk_cane--;
             break;
         }
-    }
+    }*/
 }
 
 void Sugar::Update(const float t)
