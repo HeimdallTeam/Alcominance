@@ -60,6 +60,7 @@ typedef HoeGame::CVar CVar;
 
 // wxwindows
 #include <wx/wxprec.h>
+#include <wx/bitmap.h>
 #include <wx/choicebk.h>
 #include <wx/propdlg.h>
 #include <wx/spinctrl.h>
@@ -67,8 +68,11 @@ typedef HoeGame::CVar CVar;
 #include <wx/statline.h>
 #include <wx/clipbrd.h>
 #include <wx/rawbmp.h>
+#include <wx/dcclient.h>
+#include <wx/sizer.h>
 #include <wx/cshelp.h>
 #include <wx/dynlib.h>
+#include <wx/menu.h>
 #include <wx/propgrid/propgrid.h>
 #include <wx/bmpbuttn.h>
 #include <wx/file.h>

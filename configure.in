@@ -4,6 +4,7 @@ AM_INIT_AUTOMAKE(Alcominance, 1.0)
 
 sinclude(unix/macros/lua.m4)
 sinclude(unix/macros/hoe.m4)
+sinclude(unix/macros/wxwin.m4)
 
 AC_PROG_CXX
 AC_PROG_INSTALL
@@ -16,47 +17,24 @@ CXXFLAGS="$CXXFLAGS"
 
 LDFLAGS="$LDFLAGS -L/usr/X11R6/lib $HOE_LIBS"
 
-WXCONFIG=wx-config
-AC_ARG_WITH(wx-config,[[  --with-wx-config=FILE     Use the given path to wx-config when determining
-                            wxWidgets configuration; defaults to "wx-config"]],
-[
-    if test "$withval" != "yes" -a "$withval" != ""; then
-        WXCONFIG=$withval
-    fi
-])
+AM_PATH_WXCONFIG(2.8.0, wxWin=1)
+if test "$wxWin" != 1; then
+AC_MSG_ERROR([
+      wxWidgets must be installed on your system
+      but wx-config script couldn't be found.
 
-wxversion=0
-
-AC_DEFUN([WXTEST],
-[
-	AC_REQUIRE([AC_PROG_AWK])
-	AC_MSG_CHECKING([wxWidgets version])
-	if wxversion=`$WXCONFIG --version`; then
-		AC_MSG_RESULT([$wxversion])
-	else
-		AC_MSG_RESULT([not found])
-		AC_MSG_ERROR([wxWidgets is required. Try --with-wx-config.])
-	fi])
-
-# Call WXTEST func
-WXTEST
-
-# Verify minimus requires
-vers=`echo $wxversion | $AWK 'BEGIN { FS = "."; } { printf "% d", ($1 * 1000 + $2) * 1000 + $3;}'`
-if test -n "$vers" && test "$vers" -ge 2003003; then
-	WX_CPPFLAGS="`$WXCONFIG --cppflags`"
-	WX_CXXFLAGS="`$WXCONFIG --cxxflags | sed -e 's/-fno-exceptions//'`"
-	WX_LIBS="`$WXCONFIG --libs`"
-else
-	AC_MSG_ERROR([wxWidgets 2.3.3 or newer is required])
+      Please check that wx-config is in path, the directory
+      where wxWidgets libraries are installed (returned by
+               'wx-config --libs' command) is in LD_LIBRARY_PATH or
+               equivalent variable and wxWidgets version is 2.3.4 or above.
+       ])
 fi
-
-
 CPPFLAGS="$CPPFLAGS $WX_CPPFLAGS"
-CXXFLAGS="$CXXFLAGS $WX_CPPFLAGS"
+CXXFLAGS="$CXXFLAGS $WX_CXXFLAGS_ONLY"
+CFLAGS="$CFLAGS $WX_CFLAGS_ONLY"
+LIBS="$LIBS $WX_LIBS"
 
 
-AC_SUBST(WX_LIBS)
 
 AC_OUTPUT(Makefile src/Makefile src/editor/Makefile src/dsim/Makefile)
 
