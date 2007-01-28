@@ -56,7 +56,7 @@ public:
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 };
 
-
+extern CVar v_troll_num;
 
 #endif // _TUPON_H_
 

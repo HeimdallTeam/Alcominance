@@ -8,7 +8,7 @@
 #include "b_msg.h"
 
 static CVar v_speed("troll_speed", 35.f, TVAR_SAVE);
-static CVar v_num("troll_num", 10, TVAR_SAVE);
+CVar v_troll_num("troll_num", 10, TVAR_SAVE);
 static CVar v_cost_work("troll_cost_work", 0.1f, TVAR_SAVE);
 static CVar v_cost_bring("troll_cost_bring", 0.1f, TVAR_SAVE);
 static CVar v_cost_wait("troll_cost_wait", 0.1f, TVAR_SAVE);

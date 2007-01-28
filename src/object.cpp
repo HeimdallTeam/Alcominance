@@ -14,9 +14,18 @@ static const CustomInfo g_info[] = {"cane",BINFO_NumCane,
 							  "stone",BINFO_NumStone,
 							  "wood",BINFO_NumWood,
 							  "coal",BINFO_NumCoal,
+							  "alco",BINFO_NumAlco,
+							  "becher", BINFO_NumBecher,
+							  "wood", BINFO_NumWood,
+							  "herbe", BINFO_NumHerbe,
+							  "water", BINFO_NumWater,
 							  "reqstone", BINFO_ReqStone,
 							  "reqwood", BINFO_ReqWood,
+							  "canstone", BINFO_CanStone,
+							  "canwood", BINFO_CanWood,
 							  "build",BINFO_BuildProgress,
+							  "prod",BINFO_Production,
+
 							  NULL };
 
 BecherObject::BecherObject(IHoeScene * scn) : HoeGame::Strategy::StgObject(scn)

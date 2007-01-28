@@ -36,23 +36,34 @@ end
 -- zjisti pripadne zmeny a odesle budove zpravy
 -- napr. neni trtina a je spousta pracujicich
 
-function i_sugar(h,i)
+function i_sugarbuild(h,i)
  --id = GetMem(h, "test", 0)
  --info("Id je ",id)
  --id = id + 1
  --SetMem(h, "test", id)
  -- spocitat pomery
  a,b,c,d = GetInfo(h, BINFO_ReqStone, BINFO_ReqWood, BINFO_CanStone, BINFO_CanWood)
-
- if c > 0 and (a/i.stone) > (b/i.wood) then
-    SendMsg(h, BMSG_Chief, "F>IK")
- elseif d > 0 then
-    SendMsg(h, BMSG_Chief, "F>ID")
- else
+ if i.stone > 0 and i.wood > 0 then
     SendMsg(h, BMSG_Chief, "F>W")
+ elseif c > 0 and a>0 and (a/i.stone) > (b/i.wood) then
+    if SendMsg(h, BMSG_Chief, "F>IK") == 0 then
+       SendMsg(h, BMSG_Chief, "W>IK")
+    end
+ elseif d > 0 and b>0 then
+    if SendMsg(h, BMSG_Chief, "F>ID") == 0 then
+        SendMsg(h, BMSG_Chief, "W>ID")
+    end
  end
   
  return nil
+end
+
+function i_sugar(h, i)
+ if i.cane > 0 then
+    SendMsg(h, BMSG_Chief, "F>W")
+ elseif SendMsg(h, BMSG_Chief, "F>IC") == 0 then
+       SendMsg(h, BMSG_Chief, "W>IC")
+ end
 end
 
 function i_fake()

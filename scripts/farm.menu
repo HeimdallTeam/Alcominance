@@ -5,6 +5,13 @@ text
 	font = "font 'resource/font.ttf' 16"
 	text = "Produkce je z $prod$% hotova."
 }
+text
+{
+	name = "trtina"
+	rect = 170.240005 520.968140 178.080002 509.163361
+	font = "font 'resource/font.ttf' 16"
+	text = "K dispozici $cane$ trtiny."
+}
 static
 {
 	name = "static"

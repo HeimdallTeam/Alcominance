@@ -24,7 +24,7 @@ text
 	name = "trtina"
 	rect = 419.839996 507.968140 419.839996 509.163361
 	font = "font 'resource/font.ttf' 16"
-	text = "$coal$ trtiny."
+	text = "$cane$ trtiny."
 }
 text
 {

@@ -436,12 +436,13 @@ int l_SendMsg(lua_State * L)
 		}
 	}
 
+	int ret;
 	if (bo)
-		SendGameMsg(bo, msg, par1, par2, npar2);
+		ret = SendGameMsg(bo, msg, par1, par2, npar2);
 	else
-		SendGameMsgId(id, msg, par1, par2, npar2);
-
-	return 0;
+		ret = SendGameMsgId(id, msg, par1, par2, npar2);
+	lp.PushNum(ret);
+	return 1;
 }
 
 

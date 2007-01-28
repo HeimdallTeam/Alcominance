@@ -81,17 +81,7 @@ int Store::GetInfo(int type, char * str, size_t n)
 	register int ret = 0;
 	if (type==BINFO_Custom && str)
 	{
-#define STRREP(res, name) if (strcmp(str, name) == 0) type = BINFO_Num##res;
-		STRREP(Cane,"cane")
-		else STRREP(Sugar,"sugar")
-		else STRREP(Coal,"coal")
-		else STRREP(Stone,"stone")
-		else STRREP(Alco,"alco")
-		else STRREP(Becher,"becher")
-		else STRREP(Wood,"wood")
-		else STRREP(Water,"water")
-		else STRREP(Herbe,"herbe")
-#undef STRREP
+		type = DefaultCustomInfo(str);
 	}
 	switch (type)
 	{
@@ -102,6 +92,7 @@ int Store::GetInfo(int type, char * str, size_t n)
 		return ret;
 
 	TYPECASE(Sugar)
+	TYPECASE(Cane)
 	TYPECASE(Coal)
 	TYPECASE(Stone)
 	TYPECASE(Alco)

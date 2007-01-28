@@ -58,20 +58,23 @@ int Farm::GetInfo(int type, char * str, size_t n)
 	register int ret = 0;
 	if (type==BINFO_Custom && str)
 	{
-		if (strcmp(str, "prod") == 0)
-			type = BINFO_Production;
+		type = DefaultCustomInfo(str);
 	}
 	switch (type)
 	{
 	case BINFO_Production:
 		ret = int(this->m_grow * 100.f);
-		if (str)
-			snprintf(str, n, "%d", ret);
-		return ret;
+		break;
+	case BINFO_NumCane:
+		ret = int(m_cane.GetNum());
+		break;
 	default:
 		return BecherBuilding::GetInfo(type, str, n);
 	};
-	return 0;
+
+	if (str)
+		snprintf(str, n, "%d", ret);
+	return ret;
 }
 
 int Farm::GameMsg(int msg, int par1, void * par2, uint npar2)
@@ -85,6 +88,20 @@ int Farm::GameMsg(int msg, int par1, void * par2, uint npar2)
 	case BMSG_StartBuilding:
 		return BuildPlace((float*)par2, 
 			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
+	case BMSG_GetSur: {
+		PAR_Load * l = (PAR_Load *)par2;
+		if (l->sur == EBS_Cane)
+		{
+			m_cane.Unlock(par1);
+			return this->m_cane.Get(l->num, true);
+		}
+		} break;
+	case BMSG_LockSur: {
+			PAR_Favour * f = (PAR_Favour *)par2;
+			if (f->sur == EBS_Cane)
+				return m_cane.Lock(f->num);
+			break;
+		} 
 	}
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
 }

@@ -375,19 +375,20 @@ ESurType GetSur(char n)
 	return EBS_None;
 }
 
-void Chief::Make(BecherObject * owner,const char * cmd)
+int Chief::Make(BecherObject * owner,const char * cmd)
 {
     // rozparsovat command
     // napr. "W=>S" - jeden tupoun prestane pracovat
     //       "3W=>S" - tri tupouni prestanou pracovat
     //       "2=>IC" - 2 volny tupouni pujdou pro trtinu
     GetCon()->Printf("Chief cmd `%s'",cmd);
+
 	if (*cmd == 'N')
 	{
 		if (m_list.Count() >= 4)
 		{
 			GetLevel()->GetPanel()->GetInfo()->Add(GetLang()->GetString(151));
-			return;
+			return 0;
 		}
 		TTroll t;
 		t.troll = GetLevel()->CreateTroll();
@@ -400,7 +401,7 @@ void Chief::Make(BecherObject * owner,const char * cmd)
 		// dat pokyn aby sel do budovy
 		ResetStat(false);
 		// dat pokyn na vchod do budovy
-		return;
+		return 1;
 	}
 	// zjistit odkud..
 	EWorkType from;
@@ -425,13 +426,14 @@ void Chief::Make(BecherObject * owner,const char * cmd)
 			{
 				PAR_Favour fav = { NULL, NULL, sur, 10, 0 };
 				// nejak ziskat odkud to ma prinest
-				//
+				if (fav.num > v_troll_num.GetInt())
+					fav.num = v_troll_num.GetInt();
 				if (SendGameMsg(owner, BMSG_CreateImport, 0, &fav, 5))
 				{
 					SendGameMsg(m_list[t].troll, BMSG_Import, 0, &fav, 5);
-					m_list[t].type = EBW_Import(sur);
+					SetJob(t, EBW_Import(sur));
 				}
-				return;
+				return 1;
 			}
 		}
 	}
@@ -441,14 +443,16 @@ void Chief::Make(BecherObject * owner,const char * cmd)
 		{
 			if (m_list[t].type == from)
 			{
-				m_list[t].type = EBW_Work;
-				return;
+				SetJob(t, EBW_Work);
+				return 1;
 			}
 		}
 
 	}
     // register
     // 
+
+	return 0;
 }
 
 void Chief::ComputeStatistik()
@@ -458,6 +462,19 @@ void Chief::ComputeStatistik()
         s_stats[m_list[i].type]++;
     m_worked = s_stats[EBW_Work];
     s_lastupdater = this;
+}
+
+void Chief::SetJob(int t, EWorkType type)
+{
+	m_list[t].type = type;
+	switch (type)
+	{
+	case EBW_Work:
+		ResetStat(true); 
+		break;
+	default:
+		ResetStat(false);
+	};
 }
 
 int Chief::GetNumWorkers(EWorkType type)

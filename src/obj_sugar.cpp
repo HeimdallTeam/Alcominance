@@ -11,7 +11,7 @@ static CVar v_cost_stone("sugar_cost_stone",40, TVAR_SAVE);
 static CVar v_sklad("sugar_max", 5000, TVAR_SAVE); // maximalni velikost miniskladu
 static CVar v_numworks("sugar_maxwork", 4, TVAR_SAVE); // maximalni pocet pracujicich
 static CVar v_recept("sugar_recept", "1.2:C1=1", TVAR_SAVE); // recept pro jednu davku
-static CVar v_build("sugar_build", "1.4:K1+D1=0.01", TVAR_SAVE); // recept pro staveni
+static CVar v_build("sugar_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 static CVar v_coalmax("sugar_coal_max", 100, TVAR_SAVE); // maximalni kapacita pro uhli
 static CVar v_autowork("sugar_auto", 0.f, TVAR_SAVE);
 
@@ -19,7 +19,7 @@ CVar v_idiottime("time_idiot", 2.f, 0); // jak casto se ma poustet idiot
 
 ////////////////////////////////////////////////////////
 Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn), 
-	m_wbuild(&v_build), m_stone(EBS_Stone), m_wood(EBS_Wood),
+	m_wbuild(&v_build), m_build(&v_recept), m_stone(EBS_Stone), m_wood(EBS_Wood),
 	m_cane(EBS_Cane),m_sugar(EBS_Sugar), m_coal(EBS_Coal)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SUGAR));
@@ -32,7 +32,7 @@ Sugar::Sugar(IHoeScene * scn) : BecherBuilding(scn),
 	m_coal.SetOwner(this);
 
 	// build
-	m_buildprogress = 0;
+	m_buildprogress = 1.1f;
 
 	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
 	m_part.pos.Set(-14.f, 23.f, 10.f);
@@ -174,10 +174,14 @@ int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
 			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
     case BMSG_Chief:
         if (npar2 == 1)
-			m_chief.Make(this,reinterpret_cast<const char*>(par2));
+			return m_chief.Make(this,reinterpret_cast<const char*>(par2));
 		else
+		{
+			int n=0;
 			for (int i=0;i < npar2;i++)
-				m_chief.Make(this,reinterpret_cast<const char**>(par2)[i]);
+				n+=m_chief.Make(this,reinterpret_cast<const char**>(par2)[i]);
+			return n;
+		}
         return 0;
     case BMSG_CreateImport: {
         // vytvoreni dodavky
@@ -271,12 +275,18 @@ void Sugar::Update(const float t)
 {
 	if (1)
 	{
-		if (m_wbuild.BeginPass(m_chief.GetNumWorkers(EBW_Work)+v_autowork.GetFloat(), t))
+		if (m_buildprogress < 1.0f && m_wbuild.BeginPass(m_chief.GetNumWorkers(EBW_Work)+v_autowork.GetFloat(), t))
 		{
 			m_wbuild << m_stone;
 			m_wbuild << m_wood;
 			m_wbuild >> m_buildprogress;
 			m_wbuild.Commit();
+		}
+		else if (m_build.BeginPass(m_chief.GetNumWorkers(EBW_Work)+v_autowork.GetFloat(), t))
+		{
+			m_build << m_cane;
+			m_build >> m_sugar;
+			m_build.Commit();
 		}
 	}
 	// update
@@ -284,7 +294,10 @@ void Sugar::Update(const float t)
 	{
         // pousti se po urcitem case, kdyz se zmeni personalie, pusti se hned,
         // ale cas se vyresetuje zase na zacatek
-		Idiot();
+		if (m_buildprogress < 1.0f)
+			IdiotBuild();
+		else
+			Idiot();
 	}
 
 	/*if (m_worked.Count() > 0)
@@ -305,7 +318,10 @@ void Sugar::Update(const float t)
 bool Sugar::Select()
 {
 	BecherBuilding::Select();
-	GetLevel()->GetPanel()->SetObjectHud("scripts/sugar_build.menu", this);	
+	if (m_buildprogress < 1.0f)
+		GetLevel()->GetPanel()->SetObjectHud("scripts/sugar_build.menu", this);	
+	else
+		GetLevel()->GetPanel()->SetObjectHud("scripts/sugar.menu", this);	
 	GetLua()->func("s_cukr");
 	return true;
 }
@@ -315,7 +331,7 @@ bool Sugar::Idiot(TJob * job)
     return false;
 }
 
-void Sugar::Idiot()
+void Sugar::IdiotBuild()
 {
 	// zjistit pripadny zdroj pro suroviny
 	// 
@@ -325,27 +341,12 @@ void Sugar::Idiot()
 	//BecherBuilding * bout = CRR::Get()->FindAccept(EBS_Sugar, this);
 
 	// najit sklad pro 
-	HoeGame::LuaFunc f(GetLua(), "i_sugar");
+	HoeGame::LuaFunc f(GetLua(), "i_sugarbuild");
     f.PushPointer((BecherObject*)this);
 	f.PushTable();
 	
-	//f.SetTableInteger("max_store", v_sklad.GetInt());    
-
-    // vstupni suroviny
-	//f.SetTableInteger("cane_avail", ri ? ri->GetAvail():0);
-    //f.SetTableInteger("cane_wrkcount", m_wrk_cane);
-	f.SetTableInteger("cane", m_cane.GetNum());
 	f.SetTableInteger("stone", m_stone.GetNum());
 	f.SetTableInteger("wood", m_wood.GetNum());
-
-    //f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
-    //f.SetTableInteger("coal_wrkcount", m_wrk_coal);
-    f.SetTableInteger("coal", m_coal.GetNum());
-	//f.SetTableInteger("coal_max", v_coalmax.GetInt());
-
-    // vystupni suroviny
-	f.SetTableInteger("sugar", m_sugar.GetNum());
-	//f.SetTableInteger("sugar_out", bout ? bout->AcceptSur(EBS_Sugar):0);
 
 	// works
 	f.SetTableInteger("works_count", m_chief.GetNumWorkers(EBW_Work));
@@ -355,50 +356,18 @@ void Sugar::Idiot()
 
 	f.SetTableInteger("works_max", v_numworks.GetInt());
 
-	f.Run(1);
-	if (f.IsNil(-1))
-	{
-		f.Pop(1);
-		return;
-	}
-    /*
-	// prevest zpatky na job
-	int r = f.GetTableInteger("type", -1); // typ prace
-	j->percent = f.GetTableFloat("percent", -1); // na kolik procent je vyzadovano
-	j->owner = this;
-	switch (r)
-	{
-	case 0:
-		j->surtype = (ESurType)f.GetTableInteger("sur", -1); // typ suroviny
-		j->type = TJob::jtGotoRes;
-		j->num = f.GetTableInteger("num", -1); // pocet k prineseni
-		j->from = j->surtype == EBS_Cane ? ri:rc;
-		j->to = this;
-		break;
-	case 1:
-		j->type = TJob::jtGotoWork;
-		break;
-	case 2:
-		j->type = TJob::jtGotoRes;
-		j->surtype = EBS_Sugar;
-		j->from = &m_sugar;
-		j->num = f.GetTableInteger("num", -1); // pocet k prineseni
-		j->to = bout; // sklad
-		break;
-	};
-		
-	f.Pop(1);
+	f.Run(2);
+}
 
-	// nebo lua bude posilat zpravy??
-	// to by bylo lepsi.. mozna
-	// propust, najmi, atd..
-	// propust je jasny
-	// ale to by vlastne mohla nejen lua posilat
-	// lua by byl v podstate jen takovej automat
-	// zpravy typu, propust workery -> pocet
-	// nastav volnym workerum aby nosili neco
-	// dej praci workerum
-    */
+void Sugar::Idiot() 
+{
+	HoeGame::LuaFunc f(GetLua(), "i_sugar");
+    f.PushPointer((BecherObject*)this);
+	f.PushTable();
+	f.SetTableInteger("cane", m_cane.GetNum());
+	f.SetTableInteger("sugar", m_sugar.GetNum());
+	f.SetTableInteger("coal", m_coal.GetNum());
+	f.Run(2);
 }
 
 #else

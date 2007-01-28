@@ -178,9 +178,10 @@ class Chief
 		if (s_lastupdater == this) s_lastupdater = NULL; 
 		if (recount) ComputeStatistik();
 	}
+	void SetJob(int t, EWorkType type);
 public:
     Chief();
-    void Make(BecherObject * owner, const char * cmd);
+    int Make(BecherObject * owner, const char * cmd);
     int GetNumWorkers(EWorkType type);
 	void Incoming(Troll *);
 };
