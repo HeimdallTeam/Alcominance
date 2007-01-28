@@ -2,6 +2,8 @@
 
 #pragma once
 
+class BecherObject;
+
 // BMSG_Go - prikaz jdi
 // float x, float y
 
@@ -23,6 +25,12 @@ struct PAR_Favour
     ESurType sur;
     uint num;
     int locked;
+};
+
+struct PAR_Load
+{
+    ESurType sur;
+    uint num;
 };
 
 #ifndef BECHER_EDITOR

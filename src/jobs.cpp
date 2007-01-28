@@ -47,6 +47,38 @@ bool TJob::Load(BecherGameLoad &r)
 	return true;
 }
 
+// jobs
+static TJob::EType j_go[] = { TJob::EJT_Go, TJob::EJP_Point, TJob::EJT_None };
+static TJob::EType j_import[] = { 
+	TJob::EJT_Go, TJob::EJP_Source, 
+	TJob::EJT_GetSur,
+	TJob::EJT_Go, TJob::EJP_Owner, 
+	TJob::EJT_InsertSur,
+	TJob::EJT_Incoming, TJob::EJP_Owner,
+	TJob::EJT_None };
+static TJob::EType * jobs[] =
+{
+	j_go,
+	j_import,
+};
+
+// jobs
+void TJob::Go(float x, float y)
+{
+	njob = 0; npart = 0;
+	point = HoeMath::Vector2(x, y);
+}
+
+void TJob::Import(PAR_Favour * fav)
+{
+	njob = 1; npart = 0;
+	favour = *fav;
+}
+
+TJob::EType * TJob::Get()
+{
+	return jobs[njob] + npart;
+}
 
 
 

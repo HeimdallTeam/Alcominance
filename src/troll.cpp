@@ -20,12 +20,10 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 	GetCtrl()->SetScale(HoeMath::Vector3(scale,scale,scale));
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE|HOF_SCALED);
 	SetRingParam(.8f,.8f,2.f);
-	/*memset(&m_job, 0, sizeof(m_job));
-	m_job.type = TJob::jtNone;
-	m_load.locked = false;
-	m_load.numsur = 0;
-	m_load.surtype = EBS_None;*/
-
+	memset(&m_job, 0, sizeof(m_job));
+	m_load.num = 0;
+	m_load.sur = EBS_None;
+	m_action = EA_None;
 	anim = 0.f;
 }
 
@@ -38,10 +36,10 @@ bool Troll::Save(BecherGameSave &w)
 	BecherObject::Save(w);
 	// ulozit job a path
 	this->m_job.Save(w);
-	w.WriteValue<bool>(m_load.locked);
-	w.WriteValue<uint>(m_load.numlocked);
-	w.WriteValue<uint>(m_load.numsur);
-	w.WriteValue<dword>(m_load.surtype);
+	w.WriteValue<bool>(0);
+	w.WriteValue<uint>(0);
+	w.WriteValue<uint>(0);
+	w.WriteValue<dword>(0);
 	// path
 	w.WriteValue<bool>(false);
 	return true;
@@ -51,10 +49,10 @@ bool Troll::Load(BecherGameLoad &r)
 {
 	BecherObject::Load(r);
 	//m_job.Load(r);	
-	m_load.locked = r.Read<bool>();
-	m_load.numlocked = r.Read<uint>();
-	m_load.numsur = r.Read<uint>();
-	m_load.surtype = (ESurType)r.Read<dword>();
+	r.Read<bool>();
+	r.Read<uint>();
+	r.Read<uint>();
+	(ESurType)r.Read<dword>();
 	// path
 	r.Read<bool>();
 	return true;
@@ -72,6 +70,17 @@ bool Troll::Step(float t)
 void Troll::Update(const float t)
 {
 #ifndef BECHER_EDITOR
+	switch (m_action)
+	{
+	case EA_NewJob:
+		Finish();
+		break;
+	case EA_Go:
+		if (Step(t))
+			Finish();
+		GetLevel()->GetMJobs()->AddPay(v_cost_bring.GetFloat() * t);
+		break;
+	};
 	// pokud chodi tak chodi
 	// pokud ceka, tak nic
 	/*switch (m_job.type)
@@ -100,7 +109,7 @@ void Troll::Update(const float t)
 			Finish();
 		}
 		// prachy
-		GetLevel()->GetMJobs()->AddPay(v_cost_bring.GetFloat() * t);
+		
 		break;
 	case TJob::jtFindJob:
 		GetLevel()->GetMJobs()->AddPay(v_cost_wait.GetFloat() * t);
@@ -112,6 +121,51 @@ void Troll::Update(const float t)
 #endif
 }
 
+void Troll::Finish()
+{
+	bool repeat = false;
+	do {
+	repeat = false;
+	// release action
+	TJob::EType * job = m_job.Get();
+	switch (job[0])
+	{
+	case TJob::EJT_Go:
+		m_action = EA_Go;
+		switch (job[1])
+		{
+		case TJob::EJP_Point:
+			m_path.Go(m_job.point.x, m_job.point.y); break;
+		case TJob::EJP_Source:
+			m_path.Go(m_job.source); break;
+		case TJob::EJP_Owner:
+			m_path.Go(m_job.owner); break;
+		};
+		m_job.Skip(2);
+		break;
+	case TJob::EJT_Incoming:
+		SendGameMsg(m_job.owner, BMSG_TrollIncoming, 0, this);
+		m_job.Skip(2);
+		repeat = true;
+		break;
+	case TJob::EJT_GetSur:
+		// vykopirovat z objednavky
+		m_load.sur = m_job.favour.sur;
+		m_load.num = m_job.favour.num;
+		m_load.num = SendGameMsg(m_job.source, BMSG_GetSur, m_job.favour.locked, &m_load, 2);
+		m_job.Skip(1);
+		repeat = true;
+		break;
+	case TJob::EJT_InsertSur:
+		m_load.num = SendGameMsg(m_job.owner, BMSG_InsertSur, 0, &m_load, 2);
+		m_job.Skip(1);
+		repeat = true;
+		break;
+	default:
+		m_action = EA_None;
+	};
+	} while (repeat);
+}
 
 #ifndef BECHER_EDITOR
 bool Troll::Select()
@@ -143,11 +197,16 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
 		{ hoe_assert(npar2 == 2);
 		 pos = *(HoeMath::Vector2 *)par2;
 		}
-		TJob j = m_job;
+		m_job.Go(pos.x, pos.y);
+		m_action = EA_NewJob;
 		//j.type = TJob::jtGoto;
-		this->m_path.Go(pos.x, pos.y);
+		//this->m_path.Go();
 		//SetJob(j);
 		return 0; }
+	case BMSG_Import:
+		m_job.Import(reinterpret_cast<PAR_Favour*>(par2));
+		m_action = EA_NewJob;
+		return 0;
 	case BMSG_RightClick:
 
 		return 0;

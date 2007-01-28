@@ -138,9 +138,9 @@ bool Farm::Idiot(TJob *t)
 	/*if (m_work)
 		return false;
 	t->type = TJob::jtGotoWork;
-	t->owner = this;
+	t->owner = this;*/
 
-	return true;*/
+	return true;
 }
 
 

@@ -121,9 +121,11 @@ ADDID(BMSG_Go)
 ADDID(BMSG_CreateImport)
 ADDID(BMSG_CreateExport)
 ADDID(BMSG_Import) // PAR_Favour
-ADDID(BMSG_EXport) // PAR_Favour
+ADDID(BMSG_Export) // PAR_Favour
 ADDID(BMSG_LockSur) // PAR_Favour
 ADDID(BMSG_UnlockSur) // PAR_Favour
+ADDID(BMSG_GetSur) // PAR_SurLoad
+ADDID(BMSG_InsertSur) // PAR_SurLoad
 
 ADDID(BMSG_LeftClick)
 ADDID(BMSG_RightClick)
@@ -135,8 +137,6 @@ ADDID(BMSG_StartBuilding)
 
 ADDID(BMSG_Select)
 ADDID(BMSG_Unselect)
-
-ADDID(BMSG_InsertSur)
 
 ADDID(BMSG_Chief)
 ADDID(BMSG_TrollIncoming)
@@ -155,6 +155,8 @@ ADDID(BINFO_NumHerbe)
 ADDID(BINFO_NumWater)
 ADDID(BINFO_ReqStone)
 ADDID(BINFO_ReqWood)
+ADDID(BINFO_CanStone)
+ADDID(BINFO_CanWood)
 ADDID(BINFO_Custom)
 
 // prikazy pro chefa

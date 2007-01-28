@@ -129,6 +129,15 @@ int Store::GameMsg(int msg, int par1, void * par2, uint npar2)
 	case BMSG_StartBuilding:
 		return BuildPlace((float*)par2, 
 			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
+	case BMSG_GetSur: {
+		PAR_Load * l = (PAR_Load *)par2;
+		m_res[l->sur].Unlock(par1);
+		return this->m_res[l->sur].Get(l->num, true);
+		}
+	case BMSG_LockSur: {
+			PAR_Favour * f = (PAR_Favour *)par2;
+			return m_res[f->sur].Lock(f->num);
+		} 
 	}
 #endif 
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);

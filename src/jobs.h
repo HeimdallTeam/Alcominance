@@ -2,6 +2,8 @@
 #ifndef _JOBS_H_
 #define _JOBS_H_
 
+#include "b_msg.h"
+
 class BecherBuilding;
 class Troll;
 class ResourceExp;
@@ -35,22 +37,39 @@ struct TJob
 		EJT_Go,
 		EJT_Work, // pracovat
 		EJT_WaitToRes, // cekat na suroviny
+		EJT_Incoming,
+		EJT_GetSur,
+		EJT_InsertSur,
 
         EJP_Source,
         EJP_Owner,
-	} type;
+		EJP_Point,
+	};
     
 	// parametry
-	BecherBuilding * owner;
-	BecherBuilding * source;
+	union {
+		struct {
+			BecherObject * owner;
+			BecherObject * source;
+		};
+		PAR_Favour favour;
+	};
+	HoeMath::Vector2 point;
 	
-    
-    
     bool Save(BecherGameSave &w);
 	bool Load(BecherGameLoad &r);
 
+	EType * Get();
+	void Skip(int n) { npart+=n; }
+
+	void JobRelease();
 	// function for build job
 	void Go(float x, float y);
+	void Import(PAR_Favour * fav);
+
+private:
+	word njob;
+	word npart;
 };
 
 

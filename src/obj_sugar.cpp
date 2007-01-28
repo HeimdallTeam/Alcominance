@@ -11,7 +11,7 @@ static CVar v_cost_stone("sugar_cost_stone",40, TVAR_SAVE);
 static CVar v_sklad("sugar_max", 5000, TVAR_SAVE); // maximalni velikost miniskladu
 static CVar v_numworks("sugar_maxwork", 4, TVAR_SAVE); // maximalni pocet pracujicich
 static CVar v_recept("sugar_recept", "1.2:C1=1", TVAR_SAVE); // recept pro jednu davku
-static CVar v_build("sugar_build", "1.4:K13+D5=0.008", TVAR_SAVE); // recept pro staveni
+static CVar v_build("sugar_build", "1.4:K1+D1=0.01", TVAR_SAVE); // recept pro staveni
 static CVar v_coalmax("sugar_coal_max", 100, TVAR_SAVE); // maximalni kapacita pro uhli
 static CVar v_autowork("sugar_auto", 0.f, TVAR_SAVE);
 
@@ -137,11 +137,19 @@ int Sugar::GetInfo(int type, char * str, size_t n)
 		ret = (int)this->m_coal.GetNum();
 		break;
 	case BINFO_ReqStone:
-		ret = ReqResource(v_build, m_buildprogress, 'K');
+		ret = ReqResource(v_build, m_buildprogress, 'K') - m_stone.GetNum();
 		break;
 	case BINFO_ReqWood:
-		ret = ReqResource(v_build, m_buildprogress, 'D');
+		ret = ReqResource(v_build, m_buildprogress, 'D') - m_wood.GetNum();
 		break;
+	case BINFO_CanStone:
+		{ ResourceExp * ri = CRR::Get()->Find(EBS_Stone, this);
+			if (ri) ret = ri->GetAvail();
+		} break;
+	case BINFO_CanWood:
+		{ ResourceExp * ri = CRR::Get()->Find(EBS_Wood, this);
+			if (ri) ret = ri->GetAvail();
+		} break;
 	case BINFO_BuildProgress:
 		ret = (int)(this->m_buildprogress * 100);
 		break;
@@ -181,9 +189,22 @@ int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
         if (r == NULL) return 0;
         f->remote = r->GetOwner();
         // zalockovat??? asi jo
+		f->locked = SendGameMsg(f->remote, BMSG_LockSur, 0, f, npar2);
         } return 1;
 	case BMSG_TrollIncoming:
 		m_chief.Incoming((Troll*)par2);
+		return 0;
+	case BMSG_InsertSur: {
+		PAR_Load * l = (PAR_Load *)par2;
+		if (l->sur == EBS_Wood)
+			m_wood.Add((uint*)&l->num, 1000);
+		else if (l->sur == EBS_Stone)
+			m_stone.Add((uint*)&l->num, 1000);
+		else if (l->sur == EBS_Coal)
+			m_coal.Add((uint*)&l->num, 1000);
+		else if (l->sur == EBS_Cane)
+			m_cane.Add((uint*)&l->num, 1000);
+		}
 		return 0;
 	}
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
@@ -314,6 +335,8 @@ void Sugar::Idiot()
 	//f.SetTableInteger("cane_avail", ri ? ri->GetAvail():0);
     //f.SetTableInteger("cane_wrkcount", m_wrk_cane);
 	f.SetTableInteger("cane", m_cane.GetNum());
+	f.SetTableInteger("stone", m_stone.GetNum());
+	f.SetTableInteger("wood", m_wood.GetNum());
 
     //f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
     //f.SetTableInteger("coal_wrkcount", m_wrk_coal);

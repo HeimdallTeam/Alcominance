@@ -37,15 +37,21 @@ end
 -- napr. neni trtina a je spousta pracujicich
 
 function i_sugar(h,i)
- --a,b = GetInfo(h, BINFO_ReqStone, BINFO_ReqWood)
  --id = GetMem(h, "test", 0)
  --info("Id je ",id)
  --id = id + 1
  --SetMem(h, "test", id)
+ -- spocitat pomery
+ a,b,c,d = GetInfo(h, BINFO_ReqStone, BINFO_ReqWood, BINFO_CanStone, BINFO_CanWood)
 
- SendMsg(h, BMSG_Chief, "F>ID")
- 
- 
+ if c > 0 and (a/i.stone) > (b/i.wood) then
+    SendMsg(h, BMSG_Chief, "F>IK")
+ elseif d > 0 then
+    SendMsg(h, BMSG_Chief, "F>ID")
+ else
+    SendMsg(h, BMSG_Chief, "F>W")
+ end
+  
  return nil
 end
 

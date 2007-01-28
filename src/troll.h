@@ -22,24 +22,22 @@ struct TrollPath : public HoeGame::LandPath
 	bool Go(BecherObject * to);
 };
 
-struct TLoad
-{
-	ESurType surtype; // co ma u sebe
-	uint numsur; // kolik ma u sebe
-	bool locked;
-	uint numlocked;
-};
-
 class Troll : public BecherObject
 {
 	TJob m_job; // co ma aktualne na praci
 	TrollPath m_path; // jeho cesta
-	TLoad m_load; // naklad (co ma u sebe)
+	PAR_Load m_load; // naklad (co ma u sebe)
 	float anim;
 protected:
     void Finish();
     bool Step(float t);
-    
+	enum EAction {
+		EA_None,
+		EA_NewJob,
+		EA_Wait,
+		EA_Hide,
+		EA_Go,
+	} m_action;
 public:
 	Troll(IHoeScene * scn);
 	~Troll();

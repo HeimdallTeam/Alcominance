@@ -408,25 +408,44 @@ void Chief::Make(BecherObject * owner,const char * cmd)
 	{
 		from = EBW_Wait; cmd++;
 	}
+	else if (*cmd == 'W')
+	{
+		from = EBW_Work; cmd++;
+	}
 	while (*cmd == '>') cmd++;
 	// kam
-	ESurType sur = GetSur(cmd[1]);
-	// najit trolla
-    //
-	for (uint t=0;t < m_list.Count();t++)
+	if (*cmd == 'I')
 	{
-		if (m_list[t].type == from)
+		ESurType sur = GetSur(cmd[1]);
+		// najit trolla
+		//
+		for (uint t=0;t < m_list.Count();t++)
 		{
-			PAR_Favour fav = { NULL, NULL, sur, 10, 0 };
-            // nejak ziskat odkud to ma prinest
-            //
-            if (SendGameMsg(owner, BMSG_CreateImport, 0, &fav, 5))
-            {
-                SendGameMsg(m_list[t].troll, BMSG_Import, 0, &fav, 5);
-			    m_list[t].type = EBW_Import(sur);
-            }
-			return;
+			if (m_list[t].type == from)
+			{
+				PAR_Favour fav = { NULL, NULL, sur, 10, 0 };
+				// nejak ziskat odkud to ma prinest
+				//
+				if (SendGameMsg(owner, BMSG_CreateImport, 0, &fav, 5))
+				{
+					SendGameMsg(m_list[t].troll, BMSG_Import, 0, &fav, 5);
+					m_list[t].type = EBW_Import(sur);
+				}
+				return;
+			}
 		}
+	}
+	else if (*cmd == 'W')
+	{
+		for (uint t=0;t < m_list.Count();t++)
+		{
+			if (m_list[t].type == from)
+			{
+				m_list[t].type = EBW_Work;
+				return;
+			}
+		}
+
 	}
     // register
     // 
@@ -462,7 +481,7 @@ void Chief::Incoming(Troll * t)
         if (m_list[i].troll == t)
 		{
 			m_list[i].type = EBW_Wait;
-			t->Show(false);
+			//t->Show(false);
 			ResetStat(false);
 			return;
 		}
