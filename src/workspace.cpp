@@ -377,6 +377,7 @@ ESurType GetSur(char n)
 
 int Chief::Make(BecherObject * owner,const char * cmd)
 {
+#ifndef BECHER_EDITOR
     // rozparsovat command
     // napr. "W=>S" - jeden tupoun prestane pracovat
     //       "3W=>S" - tri tupouni prestanou pracovat
@@ -451,7 +452,7 @@ int Chief::Make(BecherObject * owner,const char * cmd)
 	}
     // register
     // 
-
+#endif
 	return 0;
 }
 

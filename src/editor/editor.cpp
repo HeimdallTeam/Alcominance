@@ -226,7 +226,7 @@ TerrainObject::TerrainObject(wxWindow * parent)
 {
 #undef BT_P
 #define BT_P(x,y) wxPoint(28 * x + 12, 28 * y + 15)
-
+#if 0
 	wxButton * b;
 	wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
 	wxStaticBox * sb = new wxStaticBox(this, -1, _("Terrain"), wxPoint(10,10),
@@ -266,6 +266,7 @@ TerrainObject::TerrainObject(wxWindow * parent)
 	topsizer->Add( sb);//,
                 //long style = 0,
                 //const wxString& name = wxStaticBoxNameStr)
+#endif
 }
 
 void TerrainObject::OnTexturesClick(wxCommandEvent& e)
@@ -605,7 +606,7 @@ void BecherEdit::OnOpenFile(wxCommandEvent &)
 {
 	wxFileDialog dlg(this,_("Choose a map file..."),
 		_T(""), _T(""), _("Becher Map(*.bm)|*.bm|All Files(*.*)|*.*"), 
-		wxOPEN | wxHIDE_READONLY | wxFILE_MUST_EXIST); 
+		wxOPEN | wxFILE_MUST_EXIST); 
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		if (m_map == NULL)
@@ -637,7 +638,7 @@ void BecherEdit::OnSaveFile(wxCommandEvent &e)
 	if (m_map->GetFilePath().IsEmpty() || e.GetId() == HoeEditor::ID_SAVEAS)
 	{
 		wxFileDialog dlg( this, _("Save map file..."),
-			_T(""), _T(""), _("Becher Map(*.bm)|*.bm"), wxSAVE | wxHIDE_READONLY);
+			_T(""), _T(""), _("Becher Map(*.bm)|*.bm"), wxSAVE );
 nq:
 		if (dlg.ShowModal() == wxID_OK)
 		{

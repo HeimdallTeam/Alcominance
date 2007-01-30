@@ -279,7 +279,7 @@ bool Destilate::Idiot(TJob * j)
 
 bool Destilate::Select()
 {
-	FactoryBuilding::Select();
+	//FactoryBuilding::Select();
 	/*GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Store"));
 	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());

@@ -13,11 +13,11 @@
 #include "../resource/maleikony/ter_hlina.xpm"
 #include "../resource/maleikony/ter_pisek.xpm"
 #include "../resource/maleikony/City_Dirt.xpm"
-#include "../resource/maleikony/City_SquareTiles.xpm"
-#include "../resource/maleikony/Cliff1.xpm"
-#include "../resource/maleikony/Concrete.xpm"
-#include "../resource/maleikony/MetalPlateCliff.xpm"
-#include "../resource/maleikony/MetalPlateTiles.xpm"
+#include "../resource/maleikony/city_squaretiles.xpm"
+#include "../resource/maleikony/cliff1.xpm"
+#include "../resource/maleikony/concrete.xpm"
+#include "../resource/maleikony/metalplatecliff.xpm"
+#include "../resource/maleikony/metalplatetiles.xpm"
 
 	//b = new wxBitmapButton(sb,IDB_TEX1+1,wxBitmap(City_Dirt_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
 	//b = new wxBitmapButton(sb,IDB_TEX1+2,wxBitmap(City_SquareTiles_xpm),BT_P(3,0),BT_SIZE/*,BS_FLAT*/);

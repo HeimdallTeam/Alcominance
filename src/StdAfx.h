@@ -74,6 +74,7 @@ typedef HoeGame::CVar CVar;
 #include <wx/dynlib.h>
 #include <wx/menu.h>
 #include <wx/propgrid/propgrid.h>
+#include <wx/propgrid/manager.h>
 #include <wx/bmpbuttn.h>
 #include <wx/file.h>
 #include <wx/config.h>
@@ -83,6 +84,13 @@ typedef HoeGame::CVar CVar;
 #include <wx/fs_zip.h>
 #include <wx/html/helpctrl.h>
 #include <wx/spinctrl.h>
+#include <wx/msgdlg.h>
+#include <wx/bmpbuttn.h>
+#include <wx/sizer.h>
+#include <wx/statbox.h>
+#include <wx/statusbr.h>
+#include <wx/filedlg.h>
+#include <wx/log.h>
 
 #include <he/app.h>
 #include <he/editor.h>

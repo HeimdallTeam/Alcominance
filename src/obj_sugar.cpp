@@ -374,7 +374,7 @@ void Sugar::Idiot()
 
 bool Sugar::Select()
 {
-	FactoryBuilding::Select();
+	BecherObject::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Store"));
 	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());

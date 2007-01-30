@@ -260,12 +260,13 @@ bool TrollPath::Go(BecherObject *to)
 	return Go(to->GetPosX(), to->GetPosY());
 }
 
-#ifndef BECHER_EDITOR
 
 bool TrollPath::Step(Troll * t, const float time)
 {
-	bool finish;
-	float posX = t->GetPosX();
+
+    bool finish = true;
+#ifndef BECHER_EDITOR
+    float posX = t->GetPosX();
 	float posY = t->GetPosY();
 	float puvX = posX;
 	float puvY = posY;
@@ -274,8 +275,11 @@ bool TrollPath::Step(Troll * t, const float time)
 	t->SetAngle(angle);
 	// nastavit pozici podle terenu
 	t->SetPosition( posX, posY, GetLevel()->GetScene()->GetScenePhysics()->GetHeight(posX,posY));
+#endif
 	return finish;
 }
+
+#ifndef BECHER_EDITOR
 
 bool TrollPath::GetNextPos(float l,float &px, float &py)
 {
