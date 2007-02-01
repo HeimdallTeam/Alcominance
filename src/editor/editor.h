@@ -99,6 +99,8 @@ protected:
 	HoeEditor::PanelMgr m_leftpanel;
 	wxHelpController m_help;
 	HoeEditor::UndoList m_undo;
+    wxAuiManager m_mgr;
+
 public:
 	BecherEdit();
 	virtual ~BecherEdit();

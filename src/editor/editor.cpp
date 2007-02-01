@@ -421,6 +421,8 @@ bool BecherEdit::Create(const wxString & title)
 */
 	HoeEditor::BaseEditor::Create(title);
 
+    m_mgr.SetManagedWindow(this);
+    
     // file
     wxMenu * menuFile = new wxMenu;
 	menuFile->Append(HoeEditor::ID_NEW, _("&New...\tCtrl+N"), _("Creates a new file or project."));
@@ -507,6 +509,9 @@ bool BecherEdit::Create(const wxString & title)
 		new TerrainObject(GetPanelMgr()), _("Terrain"), true, true);
 	GetPanelMgr()->AddPanel(
 		m_prop, _("Properties"), false, true);
+    m_mgr.AddPane(m_prop, wxAuiPaneInfo().
+                  Name(wxT("test11")).Caption(wxT("Fixed Pane")).
+                  Bottom().Layer(1).Position(2).Fixed());
 
 
 	UpdateControls();
@@ -516,6 +521,8 @@ bool BecherEdit::Create(const wxString & title)
 	statbar->SetFieldsCount(2);
 
 	UpdateControls();
+    m_mgr.Update();
+
 	return true;
 }
 

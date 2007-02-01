@@ -91,6 +91,8 @@ typedef HoeGame::CVar CVar;
 #include <wx/statusbr.h>
 #include <wx/filedlg.h>
 #include <wx/log.h>
+#include "wx/aui/aui.h"
+
 
 #include <he/app.h>
 #include <he/editor.h>
