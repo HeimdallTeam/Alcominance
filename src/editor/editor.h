@@ -87,7 +87,7 @@ public:
 	TexturesDialog(wxWindow * parent);
 };
 
-class BecherEdit : public HoeEditor::BaseEditor
+class BecherEdit : public HoeEditor::BaseEditor, public HoeEditor::ToolEventHandler
 {
 	static BecherEdit * s_actinstance;
 protected:
@@ -96,11 +96,9 @@ protected:
 	EditorMap *m_map;
 	HoeEditor::PropertyGrid * m_prop;
 	HoeEditor::EngineView m_engview;
-	HoeEditor::PanelMgr m_leftpanel;
 	wxHelpController m_help;
 	HoeEditor::UndoList m_undo;
     wxAuiManager m_mgr;
-
 public:
 	BecherEdit();
 	virtual ~BecherEdit();
@@ -112,8 +110,7 @@ public:
 
 	virtual XHoeFS * GetFS() { return &m_res; }
 	HoeEditor::PropertyGrid * GetProp() { return m_prop; }
-	virtual HoeEditor::EngineView * GetEngineView() { return &m_engview; }
-	virtual HoeEditor::PanelMgr * GetPanelMgr() { return &m_leftpanel; }
+	HoeEditor::EngineView * GetEngineView() { return &m_engview; }
 
 	bool Create(const wxString & title);
 	void OnNewObject(wxCommandEvent &);

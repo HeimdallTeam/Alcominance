@@ -123,7 +123,7 @@ void ToolCreateObject::LeftDown(const int x, const int y, const wxMouseEvent &e)
 	else
 	{
 		m_obj = NULL;
-		BecherEdit::Get()->SetTool(NULL);
+		BecherEdit::Get()->OnDefaultTool();
 	}
 
 	// undo action

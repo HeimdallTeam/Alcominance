@@ -226,7 +226,6 @@ TerrainObject::TerrainObject(wxWindow * parent)
 {
 #undef BT_P
 #define BT_P(x,y) wxPoint(28 * x + 12, 28 * y + 15)
-#if 0
 	wxButton * b;
 	wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
 	wxStaticBox * sb = new wxStaticBox(this, -1, _("Terrain"), wxPoint(10,10),
@@ -266,7 +265,6 @@ TerrainObject::TerrainObject(wxWindow * parent)
 	topsizer->Add( sb);//,
                 //long style = 0,
                 //const wxString& name = wxStaticBoxNameStr)
-#endif
 }
 
 void TerrainObject::OnTexturesClick(wxCommandEvent& e)
@@ -491,28 +489,20 @@ bool BecherEdit::Create(const wxString & title)
     // ... and attach this menu bar to the frame
     SetMenuBar(m_menu); 
 
-	wxSplitterWindow * split = new wxSplitterWindow(this,10, wxDefaultPosition, wxDefaultSize,0);
-	split->SetSashGravity(0);
-	
-	// seradit do layoutu
-
-	this->m_leftpanel.Create(split, -1);
-	this->m_engview.Create(split, -1, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS);
-
-	split->SplitVertically(&m_leftpanel, &m_engview, 150);
+	this->m_engview.Create(this, -1, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS);
 
 	m_prop = new HoeEditor::PropertyGrid();
-	m_prop->Create(GetPanelMgr());
-	GetPanelMgr()->AddPanel(
-		new ToolObjects(GetPanelMgr()), _("Tools"), true, true);
-	GetPanelMgr()->AddPanel(
-		new TerrainObject(GetPanelMgr()), _("Terrain"), true, true);
-	GetPanelMgr()->AddPanel(
-		m_prop, _("Properties"), false, true);
+	m_prop->Create(this);
+    m_mgr.AddPane(new ToolObjects(this), wxAuiPaneInfo().
+                  Name(wxT("tools")).Caption(wxT("Tools")).
+                  Left());
+    m_mgr.AddPane(new TerrainObject(this), wxAuiPaneInfo().
+                  Name(wxT("terrain")).Caption(wxT("Terrain")).
+                  Left());
     m_mgr.AddPane(m_prop, wxAuiPaneInfo().
-                  Name(wxT("test11")).Caption(wxT("Fixed Pane")).
-                  Bottom().Layer(1).Position(2).Fixed());
-
+                  Name(wxT("properties")).Caption(wxT("Properties")).
+                  Left());
+	m_mgr.AddPane(&m_engview, wxAuiPaneInfo().CentrePane());
 
 	UpdateControls();
 
