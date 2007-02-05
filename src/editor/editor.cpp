@@ -230,15 +230,15 @@ TerrainObject::TerrainObject(wxWindow * parent)
 	wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
 	wxStaticBox * sb = new wxStaticBox(this, -1, _("Terrain"), wxPoint(10,10),
                 wxSize(140,80));
-	b = new wxBitmapButton(sb,IDB_TERRDOWN,wxBitmap(e_terrdown_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(this,IDB_TERRDOWN,wxBitmap(e_terrdown_xpm),BT_P(0,0)+wxPoint(10,10),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Terrain down") );
-	b = new wxBitmapButton(sb,IDB_TERRUP,wxBitmap(e_terrup_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(this,IDB_TERRUP,wxBitmap(e_terrup_xpm),BT_P(1,0)+wxPoint(10,10),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Terrain up") );
     //b = new wxBitmapButton(sb,IDB_TERRUP,wxBitmap(e_terrhillup_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Terrain hill up") );
     //b = new wxBitmapButton(sb,IDB_TERRDOWN,wxBitmap(e_terrhilldown_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Terrain hill down") );
-	b = new wxBitmapButton(sb,IDB_TERRPREV,wxBitmap(e_terrprevis_xpm),BT_P(2,0),BT_SIZE/*,BS_FLAT*/);
+	b = new wxBitmapButton(this,IDB_TERRPREV,wxBitmap(e_terrprevis_xpm),BT_P(2,0)+wxPoint(10,10),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Terrain") );
 	topsizer->Add( sb);
 
@@ -252,8 +252,8 @@ TerrainObject::TerrainObject(wxWindow * parent)
 	{
 		if (g_ter_surfaces[i].icon == NULL)
 			continue;
-		b = new wxBitmapButton(sb,IDB_TEXTURE+i,
-			wxBitmap(g_ter_surfaces[i].icon),BT_P(posx,posy),BT_SIZE/*,BS_FLAT*/);
+		b = new wxBitmapButton(this,IDB_TEXTURE+i,
+			wxBitmap(g_ter_surfaces[i].icon),BT_P(posx,posy)+wxPoint(10,100),BT_SIZE/*,BS_FLAT*/);
 		if (g_ter_surfaces[i].tt)
 			b->SetToolTip( _(g_ter_surfaces[i].tt) );
 		posx++;
