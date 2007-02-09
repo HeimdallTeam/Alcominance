@@ -142,81 +142,15 @@ bool ResourceExp::Load(BecherGameLoad &r)
 	return true;
 }
 
-//////////////////////////////////////////
-Workspace::Workspace()
-{
-	m_recept = NULL;
-	m_progress = 0.f;
-	m_out = 0;
-	m_mout = 0;
-}
-
-int Workspace::GetNumber(char type)
-{
-	assert(m_recept != NULL);
-	const char * p = m_recept->GetString();
-	int i;
-	while (*p && *p!=type) p++; // vyjde nastejno jako hledani v tabulce
-	if (!*p) return 0; // error
-	if (sscanf(p+1, "%d", &i)==1)
-	{
-		return i;
-	}
-	return 0;
-}
-
-void Workspace::SetRecept(CVar * recept)
-{
-	m_recept = recept;
-}
-
-void Workspace::ToProcess()
-{
-	m_mout = GetNumber('=');
-	m_progress = 1.f;
-}
-
-void Workspace::Update(const float t)
-{
-	// update progress
-	if (m_progress > 0.f)
-	{
-		m_progress -= t;
-		if (m_progress <= 0.f)
-		{
-			m_out = m_mout;
-			m_mout = 0;
-		}
-	}
-}
-
-bool Workspace::In(ResourceBase * sur,char type, bool remove)
-{
-	uint n = GetNumber(type);
-	if (n > sur->GetNum())
-		return false;
-	if (remove)
-		sur->Get(n, true);
-	return true;
-}
-
-uint Workspace::Out(bool remove)
-{
-	int ret = m_out;
-	if (remove)
-		m_out = 0;
-	return ret;
-}
-
 /////////////////////////////////////////////////////////
 // static
-int Workspace2::s_passes = 0; // znasobeni
-int Workspace2::s_num_in=0,Workspace2::s_num_out=0;
+int Workspace::s_passes = 0; // znasobeni
+int Workspace::s_num_in=0,Workspace::s_num_out=0;
 
-Workspace2::Request Workspace2::s_req_in[20];
-Workspace2::RequestOut Workspace2::s_req_out[5];
+Workspace::Request Workspace::s_req_in[20];
+Workspace::RequestOut Workspace::s_req_out[5];
 
-Workspace2::Workspace2(CVar * recept)
+Workspace::Workspace(CVar * recept)
 {
 	m_recept = recept;
 	// zjistit z receptu cas a nastavit na nejakou prijemnou hodnotu (rand)
@@ -224,7 +158,7 @@ Workspace2::Workspace2(CVar * recept)
 	m_desttime = m_desttime * HoeCore::RandFloat(0.6f,1.f);
 }
 
-int Workspace2::BeginPass(float workers, float time)
+int Workspace::BeginPass(float workers, float time)
 {
 	assert(m_recept != NULL);
 	if (!workers || time <= 0.f)
@@ -247,7 +181,7 @@ int Workspace2::BeginPass(float workers, float time)
 }
 
 
-bool Workspace2::operator << (ResourceBase & in)
+bool Workspace::operator << (ResourceBase & in)
 {
 	// prenastavit s_passes na to kolik se jich tam vejde
 	if (s_passes <= 0)
@@ -275,7 +209,7 @@ bool Workspace2::operator << (ResourceBase & in)
 	return true;
 }
 
-bool Workspace2::operator >> (ResourceBase & out)
+bool Workspace::operator >> (ResourceBase & out)
 {
 	// prenastavit s_passes na to kolik se jich tam vejde
 	if (s_passes <= 0)
@@ -304,7 +238,7 @@ bool Workspace2::operator >> (ResourceBase & out)
 	return true;
 }
 
-bool Workspace2::operator >> (float & out)
+bool Workspace::operator >> (float & out)
 {
 	// prenastavit s_passes na to kolik se jich tam vejde
 	if (s_passes <= 0)
@@ -332,7 +266,7 @@ bool Workspace2::operator >> (float & out)
 	return true;
 }
 
-void Workspace2::Commit()
+void Workspace::Commit()
 {
 	int i;
 	if (s_passes <= 0)

@@ -105,18 +105,19 @@ int BecherBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
 }
 
 //////////////////////////////////////////////////////////////
-// Factory building
-FactoryBuilding::FactoryBuilding(IHoeScene * scn, CVar &v_build)
-	: BecherBuilding(scn),
-	m_wbuild(&v_build), m_stone(EBS_Stone), m_wood(EBS_Wood), 
-	m_coal(EBS_Coal)
+// Source building
+
+//////////////////////////////////////////////////////////////
+// WorkBuilding
+WorkBuilding::WorkBuilding(IHoeScene * scn, CVar &v_build)
+    : BecherBuilding(scn),
+    m_build(&v_build), m_stone(EBS_Stone), m_wood(EBS_Wood)
 {
 	m_wood.SetOwner(this);
 	m_stone.SetOwner(this);
-	m_coal.SetOwner(this);
-
 	// build
 	m_buildprogress = 1.1f;
+
 }
 
 uint ReqResource(const char * recept, float progress, char r)
@@ -140,7 +141,7 @@ uint ReqResource(const char * recept, float progress, char r)
 	return (uint)HoeMath::UpperRound(rem);
 }
 
-int FactoryBuilding::GetInfo(int type, char * str, size_t n)
+int WorkBuilding::GetInfo(int type, char * str, size_t n)
 {
 	register int ret = 0;
 	if (type==BINFO_Custom && str)
@@ -156,10 +157,10 @@ int FactoryBuilding::GetInfo(int type, char * str, size_t n)
 		ret = (int)this->m_wood.GetNum();
 		break;
 	case BINFO_ReqStone:
-		ret = ReqResource(m_wbuild.GetRecept(), m_buildprogress, 'K') - m_stone.GetNum();
+		ret = ReqResource(m_build.GetRecept(), m_buildprogress, 'K') - m_stone.GetNum();
 		break;
 	case BINFO_ReqWood:
-		ret = ReqResource(m_wbuild.GetRecept(), m_buildprogress, 'D') - m_wood.GetNum();
+		ret = ReqResource(m_build.GetRecept(), m_buildprogress, 'D') - m_wood.GetNum();
 		break;
 	case BINFO_CanStone:
 		{ ResourceExp * ri = CRR::Get()->Find(EBS_Stone, this);
@@ -180,7 +181,7 @@ int FactoryBuilding::GetInfo(int type, char * str, size_t n)
 	return ret;
 }
 
-int FactoryBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
+int WorkBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
 	switch (msg)
 	{
@@ -212,9 +213,7 @@ int FactoryBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
         } return 1;
 	case BMSG_InsertSur: {
 		PAR_Load * l = (PAR_Load *)par2;
-		if (l->sur == EBS_Coal)
-			m_coal.Add((uint*)&l->num, 1000);
-		else if (l->sur == EBS_Wood)
+		if (l->sur == EBS_Wood)
 			m_wood.Add((uint*)&l->num, 1000);
 		else if (l->sur == EBS_Stone)
 			m_stone.Add((uint*)&l->num, 1000);
@@ -226,18 +225,20 @@ int FactoryBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
-void FactoryBuilding::UpdateBuild(float t)
+void WorkBuilding::Update(const float t)
 {
-	if (m_buildprogress < 1.0f && m_wbuild.BeginPass(m_chief.GetNumWorkers(EBW_Work)+v_autowork.GetFloat(), t))
+	if (m_buildprogress < 1.0f && m_build.BeginPass(m_chief.GetNumWorkers(EBW_Work)+v_autowork.GetFloat(), t))
 	{
-		m_wbuild << m_stone;
-		m_wbuild << m_wood;
-		m_wbuild >> m_buildprogress;
-		m_wbuild.Commit();
+		m_build << m_stone;
+		m_build << m_wood;
+		m_build >> m_buildprogress;
+		m_build.Commit();
 	}
+    
+    BecherBuilding::Update(t);
 }
 
-void FactoryBuilding::IdiotBuild()
+void WorkBuilding::IdiotBuild()
 {
 	HoeGame::LuaFunc f(GetLua(), "i_sugarbuild");
     f.PushPointer((BecherObject*)this);
@@ -254,6 +255,67 @@ void FactoryBuilding::IdiotBuild()
 	f.SetTableInteger("works_max", m_chief.GetMaxWorkers());
 	f.Run(2);
 }
+
+
+//////////////////////////////////////////////////////////////
+// Production building
+ProductionBuilding::ProductionBuilding(IHoeScene * scn, CVar &v_build)
+	: WorkBuilding(scn, v_build)
+{
+
+}
+
+
+//////////////////////////////////////////////////////////////
+// Factory building
+FactoryBuilding::FactoryBuilding(IHoeScene * scn, CVar &v_recept, CVar &v_build)
+	: WorkBuilding(scn, v_build),
+	m_work(&v_recept), m_coal(EBS_Coal)
+{
+	m_coal.SetOwner(this);
+}
+
+int FactoryBuilding::GetInfo(int type, char * str, size_t n)
+{
+	register int ret = 0;
+	if (type==BINFO_Custom && str)
+	{
+		type = DefaultCustomInfo(str);
+	}
+	switch (type)
+	{
+    case BINFO_NumCoal:
+		ret = (int)this->m_coal.GetNum();
+		break;
+	default:
+		return WorkBuilding::GetInfo(type, str, n);
+	};
+	if (str)
+		snprintf(str, n, "%d", ret);
+	return ret;
+}
+
+int FactoryBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+	switch (msg)
+	{
+	case BMSG_InsertSur: {
+		PAR_Load * l = (PAR_Load *)par2;
+		if (l->sur == EBS_Coal)
+			m_coal.Add((uint*)&l->num, 1000);
+		else 
+			break;
+		}
+		return 0;
+	}
+	return WorkBuilding::GameMsg(msg, par1, par2, npar2);
+}
+
+void FactoryBuilding::Update(const float t)
+{
+    WorkBuilding::Update(t);
+}
+
 
 
 

@@ -36,30 +36,11 @@ void Shop::Update(const float t)
 {
 }
 
-bool Shop::InsertSur(ESurType type, uint *s)
-{
-	return false;
-}
-
-bool Shop::SetToWork(Troll * t)
-{
-	return false;
-}
-
-void Shop::UnsetFromWork(Troll * t)
-{
-}
-
 bool Shop::Select()
 {
 	BecherBuilding::Select();
 	GetLua()->func("s_shop");
 	return true;
-}
-
-bool Shop::Idiot(TJob * t)
-{
-	return false;
 }
 
 

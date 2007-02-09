@@ -11,6 +11,7 @@ class Shop : public BecherBuilding
 public:
 	Shop(IHoeScene * scn);
 	//virtual ~Shop();
+    virtual void Update(const float t);
 
 	DECLARE_BUILDING(EBO_Shop)
 };

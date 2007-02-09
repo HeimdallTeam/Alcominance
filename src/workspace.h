@@ -80,26 +80,6 @@ public:
 
 class Workspace
 {
-	CVar * m_recept;
-	float m_progress;
-	uint m_out;
-	uint m_mout;
-	// pro parsovani stringu
-	int GetNumber(char type);
-public:
-	Workspace();
-	void SetRecept(CVar * recept);
-	void Update(const float t);
-	bool In(ResourceBase * sur,char type, bool remove);
-	uint Out(bool remove);
-	bool CanIn() { return m_progress <= 0.f && m_out == 0 && m_mout == 0; }
-	bool CanOut() { return m_out > 0; }
-	bool InProcess() { return !m_out && m_mout; }
-	void ToProcess();
-};
-
-class Workspace2
-{
 // staticke prvky pro pocitani
 	static const int c_max_in = 20;
 	static const int c_max_out = 5;
@@ -130,7 +110,7 @@ class Workspace2
 	CVar * m_recept;
 	float m_desttime;
 public:
-	Workspace2(CVar * recept);
+	Workspace(CVar * recept);
 	/** Zacne process
 	* @param workers Kolik tupounu pracovalo
 	* @param time kolik casu ubehlo

@@ -7,13 +7,11 @@
 
 class Troll;
 struct TJob;
-class Construct;
 
 extern CVar v_idiottime;
 /**
 * Vsechno co ma spolecneho s funkcni budovou
 */
-
 class BecherBuilding : public BecherObject
 {
 protected:
@@ -31,26 +29,10 @@ public:
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 };
 
-class FactoryBuilding : public BecherBuilding
-{
-protected:
-	// staveni
-	Workspace2 m_wbuild;
-	ResourceImp m_stone;
-	ResourceImp m_wood;
-	float m_buildprogress;
-	// prace
-	Chief m_chief;
-	ResourceImp m_coal;
-public:
-	FactoryBuilding(IHoeScene * scn, CVar &v_build);
-	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
-	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
-	inline bool InBuildProcess() { return m_buildprogress < 1.f; }
-	void UpdateBuild(float t);
-    void IdiotBuild();
-};
-
+/**
+ * Budova zdroje, pouzivaji ji doly a studna
+ * obsahuje frontu do ktere se muzou tupouni zaregistrovat a tezit.
+ */
 class SourceBuilding : public BecherBuilding
 {
 public:
@@ -58,15 +40,55 @@ public:
 	virtual bool SetToGet(Troll * t, uint num) { return false; }
 };
 
+/**
+ * Pracovni budova
+ * Ma funkce pro praci a funkci pro postaveni budovy
+ */
+class WorkBuilding : public BecherBuilding
+{
+protected:
+	// staveni
+	Workspace m_build;
+	ResourceImp m_stone;
+	ResourceImp m_wood;
+	float m_buildprogress;
+    // organizator prace
+	Chief m_chief;
+public:
+    WorkBuilding(IHoeScene * scn, CVar &v_build);    
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
+    inline bool InBuildProcess() { return m_buildprogress < 1.f; }
+    virtual void Update(const float t);
+    void IdiotBuild();
+};
 
-// neni cukr -> vyslany
-// cukr -> 50% -> maka
-// plny sklad
-// trollove se sami ptaji po praci
-// pokud najdou praci registruji se, pokud ne, odregistruji se
-// idiot prideluje praci, objednava zakazky, atd
-// jakmile trol, splni ukol, prijde zpet 
+/**
+ * Produkcni budova
+ * budova pouze produkuje na zaklade nejake prace (farma, pila)
+ */
+class ProductionBuilding : public WorkBuilding
+{
+public:
+    ProductionBuilding(IHoeScene * scn, CVar &v_build);        
+};
 
+/**
+ * Tovarni budova
+ * funkce pro tovarny, cukrovar, lihovar a tovarna
+ */
+class FactoryBuilding : public WorkBuilding
+{
+protected:
+	// prace
+    Workspace m_work;
+	ResourceImp m_coal;
+public:
+	FactoryBuilding(IHoeScene * scn, CVar &v_recept, CVar &v_build);
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
+	virtual void Update(const float t);
+};
 
 #endif // _BECHERGAME_BUILDINGS_H_
 

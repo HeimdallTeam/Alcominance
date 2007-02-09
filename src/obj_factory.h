@@ -4,57 +4,31 @@
 
 #include "buildings.h"
 
-class Factory;
-
-#ifndef BECHER_EDITOR
-class FactoryStatic : public ObjectHud
+class Factory : public FactoryBuilding
 {
 protected:
-	char m_sugarinfo[256];
-	char m_trtinainfo[256];
-	Factory * m_act;
-public:
-	FactoryStatic();
-	void SetAct(Factory * act);
-	virtual void Draw(IHoe2D * h2d);
-};
-#endif // BECHER_EDITOR
-
-class Factory : public FactoryBuilding, TrollList
-{
-	friend class BecherLevel;
-	friend class FactoryStatic;
-protected:
-	// panel
-#ifndef BECHER_EDITOR
-	static FactoryStatic m_userhud;
-#endif // BECHER_EDITOR
-	// trolls
+	// prace
 	ResourceImp m_sugar;
 	ResourceImp m_alco;
 	ResourceImp m_water;
 	ResourceImp m_herbe;
-    ResourceImp m_coal;
 	ResourceExp m_becher;
 	//WorkMode m_mode;
-	TrollList m_worked;
-    int m_wrk_alco;
-    int m_wrk_sugar;
-    int m_wrk_herbe;
-    int m_wrk_water;
-    int m_wrk_coal;
-	float m_progress;
-	HoeGame::StopWatch m_exitdelay;
 	inline const int GetMiniStoreCount() const 
 	{ return m_sugar.GetNum()
 		+ m_alco.GetNum()
 		+ m_herbe.GetNum()
 		+ m_water.GetNum()
 		+ m_becher.GetNum(); }
+
+    HoeGame::CTimer m_it;
 public:
 	Factory(IHoeScene * scn);
 	virtual ~Factory();
-
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
+    void Idiot();
+    virtual void Update(const float t);
 	DECLARE_BUILDING(EBO_Factory)
 };
 

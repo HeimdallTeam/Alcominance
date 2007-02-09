@@ -70,12 +70,7 @@ public:
 #define DECLARE_BASEOBJECT(type) virtual EObjType GetType() { return type; }
 #ifndef BECHER_EDITOR
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
-	virtual void Update(const float t); \
 	virtual bool Select(); \
-	virtual bool Idiot(TJob * j); \
-	virtual bool SetToWork(Troll * t); \
-	virtual void UnsetFromWork(Troll * t); \
-	virtual bool InsertSur(ESurType type, uint *s); \
 	virtual bool Save(BecherGameSave &w); \
 	virtual bool Load(BecherGameLoad &r); \
 	//virtual ResourceBase * GetResource(ESurType type);

@@ -17,8 +17,8 @@ static CVar v_coalmax("dest_coal_max", 120, TVAR_SAVE); // maximalni kapacita pr
 
 ////////////////////////////////////////////////////////
 Destilate::Destilate(IHoeScene * scn) 
-  : FactoryBuilding(scn, v_build), 
-  m_build(&v_recept), m_alco(EBS_Alco), m_sugar(EBS_Sugar)
+  : FactoryBuilding(scn, v_recept, v_build), 
+  m_alco(EBS_Alco), m_sugar(EBS_Sugar)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_DESTILATE));
 	SetRingParam(4.5f, 4.5f, 2.f);
@@ -27,7 +27,6 @@ Destilate::Destilate(IHoeScene * scn)
 	m_sugar.SetOwner(this);
 	m_alco.SetOwner(this); 
 
-	m_sugar.SetNum(10);
 	//m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
 	//m_part.pos.Set(4.f,13.f,-14.f);
 	//GetCtrl()->Link(THoeSubObject::Particle, &m_part);
@@ -133,70 +132,16 @@ void Destilate::SetMode(EBuildingMode mode)
 
 #ifndef BECHER_EDITOR
 
-bool Destilate::InsertSur(ESurType type, uint *s)
-{
-	if (type==EBS_Sugar)
-	// max
-		return m_sugar.Add(s, v_sklad.GetInt() - GetMiniStoreCount());
-	else
-		return false;
-}
-
-bool Destilate::SetToWork(Troll * t)
-{
-    /*switch (t->GetJob().type){
-    case TJob::jtWork:
-	    if (m_worked.Count() >= (uint)v_numworks.GetInt()) return false;
-	    m_worked.Add(t);	
-        break;
-    case TJob::jtGotoRes:
-        switch (t->GetJob().surtype){
-        case EBS_Sugar:
-            m_wrk_sugar++;
-            break;        
-        case EBS_Coal:
-            m_wrk_coal++;
-            break;
-        }
-        break;
-    }*/
-    return true;
-}
-
-void Destilate::UnsetFromWork(Troll * t)
-{
-	/*switch(t->GetJob().type){
-    case TJob::jtWork:
-	    m_worked.Remove(t);
-        break;
-    case TJob::jtGotoRes:
-        switch(t->GetJob().surtype){
-        case EBS_Sugar:
-            m_wrk_sugar--;
-            break;
-        case EBS_Coal:
-            m_wrk_coal--;
-            break;
-        }
-        break;
-    }*/
-}
-
 void Destilate::Update(const float t)
 {
-	if (m_chief.GetNumWorkers(EBW_Work) > 0)
+	if (m_chief.GetNumWorkers(EBW_Work) > 0 
+            && !InBuildProcess() && m_work.BeginPass(m_chief.GetNumWorkers(EBW_Work), t))
 	{
-		if (this->InBuildProcess())
-		{
-			UpdateBuild(t);
-		}
-		else if (m_build.BeginPass(m_chief.GetNumWorkers(EBW_Work), t))
-		{
-			m_build << m_sugar;
-			m_build >> m_alco;
-			m_build.Commit();
-		}
+		m_work << m_sugar;
+		m_work >> m_alco;
+		m_work.Commit();
 	}
+
 	// update
 	if (m_it.Update(t))
 	{
@@ -226,11 +171,6 @@ bool Destilate::Select()
 	BecherBuilding::Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/alco.menu",this);
 	GetLua()->func("s_lihovar");
-	return true;
-}
-
-bool Destilate::Idiot(TJob * j)
-{
 	return true;
 }
 

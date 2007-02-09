@@ -7,7 +7,7 @@
 class Troll;
 class Farm;
 
-class Farm : public SourceBuilding
+class Farm : public ProductionBuilding
 {
 	friend class BecherLevel;
 	friend class FarmStatic;
@@ -21,6 +21,8 @@ public:
 	Farm(IHoeScene * scn);
 	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
+    virtual void Update(const float t);
+
 	DECLARE_BUILDING(EBO_Farm)
 
 };

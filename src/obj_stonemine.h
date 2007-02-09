@@ -4,29 +4,12 @@
 
 #include "buildings.h"
 
-class StoneMine;
-
-#ifndef BECHER_EDITOR
-class StoneMineStatic : public ObjectHud
-{
-protected:
-	StoneMine * m_act;
-public:
-	StoneMineStatic();
-	void SetAct(StoneMine * act);
-	virtual void Draw(IHoe2D * h2d);
-};
-#endif // BECHER_EDITOR
-
 class StoneMine : public SourceBuilding
 {
-	friend class BecherLevel;
-	friend class StoneMineStatic;
 protected:
 	// panel
 	ResourceExp m_stone;
 #ifndef BECHER_EDITOR
-	static StoneMineStatic m_userhud;
 	HoeCore::Set<TTrollWorkSlot> m_worked;
 #endif // BECHER_EDITOR
 public:
@@ -36,6 +19,8 @@ public:
 	virtual bool SetToGet(Troll * t, uint num);
 #endif // BECHER_EDITOR
 
+    virtual void Update(const float t);
+    
 	DECLARE_BUILDING(EBO_StoneMine)
 };
 

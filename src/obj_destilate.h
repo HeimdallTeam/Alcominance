@@ -10,7 +10,6 @@ class Destilate : public FactoryBuilding
 {
 protected:
 	// prace
-	Workspace2 m_build;
 	ResourceImp m_sugar;
 	ResourceExp m_alco;
 	inline const int GetMiniStoreCount() const { return m_alco.GetNum() + m_sugar.GetNum(); }
@@ -25,6 +24,7 @@ public:
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 
     void Idiot();
+    virtual void Update(const float t);
 	DECLARE_BUILDING(EBO_Destilate)
 };
 

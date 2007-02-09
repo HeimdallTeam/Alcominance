@@ -12,6 +12,7 @@ static CVar v_numworks("store_maxwork", 4, 0);
 static CVar v_cost("store_cost", 200, TVAR_SAVE); // cena za stavbu
 static CVar v_cost_wood("store_cost_wood", 100, TVAR_SAVE); // pocet dreva potrebneho na stavbu
 static CVar v_cost_stone("store_cost_stone", 150, TVAR_SAVE); // pocet kameni potrebneho na stavbu
+static CVar v_build("store_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 
 IHoeModel * Store::g_models[EBS_Max] = {0};
 
@@ -31,7 +32,7 @@ void Store::LoadModels()
 }
 
 ////////////////////////////////////////////////////////////
-Store::Store(IHoeScene * scn) : BecherBuilding(scn)
+Store::Store(IHoeScene * scn) : WorkBuilding(scn, v_build)
 {
 	// set owners
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STORE));
@@ -57,7 +58,7 @@ Store::Store(IHoeScene * scn) : BecherBuilding(scn)
 
 bool Store::Save(BecherGameSave &w)
 {
-	BecherBuilding::Save(w);
+	WorkBuilding::Save(w);
 
 	for (int i=1;i < EBS_Max;i++)
 		m_res[i].Save(w);
@@ -67,7 +68,7 @@ bool Store::Save(BecherGameSave &w)
 
 bool Store::Load(BecherGameLoad &r)
 {
-	BecherBuilding::Load(r);
+	WorkBuilding::Load(r);
 
 	for (int i=1;i < EBS_Max;i++)
 		m_res[i].Load(r);
@@ -102,7 +103,7 @@ int Store::GetInfo(int type, char * str, size_t n)
 	TYPECASE(Water)
 #undef TYPECASE
 	default:
-		return BecherBuilding::GetInfo(type, str, n);
+		return WorkBuilding::GetInfo(type, str, n);
 	};
 	return 0;
 }
@@ -131,40 +132,18 @@ int Store::GameMsg(int msg, int par1, void * par2, uint npar2)
 		} 
 	}
 #endif 
-	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
+	return WorkBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
 
 #ifndef BECHER_EDITOR
-
-bool Store::InsertSur(ESurType type, uint *s)
-{
-	bool ret = m_res[type].Add(s, *s);
-	OnUpdateSur();
-	return ret;
-}
-
-bool Store::SetToWork(Troll * t)
-{
-	if (m_worked.Count() >= (uint)v_numworks.GetInt())
-		return false;
-	m_worked.Add(t);
-	return true;
-}
-
-void Store::UnsetFromWork(Troll * t)
-{
-	m_worked.Remove(t);
-}
 
 void Store::Update(const float t)
 {
 	// update po snimcic
 }
 
-
-
-bool Store::Idiot(TJob *t)
+void Store::Idiot()
 {
 	// zjistit pripadny zdroj pro suroviny
 	// 
@@ -183,7 +162,7 @@ bool Store::Idiot(TJob *t)
 		if (m_res[i].IsEnable())
 			poc++;
 	if (poc==0)
-		return false;
+		return;
 	poc = v_sklad.GetInt() / poc;
 	for (int i=1;i < EBS_Max;i++)
 		req[i] = m_res[i].IsEnable() ? m_res[i].GetNum()-poc: 0xfffffff;
@@ -214,19 +193,18 @@ bool Store::Idiot(TJob *t)
 		else
 			req[min] = 0xfffffff;
 	}*/
-	return false;
 }
 
 bool Store::Select()
 {
-	BecherBuilding::Select();
+	WorkBuilding::Select();
 	return true;
 }
 
 #else
 bool Store::Select()
 {
-	BecherBuilding::Select();
+	WorkBuilding::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Materials"));
 	GetProp()->AppendLong(EBS_Wood, _("Wood"), m_res[EBS_Wood].GetNum());

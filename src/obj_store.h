@@ -15,7 +15,7 @@ public:
 	void Enable(bool enable) { m_enable = enable; }
 };
 
-class Store : public BecherBuilding
+class Store : public WorkBuilding
 {
 	friend class BecherLevel;
 protected:
@@ -40,7 +40,8 @@ public:
 	virtual uint AcceptSur(ESurType type);
 	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
-
+    virtual void Update(const float t);
+    void Idiot();
     static void LoadModels();
 	DECLARE_BUILDING(EBO_Store)
 };

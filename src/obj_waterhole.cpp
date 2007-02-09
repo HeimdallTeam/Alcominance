@@ -16,32 +16,6 @@ static CVar v_speed("water_speed", 0.21f, TVAR_SAVE); // rychlost zpracovani jed
 static CVar v_max("water_max", 50, TVAR_SAVE);
 
 
-#ifndef BECHER_EDITOR
-WaterHoleStatic WaterHole::m_userhud;
-
-WaterHoleStatic::WaterHoleStatic()
-{
-	m_act = NULL;
-}
-
-void WaterHoleStatic::SetAct(WaterHole * act)
-{
-	m_act = act;
-	// pripojit 
-	dynamic_cast<HoeGame::Gui::Font*>(ReqItem("voda", HoeGame::Gui::EText))->SetText(m_waterinfo);
-}
-
-void WaterHoleStatic::Draw(IHoe2D * h2d)
-{
-	if (m_act)
-	{
-		sprintf(m_waterinfo,"%d vody.", m_act->m_water.GetNum());
-		ObjectHud::Draw(h2d);
-	}
-}
-#endif // BECHER_EDITOR
-
-
 ////////////////////////////////////////////////////////////
 WaterHole::WaterHole(IHoeScene * scn) : SourceBuilding(scn), m_water(EBS_Water)
 {
@@ -109,7 +83,6 @@ bool WaterHole::Select()
 {
 	SourceBuilding::Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/waterhole.menu", this);	
-	m_userhud.SetAct(this);
 	GetLua()->func("s_studna");
 	return true;
 }
@@ -166,25 +139,6 @@ const char * WaterHole::BuildPlace(float x, float y)
 	byte c = (byte)(0xff * maxdist);
 	GetCtrl()->SetOverColor(0xff000000 | (0xff-c) << 8 | c);
 	return NULL;
-}
-
-bool WaterHole::Idiot(TJob *t)
-{
-	return false;
-}
-
-bool WaterHole::InsertSur(ESurType type, uint *s)
-{
-	return false;
-}
-
-bool WaterHole::SetToWork(Troll * t)
-{
-	return false;
-}
-
-void WaterHole::UnsetFromWork(Troll * t)
-{
 }
 
 bool WaterHole::SetToGet(Troll * t, uint num)

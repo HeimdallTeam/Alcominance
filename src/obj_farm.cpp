@@ -9,9 +9,10 @@ static CVar v_farma("farm_cost", 130, TVAR_SAVE);
 static CVar v_farma_drevo("farm_cost_wood", 60, TVAR_SAVE);
 static CVar v_farma_kamen("farm_cost_stone", 20, TVAR_SAVE);
 static CVar v_num("farm_num", 20, TVAR_SAVE); // pocet trtiny z urody
+static CVar v_build("farm_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 
 ////////////////////////////////////////////////////////////
-Farm::Farm(IHoeScene * scn) : SourceBuilding(scn), m_cane(EBS_Cane)
+Farm::Farm(IHoeScene * scn) : ProductionBuilding(scn, v_build), m_cane(EBS_Cane)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_FARM));
 	SetRingParam(4.5f,3.5f,2.f);
@@ -30,7 +31,7 @@ Farm::Farm(IHoeScene * scn) : SourceBuilding(scn), m_cane(EBS_Cane)
 
 bool Farm::Save(BecherGameSave &w)
 {
-	BecherBuilding::Save(w);
+	ProductionBuilding::Save(w);
 	// ulozit rust
 	m_cane.Save(w);
 	w.Write<float>(m_grow);
@@ -41,7 +42,7 @@ bool Farm::Save(BecherGameSave &w)
 
 bool Farm::Load(BecherGameLoad &r)
 {
-	BecherBuilding::Load(r);
+	ProductionBuilding::Load(r);
 	m_cane.Load(r);
 	m_grow = r.Read<float>();
 	m_growinfo.pos.Translate(0,5.f * m_grow - 5.f,0);
@@ -69,7 +70,7 @@ int Farm::GetInfo(int type, char * str, size_t n)
 		ret = int(m_cane.GetNum());
 		break;
 	default:
-		return BecherBuilding::GetInfo(type, str, n);
+		return ProductionBuilding::GetInfo(type, str, n);
 	};
 
 	if (str)
@@ -120,52 +121,19 @@ void Farm::Update(const float dtime)
 	m_growinfo.pos.Translate(0,5.f * m_grow - 5.f,0);
 }
 
-bool Farm::InsertSur(ESurType type, uint *s)
-{
-	return false;
-}
-
-bool Farm::SetToWork(Troll * t)
-{
-	if (m_work == NULL)
-	{
-		m_work = t;
-		return true;
-	}
-	return false;
-}
-
-void Farm::UnsetFromWork(Troll * t)
-{
-	assert(t == m_work);
-	m_work = NULL;
-}
-
 bool Farm::Select()
 {
-	SourceBuilding::Select();
+	ProductionBuilding::Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/farm.menu",this);
 	GetLua()->func("s_farma");
 	return true;
 }
 
-bool Farm::Idiot(TJob *t)
-{
-	// pokud nemuze pracovat tak upnout do prace, jinak neupnout
-	/*if (m_work)
-		return false;
-	t->type = TJob::jtGotoWork;
-	t->owner = this;*/
-
-	return true;
-}
-
-
 #else // BECHER_OBJECT
 
 bool Farm::Select()
 {
-	SourceBuilding::Select();
+	ProductionBuilding::Select();
 	return true;
 }
 

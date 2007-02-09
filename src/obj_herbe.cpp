@@ -11,33 +11,6 @@ static CVar v_cena("herbe_cost_stone", , TVAR_SAVE); // pocet kameni potrebneho 
 */
 static CVar v_num("herbe_num", 3, TVAR_SAVE); // pocet trtiny z urody
 
-#ifndef BECHER_EDITOR
-HerbeWomanStatic HerbeWoman::m_userhud;
-
-HerbeWomanStatic::HerbeWomanStatic()
-{
-	m_act = NULL;
-}
-
-void HerbeWomanStatic::SetAct(HerbeWoman * act)
-{
-	m_act = act;
-	// pripojit 
-	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("trtina", HoeGame::Gui::EText))->SetText(m_trtinainfo);
-	//dynamic_cast<HoeGame::Gui::Font*>(ReqItem("cukr", HoeGame::Gui::EText))->SetText(m_sugarinfo);
-}
-
-void HerbeWomanStatic::Draw(IHoe2D * h2d)
-{
-	if (m_act)
-	{
-		//sprintf(m_sugarinfo,"%d cukru.", m_act->m_sugar.GetNum());
-		//sprintf(m_trtinainfo,"%d trtina.", m_act->m_cane.GetNum());
-		ObjectHud::Draw(h2d);
-	}
-}
-#endif // BECHER_EDITOR
-
 float getheight(IHoeModel *);
 
 ////////////////////////////////////////////////////////////
@@ -112,25 +85,6 @@ bool HerbeWoman::Select()
 	return true;
 }
 
-bool HerbeWoman::Idiot(TJob *t)
-{
-	return false;
-}
-
-bool HerbeWoman::InsertSur(ESurType type, uint *s)
-{
-	return false;
-}
-
-bool HerbeWoman::SetToWork(Troll * t)
-{
-	return false;
-}
-
-void HerbeWoman::UnsetFromWork(Troll * t)
-{
-}
-
 #else // BECHER_OBJECT
 
 bool HerbeWoman::Select()
@@ -164,7 +118,6 @@ int HerbeWoman::GameMsg(int msg, int par1, void * par2, uint npar2)
 	{
 	case BMSG_Select:
 		GetLevel()->GetPanel()->SetObjectHud("scripts/herbe.menu",this);
-		m_userhud.SetAct(this);
 		GetLua()->func("s_herbe");
 		break;
 	};
