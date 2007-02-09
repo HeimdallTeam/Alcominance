@@ -278,12 +278,16 @@ int l_GetInfo(lua_State * L)
 	{
 		int info = 0;
 		if (lp.IsNum(-par))
+		{
 			info = bo->GetInfo(lp.GetNum(-par), NULL, 0);
+			GetCon()->Printf("info: %d=%s(%d)", info, FindIDString(lp.GetNum(-par)), bo->GetID());
+		}
 		else if (lp.IsString(-par))
 		{
 			char buff[1024] = {0};
 			strncpy(buff, lp.GetString(-par), sizeof(buff)-1);
 			info = bo->GetInfo(BINFO_Custom, buff, sizeof(buff)-1);
+			GetCon()->Printf("info: %d=%s(%d)", info, buff, bo->GetID());
 		}
 		else
 			lp.Error("type info must be id or string");

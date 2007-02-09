@@ -17,9 +17,12 @@ function s_lihovar()
 end
 
 function i_alco(h, i)
+ print("Idiot alco")
+ s = GetInfo(h, BINFO_CanSugar)
+
  if i.sugar > 0 then
     SendMsg(h, BMSG_Chief, "F>W")
- elseif SendMsg(h, BMSG_Chief, "F>IS") == 0 then
+ elseif s > 0 and SendMsg(h, BMSG_Chief, "F>IS") == 0 then
        SendMsg(h, BMSG_Chief, "W>IS")
  end
 end

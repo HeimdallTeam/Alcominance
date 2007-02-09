@@ -100,6 +100,10 @@ int Sugar::GetInfo(int type, char * str, size_t n)
 	case BINFO_NumSugar:
 		ret = (int)this->m_sugar.GetNum();
 		break;
+	case BINFO_CanCane:
+		{ ResourceExp * ri = CRR::Get()->Find(EBS_Cane, this);
+			if (ri) ret = ri->GetAvail();
+		} break;
 	default:
 		return FactoryBuilding::GetInfo(type, str, n);
 	};

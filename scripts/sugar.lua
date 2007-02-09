@@ -59,9 +59,12 @@ function i_sugarbuild(h,i)
 end
 
 function i_sugar(h, i)
+  print("Idiot sugar")
+
+ s = GetInfo(h, BINFO_CanCane)
  if i.cane > 0 then
     SendMsg(h, BMSG_Chief, "F>W")
- elseif SendMsg(h, BMSG_Chief, "F>IC") == 0 then
+ elseif s > 0 and SendMsg(h, BMSG_Chief, "F>IC") == 0 then
        SendMsg(h, BMSG_Chief, "W>IC")
  end
 end

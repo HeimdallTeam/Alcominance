@@ -6,10 +6,7 @@ function c_stavtovarna()
  wood = GetVar("factory_cost_wood")
  stone = GetVar("factory_cost_stone")
  
- if cost < GetCash() then
-  info("Nedostatek penez pro stavbu")
- end
- 
+
  AddCash(-cost)
  SetBuilding(EBO_Factory,cost,wood,stone)
 end
@@ -24,7 +21,7 @@ function s_tovarna()
  AddButton(model_PREDPOVED,"Want some weather cast?", "c_weathercast")
  AddButton(model_KOTEL,"Fix the holes for better efficiency", "c_firefix")
  AddButton(model_STOPPRACI,"Stop the hard work", "c_workstop")
- PlaySound(model_TESTSOUND+1)
+ --PlaySound(model_TESTSOUND+1)
 end
 
 --b
@@ -53,56 +50,21 @@ end
 
 --works_count	pocet pracujicich (vyrabejicich)
 --works_max		max. pocet pracujicich
-function i_factory(b)
+function i_factory(h, i)
+ a,b,c,d = GetInfo(h, BINFO_CanSugar, BINFO_CanAlco, BINFO_CanWater, BINFO_CanHerbe)
 
---zjisti se recept (kolik je treba cukru a lihu pro jednotku/jendotky alkoholu)
- countSugar, units = getReceptCount(GetVar("factory_recept"), "S")
- countAlco = getReceptCount(GetVar("factory_recept"), "A")
- countHerbe = getReceptCount(GetVar("factory_recept"), "H")
- countWater = getReceptCount(GetVar("factory_recept"), "W")
-
- -- pokud je dostatek surovin na vyrobu jedne jednotky a nikdo nezpracovava, zpracuj
- if b.sugar >= countSugar/units and b.alco >= countAlco/units
-	and b.herbe >= countHerbe/units and b.water >= countWater/units
-	and b.works == 0 then
-	
-     job = { type = 1, percent = 90 }
-     return job
+ if b > 0 and SendMsg(h, BMSG_Chief, "F>IA") == 0 then
+       SendMsg(h, BMSG_Chief, "W>IA")
+ end
+ if a > 0 and SendMsg(h, BMSG_Chief, "F>IS") == 0 then
+       SendMsg(h, BMSG_Chief, "W>IS")
+ end
+ if c > 0 and SendMsg(h, BMSG_Chief, "F>IW") == 0 then
+       SendMsg(h, BMSG_Chief, "W>IW")
+ end
+ if d > 0 and SendMsg(h, BMSG_Chief, "F>IH") == 0 then
+       SendMsg(h, BMSG_Chief, "W>IH")
  end
  
- -- kdyz jsou vstupni suroviny aspon na dvojnasobku a jeste je misto, zpracuj
- if b.sugar >= countSugar*2 and b.alco >= countAlco*2 
-	and b.herbe >= countHerbe*2 and b.water >= countWater*2
-	and b.works_count < b.works_max then
- 
-     job = { type = 1, percent = 100 }
-     return job
- end
- 
- -- kdyz jsou dostupne vstupni suroviny a je dostatecne mnozstvi uhli nebo pro nej aspon nekdo chodi, 
- -- nebo pokud neni zadne uhli dostupne, nos to, ceho je vic dostupno
- info("dostupne vstupni suroviny a je dostatecne mnozstvi uhli nebo pro nej aspon nekdo chodi, nebo pokud neni zadne uhli dostupne - ")
- if b.coal_avail == 0 or b.coal > 10 or b.coal_wrkcount > 0 then
-	maxValue = math.max(
-		b.sugar_avail*countSugar, b.alco*countAlco, b.herbe_avail*countHerbe, b.water_avail*countWater
-	)
-	-- poradi case urcuje take prednost pri stejne hodnote	
-	if maxValue == b.water_avail*countWater then
-		job = { type = 0, sur = EBS_Water, num=10, percent = 90 }
-	end	
-	if maxValue == b.herbe_avail*countHerbe then
-		job = { type = 0, sur = EBS_Herbe, num=10, percent = 90 }
-	end
-	if maxValue == b.sugar_avail*countSugar then
-		job = { type = 0, sur = EBS_Sugar, num=10, percent = 90 }
-	end
-	if maxValue == b.alco_avail*countAlco then
-		job = { type = 0, sur = EBS_Alco, num=10, percent = 90 }
-	end
-	
-	return job
- end
- 
- return nil
 end
 

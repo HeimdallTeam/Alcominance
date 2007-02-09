@@ -28,6 +28,7 @@ Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn, v_recept, v_build),
 	m_water.SetOwner(this);
 	m_becher.SetOwner(this); 
     CRR::Get()->Register(&m_becher);
+	m_it.Start(v_idiottime, true);
 
 }
 
@@ -76,6 +77,22 @@ int Factory::GetInfo(int type, char * str, size_t n)
 	case BINFO_NumBecher:
 		ret = (int)this->m_becher.GetNum();
 		break;
+	case BINFO_CanSugar:
+		{ ResourceExp * ri = CRR::Get()->Find(EBS_Sugar, this);
+			if (ri) ret = ri->GetAvail();
+		} break;
+	case BINFO_CanAlco:
+		{ ResourceExp * ri = CRR::Get()->Find(EBS_Alco, this);
+			if (ri) ret = ri->GetAvail();
+		} break;
+	case BINFO_CanWater:
+		{ ResourceExp * ri = CRR::Get()->Find(EBS_Water, this);
+			if (ri) ret = ri->GetAvail();
+		} break;
+	case BINFO_CanHerbe:
+		{ ResourceExp * ri = CRR::Get()->Find(EBS_Herbe, this);
+			if (ri) ret = ri->GetAvail();
+		} break;
 	default:
 		return FactoryBuilding::GetInfo(type, str, n);
 	};

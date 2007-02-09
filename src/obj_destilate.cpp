@@ -30,7 +30,7 @@ Destilate::Destilate(IHoeScene * scn)
 	//m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
 	//m_part.pos.Set(4.f,13.f,-14.f);
 	//GetCtrl()->Link(THoeSubObject::Particle, &m_part);
-
+	CRR::Get()->Register(&m_alco);
 	m_it.Start(v_idiottime, true);
 }
 
@@ -68,12 +68,16 @@ int Destilate::GetInfo(int type, char * str, size_t n)
 	case BINFO_NumSugar:
 		ret = (int)this->m_sugar.GetNum();
 		break;
+	case BINFO_CanSugar:
+		{ ResourceExp * ri = CRR::Get()->Find(EBS_Sugar, this);
+			if (ri) ret = ri->GetAvail();
+		} break;
 	default:
 		return FactoryBuilding::GetInfo(type, str, n);
 	};
 	if (str)
 		snprintf(str, n, "%d", ret);
-	return 0;
+	return ret;
 }
 
 int Destilate::GameMsg(int msg, int par1, void * par2, uint npar2)
@@ -95,6 +99,20 @@ int Destilate::GameMsg(int msg, int par1, void * par2, uint npar2)
 			break;
 		}
 		return 0;
+	case BMSG_GetSur: {
+		PAR_Load * l = (PAR_Load *)par2;
+		if (l->sur == EBS_Alco)
+		{
+			m_alco.Unlock(par1);
+			return this->m_sugar.Get(l->num, true);
+		}
+		} break;
+	case BMSG_LockSur: {
+			PAR_Favour * f = (PAR_Favour *)par2;
+			if (f->sur == EBS_Alco)
+				return m_alco.Lock(f->num);
+			break;
+		} 
 	}
 	return FactoryBuilding::GameMsg(msg, par1, par2, npar2);
 }
