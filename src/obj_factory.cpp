@@ -11,6 +11,7 @@ static CVar v_cena_drevo("factory_cost_wood", 500, TVAR_SAVE);
 static CVar v_cena_kamen("factory_cost_stone", 500, TVAR_SAVE);
 static CVar v_numworks("factory_maxwork", 4, TVAR_SAVE);
 static CVar v_recept("factory_recept", "S10+A10+H3+W20=1", 0); // recept pro jednu davku
+static CVar v_build("factory_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 static CVar v_coalmax("coal_max", 200, TVAR_SAVE); // maximalni kapacita pro uhli
 
 
@@ -44,7 +45,7 @@ void FactoryStatic::Draw(IHoe2D * h2d)
 #endif // BECHER_EDITOR
 
 ////////////////////////////////////////////////////////
-Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn), 
+Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn, v_build), 
  m_becher(EBS_Becher), m_water(EBS_Water), m_sugar(EBS_Sugar), m_alco(EBS_Alco),
  m_coal(EBS_Coal), m_herbe(EBS_Herbe)
 {
@@ -55,14 +56,7 @@ Factory::Factory(IHoeScene * scn) : FactoryBuilding(scn),
 	m_herbe.SetOwner(this);
 	m_water.SetOwner(this);
 	m_becher.SetOwner(this); CRR::Get()->Register(&m_becher);
-	m_w.SetRecept(&v_recept);
-	m_progress = 0.f;
 
-    m_wrk_alco = 0;
-    m_wrk_sugar = 0;
-    m_wrk_herbe = 0;
-    m_wrk_water = 0;
-    m_wrk_coal = 0;
 }
 
 Factory::~Factory()
@@ -168,55 +162,6 @@ void Factory::UnsetFromWork(Troll * t)
 
 void Factory::Update(const float t)
 {
-	// update
-	float prog = m_w.InProcess() ? m_worked.Count()*v_numzpr.GetFloat():0.f;
-
-	if (m_worked.Count() > 0)
-	{
-		m_w.Update(t*prog);
-
-		if (m_w.CanOut() && ((int)m_w.Out(false)<=(v_sklad.GetInt() - GetMiniStoreCount())))
-		{
-			uint p = m_w.Out(true);
-			m_becher.Add(&p, p);
-		}
-
-		// naplneni
-		if (m_w.CanIn() && m_w.In(&m_sugar, 'S', false)
-			 && m_w.In(&m_alco, 'A', false)
-			  && m_w.In(&m_herbe, 'H', false)
-			   && m_w.In(&m_water, 'W', false))
-		{
-			m_w.In(&m_sugar, 'S', true);
-			m_w.In(&m_alco, 'A', true);
-			m_w.In(&m_herbe, 'H', true);
-			m_w.In(&m_water, 'W', true);
-			m_w.ToProcess();
-		}
-	}
-
-	if (m_progress != prog)
-	{
-		// update 
-		m_progress = prog;
-		// pokud neni progress a nemuze se delat
-		/*if (m_progress > 0.f)
-			m_part.emitor->Start();
-		else
-			m_part.emitor->Stop();*/
-	}
-
-	if (m_worked.Count() > 0)
-	{
-		if (prog > 0.f)
-			m_exitdelay.Reset();
-		else if (m_exitdelay.AddTime((const float)t, m_worked.Count() == 1 ? 3.f:1.f))
-		{
-			m_exitdelay.Reset();
-					// propustit jednoho workera
-			//m_worked.OneStopWork();
-		}
-	}
 }
 
 

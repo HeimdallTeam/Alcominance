@@ -9,6 +9,7 @@ class Troll;
 struct TJob;
 class Construct;
 
+extern CVar v_idiottime;
 /**
 * Vsechno co ma spolecneho s funkcni budovou
 */
@@ -33,9 +34,21 @@ public:
 class FactoryBuilding : public BecherBuilding
 {
 protected:
-	Workspace m_w;
+	// staveni
+	Workspace2 m_wbuild;
+	ResourceImp m_stone;
+	ResourceImp m_wood;
+	float m_buildprogress;
+	// prace
+	Chief m_chief;
+	ResourceImp m_coal;
 public:
-	FactoryBuilding(IHoeScene * scn) : BecherBuilding(scn) {}
+	FactoryBuilding(IHoeScene * scn, CVar &v_build);
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
+	inline bool InBuildProcess() { return m_buildprogress < 1.f; }
+	void UpdateBuild(float t);
+    void IdiotBuild();
 };
 
 class SourceBuilding : public BecherBuilding

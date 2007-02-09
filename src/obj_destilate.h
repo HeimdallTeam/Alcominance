@@ -6,21 +6,16 @@
 
 class Troll;
 
-class Destilate : public BecherBuilding
+class Destilate : public FactoryBuilding
 {
-	friend class BecherLevel;
 protected:
-	// trolls
+	// prace
+	Workspace2 m_build;
 	ResourceImp m_sugar;
-    ResourceImp m_coal;
 	ResourceExp m_alco;
-	TrollList m_worked;
-	float m_progress;
-    int m_wrk_sugar;    
-    int m_wrk_coal;
-	THoeSub_Particle m_part;
-	HoeGame::StopWatch m_exitdelay;
 	inline const int GetMiniStoreCount() const { return m_alco.GetNum() + m_sugar.GetNum(); }
+
+	HoeGame::CTimer m_it;
 public:
 	Destilate(IHoeScene * scn);
 	virtual ~Destilate();
@@ -29,6 +24,7 @@ public:
 	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 
+    void Idiot();
 	DECLARE_BUILDING(EBO_Destilate)
 };
 

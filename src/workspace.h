@@ -141,6 +141,7 @@ public:
 	bool operator >> (ResourceBase & out);
 	bool operator >> (float & out);
 	void Commit();
+	const char * GetRecept() { return m_recept->GetString(); }
 };
 
 typedef HoeCore::Set<Troll*> TrollList;
@@ -179,10 +180,13 @@ class Chief
 		if (recount) ComputeStatistik();
 	}
 	void SetJob(int t, EWorkType type);
+	CVar *mv_max;
 public:
     Chief();
+	void SetMax(CVar &max) { mv_max = &max; }
     int Make(BecherObject * owner, const char * cmd);
     int GetNumWorkers(EWorkType type);
+	int GetMaxWorkers() { return mv_max ? mv_max->GetInt():0; }
 	void Incoming(Troll *);
 };
 

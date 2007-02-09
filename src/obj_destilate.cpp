@@ -11,13 +11,14 @@ static CVar v_cost("dest_cost", 180, TVAR_SAVE); // cena za stavbu
 static CVar v_cost_wood("dest_cost_wood", 40, TVAR_SAVE); // pocet dreva potrebneho na stavbu
 static CVar v_cost_stone("dest_cost_stone", 30, TVAR_SAVE); // pocet kameni potrebneho na stavbu
 static CVar v_numworks("dest_maxwork", 4, TVAR_SAVE); // maximalni pocet pracujicich
-static CVar v_recept("dest_recept", "S1=1", TVAR_SAVE); // recept pro jednu davku
+static CVar v_recept("dest_recept", "1.0:S1=1", TVAR_SAVE); // recept pro jednu davku
+static CVar v_build("dest_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 static CVar v_coalmax("dest_coal_max", 120, TVAR_SAVE); // maximalni kapacita pro uhli
-
 
 ////////////////////////////////////////////////////////
 Destilate::Destilate(IHoeScene * scn) 
-  : BecherBuilding(scn), m_alco(EBS_Alco), m_sugar(EBS_Sugar), m_coal(EBS_Coal)
+  : FactoryBuilding(scn, v_build), 
+  m_build(&v_recept), m_alco(EBS_Alco), m_sugar(EBS_Sugar)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_DESTILATE));
 	SetRingParam(4.5f, 4.5f, 2.f);
@@ -26,13 +27,12 @@ Destilate::Destilate(IHoeScene * scn)
 	m_sugar.SetOwner(this);
 	m_alco.SetOwner(this); 
 
-	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
-	m_part.pos.Set(4.f,13.f,-14.f);
-	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
+	m_sugar.SetNum(10);
+	//m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
+	//m_part.pos.Set(4.f,13.f,-14.f);
+	//GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 
-    m_wrk_sugar = 0;    
-    m_wrk_coal = 0;
-
+	m_it.Start(v_idiottime, true);
 }
 
 Destilate::~Destilate()
@@ -59,26 +59,21 @@ int Destilate::GetInfo(int type, char * str, size_t n)
 	register int ret = 0;
 	if (type==BINFO_Custom && str)
 	{
-		if (strcmp(str, "alco") == 0)
-			type = BINFO_NumAlco;
-		else if (strcmp(str, "sugar") == 0)
-			type = BINFO_NumSugar;
+		type = DefaultCustomInfo(str);
 	}
 	switch (type)
 	{
 	case BINFO_NumAlco:
 		ret = (int)this->m_alco.GetNum();
-		if (str)
-			snprintf(str, n, "%d", ret);
-		return ret;
+		break;
 	case BINFO_NumSugar:
 		ret = (int)this->m_sugar.GetNum();
-		if (str)
-			snprintf(str, n, "%d", ret);
-		return ret;
+		break;
 	default:
-		return BecherBuilding::GetInfo(type, str, n);
+		return FactoryBuilding::GetInfo(type, str, n);
 	};
+	if (str)
+		snprintf(str, n, "%d", ret);
 	return 0;
 }
 
@@ -93,8 +88,16 @@ int Destilate::GameMsg(int msg, int par1, void * par2, uint npar2)
 	case BMSG_StartBuilding:
 		return BuildPlace((float*)par2, 
 			(IHoeModel*)GetResMgr()->ReqResource(model_DESTILATE),50.f,200.f,msg==BMSG_StartBuilding);
+	case BMSG_InsertSur: {
+		PAR_Load * l = (PAR_Load *)par2;
+		if (l->sur == EBS_Sugar)
+			m_sugar.Add((uint*)&l->num, 1000);
+		else
+			break;
+		}
+		return 0;
 	}
-	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
+	return FactoryBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
 void Destilate::SetMode(EBuildingMode mode)
@@ -181,34 +184,42 @@ void Destilate::UnsetFromWork(Troll * t)
 
 void Destilate::Update(const float t)
 {
-	// update
-
-
-	/*if (m_progress != prog)
+	if (m_chief.GetNumWorkers(EBW_Work) > 0)
 	{
-		// update 
-		m_progress = prog;
-		// pokud neni progress a nemuze se delat
-		if (m_progress > 0.f)
-			m_part.emitor->Start();
-		else
-			m_part.emitor->Stop();
-	}
-
-	if (m_worked.Count() > 0)
-	{
-		if (prog > 0.f)
-			m_exitdelay.Reset();
-		else if (m_exitdelay.AddTime((const float)t, m_worked.Count() == 1 ? 3.f:1.f))
+		if (this->InBuildProcess())
 		{
-			m_exitdelay.Reset();
-					// propustit jednoho workera
-			m_worked.OneStopWork();
+			UpdateBuild(t);
 		}
-	}*/
-
+		else if (m_build.BeginPass(m_chief.GetNumWorkers(EBW_Work), t))
+		{
+			m_build << m_sugar;
+			m_build >> m_alco;
+			m_build.Commit();
+		}
+	}
+	// update
+	if (m_it.Update(t))
+	{
+        // pousti se po urcitem case, kdyz se zmeni personalie, pusti se hned,
+        // ale cas se vyresetuje zase na zacatek
+		if (InBuildProcess())
+			IdiotBuild();
+		else
+			Idiot();
+	}
+	FactoryBuilding::Update(t);
 }
 
+void Destilate::Idiot() 
+{
+	HoeGame::LuaFunc f(GetLua(), "i_alco");
+    f.PushPointer((BecherObject*)this);
+	f.PushTable();
+	f.SetTableInteger("alco", m_alco.GetNum());
+	f.SetTableInteger("sugar", m_sugar.GetNum());
+	f.SetTableInteger("coal", m_coal.GetNum());
+	f.Run(2);
+}
 
 bool Destilate::Select()
 {
@@ -220,58 +231,6 @@ bool Destilate::Select()
 
 bool Destilate::Idiot(TJob * j)
 {
-	// zjistit pripadny zdroj pro suroviny
-	// 
-	// navalit informace do tabulky, bud z crr nebo primo vybrane uloziste
-	ResourceExp * ri = CRR::Get()->Find(EBS_Sugar, this);
-    ResourceExp * rc = CRR::Get()->Find(EBS_Coal, this);
-	// odnaseni!
-	
-	HoeGame::LuaFunc f(GetLua(), "i_alco");
-	f.PushTable();
-	
-	f.SetTableInteger("max_store", v_sklad.GetInt());
-
-    // vstupni suroviny
-	f.SetTableInteger("sugar_avail", ri ? ri->GetAvail():0);
-    f.SetTableInteger("sugar_wrkcount", m_wrk_sugar);
-    f.SetTableInteger("sugar", m_sugar.GetNum());
-
-    f.SetTableInteger("coal_avail", rc ? rc->GetAvail():0);
-    f.SetTableInteger("coal_wrkcount", m_wrk_coal);
-	//f.SetTableInteger("coal", m_w.GetNum());
-    f.SetTableInteger("coal_max", v_coalmax.GetInt());
-
-	// works
-    f.SetTableInteger("works_count", this->m_worked.Count());    
-	f.SetTableInteger("works_max", v_numworks.GetInt());
-
-	f.Run(1);
-	if (f.IsNil(-1))
-	{
-		f.Pop(1);
-		return false;
-	}
-/*
-	// prevest zpatky na job
-	int r = f.GetTableInteger("type", -1); // typ prace
-	j->percent = f.GetTableFloat("percent", -1); // na kolik procent je vyzadovano
-	j->owner = this;
-	switch (r)
-	{
-	case 0:
-		j->surtype = (ESurType)f.GetTableInteger("sur", -1); // typ suroviny
-		j->type = TJob::jtGotoRes;
-		j->num = f.GetTableInteger("num", -1); // pocet k prineseni
-		j->from = ri;
-		break;
-	case 1:
-		j->type = TJob::jtGotoWork;
-		break;
-	};
-		
-	f.Pop(1);
-	*/
 	return true;
 }
 

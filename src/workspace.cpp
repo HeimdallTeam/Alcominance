@@ -365,6 +365,7 @@ Chief * Chief::s_lastupdater = NULL;
 Chief::Chief()
 {
     m_worked = 0;
+	mv_max = NULL;
 }
 
 ESurType GetSur(char n)

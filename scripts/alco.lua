@@ -13,61 +13,13 @@ function s_lihovar()
  ClearButtons()
  AddButton(ico_TROLLNEW,"Najmout", "c_najmout")
  AddButton(ico_TROLLFREE,"Propustit", "c_propustit")
- AddButton(model_LAHVARNA,"People pay more for nice bottles", "c_bottles")
-
+ --PlaySound(model_TESTSOUND)
 end
 
---b
---max_store - kapacita skladu
-
---sugar_avail		pocet lokalit zdroje cukr
---sugar_wrkcount	pocet zamestnancu nosici cukr
---sugar				kolik je cukru v miniskladu
-
---coal_avail		pocet lokalit zdroje uhli
---coal_wrkcount		pocet zamestnancu nosici uhli
---coal				kolik je uhli pro kotel
---coal_max			kolik se vejde uhli
-
---works_count	pocet pracujicich (vyrabejicich)
---works_max		max. pocet pracujicich
-function i_alco(b)
- 
- info("Lihovar ma ",b.sugar," cukru a ",b.alco," lihu")
- 
- --zjisti se recept (kolik je treba cukru a lihu pro jednotku/jendotky alkoholu)
- countSugar, units = getReceptCount(GetVar("dest_recept"), "S") 
- 
- -- pokud je dostatek surovin na vyrobu jedne jednotky a nikdo nezpracovava, zpracuj
- if b.sugar >= countSugar/units and b.works == 0 then
-     job = { type = 1, percent = 90 }
-     info("cukr aspon na jednu jednotku, zpracuji")
-     return job 
+function i_alco(h, i)
+ if i.sugar > 0 then
+    SendMsg(h, BMSG_Chief, "F>W")
+ elseif SendMsg(h, BMSG_Chief, "F>IS") == 0 then
+       SendMsg(h, BMSG_Chief, "W>IS")
  end
- 
- -- kdyz jsou vstupni suroviny aspon na dvojnasobku a jeste je misto, zpracuj 
- if b.sugar >= countSugar*2 and b.works_count < b.works_max then
-     job = { type = 1, percent = 100 }
-     info("cukr aspon na dvojnasobek a jeste je misto - zpracuji")
-     return job
- end 
- 
- -- kdyz jsou dostupne vstupni suroviny a je dostatecne mnozstvi uhli nebo pro nej aspon nekdo chodi, 
- -- nebo pokud neni zadne uhli dostupne, nos to, ceho je vic dostupno
- info("dostupne vstupni suroviny a je dostatecne mnozstvi uhli nebo pro nej aspon nekdo chodi, nebo pokud neni zadne uhli dostupne - ")
- if b.coal_avail == 0 or b.coal > 10 or b.coal_wrkcount > 0 then	
-	job = { type = 0, sur = EBS_Sugar, num=10, percent = 90 }
-	info("ano, budu nosit cukr (jeho vic a treba)")	
-	return job
- end
- info("ne, nebudu nosit cukr")
- 
- -- kdyz je dostupne uhli, nos uhli
- if b.coal_avail > 0 and b.coal < b.coal_max then
-     job = { type = 0, sur = EBS_Coal, num=10,  percent = 100 }
-     info("dostupne uhli - budu nosit uhli")
-     return job
- end
- 
- return nil
 end
