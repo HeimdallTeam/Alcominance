@@ -92,34 +92,19 @@ uint ResourceExp::Lock(uint num)
 	m_locked += num;
 	// kontrola
 	if (m_locked < 0)
-	{
-		assert(!"nepravdepodobna situace");
 		m_locked = 0;
-	}
 	if (m_locked > m_actual)
-	{
-		assert(!"nepravdepodobna situace");
 		m_locked = m_actual;
-	}
 	return num;
 }
 
 void ResourceExp::Unlock(uint num)
 {
+	m_locked -= num;
 	if (m_locked > m_actual)
-	{
-		assert(!"nepravdepodobna situace");
 		m_locked = m_actual;
-	}
-	if (m_locked < num)
-	{
-		assert(!"nepravdepodobna situace");
+	if (m_locked < 0)
 		m_locked = 0;
-	}
-	else
-		m_locked -= num;
-	// kontrola
-
 }
 
 bool ResourceExp::Save(BecherGameSave &w)

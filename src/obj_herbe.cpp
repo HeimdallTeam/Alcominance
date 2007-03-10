@@ -9,7 +9,7 @@ static CVar v_cena("herbe_cost", , TVAR_SAVE); // cena za stavbu
 static CVar v_cena("herbe_cost_wood", , TVAR_SAVE); // pocet dreva potrebneho na stavbu
 static CVar v_cena("herbe_cost_stone", , TVAR_SAVE); // pocet kameni potrebneho na stavbu
 */
-static CVar v_num("herbe_num", 3, TVAR_SAVE); // pocet trtiny z urody
+static CVar v_num("herbe_num", 10, TVAR_SAVE); // pocet bylin z urody
 
 float getheight(IHoeModel *);
 

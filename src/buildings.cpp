@@ -240,6 +240,7 @@ void WorkBuilding::Update(const float t)
 
 void WorkBuilding::IdiotBuild()
 {
+#ifndef BECHER_EDITOR
 	HoeGame::LuaFunc f(GetLua(), "i_sugarbuild");
     f.PushPointer((BecherObject*)this);
 	f.PushTable();
@@ -254,6 +255,7 @@ void WorkBuilding::IdiotBuild()
     f.SetTableInteger("works_sugar", m_chief.GetNumWorkers(EBW_Export(EBS_Sugar)));
 	f.SetTableInteger("works_max", m_chief.GetMaxWorkers());
 	f.Run(2);
+#endif
 }
 
 
