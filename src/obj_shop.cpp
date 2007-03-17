@@ -15,10 +15,9 @@ Shop::Shop(IHoeScene * scn) : BecherBuilding(scn)
 	SetRingParam(1.5f,3.f,2.f);
 }
 
-bool Shop::Save(BecherGameSave &w)
+bool Shop::Save(ChunkDictWrite &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteReservedWords(10);
 	return true;
 }
 
@@ -38,16 +37,20 @@ void Shop::Update(const float t)
 
 bool Shop::Select()
 {
-	BecherBuilding::Select();
+	//BecherBuilding::Select();
 	GetLua()->func("s_shop");
 	return true;
 }
 
 
 #else
+void Shop::Update(const float t)
+{
+}
+
 bool Shop::Select()
 {
-	BecherBuilding::Select();
+	//BecherBuilding::Select();
 	return true;
 }
 

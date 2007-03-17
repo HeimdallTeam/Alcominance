@@ -70,25 +70,9 @@ BecherObject * BecherMap::CreateObject(EObjType type)
 }
 
 
-XHoeObject * BecherMap::CreateXObject(EObjType type){
-
-
-    XHoeObject * bo = NULL;
-
-	switch (type)
-	{
-	case EBO_Stones1:
-    case EBO_Stones2:
-    case EBO_Anthill:
-    case EBO_Row:
-		bo = new Addon(m_scene, type);
-        break;
-    default:
-		assert(!"Unknown becher X object");
-	};
-
-	//bo->id = GenObjectID();
-	return bo;
+Addon * BecherMap::CreateAddOnObject(EObjType type)
+{
+    return new Addon(m_scene, type);
 }
 
 BecherSystemObject * BecherMap::CreateSystemObject(EObjType type)
@@ -172,83 +156,72 @@ bool BecherMap::SetTerrainData()
 	return true;
 }
 
-bool BecherMap::Load(BecherGameLoad & r, bool savegame)
+bool BecherMap::LoadMapChunk(BecherGameLoad & r)
 {
 	// tady musi byt unload
-
-	//this->m_numobj = 0;
-	//this->m_numsysobj = 0;
-	r.ReadNext();
-	while (r.Chunk().chunk != ID_CHUNK('e','n','d',' '))
+	switch (r.Chunk().chunk)
 	{
-		size_t st = r.GetFile()->Tell();
-		switch (r.Chunk().chunk)
-		{
-		case ID_CHUNK('t','e','r','r'):
-			// nejdriv textury terena..
-			m_terrain->LoadDump(&r);
-			m_terrain->GetDesc(&m_sizeX,&m_sizeY, &m_numX, &m_numY);
-			m_distX = m_sizeX / m_numX;
-			m_distY = m_sizeY / m_numY;
+	case ID_CHUNK('t','e','r','r'):
+		// nejdriv textury terena..
+		m_terrain->LoadDump(&r);
+		m_terrain->GetDesc(&m_sizeX,&m_sizeY, &m_numX, &m_numY);
+		m_distX = m_sizeX / m_numX;
+		m_distY = m_sizeY / m_numY;
 #ifndef BECHER_EDITOR
-			//m_terrain->ReleaseData();
+		//m_terrain->ReleaseData();
 #endif
-			break;
-		case ID_CHUNK('s','y','s','o'):	
-			{ // system object
-			//
-			dword type = r.Read<dword>();
-			BecherSystemObject * bs = CreateSystemObject((EObjType)type);
-			bs->Load(r);
-			AddSystemObject(bs);
-			} break;
-		case ID_CHUNK('o','b','j',' '):
-			if (!savegame)
+		break;
+	case ID_CHUNK('a','d','o','n'):
+		{
+			ChunkDictRead dict(r);
+			Addon * bo = CreateAddOnObject((EObjType)dict.KeyInt("type",0));
+			float x = dict.KeyFloat("x", 0.f);
+			float y = dict.KeyFloat("y", 0.f);
+			float z = dict.KeyFloat("height", m_scene->GetScenePhysics()->GetHeight(x,y));
+			float s = dict.KeyFloat("scale", 4.f);
+#ifdef BECHER_EDITOR
+			bo->SetPosition(x,y,z);
+			bo->SetAngle(dict.KeyFloat("angle", 0.f));
+#else
+			bo->SetPosition(x,z,y);
+			bo->SetOrientation(0.f,1.f,0.f,dict.KeyFloat("angle", 0.f));
+#endif
+			bo->GetCtrl()->SetScale(HoeMath::Vector3(s,s,s));
+			bo->Show(true);
+			AddAddonObject(bo);
+		}
+		break;
+	case ID_CHUNK('s','y','s','o'):	
+		{ // system object
+		//
+		dword type = r.Read<dword>();
+		BecherSystemObject * bs = CreateSystemObject((EObjType)type);
+		bs->Load(r);
+		AddSystemObject(bs);
+		} break;
+	case ID_CHUNK('o','b','j','s'):
+		{
+			r.Read<unsigned long>();
+			int no = r.Read<unsigned long>();
+			for (int i=0;i < no;i++)
 			{
 				// nacist objekt
 				if (!LoadObject(r))
 					return false;
-				break;
 			}
-			else
-				r.Skip(r.Chunk().size);
-			break;
-		case ID_CHUNK('o','b','j','u'):
-			if (!savegame)
-			{
-				// nacist objekt
-				dword id = r.Read<dword>();
-				BecherObject * bo = GetObjFromID(id);
-				if (!bo || !bo->Load(r))
-					return false;
-				break;
-			}
-			else
-				r.Skip(r.Chunk().size);
-			break;
-		default:
-			// nahrat //
-			r.Skip(r.Chunk().size);
-			break;
-		};
-		// musi byt zakonceny chunkem
-		if (r.GetFile()->Tell() != st + r.Chunk().size)
-		{
-			GetCon()->Printf("Error:Chunk %c%c%c%c size no match. chunk: %d, read size: %d",
-				r.Chunk().chunk & 0xff,(r.Chunk().chunk & 0xff00) >> 8,
-				(r.Chunk().chunk & 0xff0000) >> 16,(r.Chunk().chunk & 0xff000000) >> 24,
-				st + r.Chunk().size, r.GetFile()->Tell());
-			return false;
 		}
-		if (r.Read<dword>() != 123456789)
+		break;
+	case ID_CHUNK('o','b','j',' '):
 		{
-			GetCon()->Printf("Error:Corupt file...");
-			return false;
-		}
-
-		if (!r.ReadNext())
+			ChunkDictRead dict(r);
+			int id = dict.KeyInt("id", -1);
+			BecherObject * bo = GetObjFromID(id);
+			if (!bo || !bo->Load(dict))
+				return false;
 			break;
-	}
+		}
+		break;
+	};
 
 	return true;
 }
@@ -278,9 +251,13 @@ bool BecherMap::LoadObject(BecherGameLoad & r)
 
 bool BecherMap::SaveAllObjects(BecherGameSave &w)
 {
+	// ulozit hlavicky vsech objektu
+	w.WriteChunk(ID_CHUNK('o','b','j','s'));
+	// ulozit verzi a pocet
+	w.WriteValue<unsigned long>(2);
+	w.WriteValue<unsigned long>((unsigned long)GetNumObj());
 	for (int i=0;i < GetNumObj();i++)
 	{
-		w.WriteChunk(ID_CHUNK('o','b','j',' '), 1);
 		BecherObject * bo = GetObj(i);
 		TObjectSaveStruct s;
 		s.id = bo->id;
@@ -289,16 +266,19 @@ bool BecherMap::SaveAllObjects(BecherGameSave &w)
 		s.y = bo->GetPosY();
 		s.angle = bo->GetAngle();
 		w.Write<TObjectSaveStruct>(s);
-		//bo->Save(w);
-		// write size
-		w.WriteChunkEnd();
 	}
+	w.WriteChunkEnd();
+	// zacatek ukladani jednotlivych objektu
 	for (int i=0;i < GetNumObj();i++)
 	{
-		w.WriteChunk(ID_CHUNK('o','b','j','u'), 1);
+		w.WriteChunk(ID_CHUNK('o','b','j',' '));
+		// slovnik konecne
+		ChunkDictWrite dict(w);
+		dict.Begin();
 		BecherObject * bo = GetObj(i);
-		w.Write<dword>(bo->id);
-		bo->Save(w);
+		dict.Key("id", (int)bo->id);
+		bo->Save(dict);
+		dict.End();
 		// write size
 		w.WriteChunkEnd();
 	}
@@ -315,7 +295,8 @@ void BecherMap::AddSystemObject(BecherSystemObject * obj)
 	m_sysobj.Add(obj);
 }
 
-void BecherMap::AddAddonObject(XHoeObject * obj){
+void BecherMap::AddAddonObject(Addon * obj)
+{
     m_addon.Add(obj);
 }
 
@@ -331,7 +312,7 @@ void BecherMap::DeleteObject(BecherObject * obj)
 	delete obj;
 }
 
-void BecherMap::DeleteObject(XHoeObject * obj)
+void BecherMap::DeleteAddonObject(Addon * obj)
 {	
 	m_addon.Remove(obj);
 	delete obj;

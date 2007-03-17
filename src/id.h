@@ -41,25 +41,29 @@ enum EObjType
 	EBO_Saw,
 	EBO_CoalMine,
 	EBO_StoneMine,
-    EBO_Addon, // class
-    EBO_Stones1,
-    EBO_Stones2,
-    EBO_Anthill,
-    EBO_Row,
 	EBO_Max,    
 
-// class
-	EBC_Building = 100,
-	EBC_System,
-	EBC_Max,
+	// add on
+    EBAO_Stones1 = 400,
+    EBAO_Stones2,
+    EBAO_Anthill,
+    EBAO_Row,
+	EBAO_Max,
 
 	// system
-	EBSys_Sound = 1000,
+	EBSys_Sound = 500,
 	EBSys_Place,
 	EBSys_Water,
 	EBSys_Coal,
 	EBSys_Stone,
 	EBSys_Max,
+
+// class
+	EBC_Building = 1000,
+    EBC_Addon, // class
+	EBC_System,
+	EBC_Max,
+
 };
 
 #define assert_obj(n) assert(n > EBO_None && n < EBO_Max)

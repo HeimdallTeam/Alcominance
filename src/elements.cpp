@@ -52,29 +52,60 @@ void Tree::SetTypeModel(int type)
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(id));
 }
 
-#ifndef BECHER_EDITOR
-
-
-#else // BECHER_OBJECT
-
-bool Tree::Select()
+bool Tree::Save(ChunkDictWrite &w)
 {
-	BecherObject::Select();
-	GetProp()->Begin(this);
-	GetProp()->AppendCategory(_("Position"));
-	GetProp()->AppendFloat(6, _("Height"), 1);
-	GetProp()->End();	
+	BecherObject::Save(w);
+	w.Key("model", m_type);
+	w.Key("height", m_height);
+	//w.Write<float>(m_height);
 	return true;
 }
 
-void Tree::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+bool Tree::Load(const ChunkDictRead &r)
 {
-	switch (id)
+	BecherObject::Load(r);
+	SetTypeModel(r.KeyInt("model", m_type));
+	SetHeight(r.KeyFloat("height", m_height));
+	//m_height = r.Read<float>();
+	//SetPosition(GetPosX(), GetPosY(), m_height);
+	return true;
+}
+
+#ifndef BECHER_EDITOR
+int Tree::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+	switch (msg)
 	{
-	case 6:
-		SetHeight((float)pi.GetFloat());
+
+	}
+	return BecherObject::GameMsg(msg, par1, par2, npar2);
+
+}
+
+#else // BECHER_OBJECT
+
+int Tree::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+	switch (msg)
+	{
+	case BMSG_Select:
+		//BecherObject::Select();
+		GetProp()->Begin(this);
+		GetProp()->AppendCategory(_("Position"));
+		GetProp()->AppendFloat(6, _("Height"), 1);
+		GetProp()->End();
 		break;
-	};
+	case BMSG_PropertyChange:
+		switch (par1)
+		{
+		case 6:
+			SetHeight((float)reinterpret_cast<const HoeEditor::PropItem*>(par2)->GetFloat());
+			return 0;
+		};
+		break;
+	}
+	return BecherObject::GameMsg(msg, par1, par2, npar2);
+
 }
 
 #endif // BECHER_OBJECT
@@ -86,62 +117,131 @@ Bridge::Bridge(IHoeScene * scn) : BecherObject(scn)
 	m_height = 0.f;
 }
 
-bool Bridge::Save(BecherGameSave &w)
+bool Bridge::Save(ChunkDictWrite &w)
 {
 	BecherObject::Save(w);
-	w.Write<float>(m_height);
+	w.Key("height", m_height);
+	//w.Write<float>(m_height);
 	return true;
 }
 
-bool Bridge::Load(BecherGameLoad &r)
+bool Bridge::Load(const ChunkDictRead &r)
 {
 	BecherObject::Load(r);
-	m_height = r.Read<float>();
+	m_height = r.KeyFloat("height",0.f);
 	SetPosition(GetPosX(), GetPosY(), m_height);
 	return true;
 }
 
 
 #ifndef BECHER_EDITOR
+int Bridge::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+	switch (msg)
+	{
 
+	}
+	return BecherObject::GameMsg(msg, par1, par2, npar2);
+
+}
 
 #else // BECHER_OBJECT
 
-bool Bridge::Select()
+int Bridge::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
-	BecherObject::Select();
-	GetProp()->Begin(this);
-	GetProp()->AppendCategory(_("Position"));
-	GetProp()->AppendFloat(6, _("Height"), m_height);
-	GetProp()->End();	
-	return true;
-}
-
-void Bridge::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-	switch (id)
+	switch (msg)
 	{
-	case 6:
-		m_height = (float)pi.GetFloat();
-		SetPosition(GetPosX(), GetPosY(), m_height);
+	case BMSG_Select:
+		//BecherObject::Select();
+		GetProp()->Begin(this);
+		GetProp()->AppendCategory(_("Position"));
+		GetProp()->AppendFloat(6, _("Height"), m_height);
+		GetProp()->End();
 		break;
-	};
-}
+	case BMSG_PropertyChange:
+		switch (par1)
+		{
+		case 6:
+			m_height = (float)reinterpret_cast<const HoeEditor::PropItem*>(par2)->GetFloat();
+			SetPosition(GetPosX(), GetPosY(), m_height);
+			return 0;
+		};
+		break;
+	}
+	return BecherObject::GameMsg(msg, par1, par2, npar2);
 
+}
 
 #endif // BECHER_OBJECT
 
-Addon::Addon(IHoeScene * scn, int id)
+Addon::Addon(IHoeScene * scn, EObjType type)
+#ifdef BECHER_EDITOR
+ : BecherObject(scn), m_type(type), m_scale(1.f)
+#else
+: HoeGame::BaseObject(scn)
+#endif
 {
-	SetModel((IHoeModel*)GetResMgr()->ReqResource(id));
+	IHoeModel * m = NULL;
+	switch (type)
+	{
+	case EBAO_Stones1:
+		m = (IHoeModel*)GetResMgr()->ReqResource(model_addon_STONE1);
+        break;
+    case EBAO_Stones2:
+		m = (IHoeModel*)GetResMgr()->ReqResource(model_addon_STONE2);
+        break;
+    case EBAO_Anthill:
+		m = (IHoeModel*)GetResMgr()->ReqResource(model_addon_ANTHILL);
+        break;
+    case EBAO_Row:
+		m = (IHoeModel*)GetResMgr()->ReqResource(model_addon_ROW);
+        break;
+    default:
+		assert(!"Unknown becher X object");
+	};
+
+	if (m)
+		SetModel(m);
 	//m_height = 0.f;
 }
 
-#ifndef BECHER_EDITOR
+#ifdef BECHER_EDITOR
 
+int Addon::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+	switch (msg)
+	{
+	case BMSG_Select:
+		//BecherObject::Select();
+		GetProp()->Begin(this);
+		GetProp()->AppendCategory(_("Position"));
+		GetProp()->AppendFloat(1, _("Scale"), m_scale);
+		GetProp()->End();
+		break;
+	case BMSG_PropertyChange:
+		switch (par1)
+		{
+		case 1:
+			SetScale((float)reinterpret_cast<const HoeEditor::PropItem*>(par2)->GetFloat());
+			return 0;
+		};
+		break;
+	}
+	return BecherObject::GameMsg(msg, par1, par2, npar2);
+}
 
-#else // BECHER_OBJECT
+void Addon::SetScale(float s)
+{
+	m_scale = s;
+	GetCtrl()->SetScale(HoeMath::Vector3(s,s,s));
+}
 
+#else
+void Addon::SetScale(float s)
+{
+	GetCtrl()->SetScale(HoeMath::Vector3(s,s,s));
+}
 
 
 #endif // BECHER_OBJECT
+

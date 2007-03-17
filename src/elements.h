@@ -21,10 +21,9 @@ public:
 	void SetTypeModel(int type);
 	int GetTypeModel() { return m_type; }
 
-#ifdef BECHER_EDITOR
-	virtual bool Select();
-	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
-#endif
+	virtual bool Save(ChunkDictWrite &w);
+	virtual bool Load(const ChunkDictRead &r);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 
 	DECLARE_BASEOBJECT(EBO_Tree)
 };
@@ -35,23 +34,37 @@ class Bridge : public BecherObject
 public:
 	Bridge(IHoeScene * scn);
 	virtual EObjType GetClass() { return EBO_Bridge; }
-#ifdef BECHER_EDITOR
-	virtual bool Select();
-	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
-#endif
-	virtual bool Save(BecherGameSave &w);
-	virtual bool Load(BecherGameLoad &r);
+	virtual bool Save(ChunkDictWrite &w);
+	virtual bool Load(const ChunkDictRead &r);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 
 	DECLARE_BASEOBJECT(EBO_Bridge)
 };
 
 // doplnky, ruzna id - sutriky, sutry, mraveniste ...
-class Addon : public XHoeObject
+#ifdef BECHER_EDITOR
+
+class Addon : public BecherObject
+{
+protected:
+	EObjType m_type;
+	float m_scale;
+public:
+    Addon(IHoeScene * scn, EObjType type);
+	virtual EObjType GetType() { return m_type; }
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
+	void SetScale(float s);
+};
+
+#else
+
+class Addon : public HoeGame::BaseObject
 {
 public:
-    Addon(IHoeScene * scn, int resource);
-  
+    Addon(IHoeScene * scn, EObjType type);
+	void SetScale(float s);
 };
+#endif 
 
 #endif // _BECHERGAME_ELEMENTS_H_
 

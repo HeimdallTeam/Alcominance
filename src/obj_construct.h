@@ -23,7 +23,7 @@ public:
 	Construct(BecherBuilding * owner);
 	void SetBuildTime(float t) { m_buildtime = m_acttime = t; }
 	void SetResources(uint wood, uint stone);
-	bool Save(BecherGameSave &w);
+	bool Save(ChunkDictWrite &w);
 	bool Load(BecherGameLoad &r);
 #ifndef BECHER_EDITOR
 	void Update(const float t);

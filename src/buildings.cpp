@@ -33,16 +33,16 @@ bool BecherBuilding::StartBuilding(int gold, int wood, int stone)
 
 #endif
 
-bool BecherBuilding::Save(BecherGameSave &w)
+bool BecherBuilding::Save(ChunkDictWrite &w)
 {
 	BecherObject::Save(w);
-	w.WriteValue<dword>(m_mode);
+	//w.WriteValue<dword>(m_mode);
 	return true;
 }
 
 bool BecherBuilding::Load(BecherGameLoad &r)
 {
-	BecherObject::Load(r);
+	//BecherObject::Load(r);
 	this->SetMode((EBuildingMode)r.Read<dword>());
 	return true;
 }

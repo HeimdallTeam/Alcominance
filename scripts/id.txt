@@ -40,6 +40,11 @@ ADDID(model_INFO_RING2)
 ADDID(model_CONSTRUCT)
 ADDID(model_CONSTRUCT_D)
 
+ADDID(model_addon_STONE1)
+ADDID(model_addon_STONE2)
+ADDID(model_addon_ANTHILL)
+ADDID(model_addon_ROW)
+
 // 2d objekty
 
 //KURSOR 
@@ -106,6 +111,7 @@ ADDID(model_CAMPAIGNSTART)
 
 // sounds
 ADDID(model_TESTSOUND)
+ADDID(sound_CLICK)
 
 // doplnky 
 ADDID(model_FONT_LOADER) // id pro konzoli
@@ -137,6 +143,9 @@ ADDID(BMSG_StartBuilding)
 
 ADDID(BMSG_Select)
 ADDID(BMSG_Unselect)
+ADDID(BMSG_CursorActive)
+ADDID(BMSG_CursorInactive)
+ADDID(BMSG_PropertyChange) // jen pro editor
 
 ADDID(BMSG_Chief)
 ADDID(BMSG_TrollIncoming)

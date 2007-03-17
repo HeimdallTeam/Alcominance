@@ -47,7 +47,7 @@ public:
 	virtual void Update(const float t);
 	virtual bool Select();
 
-	virtual bool Save(BecherGameSave &w);
+	virtual bool Save(ChunkDictWrite &w);
 	virtual bool Load(BecherGameLoad &r);
 
     const TJob & GetJob() { return m_job; }

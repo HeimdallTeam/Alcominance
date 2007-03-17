@@ -74,10 +74,10 @@ bool BecherGame::Init()
 
 	m_music.Init(GetCon());
 
-	//m_music.Load("sound/music/rozdelane(bg4).XM");
+	m_music.Load("sound/music/menu.XM");
 	//m_music.Load("sound/music/stavbapomniku.XM");
 	//m_music.setOffsets(off);
-	//m_music.Play();
+	m_music.Play();
 	//m_music.setFactor(0);
 
 	return true;

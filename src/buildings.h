@@ -22,7 +22,7 @@ public:
 	//bool IsBuildMode() { return m_mode == ; }
 	bool StartBuilding(int gold, int wood, int stone);
 	virtual void SetMode(EBuildingMode mode) { m_mode = mode; }
-	virtual bool Save(BecherGameSave &w);
+	virtual bool Save(ChunkDictWrite &w);
 	virtual bool Load(BecherGameLoad &r);
 	virtual void OnUpdateSur() {}
 

@@ -20,10 +20,9 @@ StoneMine::StoneMine(IHoeScene * scn) : SourceBuilding(scn), m_stone(EBS_Stone)
 	m_stone.SetPriority(EBSP_TimeWork);
 }
 
-bool StoneMine::Save(BecherGameSave &w)
+bool StoneMine::Save(ChunkDictWrite &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteReservedWords(10);
 	return true;
 }
 
@@ -61,7 +60,7 @@ void StoneMine::Update(const float dtime)
 
 bool StoneMine::Select()
 {
-	SourceBuilding::Select();
+	//SourceBuilding::Select();
 	GetLua()->func("s_stonemine");
 	return true;
 }
@@ -82,10 +81,13 @@ bool StoneMine::SetToGet(Troll * t, uint num)
 }
 
 #else // BECHER_OBJECT
+void StoneMine::Update(const float t)
+{
+}
 
 bool StoneMine::Select()
 {
-	SourceBuilding::Select();
+	//SourceBuilding::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Resources"));
 	GetProp()->AppendLong(1, _("Stone"), m_stone.GetNum());

@@ -97,7 +97,6 @@ public:
 	void MouseLeftDown(float x, float y);
 	virtual void OnKeyDown(int key);
 	virtual void OnMouseMove(float X, float Y);
-	virtual void OnSelectObject(EObjType type, BecherObject* obj);
 
 	virtual void OnWheel(long);
 	virtual void OnLeftButtonUp();

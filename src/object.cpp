@@ -33,6 +33,8 @@ BecherObject::BecherObject(IHoeScene * scn) : HoeGame::Strategy::StgObject(scn)
 	m_angle = 0.f;
 	GetCtrl()->SetOrientation(0,1,0,0);
 	m_infoselect.model = NULL;//(IHoeModel*)GetResMgr()->ReqResource(ID_INFO_RING);
+	m_selected = false;
+	m_curactive = false;
 	SetRingParam(2.f,2.f,3.f);
 	GetCtrl()->Link(THoeSubObject::Object, &m_infoselect);
 }
@@ -43,16 +45,13 @@ void BecherObject::SetAngle(float angle)
 	GetCtrl()->SetOrientation(0,1,0,m_angle);
 }
 
-bool BecherObject::Save(BecherGameSave &w)
+bool BecherObject::Save(ChunkDictWrite &w)
 {
-	// ulozit 10 x dword, jako reserved
-	w.WriteReservedWords(10);
 	return true;
 }
 
-bool BecherObject::Load(BecherGameLoad &r)
+bool BecherObject::Load(const ChunkDictRead &r)
 {
-	r.ReadReservedWords(10);
 	return true;
 }
 
@@ -62,23 +61,6 @@ void BecherObject::SetPosition(const float x, const float y, const float h)
 	posX = x;
 	posY = y;
 	GetCtrl()->SetPosition(HoeMath::Vector3(x, h, y));
-}
-
-bool BecherObject::Select()
-{
-	m_infoselect.model = (IHoeModel*)GetResMgr()->ReqResource(model_INFO_RING);
-	return true;
-}
-
-void BecherObject::Unselect()
-{
-	m_infoselect.model = NULL;
-}
-
-void BecherObject::SetCurActive(bool active)
-{
-	m_infoselect.model = active ? (IHoeModel*)GetResMgr()->ReqResource(model_INFO_RING2):NULL;
-	
 }
 
 void BecherObject::SetRingParam(float sx, float sy, float h)
@@ -101,6 +83,27 @@ void BecherObject::Update(const float u)
 
 int BecherObject::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
+	switch (msg)
+	{
+	case BMSG_Select:
+		m_infoselect.model = (IHoeModel*)GetResMgr()->ReqResource(model_INFO_RING);
+		m_selected = true;
+		break;
+	case BMSG_Unselect:
+		m_infoselect.model = NULL;
+		m_selected = false;
+		break;
+	case BMSG_CursorActive:
+		if (!m_selected)
+			m_infoselect.model = (IHoeModel*)GetResMgr()->ReqResource(model_INFO_RING2);
+		m_curactive = true;
+		break;
+	case BMSG_CursorInactive:
+		if (!m_selected)
+			m_infoselect.model = NULL;
+		m_curactive = false;
+		break;
+	};
 	return 0;
 }
 
@@ -116,6 +119,15 @@ int BecherObject::DefaultCustomInfo(const char * str)
 	}
 	return BINFO_Custom;
 }
+
+#ifdef BECHER_EDITOR
+void BecherObject::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+{
+	GameMsg(BMSG_PropertyChange, id, (void*)&pi, 1);
+}
+#endif
+
+
 
 
 

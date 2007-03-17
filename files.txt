@@ -31,6 +31,7 @@ data/voda.hm
 data/most.hm
 data/baba.hm
 data/chalupa.hm
+data/krajina.hm
 #resources
 model_FACTORY="model tovarna" ; Tovarna
 model_INFO_RING="model info" ; Ring
@@ -54,4 +55,6 @@ model_STROM2="model strom2" ; Strom 2
 model_STROM3="model strom3" ; Strom 3
 model_STROM4="model strom4" ; Strom 4
 model_BABAJAGA="model babajaga" ; Babka
+model_addon_STONE2="model budr" ; Sutr
+model_addon_STONE1="model budriky" ; Sutriky
 #end

@@ -36,13 +36,13 @@ HerbeWoman::HerbeWoman(IHoeScene * scn) : SourceBuilding(scn), m_herbe(EBS_Herbe
 	m_jaga.GetCtrl()->SetPosition(HoeMath::Vector3(0,30,0));
 }
 
-bool HerbeWoman::Save(BecherGameSave &w)
+bool HerbeWoman::Save(ChunkDictWrite &w)
 {
 	BecherBuilding::Save(w);
-	m_herbe.Save(w);
+	/*m_herbe.Save(w);
 	w.Write<float>(m_wait);
 	w.WriteValue<dword>(m_ocup ? 1:0);
-	w.WriteReservedWords(8);
+	w.WriteReservedWords(8);*/
 	return true;
 }
 
@@ -65,6 +65,14 @@ bool HerbeWoman::Load(BecherGameLoad &r)
 
 void HerbeWoman::Update(const float dtime)
 {
+	SourceBuilding::Update(dtime);
+	// update misky
+	if (m_info.model)
+	{
+		HoeMath::Matrix m;
+		m.RotationY(dtime);
+		m_info.pos.MultiplyLeft(m);
+	}
 	// update baba
 	m_jaga.Update(dtime);
 
@@ -86,10 +94,13 @@ bool HerbeWoman::Select()
 }
 
 #else // BECHER_OBJECT
+void HerbeWoman::Update(const float t)
+{
+}
 
 bool HerbeWoman::Select()
 {
-	SourceBuilding::Select();
+	//SourceBuilding::Select();
 	return true;
 }
 
@@ -120,6 +131,20 @@ int HerbeWoman::GameMsg(int msg, int par1, void * par2, uint npar2)
 		GetLevel()->GetPanel()->SetObjectHud("scripts/herbe.menu",this);
 		GetLua()->func("s_herbe");
 		break;
+	case BMSG_GetSur: {
+		PAR_Load * l = (PAR_Load *)par2;
+		if (l->sur == EBS_Herbe)
+		{
+			m_herbe.Unlock(par1);
+			return this->m_herbe.Get(l->num, true);
+		}
+		} break;
+	case BMSG_LockSur: {
+			PAR_Favour * f = (PAR_Favour *)par2;
+			if (f->sur == EBS_Herbe)
+				return m_herbe.Lock(f->num);
+			break;
+		} 
 	};
 #endif
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);

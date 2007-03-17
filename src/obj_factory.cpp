@@ -36,10 +36,9 @@ Factory::~Factory()
 {
 }
 
-bool Factory::Save(BecherGameSave &w)
+bool Factory::Save(ChunkDictWrite &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteReservedWords(30);
 	return true;
 }
 
@@ -50,8 +49,6 @@ bool Factory::Load(BecherGameLoad &r)
 	OnUpdateSur();
 	return true;
 }
-
-#ifndef BECHER_EDITOR
 
 int Factory::GetInfo(int type, char * str, size_t n)
 {
@@ -135,6 +132,7 @@ int Factory::GameMsg(int msg, int par1, void * par2, uint npar2)
 	return FactoryBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
+#ifndef BECHER_EDITOR
 
 void Factory::Update(const float t)
 {
@@ -177,7 +175,7 @@ void Factory::Idiot()
 
 bool Factory::Select()
 {
-	FactoryBuilding::Select();
+	//FactoryBuilding::Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/factory.menu", this);
 	GetLua()->func("s_tovarna");
 	return true;
@@ -185,10 +183,13 @@ bool Factory::Select()
 
 
 #else
+void Factory::Update(const float t)
+{
+}
 
 bool Factory::Select()
 {
-	FactoryBuilding::Select();
+	//FactoryBuilding::Select();
 	/*GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Store"));
 	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());

@@ -16,7 +16,7 @@ public:
 
 	virtual EObjType GetType() { return EBO_CoalMine; } 
 	virtual void Update(const float t); 
-	virtual bool Save(BecherGameSave &w); 
+	virtual bool Save(ChunkDictWrite &w); 
 	virtual bool Load(BecherGameLoad &r); 
 
 	virtual int GetInfo(int type, char * str=NULL, size_t n=0);

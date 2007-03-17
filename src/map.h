@@ -6,6 +6,7 @@ class BecherObject;
 class BecherSystemObject;
 class BecherGameLoad;
 class BecherGameSave;
+class Addon;
 
 #include "id.h"
 
@@ -15,7 +16,7 @@ protected:
 	// seznam objektu
 	HoeCore::Set<BecherObject*> m_obj; // todo	
     HoeCore::Set<BecherSystemObject*> m_sysobj; ///< @todo zmenit styl
-    HoeCore::Set<XHoeObject*> m_addon; // doplnky
+    HoeCore::Set<Addon*> m_addon; // doplnky
 
 	unsigned long m_lastid;
 
@@ -37,23 +38,27 @@ public:
 	float m_distY;
 
 	BecherMap();
-	bool Load(BecherGameLoad & r, bool savegame);
+	// nahraje chunk mapy
+	virtual bool LoadMapChunk(BecherGameLoad & r);
 	IHoeScene * CreateScene();
 	IHoeScene * GetScene() { return m_scene; }
 
 	BecherObject * CreateObject(EObjType type);
-    XHoeObject * CreateXObject(EObjType type);
+    Addon * CreateAddOnObject(EObjType type);
 	BecherSystemObject * CreateSystemObject(EObjType type);
 	static EObjType GetObjectClass(EObjType type);
 	void AddObject(BecherObject * obj);
 	void AddSystemObject(BecherSystemObject * obj);
-    void AddAddonObject(XHoeObject * obj);
+    void AddAddonObject(Addon * obj);
 	void DeleteObject(BecherObject * obj);
-    void DeleteObject(XHoeObject * obj);
+    void DeleteAddonObject(Addon * obj);
+	void DeleteSystemObject(BecherSystemObject * obj);
 	int GetNumObj() { return m_obj.Count(); }
 	BecherObject * GetObj(int index) { return m_obj[index];}
 	int GetNumSysObj() { return m_sysobj.Count(); }
 	BecherSystemObject * GetSysObj(int index) { return m_sysobj[index];}
+	int GetNumAddonObj() { return m_addon.Count(); }
+	Addon * GetAddonObj(int index) { return m_addon[index];}
 	BecherObject * GetObject(const int x, const int y);
 
 	unsigned long GenObjectID() { return ++m_lastid; }

@@ -4,6 +4,7 @@
 #include "becher.h"
 #include "game.h"
 #include "screens.h"
+#include "menu.h"
 
 HoeGame::CVar v_level("map", "test.bm", 0);
 static CVar v_skipintro("skip_intro", false, 0); // maximalni kapacita pro uhli
@@ -58,6 +59,7 @@ bool BechApp::InitGame()
 		return false;
 
 	SetScene(NULL);
+
 	return true;
 }
 
@@ -94,6 +96,15 @@ int BechApp::RunGame()
 	// init game
 	if (InitGame())
 	{
+		// menu
+		/*BecherMenu menu;
+		SetScene(&menu);
+		while (menu.cont)
+		{
+			if (!Frame())
+				return false;
+		}*/
+
 		GetBecher()->LoadLevel(v_level.GetString());
 		
 		Run();

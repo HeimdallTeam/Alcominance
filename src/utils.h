@@ -3,34 +3,64 @@
 #define _BECHER_UTILS_H_
 
 class ResourceExp;
+class BecherGameSave;
+class BecherGameLoad;
 
 #define ID_CHUNK(a,b,c,d) ((a) | (b) << 8 | (c) << 16 | (d) << 24)
 #define ID_BECHERFILE ID_CHUNK('b','m','a','p')
 #define ID_BECHERSAVE ID_CHUNK('b','s','a','v')
-#define ID_BECHERVER 5
+#define ID_ALCOMINANCEFILE ID_CHUNK('A','L','C','E')
+#define ID_BECHERVER 7
 
 struct MapChunk
 {
 	unsigned long chunk;
-	unsigned long ver;
 	unsigned long size;
+};
+
+struct BechSaveHeader
+{
+	unsigned long id;
+	unsigned long version;
+	/** kde se v souboru nachazi tabulka klicu 
+	format: 
+	unsigned long key[num];
+	byte -> strings[num]
+	*/
+	unsigned long keystab; ///< misto kde se nachazi klice
+	unsigned long keysize; ///< velikost tabulky stringu
+	unsigned long keynum;  ///< pocet klicu
+};
+
+class StringKeysHash
+{
+	int m_lastid;
+	const char * m_ids[150];
+public:
+	StringKeysHash();
+	int GetStringId(const char * key) const;
+	int AddStringId(const char * key);
+	bool WriteToFile(BechSaveHeader * head, BecherGameSave &w);
+	bool ReadFromFile(BechSaveHeader * head, BecherGameLoad &r);
 };
 
 // save game
 class BecherGameSave : public HoeFileWriter
 {
 	size_t m_lastsizepos;
+	StringKeysHash m_str;
 public:
 	BecherGameSave(XHoeFile * f) : HoeFileWriter(f) {}
-	void WriteChunk(unsigned long chunk, unsigned long ver);
+	void WriteChunk(unsigned long chunk);
 	void WriteChunkEnd();
-	void WriteReservedWords(int num);
+	StringKeysHash * GetStringMap() { return &m_str; };
 };
 
 class BecherGameLoad : public HoeFileReader
 {
 	MapChunk chunk;
 	bool m_savegame;
+	StringKeysHash m_str;
 public:
 	BecherGameLoad(XHoeFile * f) : HoeFileReader(f, 0)
 	{
@@ -46,6 +76,53 @@ public:
 	}
 	bool ReadHeader();
 	void ReadReservedWords(int num);
+	const StringKeysHash * GetStringMap() { return &m_str; }
+};
+
+struct SaveKey
+{
+	int key;
+	int pos;
+	int size;
+};
+
+/** Ulozeni dat typu slovnik */
+class ChunkDictWrite
+{
+	int m_nkey;
+	size_t m_hdr;
+	SaveKey m_keys[100];
+	BecherGameSave & m_bgs;
+public:
+	ChunkDictWrite(BecherGameSave & bgs)
+		: m_bgs(bgs)
+	{
+	}
+	//BecherGameSave & sav;
+	void Begin();
+	bool BeginDataKey(const char * key);
+	void EndDataKey();
+	int Key(const char * key, int value);
+	int Key(const char * key, float value);
+	int Key(const char * key, double value);
+	int Key(const char * key, const char * value);
+	void End();
+};
+
+/** Ulozeni dat typu slovnik */
+class ChunkDictRead
+{
+	int m_nkey;
+	SaveKey m_keys[100];
+	BecherGameLoad & m_bgl;
+	size_t m_hdr;
+public:
+	ChunkDictRead(BecherGameLoad & bgl);
+	bool IsKey(const char * key) const;
+	float KeyFloat(const char * key, float def) const;
+	int KeyInt(const char * key, int def) const;
+	double KeyDouble(const char * key, double def) const;
+	bool KeyString(char * str, int size) const;
 };
 
 class Fade

@@ -30,27 +30,24 @@ protected:
 	float posX;
 	float posY;
 	THoeSub_Model m_infoselect;
+	bool m_selected;
+	bool m_curactive;
 public:
 	unsigned long id;
 
 	BecherObject(IHoeScene * scn);
 	virtual EObjType GetType() = 0; 
 
-	virtual bool Save(BecherGameSave &w);
-	virtual bool Load(BecherGameLoad &r);
+	virtual bool Save(ChunkDictWrite &w);
+	virtual bool Load(const ChunkDictRead &r);
 
 	void SetAngle(float angle);
 	float GetAngle() { return m_angle; }
 
-	virtual void SetCurActive(bool active);
-
-	bool IsSelected() { return false; }
-	bool IsCurActive() { return false; }
+	bool IsSelected() { return m_selected; }
+	bool IsCurActive() { return m_curactive; }
 
 	virtual void Update(const float);
-
-	virtual bool Select();
-	virtual void Unselect();
 
 	virtual void SetPosition(const float x, const float y, const float h);
 	inline const float GetPosX() const { return posX; }  
@@ -65,20 +62,24 @@ public:
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 
 	static int DefaultCustomInfo(const char * str);
+
+#ifdef BECHER_EDITOR
+	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
+#endif
 };
 
 #define DECLARE_BASEOBJECT(type) virtual EObjType GetType() { return type; }
 #ifndef BECHER_EDITOR
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
 	virtual bool Select(); \
-	virtual bool Save(BecherGameSave &w); \
+	virtual bool Save(ChunkDictWrite &w); \
 	virtual bool Load(BecherGameLoad &r); \
 	//virtual ResourceBase * GetResource(ESurType type);
 #else
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
 	virtual bool Select(); \
 	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi); \
-	virtual bool Save(BecherGameSave &w); \
+	virtual bool Save(ChunkDictWrite &w); \
 	virtual bool Load(BecherGameLoad &r);
 #endif
 

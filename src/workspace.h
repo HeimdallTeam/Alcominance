@@ -40,7 +40,7 @@ public:
 	void SetOwner(BecherBuilding * own) { m_owner = own; }
 	inline BecherBuilding * GetOwner() { assert(m_owner); return m_owner; }
 	bool Add(uint *s, int max);
-	bool Save(BecherGameSave &w);
+	bool Save(ChunkDictWrite &w);
 	bool Load(BecherGameLoad &r);
 
 	/**
@@ -73,7 +73,7 @@ public:
 	uint Lock(uint num); ///< zamknuti suroviny aby pro ni nesel nikdo jiny (tvari se jako by tam nebylo)
 	void Unlock(uint num); ///< vraceni suroviny pri zruseni
 	uint GetAvail() { return GetNum()-m_locked; } ///< vraceni kolik je k dispozici
-	bool Save(BecherGameSave &w);
+	bool Save(ChunkDictWrite &w);
 	bool Load(BecherGameLoad &r);
 
 };

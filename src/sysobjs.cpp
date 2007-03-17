@@ -26,7 +26,7 @@ bool SystemObjectSound::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
-bool SystemObjectSound::Save(BecherGameSave &w)
+bool SystemObjectSound::Save(ChunkDictWrite &w)
 {
 	assert(!"this code not run");
 	return true;
@@ -39,11 +39,11 @@ void SystemObjectSound::SetPosition(const float x, const float y, const float h)
 	BecherObject::SetPosition(x,y,h);
 }
 
-bool SystemObjectSound::Save(BecherGameSave &w)
+bool SystemObjectSound::Save(ChunkDictWrite &w)
 {
 	// ulozit pozici
-	w.WriteValue<float>(this->GetPosX());
-	w.WriteValue<float>(this->GetPosY());
+	//w.WriteValue<float>(this->GetPosX());
+	//w.WriteValue<float>(this->GetPosY());
 	return true;
 }
 
@@ -98,7 +98,7 @@ bool SystemObjectPlace::Load(BecherGameLoad &r)
 
 #ifndef BECHER_EDITOR
 
-bool SystemObjectPlace::Save(BecherGameSave &w)
+bool SystemObjectPlace::Save(ChunkDictWrite &w)
 {
 	assert(!"this code not run");
 	return true;
@@ -111,11 +111,11 @@ void SystemObjectPlace::SetPosition(const float x, const float y, const float h)
 	BecherObject::SetPosition(x,y,h);
 }
 
-bool SystemObjectPlace::Save(BecherGameSave &w)
+bool SystemObjectPlace::Save(ChunkDictWrite &w)
 {
 	// ulozit pozici
-	w.WriteValue<float>(this->GetPosX());
-	w.WriteValue<float>(this->GetPosY());
+	//w.WriteValue<float>(this->GetPosX());
+	//w.WriteValue<float>(this->GetPosY());
 	return true;
 }
 
@@ -188,7 +188,7 @@ float SystemObjectSource::GetDistance(float x, float y)
 
 #ifndef BECHER_EDITOR
 
-bool SystemObjectSource::Save(BecherGameSave &w)
+bool SystemObjectSource::Save(ChunkDictWrite &w)
 {
 	assert(!"this code not run");
 	return true;
@@ -201,13 +201,13 @@ void SystemObjectSource::SetPosition(const float x, const float y, const float h
 	BecherObject::SetPosition(x,y,h);
 }
 
-bool SystemObjectSource::Save(BecherGameSave &w)
+bool SystemObjectSource::Save(ChunkDictWrite &w)
 {
 	// ulozit pozici
-	w.WriteValue<float>(this->GetPosX());
+	/*w.WriteValue<float>(this->GetPosX());
 	w.WriteValue<float>(this->GetPosY());
 	w.WriteValue<float>(m_distance);
-	w.WriteValue<uint>(m_source);
+	w.WriteValue<uint>(m_source);*/
 	return true;
 }
 

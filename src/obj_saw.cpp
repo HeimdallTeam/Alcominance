@@ -14,10 +14,9 @@ Saw::Saw(IHoeScene * scn) : ProductionBuilding(scn, v_build)
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SAW));
 }
 
-bool Saw::Save(BecherGameSave &w)
+bool Saw::Save(ChunkDictWrite &w)
 {
 	ProductionBuilding::Save(w);
-	w.WriteReservedWords(10);
 	return true;
 }
 
@@ -38,16 +37,21 @@ void Saw::Update(const float dtime)
 
 bool Saw::Select()
 {
-	ProductionBuilding::Select();
+	//ProductionBuilding::Select();
 	GetLua()->func("s_saw");
 	return true;
 }
 
 #else // BECHER_OBJECT
 
+void Saw::Update(const float t)
+{
+}
+
+
 bool Saw::Select()
 {
-	ProductionBuilding::Select();
+	//ProductionBuilding::Select();
 	return true;
 }
 

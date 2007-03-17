@@ -7,7 +7,12 @@
 #include "editor.h"
 #include "../sysobjs.h"
 #include "../terrain.h"
+#include "../elements.h"
 
+void BaseEditorTool::RightUp(const int x, const int y, const wxMouseEvent &e)
+{
+	BecherEdit::Get()->OnDefaultTool();
+}
 //////////////////////////////////////////////////////
 // ToolSelect
 ToolSelect::ToolSelect()
@@ -37,17 +42,17 @@ ToolCreateObject::ToolCreateObject(EObjType type, bool repeat, bool randori)
 	// vytvorit m_obj
 	if (type < EBO_Max)
 	{
-        if(type > EBO_Addon){
-            m_xobj = BecherEdit::Get()->GetActMap()->CreateXObject(type);
-            m_xobj->Show(false);
-        }else{
-		    m_obj = BecherEdit::Get()->GetActMap()->CreateObject(type);
-            m_obj->Show(false);
-            if (m_rand)
-		    {
-			    m_obj->SetAngle((rand() % 628) * 0.01f);
-		    }
-        }			
+	    m_obj = BecherEdit::Get()->GetActMap()->CreateObject(type);
+        m_obj->Show(false);
+        if (m_rand)
+	    {
+		    m_obj->SetAngle((rand() % 628) * 0.01f);
+	    }
+	}
+	else if (type < EBAO_Max)
+	{
+		m_obj = BecherEdit::Get()->GetActMap()->CreateAddOnObject(type);
+        m_obj->Show(false);
 	}
 	else
 	{
@@ -99,11 +104,13 @@ void ToolCreateObject::Move(int relX, int relY, int absX, int absY, const wxMous
 	SetPos( absX, absY);
 }
 
-void ToolCreateObject::LeftDown(const int x, const int y, const wxMouseEvent &e)
+void ToolCreateObject::LeftUp(const int x, const int y, const wxMouseEvent &e)
 {
 	SetPos(x,y);
 	if (m_type < EBO_Max)
 		BecherEdit::Get()->GetActMap()->AddObject(m_obj);
+	else if (m_type < EBAO_Max)
+		BecherEdit::Get()->GetActMap()->AddAddonObject(reinterpret_cast<Addon*>(m_obj));
 	else
 		BecherEdit::Get()->GetActMap()->AddSystemObject(reinterpret_cast<BecherSystemObject*>(m_obj));
 
@@ -111,6 +118,8 @@ void ToolCreateObject::LeftDown(const int x, const int y, const wxMouseEvent &e)
 	{
 		if (m_type < EBO_Max)
 			m_obj = BecherEdit::Get()->GetActMap()->CreateObject(m_type);
+		else if (m_type < EBAO_Max)
+			m_obj = BecherEdit::Get()->GetActMap()->CreateAddOnObject(m_type);
 		else
 			m_obj = BecherEdit::Get()->GetActMap()->CreateSystemObject(m_type);
 		m_obj->Show(true);

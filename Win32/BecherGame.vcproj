@@ -589,6 +589,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\menu.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\menu.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\minimap.cpp"
 				>
 			</File>

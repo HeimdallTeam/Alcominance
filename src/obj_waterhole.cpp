@@ -27,10 +27,9 @@ WaterHole::WaterHole(IHoeScene * scn) : SourceBuilding(scn), m_water(EBS_Water)
 	m_kap = 0.f;
 }
 
-bool WaterHole::Save(BecherGameSave &w)
+bool WaterHole::Save(ChunkDictWrite &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteReservedWords(10);
 	return true;
 }
 
@@ -81,7 +80,7 @@ void WaterHole::Update(const float dtime)
 
 bool WaterHole::Select()
 {
-	SourceBuilding::Select();
+	//SourceBuilding::Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/waterhole.menu", this);	
 	GetLua()->func("s_studna");
 	return true;
@@ -157,10 +156,13 @@ bool WaterHole::SetToGet(Troll * t, uint num)
 }
 
 #else // BECHER_OBJECT
+void WaterHole::Update(const float t)
+{
+}
 
 bool WaterHole::Select()
 {
-	SourceBuilding::Select();
+	//SourceBuilding::Select();
 	return true;
 }
 

@@ -12,7 +12,7 @@ protected:
 	float m_y;
 public:
 	BecherSystemObject(IHoeScene * scn) : BecherObject(scn) {}
-	virtual bool Save(BecherGameSave &w) { return true; }
+	virtual bool Save(ChunkDictWrite &w) { return true; }
 	virtual bool Load(BecherGameLoad &r) { return true; }
 };
 #else
@@ -25,7 +25,7 @@ public:
 	BecherSystemObject(IHoeScene * scn) {}
 	virtual ~BecherSystemObject() {}
 	virtual EObjType GetType() = 0; 
-	virtual bool Save(BecherGameSave &w) { return true; }
+	virtual bool Save(ChunkDictWrite &w) { return true; }
 	virtual bool Load(BecherGameLoad &r) { return true; }
 	float GetPosX() { return m_x; }
 	float GetPosY() { return m_y; }
@@ -38,7 +38,7 @@ class SystemObjectSound : public BecherSystemObject
 public:
 	SystemObjectSound(IHoeScene * scn);
 	virtual EObjType GetType() { return EBSys_Sound; }
-	virtual bool Save(BecherGameSave &w);
+	virtual bool Save(ChunkDictWrite &w);
 	virtual bool Load(BecherGameLoad &r);
 	static IHoeModel * GetModelForSound();
 #ifdef BECHER_EDITOR
@@ -53,7 +53,7 @@ class SystemObjectPlace : public BecherSystemObject
 public:
 	SystemObjectPlace(IHoeScene * scn);
 	virtual EObjType GetType() { return EBSys_Place; }
-	virtual bool Save(BecherGameSave &w);
+	virtual bool Save(ChunkDictWrite &w);
 	virtual bool Load(BecherGameLoad &r);
 	static IHoeModel * GetModelForPlace();
 #ifdef BECHER_EDITOR
@@ -70,7 +70,7 @@ protected:
 	uint m_source;
 public:
 	SystemObjectSource(IHoeScene * scn);
-	virtual bool Save(BecherGameSave &w);
+	virtual bool Save(ChunkDictWrite &w);
 	virtual bool Load(BecherGameLoad &r);
 	static IHoeModel * GetModelForSource();
 	float GetDistance(float x, float y);

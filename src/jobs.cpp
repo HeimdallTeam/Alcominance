@@ -5,7 +5,7 @@
 #include "becher.h"
 //#include "game.h"
 
-bool TJob::Save(BecherGameSave &w)
+bool TJob::Save(ChunkDictWrite &w)
 {
 #ifndef BECHER_EDITOR
 	//

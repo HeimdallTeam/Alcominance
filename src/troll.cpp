@@ -31,23 +31,23 @@ Troll::~Troll()
 {
 }
 
-bool Troll::Save(BecherGameSave &w)
+bool Troll::Save(ChunkDictWrite &w)
 {
 	BecherObject::Save(w);
 	// ulozit job a path
 	this->m_job.Save(w);
-	w.WriteValue<bool>(0);
+	/*w.WriteValue<bool>(0);
 	w.WriteValue<uint>(0);
 	w.WriteValue<uint>(0);
 	w.WriteValue<dword>(0);
 	// path
-	w.WriteValue<bool>(false);
+	w.WriteValue<bool>(false);*/
 	return true;
 }
 
 bool Troll::Load(BecherGameLoad &r)
 {
-	BecherObject::Load(r);
+	//BecherObject::Load(r);
 	//m_job.Load(r);	
 	r.Read<bool>();
 	r.Read<uint>();
@@ -69,6 +69,7 @@ bool Troll::Step(float t)
 
 void Troll::Update(const float t)
 {
+	BecherObject::Update(t);
 #ifndef BECHER_EDITOR
 	switch (m_action)
 	{
@@ -170,14 +171,14 @@ void Troll::Finish()
 #ifndef BECHER_EDITOR
 bool Troll::Select()
 {
-	BecherObject::Select();
+	//BecherObject::Select();
 	GetLua()->func("s_tupoun");
 	return true;
 }
 #else
 bool Troll::Select()
 {
-	BecherObject::Select();
+	//BecherObject::Select();
 	return true;
 }
 

@@ -108,6 +108,10 @@ END_EVENT_TABLE()
 #include "../../resource/maleikony/drevorubec.xpm"
 // system
 #include "../../resource/maleikony/sound.xpm"
+// addons
+#include "../../resource/maleikony/e_budr.xpm"
+#include "../../resource/maleikony/e_budriky.xpm"
+#include "../../resource/maleikony/e_mraveniste.xpm"
 
 
 #define BT_SIZE wxSize(28,28)
@@ -164,13 +168,13 @@ ToolObjects::ToolObjects(wxWindow * parent)
 	b->SetToolTip( _("Stone instance") );
 
     wxWindow * p4 = new wxWindow(this,-1);
-    b = new wxBitmapButton(p4,IDB(EBO_Stones1),wxBitmap(Sound_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
+    b = new wxBitmapButton(p4,IDB(EBAO_Stones1),wxBitmap(e_budriky_xpm),BT_P(0,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Little stones") );
-    b = new wxBitmapButton(p4,IDB(EBO_Stones2),wxBitmap(Sound_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
+    b = new wxBitmapButton(p4,IDB(EBAO_Stones2),wxBitmap(e_budr_xpm),BT_P(1,0),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Stones") );
-    b = new wxBitmapButton(p4,IDB(EBO_Anthill),wxBitmap(Sound_xpm),BT_P(0,1),BT_SIZE/*,BS_FLAT*/);
+    b = new wxBitmapButton(p4,IDB(EBAO_Anthill),wxBitmap(e_mraveniste_xpm),BT_P(0,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Anthill") );
-    b = new wxBitmapButton(p4,IDB(EBO_Row),wxBitmap(Sound_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
+    b = new wxBitmapButton(p4,IDB(EBAO_Row),wxBitmap(Sound_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Row") );
 
 	AddPage(p2,_("Map elements"));
@@ -194,6 +198,8 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 	switch (type)
 	{
 	case EBO_Tree:
+	case EBAO_Stones1:
+	case EBAO_Stones2:
 		rep = true;
 		rnd = true;
 		break;
@@ -399,6 +405,7 @@ bool BecherEdit::OnPostInit()
 	}
 	m_res.LoadMainDir(wxConfigBase::Get()->Read(wxT("/ResourceDir"),wxT("")));
 
+	OnDefaultTool();
 	return false;
 }
 

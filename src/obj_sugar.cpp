@@ -39,10 +39,9 @@ Sugar::~Sugar()
 {
 }
 
-bool Sugar::Save(BecherGameSave &w)
+bool Sugar::Save(ChunkDictWrite &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteReservedWords(10);
 	return true;
 }
 
@@ -177,7 +176,7 @@ void Sugar::Update(const float t)
 
 bool Sugar::Select()
 {
-	FactoryBuilding::Select();
+	//FactoryBuilding::Select();
 	if (m_buildprogress < 1.0f)
 		GetLevel()->GetPanel()->SetObjectHud("scripts/sugar_build.menu", this);	
 	else
@@ -198,10 +197,13 @@ void Sugar::Idiot()
 }
 
 #else
+void Sugar::Update(const float t)
+{
+}
 
 bool Sugar::Select()
 {
-	BecherObject::Select();
+	//BecherObject::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Store"));
 	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());

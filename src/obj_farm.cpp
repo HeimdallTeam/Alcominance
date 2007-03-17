@@ -29,14 +29,14 @@ Farm::Farm(IHoeScene * scn) : ProductionBuilding(scn, v_build), m_cane(EBS_Cane)
 	m_work = NULL;
 }
 
-bool Farm::Save(BecherGameSave &w)
+bool Farm::Save(ChunkDictWrite &w)
 {
 	ProductionBuilding::Save(w);
 	// ulozit rust
-	m_cane.Save(w);
+	/*m_cane.Save(w);
 	w.Write<float>(m_grow);
 	w.WriteValue<uint>(m_work ? m_work->GetID():0);
-	w.WriteReservedWords(5);
+	*/
 	return true;
 }
 
@@ -123,17 +123,20 @@ void Farm::Update(const float dtime)
 
 bool Farm::Select()
 {
-	ProductionBuilding::Select();
+	//ProductionBuilding::Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/farm.menu",this);
 	GetLua()->func("s_farma");
 	return true;
 }
 
 #else // BECHER_OBJECT
+void Farm::Update(const float t)
+{
+}
 
 bool Farm::Select()
 {
-	ProductionBuilding::Select();
+	//ProductionBuilding::Select();
 	return true;
 }
 

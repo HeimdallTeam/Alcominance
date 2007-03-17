@@ -38,10 +38,9 @@ Destilate::~Destilate()
 {
 }
 
-bool Destilate::Save(BecherGameSave &w)
+bool Destilate::Save(ChunkDictWrite &w)
 {
 	BecherBuilding::Save(w);
-	w.WriteReservedWords(10);
 	return true;
 }
 
@@ -186,13 +185,17 @@ void Destilate::Idiot()
 
 bool Destilate::Select()
 {
-	BecherBuilding::Select();
+	//BecherBuilding::Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/alco.menu",this);
 	GetLua()->func("s_lihovar");
 	return true;
 }
 
 #else
+
+void Destilate::Update(const float t)
+{
+}
 
 bool Destilate::Select()
 {

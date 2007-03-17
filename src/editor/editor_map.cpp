@@ -6,6 +6,7 @@
 #include "editor_map.h"
 //#include "plugin_editlevel.h"
 #include "../sysobjs.h"
+#include "../elements.h"
 
 
 void EditorMap::CreateNew(uint sizeX, uint sizeY)
@@ -42,6 +43,10 @@ void EditorMap::CreateNew(uint sizeX, uint sizeY)
 
 bool EditorMap::LoadMap(const wxString &path)
 {
+	// smazani objektu
+	//TODO dodelat mazani levelu
+	m_obj.Delete();
+
 	HoeEditor::EditorFile file;
 	if (!file.OpenRead(path))
 		return false;
@@ -49,10 +54,26 @@ bool EditorMap::LoadMap(const wxString &path)
 	CreateScene();
 	GetEngine()->SetActiveScene(m_scene);
 	SetTerrainData();
-	// nahrat hlavicku
+	
+	// nahrat mapu
+	// nejdriv hlavicu
 	if (!r.ReadHeader())
 		return false;
-	return Load( r, false);
+	// postupne nacitani chunku
+	int pos = sizeof(BechSaveHeader);
+	while (1)
+	{
+		r.Seek(pos);
+		if (!r.ReadNext())
+			return false;
+		if (r.Chunk().chunk == ID_CHUNK('e','n','d',' '))
+			break;
+		// sejf value
+		LoadMapChunk(r);
+		pos += r.Chunk().size + sizeof(MapChunk); 
+	}
+
+	return true;
 }
 
 bool EditorMap::SaveMap(const wxString &path)
@@ -67,29 +88,58 @@ bool EditorMap::SaveMap(const wxString &path)
 
 	BecherGameSave w(&file);
 
-	// write nejakej header
-	w.WriteChunk(ID_BECHERFILE, ID_BECHERVER);
+	BechSaveHeader head;
+	// zapsat prazdnou hlavicku
+	memset(&head, 0, sizeof(head));
+	head.id = ID_CHUNK('A','L','C','E');
+	head.version = ID_BECHERVER;
+	w.Write(&head, sizeof(head));
+	// info o levelu
+	/*w.WriteChunk(ID_CHUNK('i','n','f','o'));
+	ChunkDictWrite info();
+	info.Reset();
+	info.End();
+	w.WriteChunkEnd();*/
 
-	w.WriteChunk(ID_CHUNK('t','e','r','r'), 0);
+	// terrain dump
+	w.WriteChunk(ID_CHUNK('t','e','r','r'));
 	m_terrain->Dump(&w);
 	w.WriteChunkEnd();
 
+	for (int i=0;i < m_addon.Count();i++)
+	{
+		w.WriteChunk(ID_CHUNK('a','d','o','n'));
+		ChunkDictWrite dict(w);
+		dict.Begin();
+		dict.Key("type", (int)m_addon[i]->GetType());
+		dict.Key("x", (float)m_addon[i]->GetPosX());
+		dict.Key("y", (float)m_addon[i]->GetPosY());
+		dict.Key("angle", (float)m_addon[i]->GetAngle());
+		dict.End();
+		w.WriteChunkEnd();
+	}
+
 	// ulozit systemove objekty
-	for (int i=0;i < m_sysobj.Count();i++)
+	/*for (int i=0;i < m_sysobj.Count();i++)
 	{
 		// uklada se jen typ
-		w.WriteChunk(ID_CHUNK('s','y','s','o'), 0);
+		w.WriteChunk(ID_CHUNK('s','y','s','o'));
 		w.WriteValue<dword>(m_sysobj[i]->GetType());
 		m_sysobj[i]->Save(w);
 		w.WriteChunkEnd();
-	}
+	}*/
 
 	// objekty
 	SaveAllObjects(w);
 	
 	// ulozit parametry objektu
 
-	w.WriteChunk(ID_CHUNK('e','n','d',' '), 0);
+	w.WriteChunk(ID_CHUNK('e','n','d',' '));
+	w.GetStringMap()->WriteToFile(&head, w);
+
+	// ulozit key map
+	w.GetFile()->Seek(0);
+	w.Write(&head, sizeof(head));
 
 	return true;
 }
@@ -105,9 +155,10 @@ void EditorMap::SelectObject(const int x, const int y)
 	BecherObject * o = GetObject(x,y);
 	if (o == m_select)
 		return;
-	if (m_select) m_select->Unselect();
+	if (m_select) 
+		m_select->GameMsg(BMSG_Unselect,0,0,NULL);
 	if (o)
-		o->Select();
+		o->GameMsg(BMSG_Select,0,0,NULL);
 	else
 		GetProp()->Begin(NULL);
 	m_select = o;
@@ -210,11 +261,18 @@ void EditorMap::DeleteSelect()
 {
 	if (m_select == NULL)
 		return;
-	m_select->Unselect();
+	//m_select->Unselect();
 	if (dynamic_cast<BecherSystemObject*>(m_select))
 	{
 		BecherSystemObject * sb = dynamic_cast<BecherSystemObject*>(m_select);
 		m_sysobj.Remove(sb);
+		m_select = NULL;
+		delete sb;
+	}
+	if (dynamic_cast<Addon*>(m_select))
+	{
+		Addon * sb = dynamic_cast<Addon*>(m_select);
+		m_addon.Remove(sb);
 		m_select = NULL;
 		delete sb;
 	}

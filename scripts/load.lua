@@ -35,6 +35,9 @@ LoadResource(model_SUGAR, "model cukrovar")
 LoadResource(model_COALMINE, "model dul_uhli")
 LoadResource(model_STONEMINE, "model dul_kamen")
 
+LoadResource(model_addon_STONE1, "model budriky")
+LoadResource(model_addon_STONE2, "model budr")
+
 -- baba jaga
 LoadResource(model_BABAJAGA, "model babajaga file:'baba'")
 
@@ -120,6 +123,8 @@ LoadResource(model_ZAVLAZOVANI,"picture up_zavlazovani")
 LoadResource(model_TESTSOUND+1,"sound 'sound/kukacka-timeout.WAV'")
 LoadResource(model_TESTSOUND,"sound 'sound/datel1.wav'")
 LoadResource(model_TESTSOUND+2,"sound 'sound/penizky.wav'")
+-- sounds
+LoadResource(sound_CLICK,"sound 'sound/klik.ogg'")
 --resources-end
 
 

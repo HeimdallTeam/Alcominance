@@ -20,11 +20,10 @@ CoalMine::CoalMine(IHoeScene * scn) : SourceBuilding(scn), m_coal(EBS_Coal)
 	m_coal.SetPriority(EBSP_TimeWork);
 }
 
-bool CoalMine::Save(BecherGameSave &w)
+bool CoalMine::Save(ChunkDictWrite &w)
 {
 	BecherBuilding::Save(w);
 	m_coal.Save(w);
-	w.WriteReservedWords(9);
 	return true;
 }
 
@@ -124,7 +123,7 @@ bool CoalMine::SetToGet(Troll * t, uint num)
 
 bool CoalMine::Select()
 {
-	SourceBuilding::Select();
+	//SourceBuilding::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Resources"));
 	GetProp()->AppendLong(1, _("Coal"), m_coal.GetNum());

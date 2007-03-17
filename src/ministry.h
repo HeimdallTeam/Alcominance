@@ -15,7 +15,7 @@ public:
 	bool Init();
 	void AddPay(float money) { m_pay += money; }
 	void Update(const float dtime);
-	bool Save(BecherGameSave &w) { return true; }
+	bool Save(ChunkDictWrite &w) { return true; }
 	bool Load(BecherGameLoad &r) { return true; }
 };
 

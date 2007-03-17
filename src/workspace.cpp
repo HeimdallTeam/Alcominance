@@ -57,9 +57,9 @@ bool ResourceBase::Add(uint *s, int max)
 	}
 }
 
-bool ResourceBase::Save(BecherGameSave &w)
+bool ResourceBase::Save(ChunkDictWrite &w)
 {
-	return w.Write<uint>(m_actual);
+	return true;//w.Write<uint>(m_actual);
 }
 
 bool ResourceBase::Load(BecherGameLoad &r)
@@ -107,13 +107,13 @@ void ResourceExp::Unlock(uint num)
 		m_locked = 0;
 }
 
-bool ResourceExp::Save(BecherGameSave &w)
+bool ResourceExp::Save(ChunkDictWrite &w)
 {
 	if (!ResourceBase::Save(w))
 		return false;
-	w.WriteValue<uint>(m_priority);
+	/*w.WriteValue<uint>(m_priority);
 	w.WriteValue<uint>(m_locked);
-	w.WriteReservedWords(1);
+	w.WriteReservedWords(1);*/
 	return true;
 }
 

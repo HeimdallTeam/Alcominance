@@ -1,7 +1,12 @@
+17.3.2007
+	Vytvoreni objektu addon (sutry, budry,mraveniste)
+--------------------------------------
+10.3.2007
+	Opravena indikace vybiranych objektu
 --------------------------------------
 3.8.2006
 editor: 
 	test zprava pro editor
 -------------------------------------
 3.8.2006  
-	Vytoren changelog :-)
+	Vytvoren changelog :-)

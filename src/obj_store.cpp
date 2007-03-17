@@ -56,7 +56,7 @@ Store::Store(IHoeScene * scn) : WorkBuilding(scn, v_build)
 	}
 }
 
-bool Store::Save(BecherGameSave &w)
+bool Store::Save(ChunkDictWrite &w)
 {
 	WorkBuilding::Save(w);
 
@@ -140,7 +140,7 @@ int Store::GameMsg(int msg, int par1, void * par2, uint npar2)
 
 void Store::Update(const float t)
 {
-	// update po snimcic
+	WorkBuilding::Update(t);
 }
 
 void Store::Idiot()
@@ -197,14 +197,19 @@ void Store::Idiot()
 
 bool Store::Select()
 {
-	WorkBuilding::Select();
+	//WorkBuilding::Select();
 	return true;
 }
 
 #else
+void Store::Update(const float t)
+{
+}
+
+
 bool Store::Select()
 {
-	WorkBuilding::Select();
+	//WorkBuilding::Select();
 	GetProp()->Begin(this);
 	GetProp()->AppendCategory(_("Materials"));
 	GetProp()->AppendLong(EBS_Wood, _("Wood"), m_res[EBS_Wood].GetNum());

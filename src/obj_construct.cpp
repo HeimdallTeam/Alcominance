@@ -11,7 +11,7 @@ Construct::Construct(BecherBuilding * owner)
 	m_owner = owner;
 }
 
-bool Construct::Save(BecherGameSave &w)
+bool Construct::Save(ChunkDictWrite &w)
 {
 	return true;
 }

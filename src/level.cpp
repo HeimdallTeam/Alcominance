@@ -194,6 +194,7 @@ void BecherLevel::MouseLeftDown(float x, float y)
 
 	HoeGame::Strategy::StgObject * o = GetView()->SelObject(x,y);
 	if (o)
+
 		SelectObject(dynamic_cast<BecherObject *>(o));
 	else
 		SelectObject(NULL);
@@ -203,7 +204,6 @@ void BecherLevel::SelectObject(BecherObject * so)
 {
 	if (m_select && m_select != so)
 	{
-		//m_select->Unselect();
 		SendGameMsg(m_select, BMSG_Unselect, NULL, 0);
 		m_hud.SetObjectHud(NULL,NULL);
 		m_hud.ShowReset();
@@ -220,7 +220,7 @@ void BecherLevel::SelectObject(BecherObject * so)
 
 bool BecherLevel::SaveGame(const char * path)
 {
-	HoeGame::HoeFile file;
+	/*HoeGame::HoeFile file;
 	if (!file.Open(path, hftWrite))
 		return false;
 	BecherGameSave w(&file);
@@ -242,10 +242,10 @@ bool BecherLevel::SaveGame(const char * path)
 	GetView()->GetTargetPosition( &view[0], &view[1]);
 	view[2] = GetView()->GetAngle();
 	view[3] = GetView()->GetDistance();
-	w.Write(view, sizeof(view));*/
+	w.Write(view, sizeof(view));
 
 	// save objects
-	SaveAllObjects(w);
+	SaveAllObjects(w);*/
 
 	return true;
 }
@@ -271,10 +271,25 @@ bool BecherLevel::LoadGame(const char *path)
 	}
 
 	BecherGameLoad r(&file);
+	// nahrat mapu
+	// nejdriv hlavicu
 	if (!r.ReadHeader())
 		return false;
+	// postupne nacitani chunku
+	int pos = sizeof(BechSaveHeader);
+	while (1)
+	{
+		r.Seek(pos);
+		if (!r.ReadNext())
+			return false;
+		if (r.Chunk().chunk == ID_CHUNK('e','n','d',' '))
+			break;
+		// sejf value
+		LoadMapChunk(r);
+		pos += r.Chunk().size + sizeof(MapChunk); 
+	}
 
-	if (!r.IsSaveGame())
+	/*if (!r.IsSaveGame())
 	{
 		strncpy(m_filename, path, sizeof(m_filename));
 		if (!Load( r, false))
@@ -319,7 +334,7 @@ bool BecherLevel::LoadGame(const char *path)
 
 		if (!Load(r, false))
 			return false;
-	}
+	}*/
 
 	// 
 	m_land.Create(this);
@@ -457,15 +472,18 @@ void BecherLevel::OnMouseMove(float X, float Y)
 			act = true;
 		}
 	}
+
+	if (m_mselect && o != m_mselect)
+	{
+		SendGameMsg(m_mselect, BMSG_CursorInactive);
+		m_mselect = NULL;
+	}
+
 	if (!m_build)
 	{
-		if (m_mselect && o != m_mselect && m_mselect != m_select)
-		{
-			m_mselect->SetCurActive(false);
-		}
 		if (o && o != m_select)
 		{
-			o->SetCurActive(true);
+			SendGameMsg(m_mselect, BMSG_CursorActive);
 		}
 		m_mselect = o;
 	}
@@ -516,12 +534,6 @@ void BecherLevel::OnRightButtonUp()
 void BecherLevel::OnRightButtonDown()
 {
 	//m_info.Addf("right button up");
-}
-
-void BecherLevel::OnSelectObject(EObjType type, BecherObject* obj)
-{
-	if (obj)
-		obj->Select();
 }
 
 void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone)

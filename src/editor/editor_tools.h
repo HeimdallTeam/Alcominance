@@ -13,7 +13,13 @@ class BecherUndoAction : public HoeEditor::UndoAction
 public:
 };
 
-class ToolSelect : public HoeEditor::EditorTool
+class BaseEditorTool : public HoeEditor::EditorTool
+{
+public:
+	virtual void RightUp(const int x, const int y, const wxMouseEvent & e);
+};
+
+class ToolSelect : public BaseEditorTool
 {
 protected:
 	BecherObject * m_obj;
@@ -30,11 +36,10 @@ class UndoCreate : public BecherUndoAction
 public:
 };
 
-class ToolCreateObject : public HoeEditor::EditorTool
+class ToolCreateObject : public BaseEditorTool
 {
 protected:
 	BecherObject * m_obj;
-    XHoeObject * m_xobj;
 	EObjType m_type;
 	bool m_repeat;
 	bool m_rand;
@@ -43,16 +48,15 @@ public:
 	virtual ~ToolCreateObject();
 	void SetPos(int absX, int absY);
 
-	virtual void LeftDown(const int x, const int y, const wxMouseEvent & e);
+	virtual void LeftUp(const int x, const int y, const wxMouseEvent & e);
 	//virtual void RightDown(const int x, const int y, const wxMouseEvent & e);
-	//virtual void RightUp(const int x, const int y, const wxMouseEvent & e) {};
 	virtual void Wheel(const wxMouseEvent & e);
 	virtual void Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev);
 	virtual void Enter(int absX, int absY);
 	virtual void Leave();
 };
 
-class ToolTex : public HoeEditor::EditorTool
+class ToolTex : public BaseEditorTool
 {
 	byte m_tex;
 	bool m_leftdown;
@@ -66,7 +70,7 @@ public:
 
 };
 
-class ToolTerrain : public HoeEditor::EditorTool
+class ToolTerrain : public BaseEditorTool
 {
 	bool lock;
 	int lockx;
@@ -83,7 +87,7 @@ public:
 
 };
 
-class ToolTerrainExp : public HoeEditor::EditorTool
+class ToolTerrainExp : public BaseEditorTool
 {
 public:
 	ToolTerrainExp();

@@ -7,7 +7,7 @@
 class BecherBuilding;
 class Troll;
 class ResourceExp;
-class BecherGameSave;
+class ChunkDictWrite;
 class BecherGameLoad;
 
 /**
@@ -56,7 +56,7 @@ struct TJob
 	};
 	HoeMath::Vector2 point;
 	
-    bool Save(BecherGameSave &w);
+    bool Save(ChunkDictWrite &w);
 	bool Load(BecherGameLoad &r);
 
 	EType * Get();
