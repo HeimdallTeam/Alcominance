@@ -34,17 +34,20 @@ void ToolSelect::LeftDown(const int x, const int y, const wxMouseEvent &e)
 
 //////////////////////////////////////////////////////
 // ToolCreateObject
+float ToolCreateObject::m_rand_scale_from = 0.5f;
+float ToolCreateObject::m_rand_scale_to = 2.4f;
+
 ToolCreateObject::ToolCreateObject(EObjType type, bool repeat, bool randori)
 {
 	m_type = type;
 	m_repeat = repeat;
-	m_rand = randori;
+	m_rand_angle = m_rand_scale = randori;
 	// vytvorit m_obj
 	if (type < EBO_Max)
 	{
 	    m_obj = BecherEdit::Get()->GetActMap()->CreateObject(type);
         m_obj->Show(false);
-        if (m_rand)
+        if (randori)
 	    {
 		    m_obj->SetAngle((rand() % 628) * 0.01f);
 	    }
@@ -53,6 +56,10 @@ ToolCreateObject::ToolCreateObject(EObjType type, bool repeat, bool randori)
 	{
 		m_obj = BecherEdit::Get()->GetActMap()->CreateAddOnObject(type);
         m_obj->Show(false);
+        if (randori)
+	    {
+		    m_obj->SetAngle((rand() % 628) * 0.01f);
+	    }
 	}
 	else
 	{
@@ -60,10 +67,23 @@ ToolCreateObject::ToolCreateObject(EObjType type, bool repeat, bool randori)
 		m_obj = BecherEdit::Get()->GetActMap()->CreateSystemObject(type);
 		m_obj->Show(false);
 	}
+
+	GetProp()->Begin(this);
+	GetProp()->AppendCategory(_("Generic"));
+	GetProp()->AppendBool(1, _("Repeat"), m_repeat);
+	GetProp()->AppendCategory(_("Random Values"));
+	GetProp()->AppendBool(2, _("Angle"), m_rand_angle);
+	GetProp()->AppendBool(3, _("Scale"), m_rand_scale);
+	GetProp()->AppendFloat(4, _("Scale From"), m_rand_scale_from);
+	GetProp()->AppendFloat(5, _("Scale To"), m_rand_scale_to);
+	GetProp()->End();
 }
 
 ToolCreateObject::~ToolCreateObject()
 {
+	// if 
+	if (GetProp()->GetHandler() == static_cast<HoeEditor::PropObject*>(this))
+		GetProp()->Begin(NULL);
 	SAFE_DELETE(m_obj);
 }
 
@@ -119,12 +139,17 @@ void ToolCreateObject::LeftUp(const int x, const int y, const wxMouseEvent &e)
 		if (m_type < EBO_Max)
 			m_obj = BecherEdit::Get()->GetActMap()->CreateObject(m_type);
 		else if (m_type < EBAO_Max)
-			m_obj = BecherEdit::Get()->GetActMap()->CreateAddOnObject(m_type);
+		{
+			Addon * ao = BecherEdit::Get()->GetActMap()->CreateAddOnObject(m_type);
+			if (m_rand_scale)
+				ao->SetScale(HoeCore::RandFloat(m_rand_scale_from, m_rand_scale_to));
+			m_obj = ao;
+		}
 		else
 			m_obj = BecherEdit::Get()->GetActMap()->CreateSystemObject(m_type);
 		m_obj->Show(true);
 		SetPos(x,y);
-		if (m_rand)
+		if (m_rand_angle)
 		{
 			m_obj->SetAngle((rand() % 628) * 0.01f);
 		}
@@ -143,6 +168,29 @@ void ToolCreateObject::Wheel( const wxMouseEvent &e)
 {
     if (e.ControlDown())
         m_obj->SetAngle(m_obj->GetAngle() + e.GetWheelRotation() / 500.f);
+}
+
+void ToolCreateObject::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+{
+	switch (id)
+	{
+	case 1:
+		m_repeat = pi.GetBool();
+		break;
+	case 2: // angle
+		//v_sklad.Set((int)pi.GetLong());
+		m_rand_angle = pi.GetBool();
+		break;
+	case 3: // scale
+		m_rand_scale = pi.GetBool();
+		break;
+	case 4: // scale
+		m_rand_scale_from = pi.GetFloat();
+		break;
+	case 5: // scale
+		m_rand_scale_to = pi.GetFloat();
+		break;
+	};
 }
 
 //////////////////////////////////////////////////////

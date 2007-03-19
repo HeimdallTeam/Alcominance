@@ -66,6 +66,13 @@ public:
 };
 #endif 
 
+class AddonSmoke : public Addon
+{
+public:
+    AddonSmoke(IHoeScene * scn);
+
+};
+
 #endif // _BECHERGAME_ELEMENTS_H_
 
 

@@ -72,7 +72,13 @@ BecherObject * BecherMap::CreateObject(EObjType type)
 
 Addon * BecherMap::CreateAddOnObject(EObjType type)
 {
-    return new Addon(m_scene, type);
+	switch (type)
+	{
+	case EBAO_Smoke:
+		return new AddonSmoke(m_scene);
+	default:
+		return new Addon(m_scene, type);
+	};
 }
 
 BecherSystemObject * BecherMap::CreateSystemObject(EObjType type)
@@ -178,7 +184,7 @@ bool BecherMap::LoadMapChunk(BecherGameLoad & r)
 			float x = dict.KeyFloat("x", 0.f);
 			float y = dict.KeyFloat("y", 0.f);
 			float z = dict.KeyFloat("height", m_scene->GetScenePhysics()->GetHeight(x,y));
-			float s = dict.KeyFloat("scale", 4.f);
+			float s = dict.KeyFloat("scale", 1.f);
 #ifdef BECHER_EDITOR
 			bo->SetPosition(x,y,z);
 			bo->SetAngle(dict.KeyFloat("angle", 0.f));
@@ -186,8 +192,9 @@ bool BecherMap::LoadMapChunk(BecherGameLoad & r)
 			bo->SetPosition(x,z,y);
 			bo->SetOrientation(0.f,1.f,0.f,dict.KeyFloat("angle", 0.f));
 #endif
-			bo->GetCtrl()->SetScale(HoeMath::Vector3(s,s,s));
+			bo->SetScale(s);
 			bo->Show(true);
+			// load
 			AddAddonObject(bo);
 		}
 		break;

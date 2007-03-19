@@ -196,8 +196,6 @@ Addon::Addon(IHoeScene * scn, EObjType type)
     case EBAO_Row:
 		m = (IHoeModel*)GetResMgr()->ReqResource(model_addon_ROW);
         break;
-    default:
-		assert(!"Unknown becher X object");
 	};
 
 	if (m)
@@ -242,6 +240,21 @@ void Addon::SetScale(float s)
 	GetCtrl()->SetScale(HoeMath::Vector3(s,s,s));
 }
 
-
 #endif // BECHER_OBJECT
 
+AddonSmoke::AddonSmoke(IHoeScene *scn) : Addon(scn, EBAO_Smoke)
+{
+#ifdef BECHER_EDITOR
+	static IHoeModel * mod = NULL;
+	if (mod == NULL)
+	{
+		mod = (IHoeModel *)GetEngine()->Create("generate model box 1");
+	}
+	SetModel(mod);
+#endif
+	static THoeSub_Particle part;
+	part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
+	part.pos.Set(0, 0, 0);
+	GetCtrl()->Link(THoeSubObject::Particle, &part);
+	part.emitor->Start();
+}

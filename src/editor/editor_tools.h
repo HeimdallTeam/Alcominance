@@ -36,13 +36,16 @@ class UndoCreate : public BecherUndoAction
 public:
 };
 
-class ToolCreateObject : public BaseEditorTool
+class ToolCreateObject : public BaseEditorTool, public HoeEditor::PropObject
 {
 protected:
 	BecherObject * m_obj;
 	EObjType m_type;
 	bool m_repeat;
-	bool m_rand;
+	bool m_rand_angle;
+	bool m_rand_scale;
+	static float m_rand_scale_from;
+	static float m_rand_scale_to;
 public:
 	ToolCreateObject(EObjType type, bool repeat, bool randori);
 	virtual ~ToolCreateObject();
@@ -54,6 +57,8 @@ public:
 	virtual void Move(int relX, int relY, int absX, int absY, const wxMouseEvent & ev);
 	virtual void Enter(int absX, int absY);
 	virtual void Leave();
+
+	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
 };
 
 class ToolTex : public BaseEditorTool

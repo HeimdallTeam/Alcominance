@@ -48,6 +48,7 @@ enum EObjType
     EBAO_Stones2,
     EBAO_Anthill,
     EBAO_Row,
+	EBAO_Smoke,
 	EBAO_Max,
 
 	// system

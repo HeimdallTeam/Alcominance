@@ -176,6 +176,8 @@ ToolObjects::ToolObjects(wxWindow * parent)
 	b->SetToolTip( _("Anthill") );
     b = new wxBitmapButton(p4,IDB(EBAO_Row),wxBitmap(Sound_xpm),BT_P(1,1),BT_SIZE/*,BS_FLAT*/);
 	b->SetToolTip( _("Row") );
+    b = new wxBitmapButton(p4,IDB(EBAO_Smoke),wxBitmap(Sound_xpm),BT_P(2,1),BT_SIZE/*,BS_FLAT*/);
+	b->SetToolTip( _("Smoke") );
 
 	AddPage(p2,_("Map elements"));
 	AddPage(p,_("Buildings"));
@@ -715,6 +717,7 @@ void BecherEdit::OnNewObject(wxCommandEvent &)
 
 void BecherEdit::CloseMap()
 {
+	SetTool(NULL);
 	SAFE_DELETE(m_map);
 	//m_mapfilepath = wxT("");
 }
