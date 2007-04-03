@@ -11,15 +11,15 @@ protected:
 	ResourceExp m_water;
 	float m_kap;
 	HoeCore::Set<TTrollWorkSlot> m_worked;
+
+	virtual int StatusPlace(float *pos);
 public:
 	WaterHole(IHoeScene * scn);
 
-#ifndef BECHER_EDITOR
-	virtual bool SetToGet(Troll * t, uint num);
-#endif
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
     virtual void Update(const float t);
 
-	const char * BuildPlace(float x, float y);
 	DECLARE_BUILDING(EBO_WaterHole)
 };
 

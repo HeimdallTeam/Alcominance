@@ -32,6 +32,8 @@ protected:
 	THoeSub_Model m_infoselect;
 	bool m_selected;
 	bool m_curactive;
+
+	void UpdateRing();
 public:
 	unsigned long id;
 
@@ -55,8 +57,6 @@ public:
 	inline const HoeMath::Vector2 GetPos() const { return HoeMath::Vector2(posX, posY); }
 
 	unsigned long GetID() { return id; }
-
-	void SetRingParam(float sx, float sy, float height);
 
 	virtual int GetInfo(int type, char * str=NULL, size_t n=0) { return 0; }
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
@@ -99,6 +99,20 @@ bool Sugar::Load(BecherGameLoad &r)
 	return true;
 }
 */
+
+// global var
+// sizing
+enum {
+ESSZ_ring_x=0,
+ESSZ_ring_y,
+ESSZ_ring_h,
+ESSZ_height,
+ESSZ_dobj,
+ESSZ_max
+};
+#define SIZZ(obj, item) (obj*ESSZ_max+item)
+extern CVar v_sizzing;
+
 
 #endif // _BECHER_OBJECT_H_
 

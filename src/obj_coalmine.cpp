@@ -11,9 +11,10 @@ static CVar v_cena_drevo("coal_cost_wood" , 60, TVAR_SAVE);
 static CVar v_cena_kamen("coal_cost_stone", 60, TVAR_SAVE);
 */
 static CVar v_numworks("coal_maxwork", 2, TVAR_SAVE);
+static CVar v_build("coal_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 
 ////////////////////////////////////////////////////////////
-CoalMine::CoalMine(IHoeScene * scn) : SourceBuilding(scn), m_coal(EBS_Coal)
+CoalMine::CoalMine(IHoeScene * scn) : SourceBuilding(scn, v_build), m_coal(EBS_Coal)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_COALMINE));
 	m_coal.SetOwner(this); CRR::Get()->Register(&m_coal);
@@ -93,10 +94,6 @@ int CoalMine::GameMsg(int msg, int par1, void * par2, uint npar2)
 		GetLevel()->GetPanel()->SetObjectHud("scripts/mine.menu",this);
 		GetLua()->func("s_coalmine");
 		break;
-	case BMSG_SelectPlace:
-	case BMSG_StartBuilding:
-		return BuildPlace((float*)par2, 
-			(IHoeModel*)GetResMgr()->ReqResource(model_COALMINE),50.f,200.f,msg==BMSG_StartBuilding);
 	}
 #endif
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);

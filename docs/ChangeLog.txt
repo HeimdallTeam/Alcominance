@@ -1,3 +1,7 @@
+1.4.2007
+	Vytvorena strukturovana promena sizing, pro uchovani informaci o velikostech budov
+	Oprava ukladani systemovych objektu
+--------------------------------------
 17.3.2007
 	Vytvoreni objektu addon (sutry, budry,mraveniste)
 --------------------------------------

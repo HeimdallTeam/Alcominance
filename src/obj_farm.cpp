@@ -15,7 +15,7 @@ static CVar v_build("farm_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro s
 Farm::Farm(IHoeScene * scn) : ProductionBuilding(scn, v_build), m_cane(EBS_Cane)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_FARM));
-	SetRingParam(4.5f,3.5f,2.f);
+	//SetRingParam(4.5f,3.5f,2.f);
 	m_cane.SetOwner(this); CRR::Get()->Register(&m_cane);
 	//worked = NULL;
 	//rust = 0.f;
@@ -85,10 +85,6 @@ int Farm::GameMsg(int msg, int par1, void * par2, uint npar2)
 	case BMSG_Select:
 		Select();
 		break;
-	case BMSG_SelectPlace:
-	case BMSG_StartBuilding:
-		return BuildPlace((float*)par2, 
-			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
 	case BMSG_GetSur: {
 		PAR_Load * l = (PAR_Load *)par2;
 		if (l->sur == EBS_Cane)

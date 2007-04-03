@@ -16,7 +16,10 @@ class BecherBuilding : public BecherObject
 {
 protected:
 	EBuildingMode m_mode;
-	int BuildPlace(float *pos, IHoeModel * m, float dest, float dobj, bool finish);
+
+	/** Funkce pro zjisteni jestli je mozno postavit budovu */
+	virtual int StatusPlace(float *pos);
+	int BuildPlace(float *pos);
 public:
 	BecherBuilding(IHoeScene * scn);
 	//bool IsBuildMode() { return m_mode == ; }
@@ -30,21 +33,9 @@ public:
 };
 
 /**
- * Budova zdroje, pouzivaji ji doly a studna
- * obsahuje frontu do ktere se muzou tupouni zaregistrovat a tezit.
+ * Budova ktera se da stavet
  */
-class SourceBuilding : public BecherBuilding
-{
-public:
-	SourceBuilding(IHoeScene * scn) : BecherBuilding(scn) {}
-	virtual bool SetToGet(Troll * t, uint num) { return false; }
-};
-
-/**
- * Pracovni budova
- * Ma funkce pro praci a funkci pro postaveni budovy
- */
-class WorkBuilding : public BecherBuilding
+class ConstructBuilding : public BecherBuilding
 {
 protected:
 	// staveni
@@ -55,12 +46,41 @@ protected:
     // organizator prace
 	Chief m_chief;
 public:
+	ConstructBuilding(IHoeScene * scn, CVar &v_build);
+
+	inline bool InBuildProcess() { return m_buildprogress < 1.f; }
+    void IdiotBuild();
+	static uint ReqResource(const char * recept, float progress, char r);
+
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
+    virtual void Update(const float t);
+};
+
+/**
+ * Budova zdroje, pouzivaji ji doly a studna
+ * obsahuje frontu do ktere se muzou tupouni zaregistrovat a tezit.
+ */
+class SourceBuilding : public ConstructBuilding
+{
+public:
+	SourceBuilding(IHoeScene * scn, CVar &v_build)
+		: ConstructBuilding(scn, v_build) {}
+	
+};
+
+/**
+ * Pracovni budova
+ * Ma funkce pro praci a funkci pro postaveni budovy
+ */
+class WorkBuilding : public ConstructBuilding
+{
+protected:
+public:
     WorkBuilding(IHoeScene * scn, CVar &v_build);    
 	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
-    inline bool InBuildProcess() { return m_buildprogress < 1.f; }
     virtual void Update(const float t);
-    void IdiotBuild();
 };
 
 /**

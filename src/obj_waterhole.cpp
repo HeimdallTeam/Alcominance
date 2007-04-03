@@ -7,6 +7,8 @@
 
 static CVar v_numzpr("water_mine", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
 static CVar v_cena("water_cost", 80, TVAR_SAVE);
+static CVar v_build("water_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
+
 /*
 static CVar v_cena_drevo("water_cost_wood", 10, TVAR_SAVE);
 static CVar v_cena_cena("water_cost_stone", 35,TVAR_SAVE);
@@ -17,10 +19,11 @@ static CVar v_max("water_max", 50, TVAR_SAVE);
 
 
 ////////////////////////////////////////////////////////////
-WaterHole::WaterHole(IHoeScene * scn) : SourceBuilding(scn), m_water(EBS_Water)
+WaterHole::WaterHole(IHoeScene * scn)
+	: SourceBuilding(scn, v_build), m_water(EBS_Water)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_WATERHOLE));
-	SetRingParam(1.f,1.f,2.f);
+	//SetRingParam(1.f,1.f,2.f);
 	m_water.SetOwner(this); CRR::Get()->Register(&m_water);
 	m_water.SetPriority(EBSP_TimeWork);
 	m_water.SetNum(v_max.GetInt());
@@ -40,8 +43,6 @@ bool WaterHole::Load(BecherGameLoad &r)
 	OnUpdateSur();
 	return true;
 }
-
-#ifndef BECHER_EDITOR
 
 void WaterHole::Update(const float dtime)
 {
@@ -80,39 +81,23 @@ void WaterHole::Update(const float dtime)
 
 bool WaterHole::Select()
 {
+#ifndef BECHER_EDITOR
 	//SourceBuilding::Select();
 	GetLevel()->GetPanel()->SetObjectHud("scripts/waterhole.menu", this);	
 	GetLua()->func("s_studna");
+#endif
 	return true;
 }
 
-const char * WaterHole::BuildPlace(float x, float y)
+// system pro hledani mista na stavbu
+
+
+int WaterHole::StatusPlace(float *pos)
 {
-	// pozice v mape
-	float min,max;
-	bool ok;
-	max = min = 0.f;
-	ok = GetLevel()->GetScene()->GetScenePhysics()->GetCamber(x,x,y,y,min,max);
-	SetPosition(x,y,min);
-	if (!ok || (max-min) > 1.f) 
-	{
-		GetCtrl()->SetOverColor(0xffff0000);
-		return GetLang()->GetString(101);
-	}
-	// zjistit zda muze byt cerveny nebo jiny
-	for (int i=0; i < GetLevel()->GetNumObj();i++)
-	{
-		float x = GetLevel()->GetObj(i)->GetPosX();
-		float y = GetLevel()->GetObj(i)->GetPosY();
-		x -= GetPosX();
-		y -= GetPosY();
-		if (x*x+y*y < 4000.f)
-		{
-			GetCtrl()->SetOverColor(0xffff0000);
-			return GetLang()->GetString(102);
-		}
-	}
-	// muze se postavit, ted jen najit zdroj
+	int ret = SourceBuilding::StatusPlace(pos);
+	if (ret) return ret;
+
+	// zkontrolovat zdroj vody
 	SystemObjectWater * source = NULL;
 	float maxdist = 0.f;
 	for (int i=0; i < GetLevel()->GetNumSysObj();i++)
@@ -131,16 +116,16 @@ const char * WaterHole::BuildPlace(float x, float y)
 	if (source == NULL)
 	{
 		GetCtrl()->SetOverColor(0xffff0000);
-		return GetLang()->GetString(103);
+		return 3;
 	}
 
 	// nejaka voda je
 	byte c = (byte)(0xff * maxdist);
 	GetCtrl()->SetOverColor(0xff000000 | (0xff-c) << 8 | c);
-	return NULL;
+	return 0;
 }
 
-bool WaterHole::SetToGet(Troll * t, uint num)
+/*bool WaterHole::SetToGet(Troll * t, uint num)
 {
 	// nalezt volny slot
 	if (m_worked.Count()>=(uint)v_numworks.GetInt())
@@ -153,25 +138,40 @@ bool WaterHole::SetToGet(Troll * t, uint num)
 	slot.t = 0.f;
 	m_worked.Add(slot);
 	return true;
-}
+}*/
 
-#else // BECHER_OBJECT
-void WaterHole::Update(const float t)
+int WaterHole::GetInfo(int type, char * str, size_t n)
 {
+	register int ret = 0;
+	if (type==BINFO_Custom && str)
+	{
+		type = DefaultCustomInfo(str);
+	}
+	switch (type)
+	{
+	case BINFO_NumWater:
+		ret = (int)this->m_water.GetNum();
+		break;
+	default:
+		return SourceBuilding::GetInfo(type, str, n);
+	};
+	if (str)
+		snprintf(str, n, "%d", ret);
+	return ret;
 }
 
-bool WaterHole::Select()
+int WaterHole::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
-	//SourceBuilding::Select();
-	return true;
+	switch (msg)
+	{
+	case BMSG_Select:
+		Select();
+		break;
+	};
+	return SourceBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
-void WaterHole::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-}
 
-
-#endif // BECHER_OBJECT
 
 
 

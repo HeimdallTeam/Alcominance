@@ -12,7 +12,7 @@ static CVar v_cost_stone("shop_cost_stone", 50, TVAR_SAVE); // pocet kameni potr
 Shop::Shop(IHoeScene * scn) : BecherBuilding(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SHOP));
-	SetRingParam(1.5f,3.f,2.f);
+	//SetRingParam(1.5f,3.f,2.f);
 }
 
 bool Shop::Save(ChunkDictWrite &w)

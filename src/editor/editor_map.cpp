@@ -120,14 +120,19 @@ bool EditorMap::SaveMap(const wxString &path)
 	}
 
 	// ulozit systemove objekty
-	/*for (int i=0;i < m_sysobj.Count();i++)
+	for (int i=0;i < m_sysobj.Count();i++)
 	{
 		// uklada se jen typ
 		w.WriteChunk(ID_CHUNK('s','y','s','o'));
-		w.WriteValue<dword>(m_sysobj[i]->GetType());
-		m_sysobj[i]->Save(w);
+		ChunkDictWrite dict(w);
+		dict.Begin();
+		dict.Key("type", (int)m_sysobj[i]->GetType());
+		dict.Key("x", (float)m_sysobj[i]->GetPosX());
+		dict.Key("y", (float)m_sysobj[i]->GetPosY());
+		m_sysobj[i]->Save(dict);
+		dict.End();
 		w.WriteChunkEnd();
-	}*/
+	}
 
 	// objekty
 	SaveAllObjects(w);

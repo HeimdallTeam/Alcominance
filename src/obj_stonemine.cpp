@@ -7,13 +7,15 @@
 static CVar v_numzpr("stone_mine", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
 static CVar v_numworks("stone_maxwork", 2, TVAR_SAVE);
 static CVar v_cena("stone_cost", 150, TVAR_SAVE); // cena za stavbu
+static CVar v_build("stone_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
+
 /*
 static CVar v_cena("stone_cost_wood", 60, TVAR_SAVE); // pocet dreva potrebneho na stavbu
 static CVar v_cena("stone_cost_stone", 60, TVAR_SAVE); // pocet kameni potrebneho na stavbu
 */
 
 ////////////////////////////////////////////////////////////
-StoneMine::StoneMine(IHoeScene * scn) : SourceBuilding(scn), m_stone(EBS_Stone)
+StoneMine::StoneMine(IHoeScene * scn) : SourceBuilding(scn, v_build), m_stone(EBS_Stone)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STONEMINE));
 	m_stone.SetOwner(this); CRR::Get()->Register(&m_stone);

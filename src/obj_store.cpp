@@ -36,7 +36,7 @@ Store::Store(IHoeScene * scn) : WorkBuilding(scn, v_build)
 {
 	// set owners
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STORE));
-	SetRingParam(2.5f,2.5f,3.f);
+	//SetRingParam(2.5f,2.5f,3.f);
 	memset(&m_info, 0, sizeof(m_info));
 	const float p = getheight(GetModel()); 
 	LoadModels();
@@ -117,10 +117,6 @@ int Store::GameMsg(int msg, int par1, void * par2, uint npar2)
 		GetLevel()->GetPanel()->SetObjectHud("scripts/store.menu", this);
 		GetLua()->func("s_sklad");
 		break;
-	case BMSG_SelectPlace:
-	case BMSG_StartBuilding:
-		return BuildPlace((float*)par2, 
-			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
 	case BMSG_GetSur: {
 		PAR_Load * l = (PAR_Load *)par2;
 		m_res[l->sur].Unlock(par1);

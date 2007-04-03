@@ -74,7 +74,10 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/BecherGame.pdb"
 				SubSystem="2"
+				SwapRunFromCD="true"
+				SwapRunFromNet="false"
 				TargetMachine="1"
+				Profile="false"
 			/>
 			<Tool
 				Name="VCALinkTool"

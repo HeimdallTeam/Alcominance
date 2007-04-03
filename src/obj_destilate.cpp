@@ -21,7 +21,7 @@ Destilate::Destilate(IHoeScene * scn)
   m_alco(EBS_Alco), m_sugar(EBS_Sugar)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_DESTILATE));
-	SetRingParam(4.5f, 4.5f, 2.f);
+	//SetRingParam(4.5f, 4.5f, 2.f);
 	//GetCtrl()->SetFlags(HOF_SHOW);
 	//m_mode = wmIn;
 	m_sugar.SetOwner(this);
@@ -86,10 +86,6 @@ int Destilate::GameMsg(int msg, int par1, void * par2, uint npar2)
 	case BMSG_Select:
 		Select();
 		break;
-	case BMSG_SelectPlace:
-	case BMSG_StartBuilding:
-		return BuildPlace((float*)par2, 
-			(IHoeModel*)GetResMgr()->ReqResource(model_DESTILATE),50.f,200.f,msg==BMSG_StartBuilding);
 	case BMSG_InsertSur: {
 		PAR_Load * l = (PAR_Load *)par2;
 		if (l->sur == EBS_Sugar)

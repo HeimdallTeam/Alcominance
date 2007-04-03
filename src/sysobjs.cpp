@@ -157,17 +157,14 @@ SystemObjectSource::SystemObjectSource(IHoeScene * scn) : BecherSystemObject(scn
 }
 
 
-bool SystemObjectSource::Load(BecherGameLoad &r)
+bool SystemObjectSource::Load(ChunkDictRead &r)
 {
-	float x,y;
-	x = r.Read<float>();
-	y = r.Read<float>();
-	m_x = x;
-	m_y = y;
-	m_distance = r.Read<float>();
-	m_source = r.Read<uint>();
+	m_x = r.KeyFloat("x", 0.f);
+	m_y = r.KeyFloat("y", 0.f);
+	m_distance = r.KeyFloat("distance", 0.f);
+	m_source = r.KeyInt("source", 0);
 #ifdef BECHER_EDITOR
-	this->SetPosition(x,y,0);
+	this->SetPosition(m_x,m_y,0);
 	this->Show(true);
 #endif
 	return true;
@@ -204,10 +201,8 @@ void SystemObjectSource::SetPosition(const float x, const float y, const float h
 bool SystemObjectSource::Save(ChunkDictWrite &w)
 {
 	// ulozit pozici
-	/*w.WriteValue<float>(this->GetPosX());
-	w.WriteValue<float>(this->GetPosY());
-	w.WriteValue<float>(m_distance);
-	w.WriteValue<uint>(m_source);*/
+	w.Key("distance", (float)m_distance);
+	w.Key("source", (int)m_source);
 	return true;
 }
 

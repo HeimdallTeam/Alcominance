@@ -251,6 +251,8 @@ AddonSmoke::AddonSmoke(IHoeScene *scn) : Addon(scn, EBAO_Smoke)
 		mod = (IHoeModel *)GetEngine()->Create("generate model box 1");
 	}
 	SetModel(mod);
+#else
+	SetModel((IHoeModel *)GetEngine()->Create("dummy model"));
 #endif
 	static THoeSub_Particle part;
 	part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");

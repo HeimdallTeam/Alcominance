@@ -19,7 +19,7 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_TROLL));
 	GetCtrl()->SetScale(HoeMath::Vector3(scale,scale,scale));
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE|HOF_SCALED);
-	SetRingParam(.8f,.8f,2.f);
+	//SetRingParam(.8f,.8f,2.f);
 	memset(&m_job, 0, sizeof(m_job));
 	m_load.num = 0;
 	m_load.sur = EBS_None;

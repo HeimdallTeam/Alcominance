@@ -3,6 +3,31 @@
 #include "becher.h"
 #include "object.h"
 
+static THoeVarIndex idx_obj[] = { "ring_x", ESSZ_ring_x, TVAR_FLOAT, NULL,
+								  "ring_y", ESSZ_ring_y, TVAR_FLOAT, NULL,
+								  "ring_h", ESSZ_ring_h, TVAR_FLOAT, NULL,
+								  "height", ESSZ_height, TVAR_FLOAT, NULL,
+								  "dobj",   ESSZ_dobj,   TVAR_FLOAT, NULL,
+								  NULL };
+static THoeVarIndex idx_buildings[] = { "tree", EBO_Tree * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"sugar", EBO_Sugar * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"herbe", EBO_HerbeWoman * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"farm", EBO_Farm * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"bridge", EBO_Bridge * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"destilate", EBO_Destilate * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"troll", EBO_Troll * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"factory", EBO_Factory * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"waterhole", EBO_WaterHole * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"store", EBO_Store * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"shop", EBO_Shop * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"saw", EBO_Saw * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"coalmine", EBO_CoalMine * ESSZ_max, TVAR_STRUCT, idx_obj,
+										"stonemine", EBO_StoneMine * ESSZ_max, TVAR_STRUCT, idx_obj,
+										  NULL };
+
+static THoeVarValue vv_sizzing[EBO_Max*ESSZ_max] = {0};
+CVar v_sizzing("sizzing", idx_buildings, vv_sizzing, EBO_Max * ESSZ_max);
+
 struct CustomInfo
 {
 	const char * str;
@@ -35,7 +60,6 @@ BecherObject::BecherObject(IHoeScene * scn) : HoeGame::Strategy::StgObject(scn)
 	m_infoselect.model = NULL;//(IHoeModel*)GetResMgr()->ReqResource(ID_INFO_RING);
 	m_selected = false;
 	m_curactive = false;
-	SetRingParam(2.f,2.f,3.f);
 	GetCtrl()->Link(THoeSubObject::Object, &m_infoselect);
 }
 
@@ -63,14 +87,6 @@ void BecherObject::SetPosition(const float x, const float y, const float h)
 	GetCtrl()->SetPosition(HoeMath::Vector3(x, h, y));
 }
 
-void BecherObject::SetRingParam(float sx, float sy, float h)
-{
-	m_infoselect.pos.Scale(sx,1,sy);
-	HoeMath::Matrix m;
-	m.Translate(0,h,0);
-	m_infoselect.pos.Multiply(m);
-}
-
 void BecherObject::Update(const float u)
 {
 	if (m_infoselect.model)
@@ -81,12 +97,24 @@ void BecherObject::Update(const float u)
 	}
 }
 
+void BecherObject::UpdateRing()
+{
+	// get params from 
+	int t = (int)GetType();
+	m_infoselect.pos.Scale(
+		v_sizzing.GetFloat(SIZZ(t,ESSZ_ring_x)),1,v_sizzing.GetFloat(SIZZ(t,ESSZ_ring_y)));
+	HoeMath::Matrix m;
+	m.Translate(0,v_sizzing.GetFloat(SIZZ(t,ESSZ_ring_h)),0);
+	m_infoselect.pos.Multiply(m);
+}
+
 int BecherObject::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
 	switch (msg)
 	{
 	case BMSG_Select:
 		m_infoselect.model = (IHoeModel*)GetResMgr()->ReqResource(model_INFO_RING);
+		UpdateRing();
 		m_selected = true;
 		break;
 	case BMSG_Unselect:
@@ -95,7 +123,10 @@ int BecherObject::GameMsg(int msg, int par1, void * par2, uint npar2)
 		break;
 	case BMSG_CursorActive:
 		if (!m_selected)
+		{
+			UpdateRing();
 			m_infoselect.model = (IHoeModel*)GetResMgr()->ReqResource(model_INFO_RING2);
+		}
 		m_curactive = true;
 		break;
 	case BMSG_CursorInactive:

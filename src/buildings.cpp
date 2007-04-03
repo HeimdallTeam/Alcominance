@@ -47,15 +47,23 @@ bool BecherBuilding::Load(BecherGameLoad &r)
 	return true;
 }
 
-int BecherBuilding::BuildPlace(float *pos, IHoeModel * m, float height, float dobj,bool finish)
+int BecherBuilding::StatusPlace(float *pos)
 {
 	// pozice v mape
 #ifndef BECHER_EDITOR
+
+	// type, model
+	// vysku, destinaci od ostatnich ziskam z... v_sizzing
+
 	float min,max;
 	float x=pos[0];
 	float y=pos[1];
+	int type = GetType();
+	float height = v_sizzing.GetFloat(SIZZ(type,ESSZ_height));
+	float dobj = v_sizzing.GetFloat(SIZZ(type,ESSZ_dobj));
 	bool ok;
 	THoeParameter par;
+	IHoeModel * m = GetModel();
 	if (m)
 		m->GetParameter("boundbox",&par);
 	else
@@ -68,9 +76,7 @@ int BecherBuilding::BuildPlace(float *pos, IHoeModel * m, float height, float do
 	if (!ok || (max-min) > height) 
 	{
 		GetCtrl()->SetOverColor(0xffff0000);
-		if (finish)
-			SendGameMsgId(0, BMSG_Info, 0,(void*)GetLang()->GetString(101), 1);
-		return 0;
+		return 1;
 	}
 	// zjistit zda muze byt cerveny nebo jiny
 	for (int i=0; i < GetLevel()->GetNumObj();i++)
@@ -82,14 +88,35 @@ int BecherBuilding::BuildPlace(float *pos, IHoeModel * m, float height, float do
 		if (x*x+y*y < dobj)
 		{
 			GetCtrl()->SetOverColor(0xffff0000);
-			if (finish)
-				SendGameMsgId(0, BMSG_Info, 0,(void*)GetLang()->GetString(102), 1);
-			return 0;
+			return 2;
 		}
 	}
 	GetCtrl()->SetOverColor(0xffffffff);
 #endif
-	return 1;
+	return 0;
+}
+
+int BecherBuilding::BuildPlace(float *pos)
+{
+	int ret = StatusPlace(pos);
+#ifndef BECHER_EDITOR
+	switch (ret)
+	{
+	case 0: // postavit
+		GetCtrl()->SetOverColor(0xffffffff);
+		break;
+	case 1: // nevhodny teren
+		SendGameMsgId(0, BMSG_Info, 0,(void*)GetLang()->GetString(101), 1);
+		break;
+	case 2: // blizko objektu
+		SendGameMsgId(0, BMSG_Info, 0,(void*)GetLang()->GetString(102), 1);
+		break;
+	case 3:
+		SendGameMsgId(0, BMSG_Info, 0,(void*)GetLang()->GetString(103), 1);
+		break;
+	};
+#endif
+	return ret;
 }
 
 float getheight(IHoeModel*m)
@@ -101,15 +128,19 @@ float getheight(IHoeModel*m)
 
 int BecherBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
+	switch (msg)
+	{
+	case BMSG_SelectPlace:
+		return StatusPlace((float*)par2);
+	case BMSG_StartBuilding:
+		return BuildPlace((float*)par2);
+	};
 	return BecherObject::GameMsg(msg, par1, par2, npar2);
 }
 
 //////////////////////////////////////////////////////////////
-// Source building
-
-//////////////////////////////////////////////////////////////
-// WorkBuilding
-WorkBuilding::WorkBuilding(IHoeScene * scn, CVar &v_build)
+// Construct building
+ConstructBuilding::ConstructBuilding(IHoeScene * scn, CVar &v_build)
     : BecherBuilding(scn),
     m_build(&v_build), m_stone(EBS_Stone), m_wood(EBS_Wood)
 {
@@ -117,10 +148,9 @@ WorkBuilding::WorkBuilding(IHoeScene * scn, CVar &v_build)
 	m_stone.SetOwner(this);
 	// build
 	m_buildprogress = 1.1f;
-
 }
 
-uint ReqResource(const char * recept, float progress, char r)
+uint ConstructBuilding::ReqResource(const char * recept, float progress, char r)
 {
 	const char * p = recept;
 	while (*p && *p!='=') p++;
@@ -141,7 +171,7 @@ uint ReqResource(const char * recept, float progress, char r)
 	return (uint)HoeMath::UpperRound(rem);
 }
 
-int WorkBuilding::GetInfo(int type, char * str, size_t n)
+int ConstructBuilding::GetInfo(int type, char * str, size_t n)
 {
 	register int ret = 0;
 	if (type==BINFO_Custom && str)
@@ -181,7 +211,7 @@ int WorkBuilding::GetInfo(int type, char * str, size_t n)
 	return ret;
 }
 
-int WorkBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
+int ConstructBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
 	switch (msg)
 	{
@@ -191,7 +221,7 @@ int WorkBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
 		else
 		{
 			int n=0;
-			for (int i=0;i < npar2;i++)
+			for (uint i=0;i < npar2;i++)
 				n+=m_chief.Make(this,reinterpret_cast<const char**>(par2)[i]);
 			return n;
 		}
@@ -225,7 +255,7 @@ int WorkBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
-void WorkBuilding::Update(const float t)
+void ConstructBuilding::Update(const float t)
 {
 	if (m_buildprogress < 1.0f && m_build.BeginPass(m_chief.GetNumWorkers(EBW_Work)+v_autowork.GetFloat(), t))
 	{
@@ -238,7 +268,7 @@ void WorkBuilding::Update(const float t)
     BecherBuilding::Update(t);
 }
 
-void WorkBuilding::IdiotBuild()
+void ConstructBuilding::IdiotBuild()
 {
 #ifndef BECHER_EDITOR
 	HoeGame::LuaFunc f(GetLua(), "i_sugarbuild");
@@ -258,6 +288,46 @@ void WorkBuilding::IdiotBuild()
 #endif
 }
 
+//////////////////////////////////////////////////////////////
+// Source building
+
+//////////////////////////////////////////////////////////////
+// WorkBuilding
+WorkBuilding::WorkBuilding(IHoeScene * scn, CVar &v_build)
+    : ConstructBuilding(scn, v_build)
+{
+}
+
+int WorkBuilding::GetInfo(int type, char * str, size_t n)
+{
+	return ConstructBuilding::GetInfo(type, str, n);
+	/*register int ret = 0;
+	if (type==BINFO_Custom && str)
+	{
+		type = DefaultCustomInfo(str);
+	}
+	switch (type)
+	{
+	default:
+		return ConstructBuilding::GetInfo(type, str, n);
+	};
+	if (str)
+		snprintf(str, n, "%d", ret);
+	return ret;*/
+}
+
+int WorkBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+	/*switch (msg)
+	{
+	};*/
+	return ConstructBuilding::GameMsg(msg, par1, par2, npar2);
+}
+
+void WorkBuilding::Update(const float t)
+{
+    ConstructBuilding::Update(t);
+}
 
 //////////////////////////////////////////////////////////////
 // Production building

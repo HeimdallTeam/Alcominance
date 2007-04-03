@@ -9,15 +9,17 @@ static CVar v_cena("herbe_cost", , TVAR_SAVE); // cena za stavbu
 static CVar v_cena("herbe_cost_wood", , TVAR_SAVE); // pocet dreva potrebneho na stavbu
 static CVar v_cena("herbe_cost_stone", , TVAR_SAVE); // pocet kameni potrebneho na stavbu
 */
+static CVar v_build("herbe_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 static CVar v_num("herbe_num", 10, TVAR_SAVE); // pocet bylin z urody
 
 float getheight(IHoeModel *);
 
 ////////////////////////////////////////////////////////////
-HerbeWoman::HerbeWoman(IHoeScene * scn) : SourceBuilding(scn), m_herbe(EBS_Herbe), m_jaga(scn)
+HerbeWoman::HerbeWoman(IHoeScene * scn) 
+	: SourceBuilding(scn, v_build), m_herbe(EBS_Herbe), m_jaga(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_BABA));
-	SetRingParam(1.4f,2.f,2.f);
+	//SetRingParam(1.4f,2.f,2.f);
 	m_info.model = NULL;
 	m_info.pos.Scale(2.f,4.f,2.f);
 	HoeMath::Matrix a;

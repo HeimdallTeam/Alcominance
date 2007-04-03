@@ -200,11 +200,10 @@ bool BecherMap::LoadMapChunk(BecherGameLoad & r)
 		break;
 	case ID_CHUNK('s','y','s','o'):	
 		{ // system object
-		//
-		dword type = r.Read<dword>();
-		BecherSystemObject * bs = CreateSystemObject((EObjType)type);
-		bs->Load(r);
-		AddSystemObject(bs);
+			ChunkDictRead dict(r);
+			BecherSystemObject * bs = CreateSystemObject((EObjType)dict.KeyInt("type",0));
+			bs->Load(dict);
+			AddSystemObject(bs);
 		} break;
 	case ID_CHUNK('o','b','j','s'):
 		{

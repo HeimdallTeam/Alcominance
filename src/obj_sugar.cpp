@@ -21,7 +21,6 @@ Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn, v_recept, v_build),
 	m_cane(EBS_Cane),m_sugar(EBS_Sugar)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_SUGAR));
-	SetRingParam(4.5f, 4.5f, 2.f);
 	//m_w.SetOwner(this);
 	m_cane.SetOwner(this);
 	m_sugar.SetOwner(this);
@@ -118,10 +117,6 @@ int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
 	case BMSG_Select:
 		Select();
 		break;
-	case BMSG_SelectPlace:
-	case BMSG_StartBuilding:
-		return BuildPlace((float*)par2, 
-			(IHoeModel*)GetResMgr()->ReqResource(model_SUGAR),50.f,200.f,msg==BMSG_StartBuilding);
 	case BMSG_InsertSur: {
 		PAR_Load * l = (PAR_Load *)par2;
 		if (l->sur == EBS_Cane)

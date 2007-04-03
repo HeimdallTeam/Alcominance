@@ -16,8 +16,23 @@
 #include "phys_prov.h"
 #include "b_msg.h"
 
-static CVar v_camera("camera_speed", 0.9f, 0);
+enum 
+{
+	ESC_move_speed = 0,
+	ESC_track_speed,
+	ESC_zoom_speed,
+	ESC_rotate_speed,
+	ESC_max
+};
+static const THoeVarIndex idx_camera[] = { 
+	"move_speed", ESC_move_speed, TVAR_FLOAT, NULL,
+	"track_speed", ESC_track_speed, TVAR_FLOAT, NULL,
+	"zoom_speed", ESC_zoom_speed, TVAR_FLOAT, NULL,
+	"rotate_speed", ESC_rotate_speed, TVAR_FLOAT, NULL,
+	  NULL };
 
+static HoeGame::CVarValue vv_camera[ESC_max] = { 60.f, 2.f, 40.f, 1.f };
+static CVar v_camera("camera", idx_camera, vv_camera, ESC_max);
 
 BecherLevel::BecherLevel()
 {
@@ -58,8 +73,6 @@ void BecherLevel::OnSet()
 
 }
 
-#define MOVE_STEP 40.f
-
 void BecherLevel::Update(float time)
 {
 	if (IsPaused())
@@ -82,23 +95,25 @@ void BecherLevel::Update(float time)
 	if (!GetCon()->IsActive())
 	{
 		if (this->IsKeyDown(HK_UP))
-			GetView()->Move(time * MOVE_STEP,0);
+			GetView()->Move(time * v_camera.GetFloat(ESC_move_speed),0);
 		if (this->IsKeyDown(HK_DOWN))
-			GetView()->Move(-time * MOVE_STEP,0);
+			GetView()->Move(-time * v_camera.GetFloat(ESC_move_speed),0);
 		if (this->IsKeyDown(HK_RIGHT))
-			GetView()->Move(0,time * MOVE_STEP);
+			GetView()->Move(0,time * v_camera.GetFloat(ESC_move_speed));
 		if (this->IsKeyDown(HK_LEFT))
-			GetView()->Move(0,-time * MOVE_STEP);
+			GetView()->Move(0,-time * v_camera.GetFloat(ESC_move_speed));
 
 		if (IsKeyDown(HK_MINUS))
-			GetView()->Zoom(20 * time);
+		{
+			GetView()->Zoom(v_camera.GetFloat(ESC_zoom_speed) * time);
+		}
 		if (IsKeyDown(HK_EQUALS))
-			GetView()->Zoom(-20 * time);
+			GetView()->Zoom(-v_camera.GetFloat(ESC_zoom_speed) * time);
 			
 		if (IsKeyDown(HK_COMMA))
-			GetView()->Rotate(-time);
+			GetView()->Rotate(-time * v_camera.GetFloat(ESC_rotate_speed));
 		if (IsKeyDown(HK_PERIOD))
-			GetView()->Rotate(time);
+			GetView()->Rotate(time * v_camera.GetFloat(ESC_rotate_speed));
 	}
 	else
 	{
@@ -180,7 +195,7 @@ void BecherLevel::MouseLeftDown(float x, float y)
 		if (GetView()->GetPick(x,y,&X,&Y))
 		{
 			PAR_BuildPlace bp = {X,Y,NULL,0,0};
-			if (SendGameMsg(m_build, BMSG_StartBuilding,0,&bp,5)) 
+			if (!SendGameMsg(m_build, BMSG_StartBuilding,0,&bp,5)) 
 			//if (dynamic_cast<BecherBuilding*>(m_build)->StartBuilding(m_buildgold, m_buildwood, m_buildstone))
 			{
 				this->AddObject(m_build);
@@ -211,7 +226,7 @@ void BecherLevel::SelectObject(BecherObject * so)
 	if (so)
 	{
 		SendGameMsg(so, BMSG_Select, NULL,0);
-		GetView()->SetTrack(so->GetPosX(), so->GetPosY(), v_camera.GetFloat());
+		GetView()->SetTrack(so->GetPosX(), so->GetPosY(), v_camera.GetFloat(ESC_track_speed));
 		m_select = so;
 	}
 	else
@@ -606,11 +621,11 @@ int BecherLevel::l_Camera(lua_State * L)
 	{
 		BecherObject * bo = level->GetObj(lp.GetNum(-1));
 		if (bo)
-			level->GetView()->SetTrack(bo->GetPosX(), bo->GetPosY(), v_camera.GetFloat());
+			level->GetView()->SetTrack(bo->GetPosX(), bo->GetPosY(), v_camera.GetFloat(ESC_track_speed));
 	}
 	else if (lp.GetNumParam() == 2 && lp.CheckPar(2,"nn", "Camera"))
 	{
-		level->GetView()->SetTrack(lp.GetFloat(-2), lp.GetFloat(-1), v_camera.GetFloat());
+		level->GetView()->SetTrack(lp.GetFloat(-2), lp.GetFloat(-1), v_camera.GetFloat(ESC_track_speed));
 	}
 	return 0;
 }
