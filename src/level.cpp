@@ -53,8 +53,8 @@ void BecherLevel::_Paint(IHoe2D * h2d)
 	if (m_dlg)
 		m_dlg->Draw(h2d);
 
-	if (GetCon()->IsActive())
-        GetCon()->Draw(h2d);
+	if (GetBecher()->GetConDlg()->IsActive())
+        GetBecher()->GetConDlg()->Draw(h2d);
 
 }
 
@@ -77,7 +77,7 @@ void BecherLevel::Update(float time)
 {
 	if (IsPaused())
 	{
-		GetCon()->Update(time);
+		GetBecher()->GetConDlg()->Update(time);
 		return;
 	}
 	else
@@ -92,7 +92,7 @@ void BecherLevel::Update(float time)
 		}
 	}
 
-	if (!GetCon()->IsActive())
+	if (!GetBecher()->GetConDlg()->IsActive())
 	{
 		if (this->IsKeyDown(HK_UP))
 			GetView()->Move(time * v_camera.GetFloat(ESC_move_speed),0);
@@ -117,7 +117,7 @@ void BecherLevel::Update(float time)
 	}
 	else
 	{
-		GetCon()->Update(time);
+		GetBecher()->GetConDlg()->Update(time);
 	}
 	if (m_hud.GetActMap())
 	{
@@ -427,7 +427,7 @@ bool BecherCash::Load(int ver, HoeFileReader &r)
 void BecherLevel::OnKeyDown(int key)
 {
 	if (key == HK_GRAVE)
-		GetCon()->Open();
+		GetBecher()->GetConDlg()->Open();
 	else if (key == HK_F9)
 	{
 			if (SaveGame("a.sav"))

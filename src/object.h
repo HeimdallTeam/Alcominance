@@ -73,32 +73,13 @@ public:
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
 	virtual bool Select(); \
 	virtual bool Save(ChunkDictWrite &w); \
-	virtual bool Load(BecherGameLoad &r); \
-	//virtual ResourceBase * GetResource(ESurType type);
+	virtual bool Load(const ChunkDictRead &r);
 #else
 #define DECLARE_BUILDING(type) virtual EObjType GetType() { return type; } \
 	virtual bool Select(); \
-	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi); \
 	virtual bool Save(ChunkDictWrite &w); \
-	virtual bool Load(BecherGameLoad &r);
+	virtual bool Load(const ChunkDictRead &r);
 #endif
-
-/*
-bool Sugar::Save(BecherGameSave &w)
-{
-	BecherBuilding::Save(w);
-	w.WriteReservedWords(3);
-	return true;
-}
-
-bool Sugar::Load(BecherGameLoad &r)
-{
-	BecherBuilding::Load(r);
-	r.ReadReservedWords(3);
-	OnUpdateSur();
-	return true;
-}
-*/
 
 // global var
 // sizing

@@ -11,6 +11,12 @@
 
 class EditorMap;
 
+class VarsPanel : public wxPanel
+{
+public:
+	VarsPanel(wxWindow* win);
+};
+
 class MapSettingsDialog : public wxPropertySheetDialog
 {
 	/*wxTextCtrl* m_becherdir;

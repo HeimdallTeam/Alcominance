@@ -24,7 +24,7 @@ IHoeResource * BecherResources::MissingResource(int id)
 }
 
 
-BecherGame::BecherGame() : m_mem(200)
+BecherGame::BecherGame() : m_mem(200), m_condlg(*GetCon())
 {
 }
 
@@ -61,9 +61,9 @@ bool BecherGame::Init()
 	if (!GetLua()->Load("scripts/load.lua",g_luaconst))
 		return false;
 
-	if (!GetCon()->Load(GetEngine()))
+	if (!m_condlg.Load(GetEngine()))
 		return false;
-	GetCon()->RegisterCommands(GetEngine());
+	m_condlg.RegisterCommands(GetEngine());
 
 	//if (!LoadInfos())
 	//	return false;

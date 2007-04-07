@@ -11,7 +11,7 @@ public:
 	void Update(const float dtime);
 };
 
-class HerbeWoman : public SourceBuilding
+class HerbeWoman : public ProductionBuilding
 {
 protected:
 	// panel

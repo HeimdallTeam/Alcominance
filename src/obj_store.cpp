@@ -66,12 +66,12 @@ bool Store::Save(ChunkDictWrite &w)
 	return true;
 }
 
-bool Store::Load(BecherGameLoad &r)
+bool Store::Load(const ChunkDictRead &r)
 {
 	WorkBuilding::Load(r);
 
-	for (int i=1;i < EBS_Max;i++)
-		m_res[i].Load(r);
+	//for (int i=1;i < EBS_Max;i++)
+	//	m_res[i].Load(r);
 
 	OnUpdateSur();
 	return true;
@@ -110,9 +110,9 @@ int Store::GetInfo(int type, char * str, size_t n)
 
 int Store::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
-#ifndef BECHER_EDITOR
 	switch (msg)
 	{
+#ifndef BECHER_EDITOR
 	case BMSG_Select:
 		GetLevel()->GetPanel()->SetObjectHud("scripts/store.menu", this);
 		GetLua()->func("s_sklad");
@@ -126,8 +126,14 @@ int Store::GameMsg(int msg, int par1, void * par2, uint npar2)
 			PAR_Favour * f = (PAR_Favour *)par2;
 			return m_res[f->sur].Lock(f->num);
 		} 
-	}
+#else
+	case BMSG_PropertyChange:
+		if (id > EBS_None && id < EBS_Max)
+			m_res[id].SetNum(reinterpret_cast<const HoeEditor::PropItem*>(par2)->GetLong());
+		OnUpdateSur();
+		break;
 #endif 
+	}
 	return WorkBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
@@ -222,20 +228,6 @@ bool Store::Select()
 	GetProp()->AppendLong(20, _("Limit"), 100);
 	GetProp()->End();	
 	return true;
-}
-
-void Store::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-	if (id > EBS_None && id < EBS_Max)
-		m_res[id].SetNum(pi.GetLong());
-	/*else
-	switch (id)
-	{
-	case 20:
-		m_coal.SetNum(pi.GetLong());
-		break;
-	};*/
-	OnUpdateSur();
 }
 
 #endif

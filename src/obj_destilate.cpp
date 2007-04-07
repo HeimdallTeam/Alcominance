@@ -40,14 +40,13 @@ Destilate::~Destilate()
 
 bool Destilate::Save(ChunkDictWrite &w)
 {
-	BecherBuilding::Save(w);
+	FactoryBuilding::Save(w);
 	return true;
 }
 
-bool Destilate::Load(BecherGameLoad &r)
+bool Destilate::Load(const ChunkDictRead &r)
 {
-	BecherBuilding::Load(r);
-	r.ReadReservedWords(10);
+	FactoryBuilding::Load(r);
 	OnUpdateSur();
 	return true;
 }
@@ -201,16 +200,6 @@ bool Destilate::Select()
 	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());
 	GetProp()->End();*/	
 	return true;
-}
-
-void Destilate::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-	/*switch (id)
-	{
-	case 6:
-		v_sklad.Set((int)pi.GetLong());
-		break;
-	};*/
 }
 
 #endif

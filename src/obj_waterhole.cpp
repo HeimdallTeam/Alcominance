@@ -9,21 +9,20 @@ static CVar v_numzpr("water_mine", 1.f, TVAR_SAVE); // rychlost zpracovani jedne
 static CVar v_cena("water_cost", 80, TVAR_SAVE);
 static CVar v_build("water_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 
-/*
-static CVar v_cena_drevo("water_cost_wood", 10, TVAR_SAVE);
-static CVar v_cena_cena("water_cost_stone", 35,TVAR_SAVE);
-*/
 static CVar v_numworks("water_maxwork", 1, TVAR_SAVE);
-static CVar v_speed("water_speed", 0.21f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
+static CVar v_speed("water_speed", 0.21f, TVAR_SAVE); // rychlost pricitani vody
 static CVar v_max("water_max", 50, TVAR_SAVE);
 
+/*
+Zasoby vody ve studni se ridi podle vodnych zdroju
+
+*/
 
 ////////////////////////////////////////////////////////////
 WaterHole::WaterHole(IHoeScene * scn)
 	: SourceBuilding(scn, v_build), m_water(EBS_Water)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_WATERHOLE));
-	//SetRingParam(1.f,1.f,2.f);
 	m_water.SetOwner(this); CRR::Get()->Register(&m_water);
 	m_water.SetPriority(EBSP_TimeWork);
 	m_water.SetNum(v_max.GetInt());
@@ -32,25 +31,19 @@ WaterHole::WaterHole(IHoeScene * scn)
 
 bool WaterHole::Save(ChunkDictWrite &w)
 {
-	BecherBuilding::Save(w);
+	SourceBuilding::Save(w);
 	return true;
 }
 
-bool WaterHole::Load(BecherGameLoad &r)
+bool WaterHole::Load(const ChunkDictRead &r)
 {
-	BecherBuilding::Load(r);
-	r.ReadReservedWords(10);
+	SourceBuilding::Load(r);
 	OnUpdateSur();
 	return true;
 }
 
 void WaterHole::Update(const float dtime)
 {
-	// update cekajicich tupounu
-	// cakajici tupoun dostane dalsi dil do batohu a vypadne
-	// kazdy tupoun kope zvlast, ubiha to podle tupounu
-	// kazdemu tupounovi se pricita naklad zvlast
-	// takze forka pres vsechny tupouny, a kazdy dostane cast dilu co si vykopal
 	for (uint i=0;i<m_worked.Count();i++)
 	{
 		TTrollWorkSlot &slot = m_worked.Get(i);
@@ -70,7 +63,7 @@ void WaterHole::Update(const float dtime)
 		}
 	}
 	// update vody
-	m_kap += dtime * v_speed.GetFloat();
+	m_kap += dtime * v_speed.GetFloat(); // jeste vynasobeno silou zdroje
 	uint kap = (uint)m_kap;
 	if (kap > 0)
 	{
@@ -100,6 +93,7 @@ int WaterHole::StatusPlace(float *pos)
 	// zkontrolovat zdroj vody
 	SystemObjectWater * source = NULL;
 	float maxdist = 0.f;
+	// get source power
 	for (int i=0; i < GetLevel()->GetNumSysObj();i++)
 	{
 		BecherSystemObject * o = GetLevel()->GetSysObj(i);
@@ -121,9 +115,16 @@ int WaterHole::StatusPlace(float *pos)
 
 	// nejaka voda je
 	byte c = (byte)(0xff * maxdist);
-	GetCtrl()->SetOverColor(0xff000000 | (0xff-c) << 8 | c);
+	GetCtrl()->SetOverColor(0xff000000 | (0xff-c) << 16 | c);
 	return 0;
 }
+
+int WaterHole::GetSourcePower()
+{
+	// sila zdroje
+
+}
+
 
 /*bool WaterHole::SetToGet(Troll * t, uint num)
 {

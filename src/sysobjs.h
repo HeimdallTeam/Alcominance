@@ -63,6 +63,12 @@ public:
 #endif
 };
 
+
+/** Zdroj vody, uhli nebo kamene 
+* zdroje by ale mohli mit zpetnou vazbu, postavit 10 studen
+* na miste by nebylo dobre
+* u kamen nebo uhli je vytezitelne
+*/
 class SystemObjectSource : public BecherSystemObject
 {
 protected:
@@ -73,7 +79,8 @@ public:
 	virtual bool Save(ChunkDictWrite &w);
 	virtual bool Load(ChunkDictRead &r);
 	static IHoeModel * GetModelForSource();
-	float GetDistance(float x, float y);
+	/// jak silny je zdroj na urcitem miste
+	int GetSourcePower(float x, float y);
 #ifdef BECHER_EDITOR
 	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
 	virtual bool Select();

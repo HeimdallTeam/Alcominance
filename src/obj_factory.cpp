@@ -38,14 +38,13 @@ Factory::~Factory()
 
 bool Factory::Save(ChunkDictWrite &w)
 {
-	BecherBuilding::Save(w);
+	FactoryBuilding::Save(w);
 	return true;
 }
 
-bool Factory::Load(BecherGameLoad &r)
+bool Factory::Load(const ChunkDictRead &r)
 {
-	BecherBuilding::Load(r);
-	r.ReadReservedWords(30);
+	FactoryBuilding::Load(r);
 	OnUpdateSur();
 	return true;
 }
@@ -191,16 +190,6 @@ bool Factory::Select()
 	GetProp()->AppendLong(6, _("Limit"), v_sklad.GetInt());
 	GetProp()->End();*/	
 	return true;
-}
-
-void Factory::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-	/*switch (id)
-	{
-	case 6:
-		v_sklad.Set((int)pi.GetLong());
-		break;
-	};*/
 }
 
 #endif

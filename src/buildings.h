@@ -26,7 +26,7 @@ public:
 	bool StartBuilding(int gold, int wood, int stone);
 	virtual void SetMode(EBuildingMode mode) { m_mode = mode; }
 	virtual bool Save(ChunkDictWrite &w);
-	virtual bool Load(BecherGameLoad &r);
+	virtual bool Load(const ChunkDictRead &r);
 	virtual void OnUpdateSur() {}
 
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);

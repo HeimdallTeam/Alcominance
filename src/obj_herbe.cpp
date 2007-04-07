@@ -16,7 +16,7 @@ float getheight(IHoeModel *);
 
 ////////////////////////////////////////////////////////////
 HerbeWoman::HerbeWoman(IHoeScene * scn) 
-	: SourceBuilding(scn, v_build), m_herbe(EBS_Herbe), m_jaga(scn)
+	: ProductionBuilding(scn, v_build), m_herbe(EBS_Herbe), m_jaga(scn)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_BABA));
 	//SetRingParam(1.4f,2.f,2.f);
@@ -48,13 +48,12 @@ bool HerbeWoman::Save(ChunkDictWrite &w)
 	return true;
 }
 
-bool HerbeWoman::Load(BecherGameLoad &r)
+bool HerbeWoman::Load(const ChunkDictRead &r)
 {
-	BecherBuilding::Load(r);
-	m_herbe.Load(r);
-	m_wait = r.Read<float>();
-	m_ocup = r.Read<dword>() != 0;
-	r.ReadReservedWords(8);
+	ProductionBuilding::Load(r);
+	//m_herbe.Load(r);
+	//m_wait = r.Read<float>();
+	//m_ocup = r.Read<dword>() != 0;
 	OnUpdateSur();
 
 	// nastaveni pozice
@@ -67,7 +66,7 @@ bool HerbeWoman::Load(BecherGameLoad &r)
 
 void HerbeWoman::Update(const float dtime)
 {
-	SourceBuilding::Update(dtime);
+	ProductionBuilding::Update(dtime);
 	// update misky
 	if (m_info.model)
 	{
@@ -105,11 +104,6 @@ bool HerbeWoman::Select()
 	//SourceBuilding::Select();
 	return true;
 }
-
-void HerbeWoman::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-}
-
 
 #endif // BECHER_OBJECT
 

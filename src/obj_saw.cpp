@@ -20,10 +20,9 @@ bool Saw::Save(ChunkDictWrite &w)
 	return true;
 }
 
-bool Saw::Load(BecherGameLoad &r)
+bool Saw::Load(const ChunkDictRead &r)
 {
 	ProductionBuilding::Load(r);
-	r.ReadReservedWords(10);
 	OnUpdateSur();
 	return true;
 }
@@ -54,11 +53,6 @@ bool Saw::Select()
 	//ProductionBuilding::Select();
 	return true;
 }
-
-void Saw::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-}
-
 
 #endif // BECHER_OBJECT
 

@@ -162,5 +162,12 @@ void MapSettingsDialog::OnMoveScript(wxCommandEvent& event)
 	
 }
 
+/////////////////////////////////////////
+VarsPanel::VarsPanel(wxWindow * win)
+: wxPanel(win,wxID_ANY,wxDefaultPosition, wxSize(400,300))
+{
+	// vytvorit tree a property
+}
+
 
 

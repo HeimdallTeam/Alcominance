@@ -124,6 +124,8 @@ public:
 	void OnTypeShow(wxCommandEvent &);
 	void OnTerrainTextures(wxCommandEvent &);
 
+	void OnViewPanel(wxCommandEvent &);
+
 	virtual void OnDefaultTool();
 
 	virtual void KeyDown(wxKeyEvent& event);

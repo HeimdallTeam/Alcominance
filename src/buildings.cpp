@@ -40,10 +40,10 @@ bool BecherBuilding::Save(ChunkDictWrite &w)
 	return true;
 }
 
-bool BecherBuilding::Load(BecherGameLoad &r)
+bool BecherBuilding::Load(const ChunkDictRead &r)
 {
-	//BecherObject::Load(r);
-	this->SetMode((EBuildingMode)r.Read<dword>());
+	BecherObject::Load(r);
+	//this->SetMode((EBuildingMode)r.Read<dword>());
 	return true;
 }
 

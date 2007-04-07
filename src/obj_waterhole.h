@@ -4,15 +4,22 @@
 
 #include "buildings.h"
 
+/** Studna
+*/
 class WaterHole : public SourceBuilding
 {
 protected:
-	// panel
+	/// voda
 	ResourceExp m_water;
-	float m_kap;
+	float m_kap; ///< pritekajici voda
 	HoeCore::Set<TTrollWorkSlot> m_worked;
 
+	/** Callback funkce ktera kontroluje jestli je mozno stavet (pozice) */
 	virtual int StatusPlace(float *pos);
+	/** najde prislusne zdroje vody
+	* @return kolik vody ma pribyt za minutu 
+	*/
+	int GetSourcePower();
 public:
 	WaterHole(IHoeScene * scn);
 

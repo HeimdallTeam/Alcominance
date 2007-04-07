@@ -35,6 +35,7 @@ enum {
 	ID_OBJECTSFULL,
 	ID_SYSOBJECTS,
 	ID_TERRAINTEX,
+	ID_SHOWVARS,
 };
 
 BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::BaseEditor)
@@ -52,6 +53,7 @@ BEGIN_EVENT_TABLE(BecherEdit, HoeEditor::BaseEditor)
 	EVT_MENU(ID_SYSOBJECTS, BecherEdit::OnTypeShow)
 	EVT_MENU(ID_HELP, BecherEdit::OnHelp)
 	EVT_MENU(ID_TERRAINTEX, BecherEdit::OnTerrainTextures)
+	EVT_MENU(ID_SHOWVARS, BecherEdit::OnViewPanel)
 	//EVT_MENU(ID_SHOWINFO, BecherEdit::OnShowInfo)
 
 	EVT_MENU_RANGE(ID_OBJECT, ID_OBJECT + EBO_Max, BecherEdit::OnNewObject)
@@ -465,12 +467,12 @@ bool BecherEdit::Create(const wxString & title)
 
 	omenu->Check(ID_OBJECTSFULL, true);
 	menuView->Check(ID_SYSOBJECTS, true);
-	/*menuView->AppendSeparator();
+	menuView->AppendSeparator();
 	// advanced
-	wxMenu * menuAdvanced = new wxMenu;
-	menuAdvanced->Append(ID_ADV_WHITESPACE, _("View &White Space"), _("View white space in code editor."));
-    menuView->Append(-1, _("Ad&vanced"), menuAdvanced);
-	*/
+	wxMenu * menuPanels = new wxMenu;
+	menuPanels->Append(ID_SHOWVARS, _("&Vars"), _("View Vars Panel."));
+    menuView->Append(-1, _("Pane&l"), menuPanels);
+	
 	// tools
 	wxMenu * menuTools = new wxMenu;
 	menuTools->Append(ID_MAPSETTINGS, _("&Map Settings..."), _("Set map parameters"));
@@ -711,6 +713,19 @@ void BecherEdit::OnTerrainTextures(wxCommandEvent &)
 
 void BecherEdit::OnNewObject(wxCommandEvent &)
 {
+}
+
+void BecherEdit::OnViewPanel(wxCommandEvent & cmd)
+{
+	switch (cmd.GetId())
+	{
+	case ID_SHOWVARS:
+		// show vars panel
+		m_mgr.AddPane(new VarsPanel(this), wxAuiPaneInfo().
+                  Name(wxT("vars")).Caption(wxT("Vars")).
+                  Left());
+		break;
+	};
 }
 
 /////////////////////////////////////

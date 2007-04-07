@@ -36,9 +36,9 @@ inline BecherLevel * GetLevel()
 	return GetBecher()->GetLevel();
 }
 
-inline BGConsole * GetCon()
+inline HoeGame::Console * GetCon()
 {
-	return dynamic_cast<BGConsole *>(GetApp()->GetConsole());
+	return dynamic_cast<HoeGame::Console *>(GetApp()->GetConsole());
 }
 
 extern HoeGame::Lang g_lang;

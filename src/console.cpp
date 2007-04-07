@@ -4,11 +4,12 @@
 #include "console.h"
 #include "id.h"
 
-BGConsole::BGConsole()// : HoeGame::GuiConsole()
+ConsoleDialog::ConsoleDialog(HoeGame::Console & con)
+	: HoeGame::GuiConsole(con)
 {
 }
 
-bool BGConsole::Load(IHoe3DEngine *eng)
+bool ConsoleDialog::Load(IHoe3DEngine *eng)
 {
 	engine = eng;
 	m_fontcolor = 0xffcf0000;

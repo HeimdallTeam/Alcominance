@@ -12,10 +12,10 @@ public:
 
 #else
 
-class BGConsole : public HoeGame::GuiConsole
+class ConsoleDialog : public HoeGame::GuiConsole
 {
 public:
-	BGConsole();
+	ConsoleDialog(HoeGame::Console & con);
 	virtual bool Load(IHoe3DEngine *);
 };
 

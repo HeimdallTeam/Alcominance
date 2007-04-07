@@ -28,10 +28,9 @@ bool StoneMine::Save(ChunkDictWrite &w)
 	return true;
 }
 
-bool StoneMine::Load(BecherGameLoad &r)
+bool StoneMine::Load(const ChunkDictRead &r)
 {
-	BecherBuilding::Load(r);
-	r.ReadReservedWords(10);
+	SourceBuilding::Load(r);
 	OnUpdateSur();
 	return true;
 }
@@ -97,7 +96,7 @@ bool StoneMine::Select()
 	return true;
 }
 
-void StoneMine::OnChangeProp(int id, const HoeEditor::PropItem & pi)
+/*void StoneMine::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 {
 	switch (id)
 	{
@@ -105,7 +104,7 @@ void StoneMine::OnChangeProp(int id, const HoeEditor::PropItem & pi)
 		m_stone.SetNum((int)pi.GetLong());
 		break;
 	};
-}
+}*/
 
 
 #endif // BECHER_OBJECT

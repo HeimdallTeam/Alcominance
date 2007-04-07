@@ -18,6 +18,7 @@ protected:
 	BecherLevel m_level;
 	HoeGame::LuaScript m_lua;
 	HoeGame::Mem m_mem;
+	ConsoleDialog m_condlg;
 public:
 	BecherGame();
 	bool Init();
@@ -27,6 +28,8 @@ public:
 	void CloseLevel();
 	BecherLevel * GetLevel() { return &m_level; }
 	HoeGame::LuaScript * GetLua() { return &m_lua; }
+
+	ConsoleDialog * GetConDlg() { return &m_condlg; }
 
 	LUA_FUNCTION(l_PlaySound);
 	LUA_FUNCTION(l_GetMem);

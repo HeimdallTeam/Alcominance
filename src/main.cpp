@@ -28,7 +28,7 @@ int main(int argc,char * argv[])
 	HOE_INSTANCE hInstance = NULL;
 #endif
 
-	BGConsole con;
+	HoeGame::Console con;
 
 	con.SetFileLogging("becher.log");
 

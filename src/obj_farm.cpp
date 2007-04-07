@@ -40,15 +40,14 @@ bool Farm::Save(ChunkDictWrite &w)
 	return true;
 }
 
-bool Farm::Load(BecherGameLoad &r)
+bool Farm::Load(const ChunkDictRead &r)
 {
 	ProductionBuilding::Load(r);
-	m_cane.Load(r);
-	m_grow = r.Read<float>();
-	m_growinfo.pos.Translate(0,5.f * m_grow - 5.f,0);
-	uint it = r.Read<uint>();
-	m_work = dynamic_cast<Troll*>(GetLevel()->GetObjFromID(it));
-	r.ReadReservedWords(5);
+	//m_cane.Load(r);
+	//m_grow = r.Read<float>();
+	//m_growinfo.pos.Translate(0,5.f * m_grow - 5.f,0);
+	//uint it = r.Read<uint>();
+	//m_work = dynamic_cast<Troll*>(GetLevel()->GetObjFromID(it));
 	// 
 	OnUpdateSur();
 	return true;
@@ -135,11 +134,6 @@ bool Farm::Select()
 	//ProductionBuilding::Select();
 	return true;
 }
-
-void Farm::OnChangeProp(int id, const HoeEditor::PropItem & pi)
-{
-}
-
 
 #endif // BECHER_OBJECT
 
