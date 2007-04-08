@@ -28,7 +28,7 @@ LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-MAIN                    ICON                    "C:\\work\\BecherGame\\resource\\logo2.ico"
+MAIN                    ICON                    "..\\resource\\logo2.ico"
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
