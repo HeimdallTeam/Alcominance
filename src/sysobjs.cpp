@@ -170,17 +170,17 @@ bool SystemObjectSource::Load(ChunkDictRead &r)
 	return true;
 }
 
-float SystemObjectSource::GetDistance(float x, float y)
+int SystemObjectSource::GetSourcePower(float x, float y)
 {
 	x -= m_x;
 	y -= m_y;
 	float d = sqrtf(y*y+x*x);
 	d = 1.f - (d / m_distance);
 	if (d < 0.f)
-		return 0.f;
+		return 0;
 	if (d > 1.f)
-		return 1.f;
-	return d;
+		return m_source;
+	return int(d * m_source);
 }
 
 #ifndef BECHER_EDITOR

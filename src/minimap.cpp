@@ -54,8 +54,10 @@ bool WaterMiniMap::Load(BecherMap * map)
 			for (int x=0;x < sizemap;x++)
 			{
 				float xx = (x * sx / sizemap) - sx * 0.5f;
-				float c = src->GetDistance(xx,yy);
-				byte cc = (byte)(c * 0xff);
+				dword c = src->GetSourcePower(xx,yy);
+				if (c > 0xff)
+					c = 0xff;
+				byte cc = (byte)c;//(c * 0xff);
 				dword color = 0xff000000 | cc;
 				if (p[y*sizemap+x] < color)
 					p[y*sizemap+x] = color;
@@ -90,7 +92,7 @@ bool CoalMiniMap::Load(BecherMap * map)
 			for (int x=0;x < sizemap;x++)
 			{
 				float xx = (x * sx / sizemap) - sx * 0.5f;
-				float c = src->GetDistance(xx,yy);
+				dword c = src->GetSourcePower(xx,yy);
 				byte cc = (byte)(c * 0xff);
 				dword color = 0xff000000 | (cc<<16) | (cc<<8);
 				if (p[y*sizemap+x] < color)
@@ -126,7 +128,7 @@ bool StoneMiniMap::Load(BecherMap * map)
 			for (int x=0;x < sizemap;x++)
 			{
 				float xx = (x * sx / sizemap) - sx * 0.5f;
-				float c = src->GetDistance(xx,yy);
+				dword c = src->GetSourcePower(xx,yy);
 				byte cc = (byte)(c * 0xff);
 				dword color = 0xff000000 | (cc<<16) | (cc<<8) | cc;
 				if (p[y*sizemap+x] < color)

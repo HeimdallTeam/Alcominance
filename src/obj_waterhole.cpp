@@ -100,7 +100,7 @@ int WaterHole::StatusPlace(float *pos)
 		if (o->GetType()!=EBSys_Water)
 			continue;
 		SystemObjectWater * sw = dynamic_cast<SystemObjectWater*>(o);
-		float d = sw->GetDistance(GetPosX(),GetPosY());
+		float d = sw->GetSourcePower(GetPosX(),GetPosY());
 		if (d > maxdist)
 		{
 			maxdist = d;
@@ -122,7 +122,7 @@ int WaterHole::StatusPlace(float *pos)
 int WaterHole::GetSourcePower()
 {
 	// sila zdroje
-
+	return 0;
 }
 
 
