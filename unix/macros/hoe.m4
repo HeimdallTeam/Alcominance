@@ -14,7 +14,7 @@ AC_ARG_WITH(
 
 dnl # Determine hoe lib directory
 if test -z $hoe_path; then
-    test_paths="~/Hoe"
+    test_paths="$HOME/Hoe"
 else
     test_paths="${hoe_path}"
 fi
