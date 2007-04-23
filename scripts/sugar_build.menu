@@ -1,14 +1,14 @@
 text
 {
 	name = "stone"
-	rect = 170.240005 507.968140 174.080002 509.163361
+	rect = (170.240005,507.968140,174.080002,509.163361)
 	font = "font 'resource/font.ttf' 16"
 	text = "$stone$/$reqstone$ Sutru."
 }
 text
 {
 	name = "cukr"
-	rect = 170.920013 531.968140 309.760010 509.163361
+	rect = (170.920013,531.968140,309.760010,509.163361)
 	font = "font 'resource/font.ttf' 16"
 	text = "$wood$/$reqwood$ dreva."
 	show = true
@@ -16,7 +16,7 @@ text
 text
 {
 	name = "cukr"
-	rect = 430.920013 507.968140 434.760010 509.163361
+	rect = (430.920013,507.968140,434.760010,509.163361)
 	font = "font 'resource/font.ttf' 16"
 	text = "$build$ produkce."
 	show = true
@@ -24,7 +24,7 @@ text
 static
 {
 	name = "static"
-	rect = 17.920000 492.430267 107.519997 580.876465
+	rect = (17.920000,492.430267,107.519997,580.876465)
 	alpha = false
 	picture = "cukrovar_ico"
 }

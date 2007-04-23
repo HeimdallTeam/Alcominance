@@ -1,42 +1,42 @@
 static
 {
 	name = "pozadi"
-	rect = 0.000000 0.000000 800.000000 600.000
+	rect = (0.000000,0.000000,800.000000,600.000)
 	alpha = false
 	picture = "menu_pzd"
 }
 static
 {
 	name = "static"
-	rect = 250.880005 158.964142 277.760010 480.478088
+	rect = (250.880005,158.964142,277.760010,480.478088)
 	alpha = false
 	picture = "menu_cara"
 }
 buttonusr
 {
 	name = "newgame"
-	rect = 225.279999 174.501999 407.040009 245.019913
+	rect = (225.279999,174.501999,407.040009,245.019913)
 	picture = "butt_new"
 	picture_act = "butt_new_act"
 }
 buttonusr
 {
 	name = "load"
-	rect = 140.800003 256.972107 308.480011 337.051788
+	rect = (140.800003,256.972107,308.480011,337.051788)
 	picture = "butt_load"
 	picture_act = "butt_load_act"
 }
 buttonusr
 {
 	name = "credit"
-	rect = 230.399994 345.418335 377.600006 398.007965
+	rect = (230.399994,345.418335,377.600006,398.007965)
 	picture = "butt_credit"
 	picture_act = "butt_credit_act"
 }
 buttonusr
 {
 	name = "quit"
-	rect = 142.080002 402.788849 299.519989 466.135468
+	rect = (142.080002,402.788849,299.519989,466.135468)
 	picture = "butt_quit"
 	picture_act = "butt_quit_act"
 }

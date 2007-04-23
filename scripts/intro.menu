@@ -1,14 +1,14 @@
 static
 {
 	name = "pozadi"
-	rect = 0.000000 0.000000 800.000000 600.0
+	rect = (0.000000,0.000000,800.000000,600.0)
 	alpha = false
 	picture = "postel"
 }
 text
 {
 	name = "titulky"
-	rect = 0.0 500.0 800.0 600.0
+	rect = (0.0,500.0,800.0,600.0)
 	font = "font 'resource/font.ttf' 16"
 	text = "test"
 	align_horizontal = center

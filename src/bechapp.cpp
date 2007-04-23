@@ -88,7 +88,7 @@ void BechApp::OnUpdate(float dtime)
 int BechApp::RunGame()
 {
 	BEGIN_TRY
-	if (!Init("Alcominance Game"))
+	if (!Init("Alcominance Game", HOESDK_VERSION))
 	{
 		HandleError();
 		return 0;
