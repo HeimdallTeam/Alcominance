@@ -48,5 +48,5 @@ troll.cpp \
 utils.cpp \
 workspace.cpp
 
-___Alcominance_LDADD = -ll $(HOE_LIB) -lHoeGame $(LUA_LIBS) -ldl -lbassmod -lX11 -lfl
+___Alcominance_LDADD = -ll $(HOE_LIB) $(LUA_LIBS) -ldl -lbassmod -lX11 -lfl
 

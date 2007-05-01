@@ -405,7 +405,7 @@ bool BecherEdit::OnPostInit()
 	wxString eng = 	wxConfigBase::Get()->Read(wxT("/engine"),wxT(""));
 	if (eng != "")
 	{
-		LoadEngine(eng);
+		LoadEngine(eng, HOESDK_VERSION);
 	}
 	m_res.LoadMainDir(wxConfigBase::Get()->Read(wxT("/ResourceDir"),wxT("")));
 

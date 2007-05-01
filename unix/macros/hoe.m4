@@ -29,7 +29,7 @@ for x in $test_paths ; do
         LDFLAGS="-L$x/lib $LDFLAGS"
 dnl        AC_CHECK_LIB(lua5.1, luaL_newstate,
 dnl            [
-            HOE_LIBS="-L$x/bin -lHoeCore"
+            HOE_LIBS="-L$x/bin -lHoeGame -lHoeCore"
             HOE_CFLAGS="-I$x/Hoe3D/include -I$x/HoeCore/include -I$x/HoeGame/include -I$x/HoeEditor/include"
 dnl            ])
         CFLAGS=$save_CFLAGS
