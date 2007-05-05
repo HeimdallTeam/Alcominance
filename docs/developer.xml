@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book>
+  <title>Vývojářská dokumentace ke hře Alcominance</title>
+
+  <chapter>
+    <title>Programování</title>
+
+    <section>
+      <title>Úvod</title>
+
+      <para>Vsichni koho nezajma jak je to udelane vevnitr, mohou tuhle cast
+      klidne preskocit, ale pro pochopeni jak funguje skript je lepsi
+      minimalne to zbezne projet.</para>
+
+      <para>Hra bezi na Hoe :) O Hoe3D, tedy knihovne co se stara o samotnou
+      grafiku, zvuky atd se zminovat nebudu. Je to na jinou dokumentaci a
+      dokonce se nikde v Becheru ani primo nepouzije. Vse je zastreseno
+      knihovnou HoeGame. dokumentace k HoeGame, ktera se kazdou noc
+      aktualizuje je na url <ulink
+      url="http://hoe.gejza.net/doc/HoeGame/">http://hoe.gejza.net/doc/HoeGame/</ulink>
+      (heslo jak do svn)</para>
+
+      <para>Krome HoeGame se jeste pouziva knihovna HoeCore, tahle knihovna
+      nic nezastresuje, pouze ma v sobe zakladni typy, jako seznamy, listy,
+      stringy atd.. Dokumentace k ni: <ulink
+      url="http://hoe.gejza.net/doc/HoeCore/">http://hoe.gejza.net/doc/HoeCore/</ulink></para>
+    </section>
+
+    <section>
+      <title>Přehled objektů</title>
+
+      <para></para>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Skriptování</title>
+
+    <para>funkce skriptu jak skript pracuje reference jake funkce se daji
+    pouzivat</para>
+  </chapter>
+
+  <chapter>
+    <title>Struktura souborů</title>
+
+    <section>
+      <title>Datové soubory</title>
+
+      <para>Modely a textury (včetně 2D obrázků) jsou uloženy v adresáři
+      <filename>data</filename>. Adresář <filename>data_old</filename>
+      obsahuje pouze staré zmršené soubory, které se postupne musí vytvořit
+      znovu. jsou tam jen kvuli tomu aby to šlo spustit.</para>
+
+      <para>Pro vytváření souborů HX (to jsou ty s texturama) slouží utilita
+      <filename>htex.exe</filename></para>
+
+      <para>Příklad pro vytvoření balíku textur ze vsech jpegu co jsou v
+      aktualni adresáři:</para>
+
+      <para><code>htex.exe vysledek.hx *.jpg</code></para>
+
+      <para></para>
+
+      <para><code></code></para>
+    </section>
+
+    <section>
+      <title>Mapy</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Organizace skriptu</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>HUD a dialogy</title>
+
+      <para></para>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>uprava ui</title>
+
+    <para></para>
+
+    <table>
+      <title>Přehled 2D objektů</title>
+
+      <tgroup cols="2">
+        <tbody>
+          <row>
+            <entry>static</entry>
+
+            <entry>Statický obrázek</entry>
+          </row>
+
+          <row>
+            <entry>Buttonusr</entry>
+
+            <entry>tlačítko</entry>
+          </row>
+
+          <row>
+            <entry>text</entry>
+
+            <entry>vypis textu</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </chapter>
+
+  <chapter>
+    <title>Vytvareni levelu</title>
+
+    <para></para>
+  </chapter>
+
+  <chapter>
+    <title>Editor</title>
+
+    <para></para>
+  </chapter>
+
+  <appendix>
+    <title>Vars</title>
+
+    <para>Jak to pracuje?</para>
+  </appendix>
+</book>
