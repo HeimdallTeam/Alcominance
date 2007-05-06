@@ -1,7 +1,7 @@
 static
 {
 	name = "pozadi"
-	rect = (0.000000,0.000000,800.000000,600.000)
+	rect = (0.000000,0.000000,800.000000,600.000)
 	alpha = false
 	picture = "menu_pzd"
 }

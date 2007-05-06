@@ -33,6 +33,7 @@ protected:
 	bool m_selected;
 	bool m_curactive;
 
+	/** Znovu nastavi velikost kruhu zvyraznujici vybrani objektu */
 	void UpdateRing();
 public:
 	unsigned long id;

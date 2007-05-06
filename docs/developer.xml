@@ -61,27 +61,67 @@
 
       <para><code>htex.exe vysledek.hx *.jpg</code></para>
 
-      <para></para>
+      <para>Vytváření modelů je tošku složitější, popíšu to proto v jiné
+      dokumentaci.</para>
 
-      <para><code></code></para>
+      <para></para>
     </section>
 
     <section>
       <title>Mapy</title>
 
-      <para></para>
+      <para>Soubory s levely jsou uloženy v adresáři
+      <filename>maps</filename>. Jsou to binární soubory, uložené v svn, tak
+      je průser, když je editují dva lidi najednou. Otevřít se dají v editoru.
+      Platí, že co jeden soubor to jedna mapa. </para>
+
+      <para>V souboru s mapou jsou uloženy celkové informace o mapě, jména
+      skriptu, které se mají nahrát při zavedení mapy (jen ty, které jsou
+      patří pouze k tomuhle levelu). Terén, a seznam objektů.</para>
+
+      <para>Savegame používá podobný formát jako mapa. Má v sobě ale jen
+      uložení všech objektů a referenci na soubor mapy ze které má načíst
+      všechny ostatní informace.</para>
     </section>
 
     <section>
-      <title>Organizace skriptu</title>
+      <title> Organizace skriptu</title>
 
-      <para></para>
+      <para>Skripty se nacházejí v adresáři <filename>scripts</filename>.
+      Skript se načítá z několika souborů v různých chvílich. Při startu hry
+      se spustí skript <filename>init.lua</filename> Ten má za úkol
+      zaregistrovat všechny datové soubory, nastavit lokalizaci atd. Nahrává
+      se ještě před intrem. Tenhle soubor ale nezůstává v paměti. Takže
+      všechny funkce, které se v něm definují se nedají volat ze skriptu
+      hry.</para>
+
+      <para>Podobně jako init skript se používá i load.lua. V něm je uloženo
+      nahrávání modelů, Textur pro 2D a zvuků. Nahrává se až po intru před
+      menu, ale stejně jako init skript nezůstává v paměti.</para>
+
+      <para>Další skript je intro.lua. Pouští se při intru a je v něm
+      naprogramováno intro. Jako jediný existuje pro každý jazyk zvlášť.
+      Obsahuje spousty textů a to by bylo dost na pytel je všechny vytahovat a
+      dávat do lokalizace.</para>
+
+      <para>Nejdůležitější jsou ale soubory, které se používají pro samotnou
+      hru. Nahrávají se před každým levelem. Pro lepší orientaci je jich
+      několik. Většina budov by měla mít svuj soubor, to co se nikam nevejde
+      je pak v souboru <filename>main.lua</filename></para>
     </section>
 
     <section>
-      <title>HUD a dialogy</title>
+      <title> HUD a dialogy</title>
 
-      <para></para>
+      <para>Soubory ve kterých je uložené UI jsou textové, mají příponu .menu
+      a jsou ve stejném adresáři jako skripty. Existuje pro ně nástroj
+      Hoe2Deditor, ale je dost nedodělaný, proto doporučuju ho použít jen pro
+      vygenerování noveho dialogu a pak už dělat úpravy jen ručně. Kdo ho
+      vyzkouší, muže rovnou do mantisu hazet bugy. Rozdělení je jednoduché,
+      <filename>hud.menu</filename> má na starosti pozadí hudu, soubory které
+      se jmenuji stejně jako budovy se kreslí před hud. Nejlepším příkladem je
+      kouknout se na už vytvorené soubory. Další soubory se jmenují podle toho
+      co dělají, takže je ani nebudu popisovat.</para>
     </section>
   </chapter>
 
