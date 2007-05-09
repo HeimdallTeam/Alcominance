@@ -162,11 +162,28 @@ class Chief
 	void SetJob(int t, EWorkType type);
 	CVar *mv_max;
 public:
+	/** Kontruktor */
     Chief();
+    /** Nastavi ukazatel na maximalni pocet tupounu co muze budova najmout 
+    * @param max reference na var
+    */
 	void SetMax(CVar &max) { mv_max = &max; }
+	/** Vykona prikaz, viz developer help 
+	* @param owner Vlastnik objektu
+	* @param cmd Prikaz (viz developer help)
+	* @return Vraci pocet tupounu, kterym byl zmenen stav.
+	*/
     int Make(BecherObject * owner, const char * cmd);
+    /** Pocet tupounu
+    * @param type Filtr pro typ prace, EBW_All pro vsechny
+    * @return pocet
+    */
     int GetNumWorkers(EWorkType type);
+    /** Aktualni maximalni pocet tupounu co muze pracovat
+    * @return pocet
+    */
 	int GetMaxWorkers() { return mv_max ? mv_max->GetInt():0; }
+	/** Tupoun dokoncil praci */
 	void Incoming(Troll *);
 };
 

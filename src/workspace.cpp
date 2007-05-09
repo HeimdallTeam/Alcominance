@@ -402,6 +402,8 @@ int Chief::GetNumWorkers(EWorkType type)
 {
     switch ((int)type)
     {
+    case EBW_All:
+		return m_list.Count();
     case EBW_Work:
         return m_worked;
     default:

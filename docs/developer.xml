@@ -5,6 +5,41 @@
   <title>Vývojářská dokumentace ke hře Alcominance</title>
 
   <chapter>
+    <title>Úvod do koleček</title>
+
+    <section>
+      <title>Co to je vlastně ten objekt.</title>
+
+      <para>Objektem je myšleno vše, co má ve hře nějakou funkci podstatnou
+      pro hru. Neboli vše, co neslouží jen ku vzhledu, ale obsahuje herní
+      logiku. A ještě více zjednodušeně, jsou to prostě budovy, stromy a
+      tupouni, vše ostatní objekty nejsou. U budov a tupounů je to jasné,
+      stromy jsou objekty (no spíš takové objektíky), jen kvůli tomu, že se
+      dají pokácet a proto musí mít v sobě taky herní logiku.</para>
+    </section>
+
+    <section>
+      <title>Komunikace objektů</title>
+
+      <para> Všechny objekty (budovy, tupouni), mezi sebou komunikují tzv.
+      systémem zpráv. Přes zprávy dostává budova příkazy od systému, nebo od
+      ostatních objektů. Zprávy by se tedy daly rozdělit podle významu na
+      ovládací, informační a domlouvací. Ale to jen pro přehlednost, jiný
+      význam to nemá.</para>
+
+      <para>Nejlepším příkladem ovládací zprávy je zpráva
+      <constant>BMSG_Select.</constant> Tuhle zprávu systém posílá objektu,
+      pokud uživatel ten objekt vybere. Objekt si pak kolem sebe zobrazí
+      takové to barevné kolečko.</para>
+
+      <para>U zpráv domlouvacích je to třošičku složitější. Tam je obvykle
+      potřeba několik zpráv, než se objekty vůbec domluví. Pokud například
+      chce budova, přinést nějaké zásoby, nejdřív u cílové budovy vytvoří
+      objednávku. </para>
+    </section>
+  </chapter>
+
+  <chapter>
     <title>Programování</title>
 
     <section>
@@ -73,7 +108,7 @@
       <para>Soubory s levely jsou uloženy v adresáři
       <filename>maps</filename>. Jsou to binární soubory, uložené v svn, tak
       je průser, když je editují dva lidi najednou. Otevřít se dají v editoru.
-      Platí, že co jeden soubor to jedna mapa. </para>
+      Platí, že co jeden soubor to jedna mapa.</para>
 
       <para>V souboru s mapou jsou uloženy celkové informace o mapě, jména
       skriptu, které se mají nahrát při zavedení mapy (jen ty, které jsou
@@ -85,7 +120,7 @@
     </section>
 
     <section>
-      <title> Organizace skriptu</title>
+      <title>Organizace skriptu</title>
 
       <para>Skripty se nacházejí v adresáři <filename>scripts</filename>.
       Skript se načítá z několika souborů v různých chvílich. Při startu hry
@@ -111,7 +146,7 @@
     </section>
 
     <section>
-      <title> HUD a dialogy</title>
+      <title>HUD a dialogy</title>
 
       <para>Soubory ve kterých je uložené UI jsou textové, mají příponu .menu
       a jsou ve stejném adresáři jako skripty. Existuje pro ně nástroj

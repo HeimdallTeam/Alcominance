@@ -114,6 +114,7 @@ enum ESurPriority
 enum EWorkType
 {
 // job list
+	EBW_All,
 	EBW_Work,
 	EBW_ImportStart,
 	EBW_ExportStart=EBW_ImportStart+EBS_Max,
