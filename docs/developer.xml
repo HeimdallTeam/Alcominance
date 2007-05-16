@@ -66,7 +66,18 @@
     <section>
       <title>Přehled objektů</title>
 
-      <para></para>
+      <para>BechApp - hlavni aplikace GetApp()
+            BecherGame - hra - GetBecher()
+            BecherLevel - aktualni level - GetLevel()
+
+            Console, Lang, LuaScript -> GetCon() GetLang() GetLua()
+            BecherResources - resource - GetResMgr()
+
+            V editoru, podobne, akorat misto GetApp -> GetEditor
+            a pribylo GetProp() pro property
+
+      
+      </para>
     </section>
   </chapter>
 
@@ -74,7 +85,48 @@
     <title>Skriptování</title>
 
     <para>funkce skriptu jak skript pracuje reference jake funkce se daji
-    pouzivat</para>
+        pouzivat
+
+        kdy se spousteji skripty
+        pri nacitani
+        funkce
+        
+    princip
+        
+        popis funkci:
+
+        nastaveni a ziskani promenych
+        SetVar GetVar
+        GetMem
+        SetMem
+
+        ovladani
+        AddButton ClearButtons
+        Camera
+
+        system:
+        info
+        PlaySound
+        
+        SetBuilding
+        AddCash
+        GetCash
+        
+        GetInfo
+        SendMsg
+        
+
+        intro:
+        
+        Wait
+        SetText
+        LoadImage
+        Fade
+
+    priklady
+        
+    
+    </para>
   </chapter>
 
   <chapter>
