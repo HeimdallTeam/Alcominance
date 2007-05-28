@@ -21,7 +21,7 @@
     <section>
       <title>Komunikace objektů</title>
 
-      <para> Všechny objekty (budovy, tupouni), mezi sebou komunikují tzv.
+      <para>Všechny objekty (budovy, tupouni), mezi sebou komunikují tzv.
       systémem zpráv. Přes zprávy dostává budova příkazy od systému, nebo od
       ostatních objektů. Zprávy by se tedy daly rozdělit podle významu na
       ovládací, informační a domlouvací. Ale to jen pro přehlednost, jiný
@@ -35,7 +35,7 @@
       <para>U zpráv domlouvacích je to třošičku složitější. Tam je obvykle
       potřeba několik zpráv, než se objekty vůbec domluví. Pokud například
       chce budova, přinést nějaké zásoby, nejdřív u cílové budovy vytvoří
-      objednávku. </para>
+      objednávku.</para>
     </section>
   </chapter>
 
@@ -66,67 +66,127 @@
     <section>
       <title>Přehled objektů</title>
 
-      <para>BechApp - hlavni aplikace GetApp()
-            BecherGame - hra - GetBecher()
-            BecherLevel - aktualni level - GetLevel()
-
-            Console, Lang, LuaScript -> GetCon() GetLang() GetLua()
-            BecherResources - resource - GetResMgr()
-
-            V editoru, podobne, akorat misto GetApp -> GetEditor
-            a pribylo GetProp() pro property
-
-      
-      </para>
+      <para>BechApp - hlavni aplikace GetApp() BecherGame - hra - GetBecher()
+      BecherLevel - aktualni level - GetLevel() Console, Lang, LuaScript -&gt;
+      GetCon() GetLang() GetLua() BecherResources - resource - GetResMgr() V
+      editoru, podobne, akorat misto GetApp -&gt; GetEditor a pribylo
+      GetProp() pro property</para>
     </section>
   </chapter>
 
   <chapter>
     <title>Skriptování</title>
 
-    <para>funkce skriptu jak skript pracuje reference jake funkce se daji
-        pouzivat
+    <section>
+      <title>Rozdělení, načítáni a spuštění skriptu</title>
 
-        kdy se spousteji skripty
-        pri nacitani
-        funkce
-        
-    princip
-        
-        popis funkci:
+      <para>funkce skriptu jak skript pracuje reference jake funkce se daji
+      pouzivat kdy se spousteji skripty pri nacitani funkce princip</para>
+    </section>
 
-        nastaveni a ziskani promenych
-        SetVar GetVar
-        GetMem
-        SetMem
+    <section>
+      <title>Funkce</title>
 
-        ovladani
-        AddButton ClearButtons
-        Camera
+      <para>popis funkci: nastaveni a ziskani promenych</para>
 
-        system:
-        info
-        PlaySound
-        
-        SetBuilding
-        AddCash
-        GetCash
-        
-        GetInfo
-        SendMsg
-        
+      <para><function>SetVar(<parameter>name</parameter>,
+      <parameter>value</parameter>)</function></para>
 
-        intro:
-        
-        Wait
-        SetText
-        LoadImage
-        Fade
+      <para>Funkce nastavuje herní proměnou <parameter>name</parameter> na
+      hodnotou <parameter>value </parameter>Efekt je stejný jako při nastavení
+      z konzole nebo z konfigu. Value může být řetězec nebo číslo. Pokud je
+      hodnotou číslo, může se jednat o nastavení celé struktury, viz příklad
+      nebo příloha Vars</para>
 
-    priklady
-        
-    
-    </para>
+      <para><function>GetVar(<parameter>name</parameter>) </function></para>
+
+      <para>Funkce opačná k SetVar, akorát že nenastavuje, ale vrací. Opět
+      řetězec nebo číslo.</para>
+
+      <para>Více o proměných v příloze Vars. Příklad některých použití.</para>
+
+      <informalexample>
+        <para>SetVar("troll_speed", 100)</para>
+
+        <para>SetVar("sizzing.tree", "ring_x=1;ring_y=1;ring_h=3")</para>
+
+        <para>cena_farmy = GetVar("farm_cost")</para>
+      </informalexample>
+
+      <para>Ke každému objektu si lze uložit pomocná data, jsou to data
+      specifická přímo pro konkrétní objekt. Toto zatím velké využití nemá,
+      ale může se hodit při komplikovanějších skriptech, kde je potřeba si
+      něco uložit "na později". Navíc se tyto data ukládají i do save, takže
+      je možné k nim přistupovat i při příštím spuštění.</para>
+
+      <para><function>SetMem(<parameter>handle</parameter>,
+      <parameter>name</parameter>,
+      <parameter>value</parameter>)</function></para>
+
+      <para>Funkce nastaví value, pod klíčem name k objektu handle. Handle se
+      standartně předává při spuštění funkce (pokud se ta funkce váže k
+      objektu). Místo handle lze taky dát jako parametr 0 (normální nula), to
+      se potom data neváží ke konkrétnímu objektu, ale fungují jako globální
+      data.</para>
+
+      <para><function>GetMem(<parameter>handle</parameter>,
+      <parameter>name</parameter>,
+      <parameter>default</parameter>)</function></para>
+
+      <para>Získání dat. Pokud ještě nebyla hodnota nastavena, vrací
+      default.</para>
+
+      <informalexample>
+        <para>function i_kliknabudovu(h)</para>
+
+        <para>i = GetMem(h, "count", 0)</para>
+
+        <para>i = i + 1 info("Pocet kliknuti na tuto budovu je ",i) SetMem(h,
+        "count", i)</para>
+      </informalexample>
+
+      <para>Funkce pro ovládání hudu:</para>
+
+      <para><function>ClearButtons()</function></para>
+
+      <para>Vymaže zásobník tlačítek</para>
+
+      <para><function>AddButton(<parameter>id</parameter>,<parameter>tooltip</parameter>,
+      <parameter>cmd</parameter>)</function></para>
+
+      <para>Nastaví nové tlačítko. Id určuje obrázek, tooltip může být text
+      nebo id ze slovníku. Text je ale pouze pro testování, ve finále musí být
+      vše přes slovník, jinak se nedají udělat jazykové verze. cmd je lua
+      funkce která se pustí po kliknutí.</para>
+
+      <para>function select_cukr(handle) ClearButtons()
+      AddButton(ico_TROLLNEW,"Najmout", "c_najmout")
+      AddButton(ico_TROLLFREE,"Propustit", "c_propustit") end</para>
+
+      <para>Obecné pomocné funkce</para>
+
+      <para><function>Camera(x, y) Camera(handle) </function></para>
+
+      <para>Tenhle příkaz slouží pro nastavení kamery, můžou být buď 2
+      parametry, pak jsou to přímo souřadnice x a y. Nebo handle na objekt,
+      pak kamera najede na tento objekt. Třetí možnost je zadání stringu se
+      jménem objektu. viz speciální objekty. </para>
+
+      <para><function>info(...)</function></para>
+
+      <para>Vypsání hlášky na obrazovku. Parametrýůmůže být libovolný počet,
+      všechny hodnoty jsou převedeny na text.</para>
+
+      <para>info("proměná i obsahuje hodnotu ", i, " a proměná y=", y)</para>
+
+      <para><function>PlaySound(id)</function></para>
+
+      <para><function></function>Přehrání zvuku. Vstupem je pouze jediný
+      parametr a to id zvuku.</para>
+
+      <para>SetBuilding AddCash GetCash GetInfo SendMsg intro: Wait SetText
+      LoadImage Fade priklady</para>
+    </section>
   </chapter>
 
   <chapter>
