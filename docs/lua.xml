@@ -14,12 +14,7 @@
 			<keyword>DocBook</keyword>
 		</keywordset>
 		<abstract>
-			<para>Tady je druhej</para>
-		</abstract>
-	</bookinfo>
-</book>
-
-Funkce embednuté LUOU
+			<para>Funkce embednuté LUOU
 ---------------------
 standartní funkce:
 printf(...)
@@ -99,5 +94,10 @@ při načítání stringu program nahradí všechny $[sekce:proměná] daným na
 ex:
 LoadFile("$[dir:data]/out.hx")
 
+
+</para>
+		</abstract>
+	</bookinfo>
+</book>
 
  
