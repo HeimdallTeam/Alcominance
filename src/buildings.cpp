@@ -290,12 +290,38 @@ void ConstructBuilding::IdiotBuild()
 
 //////////////////////////////////////////////////////////////
 // Source building
+SourceBuilding::SourceBuilding(IHoeScene * scn, CVar &v_build)
+	: ConstructBuilding(scn, v_build) 
+{
+}
+
+int SourceBuilding::GetInfo(int type, char * str, size_t n)
+{
+	return ConstructBuilding::GetInfo(type, str, n);
+}
+
+int SourceBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+	switch (msg)
+	{
+	case BMSG_MiningRegister:
+		// zaregistrovat trolla na cekani
+		m_line.Register(reinterpret_cast<Troll*>(par2), par1);
+		return 0;
+	case BMSG_MiningCancel:
+		m_line.Cancel(reinterpret_cast<Troll*>(par2));
+		return 0;
+	};
+	return ConstructBuilding::GameMsg(msg, par1, par2, npar2);
+	
+}
 
 //////////////////////////////////////////////////////////////
 // WorkBuilding
 WorkBuilding::WorkBuilding(IHoeScene * scn, CVar &v_build)
     : ConstructBuilding(scn, v_build)
 {
+
 }
 
 int WorkBuilding::GetInfo(int type, char * str, size_t n)

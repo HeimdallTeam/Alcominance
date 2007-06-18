@@ -51,20 +51,31 @@ end
 --works_count	pocet pracujicich (vyrabejicich)
 --works_max		max. pocet pracujicich
 function i_factory(h, i)
- a,b,c,d = GetInfo(h, BINFO_CanSugar, BINFO_CanAlco, BINFO_CanWater, BINFO_CanHerbe)
+ a,b,c,d,e = GetInfo(h, BINFO_CanSugar, BINFO_CanAlco, BINFO_CanWater, BINFO_CanHerbe, BINFO_CanCoal )
 
- if b > 0 and SendMsg(h, BMSG_Chief, "F>IA") == 0 then
+ if b > 0 and i.alco < 10 and SendMsg(h, BMSG_Chief, "F>IA") == 0 then
        SendMsg(h, BMSG_Chief, "W>IA")
+       return nil
  end
- if a > 0 and SendMsg(h, BMSG_Chief, "F>IS") == 0 then
+ if a > 0 and i.sugar < 10 and SendMsg(h, BMSG_Chief, "F>IS") == 0 then
        SendMsg(h, BMSG_Chief, "W>IS")
+       return nil
  end
- if c > 0 and SendMsg(h, BMSG_Chief, "F>IW") == 0 then
+ if c > 0 and i.water < 30 and SendMsg(h, BMSG_Chief, "F>IW") == 0 then
        SendMsg(h, BMSG_Chief, "W>IW")
+       return nil
  end
- if d > 0 and SendMsg(h, BMSG_Chief, "F>IH") == 0 then
+ if d > 0 and i.herbe < 10 and SendMsg(h, BMSG_Chief, "F>IH") == 0 then
        SendMsg(h, BMSG_Chief, "W>IH")
+       return nil
  end
+ 
+ if e > 0 and i.coal < 10 and SendMsg(h, BMSG_Chief, "F>IU") == 0 then
+       SendMsg(h, BMSG_Chief, "W>IU")
+       return
+ end
+ 
+ SendMsg(h, BMSG_Chief, "F>W")
  
 end
 

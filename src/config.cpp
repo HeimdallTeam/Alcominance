@@ -143,10 +143,17 @@ int BecherConfig::Arg(int argc, char *argv[])
 {
 	if (strcmp(argv[0],"-h") == 0)
 	{
-		ShowUsage("Becher [-c <config>] [-d <root>]");
+		ShowUsage("Becher [-conf] [-c <config>] [-d <root>]");
 		m_continue = false;
 		return argc;
 	}
+
+    if (strcmp(argv[0],"-conf") == 0)
+    {
+        m_showdlg = true;
+        // nastaveni na konfig
+        return 2;
+    }
 
     if (strcmp(argv[0],"-c") == 0)
     {

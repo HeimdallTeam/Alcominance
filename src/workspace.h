@@ -187,6 +187,39 @@ public:
 	void Incoming(Troll *);
 };
 
+/**
+ * LineUp - poradi v tezbe
+ */
+class LineUp
+{
+	struct QWorker
+	{
+		Troll * troll;
+		uint req;
+		uint num;
+		bool work;
+	};
+	HoeCore::Queue<QWorker> m_queue; ///< fronta vsech tupounu
+	float m_dest; ///< prebytek z posledniho odberu
+public:
+	/** Zaregistrovani trolla do fronty
+	* @param troll Ukazatel na trolla
+	* @param req Kolik potrebuje surovin
+	*/
+	void Register(Troll* troll, uint req);
+	/** Stopnuti trolla */
+	void Cancel(Troll* troll);
+	/** Update
+	* @param d kolik natezit (cas * jednotka)
+	* @param resource tezebni surovina
+	* @param maxtroll kolik maximalne trollu muze tezit
+	*/
+	void Update(float d, ResourceBase & resource, uint maxtrol);
+	/** Surovina vytezena, jiz neni co tezit
+	*/
+	void End();
+};
+
 #endif // _WORKSPACE_H_
 
 

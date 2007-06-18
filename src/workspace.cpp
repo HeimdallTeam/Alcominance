@@ -428,6 +428,73 @@ void Chief::Incoming(Troll * t)
 	hoe_assert(!"Troll not registered in this building.");
 }
 
+// lineup
+void LineUp::Register(Troll* troll, uint req)
+{
+	QWorker & wrk = m_queue.Push();
+	wrk.troll = troll;
+	wrk.req = req;
+	wrk.num = 0.f;
+	wrk.work = false;
+}
+
+void LineUp::Update(float d, ResourceBase &resource, uint maxtroll)
+{
+	if (!resource.GetNum())
+		return;
+	m_dest += d;
+	const uint sur = (int)m_dest;
+	if (!sur)
+		return; // nedostatek vytezeno
+	m_dest = m_dest - (float)sur;
+	int np = 0; // pocet napocitanych pracujicich
+	for (np = 0; 
+		np < maxtroll && np < m_queue.Count() && resource.GetNum();
+		np++)
+	{
+		QWorker & w = m_queue[np];
+		if (!w.work)
+		{
+			// zacina tezit
+			SendGameMsg(w.troll, BMSG_MiningStart);
+			w.work = true;
+		}
+		int dsur = w.req - w.num;
+		if (dsur > sur)
+			dsur = sur;
+		// odebrani a poslani
+		w.num += resource.Get(dsur, false);
+		// dokonceni
+		if (w.num >= w.req)
+		{
+			SendGameMsg(w.troll, BMSG_MiningFinish, w.num);
+			m_queue.Remove(np);
+			np--; // hack
+			maxtroll--;
+		}
+	}
+}
+
+void LineUp::End()
+{
+	for (int i=0;i < m_queue.Count();i++)
+		if (m_queue[i].work)
+			SendGameMsg(m_queue[i].troll, BMSG_MiningFinish, m_queue[i].num);
+	m_queue.Delete();
+}
+
+void LineUp::Cancel(Troll* troll)
+{
+	for (int i=0;i < m_queue.Count();i++)
+		if (m_queue[i].troll == troll)
+		{
+			if (m_queue[i].work)
+				SendGameMsg(troll, BMSG_MiningFinish, m_queue[i].num);
+			m_queue.Remove(i);
+			i--;
+		}
+}
+
 
 
 

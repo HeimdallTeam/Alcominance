@@ -10,7 +10,7 @@ static CVar v_cena("factory_cost", 1000, TVAR_SAVE);
 static CVar v_cena_drevo("factory_cost_wood", 500, TVAR_SAVE);
 static CVar v_cena_kamen("factory_cost_stone", 500, TVAR_SAVE);
 static CVar v_numworks("factory_maxwork", 4, TVAR_SAVE);
-static CVar v_recept("factory_recept", "1:S10+A10+H3+W20=1", 0); // recept pro jednu davku
+static CVar v_recept("factory_recept", "3:S10+A10+H3+W20=1", 0); // recept pro jednu davku
 static CVar v_build("factory_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 static CVar v_coalmax("coal_max", 200, TVAR_SAVE); // maximalni kapacita pro uhli
 

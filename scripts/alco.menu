@@ -5,10 +5,11 @@ text
 	font = "font 'resource/font.ttf' 16"
 	text = "$sugar$ cukru."
 }
+
 text
 {
 	name = "lih"
-	rect = (305.920013, 507.968140 309.760010, 509.163361)
+	rect = (305.920013, 507.968140, 309.760010, 509.163361)
 	font = "font 'resource/font.ttf' 16"
 	text = "$alco$ lihu."
 }

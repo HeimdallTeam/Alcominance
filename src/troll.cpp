@@ -166,6 +166,7 @@ void Troll::Finish()
 		m_action = EA_None;
 	};
 	} while (repeat);
+	// trol by se mel strcit do lua :)
 }
 
 #ifndef BECHER_EDITOR

@@ -132,6 +132,12 @@ ADDID(BMSG_LockSur) // PAR_Favour
 ADDID(BMSG_UnlockSur) // PAR_Favour
 ADDID(BMSG_GetSur) // PAR_SurLoad
 ADDID(BMSG_InsertSur) // PAR_SurLoad
+// tezba
+ADDID(BMSG_MiningRegister) // par1=num req,par2=troll
+ADDID(BMSG_MiningCancel) // par2=troll
+ADDID(BMSG_MiningStart)
+ADDID(BMSG_MiningFinish)
+
 
 ADDID(BMSG_LeftClick)
 ADDID(BMSG_RightClick)
@@ -173,6 +179,7 @@ ADDID(BINFO_CanBecher)
 ADDID(BINFO_CanWood)
 ADDID(BINFO_CanHerbe)
 ADDID(BINFO_CanWater)
+ADDID(BINFO_MiningWait)
 ADDID(BINFO_Custom)
 
 // prikazy pro chefa

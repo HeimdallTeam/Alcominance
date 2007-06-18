@@ -63,10 +63,12 @@ public:
  */
 class SourceBuilding : public ConstructBuilding
 {
+protected:
+	LineUp m_line;
 public:
-	SourceBuilding(IHoeScene * scn, CVar &v_build)
-		: ConstructBuilding(scn, v_build) {}
-	
+	SourceBuilding(IHoeScene * scn, CVar &v_build);
+	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
+	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 };
 
 /**

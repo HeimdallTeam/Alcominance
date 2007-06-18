@@ -18,6 +18,23 @@ hoe("showfps")
 LoadLang("resource/"..GetVar("lang_file")..".lng")
 
 -- object parameters
-SetVar("sizzing.tree", "ring_x=1;ring_y=1;ring_h=3")
-SetVar("sizzing.sugar", "ring_x=4.5;ring_y=4.5;ring_h=3")
-SetVar("sizzing.waterhole", "ring_x=1;ring_y=1;ring_h=5")
+-- ring_x - nasobek zvyraznujiciho kruhu v pomeru kruhu u stromu (ten ma 10 bodu na sirku)
+-- ring_y - stejne jako ring_x
+-- ring_h - jak vysoko je kruh, v bodech
+-- height - rozdil terenu, kde jde jeste budova postavit
+-- dobj - minimalni vzdalenost od objektu
+SetVar("sizzing.tree", "ring_x=1;ring_y=1;ring_h=3;height=5;dobj=10")
+SetVar("sizzing.store", "ring_x=2.5;ring_y=2.5;ring_h=5;height=8;dobj=30")
+SetVar("sizzing.farm", "ring_x=5;ring_y=3.5;ring_h=5;height=5;dobj=10")
+
+SetVar("sizzing.sugar", "ring_x=4.5;ring_y=4.5;ring_h=3;height=5;dobj=10")
+SetVar("sizzing.waterhole", "ring_x=1;ring_y=1;ring_h=5;height=5;dobj=10")
+SetVar("sizzing.destilate", "ring_x=1;ring_y=1;ring_h=5;height=5;dobj=10")
+SetVar("sizzing.herbe", "ring_x=2;ring_y=2.3;ring_h=5;height=5;dobj=10")
+SetVar("sizzing.bridge", "ring_x=1;ring_y=1;ring_h=5;height=5;dobj=10")
+SetVar("sizzing.troll", "ring_x=1;ring_y=1;ring_h=5;height=5;dobj=10")
+SetVar("sizzing.factory", "ring_x=1;ring_y=1;ring_h=5;height=5;dobj=10")
+SetVar("sizzing.shop", "ring_x=1;ring_y=1;ring_h=5;height=5;dobj=10")
+SetVar("sizzing.saw", "ring_x=1;ring_y=1;ring_h=5;height=5;dobj=10")
+SetVar("sizzing.coalmine", "ring_x=1;ring_y=1;ring_h=5;height=5;dobj=10")
+SetVar("sizzing.stonemine", "ring_x=1;ring_y=1;ring_h=5;height=5;dobj=10")
