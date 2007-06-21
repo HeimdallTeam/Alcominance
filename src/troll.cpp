@@ -20,7 +20,6 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn)
 	GetCtrl()->SetScale(HoeMath::Vector3(scale,scale,scale));
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE|HOF_SCALED);
 	//SetRingParam(.8f,.8f,2.f);
-	memset(&m_job, 0, sizeof(m_job));
 	m_load.num = 0;
 	m_load.sur = EBS_None;
 	m_action = EA_None;
@@ -35,7 +34,6 @@ bool Troll::Save(ChunkDictWrite &w)
 {
 	BecherObject::Save(w);
 	// ulozit job a path
-	this->m_job.Save(w);
 	/*w.WriteValue<bool>(0);
 	w.WriteValue<uint>(0);
 	w.WriteValue<uint>(0);
@@ -73,12 +71,12 @@ void Troll::Update(const float t)
 #ifndef BECHER_EDITOR
 	switch (m_action)
 	{
-	case EA_NewJob:
-		Finish();
-		break;
 	case EA_Go:
 		if (Step(t))
+        {
+            m_action = EA_None;
 			Finish();
+        }
 		GetLevel()->GetMJobs()->AddPay(v_cost_bring.GetFloat() * t);
 		break;
 	};
@@ -124,7 +122,14 @@ void Troll::Update(const float t)
 
 void Troll::Finish()
 {
-	bool repeat = false;
+    // konec prace
+	HoeGame::LuaFunc f(GetLua(), "troll_Finish");
+    f.PushPointer((BecherObject*)this);
+	f.Run(1);
+
+
+    
+	/*bool repeat = false;
 	do {
 	repeat = false;
 	// release action
@@ -165,7 +170,7 @@ void Troll::Finish()
 	default:
 		m_action = EA_None;
 	};
-	} while (repeat);
+	} while (repeat);*/
 	// trol by se mel strcit do lua :)
 }
 
@@ -189,25 +194,28 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
 	switch (msg)
 	{
-	case BMSG_Go: {
-		HoeMath::Vector2 pos;
+	case BMSG_Go: 
 		if (npar2 == 1)
 		{
-			pos = reinterpret_cast<BecherObject*>(par2)->GetPos();
+			m_path.Go(reinterpret_cast<BecherObject*>(par2));
 		}
 		else
 		{ hoe_assert(npar2 == 2);
-		 pos = *(HoeMath::Vector2 *)par2;
+		    m_path.Go(*(HoeMath::Vector2 *)par2);
 		}
-		m_job.Go(pos.x, pos.y);
-		m_action = EA_NewJob;
-		//j.type = TJob::jtGoto;
-		//this->m_path.Go();
-		//SetJob(j);
-		return 0; }
+		m_action = EA_Go;
+		return 0; 
 	case BMSG_Import:
-		m_job.Import(reinterpret_cast<PAR_Favour*>(par2));
-		m_action = EA_NewJob;
+    {
+        PAR_Favour * fav = reinterpret_cast<PAR_Favour*>(par2);
+	HoeGame::LuaFunc f(GetLua(), "troll_Job");
+    f.PushPointer((BecherObject*)this);
+	f.PushTable();
+    f.SetTableInteger("type", 1);
+	f.Run(2);
+        
+    }   
+		m_vocation = EBW_ImportStart;
 		return 0;
 	case BMSG_RightClick:
 

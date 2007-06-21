@@ -4,6 +4,8 @@
 
 #include "b_msg.h"
 
+#if 0
+
 class BecherBuilding;
 class Troll;
 class ResourceExp;
@@ -27,6 +29,7 @@ class BecherGameLoad;
 */
 
 // pole prikazu a parametru
+
 
 
 struct TJob
@@ -72,6 +75,7 @@ private:
 	word npart;
 };
 
+#endif
 
 #endif // _JOBS_H_
 

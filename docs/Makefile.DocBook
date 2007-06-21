@@ -58,8 +58,16 @@ TXT_MAKER = links
 TXT_MAKER_FLAGS = -dump
 
 # xsl
-XSLT = xsltproc
-XSLT_FLAGS = --xinclude
+XSLT=java \
+	-Djavax.xml.parsers.DocumentBuilderFactory=org.apache.xerces.jaxp.DocumentBuilderFactoryImpl \
+	-Djavax.xml.parsers.SAXParserFactory=org.apache.xerces.jaxp.SAXParserFactoryImpl \
+	-Djavax.xml.transform.TransformerFactory=com.icl.saxon.TransformerFactoryImpl \
+	com.icl.saxon.StyleSheet \
+	-x org.apache.xml.resolver.tools.ResolvingXMLReader \
+	-y org.apache.xml.resolver.tools.ResolvingXMLReader \
+	-r org.apache.xml.resolver.tools.CatalogResolver 
+#XSLT = echo
+#XSLT_FLAGS = saxon
 
 # http://dblatex.sourceforge.net/
 DBLATEX = dblatex

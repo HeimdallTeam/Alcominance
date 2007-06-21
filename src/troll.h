@@ -20,24 +20,29 @@ struct TrollPath : public HoeGame::LandPath
 	// nastavi vnitrni promeny na chozeni, k urcenemu mistu
 	bool Go(float tx, float ty);
 	bool Go(BecherObject * to);
+	bool Go(const HoeMath::Vector2 & pos) { return Go(pos.x,pos.y); }
 };
 
 class Troll : public BecherObject
 {
-	TJob m_job; // co ma aktualne na praci
+	//TJob m_job; // co ma aktualne na praci
 	TrollPath m_path; // jeho cesta
 	PAR_Load m_load; // naklad (co ma u sebe)
 	float anim;
+
 protected:
     void Finish();
     bool Step(float t);
-	enum EAction {
+	
+    
+    enum EAction {
 		EA_None,
-		EA_NewJob,
 		EA_Wait,
-		EA_Hide,
 		EA_Go,
 	} m_action;
+
+   EWorkType m_vocation;
+   
 public:
 	Troll(IHoeScene * scn);
 	~Troll();
@@ -50,7 +55,7 @@ public:
 	virtual bool Save(ChunkDictWrite &w);
 	virtual bool Load(BecherGameLoad &r);
 
-    const TJob & GetJob() { return m_job; }
+    //const TJob & GetJob() { return m_job; }
 
 
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);

@@ -1,21 +1,26 @@
 -- AI pro tupouna
--- naplnena tabulka s informacemi
 
+-- handler pri zadani nove prace
+-- troll handle na tupouna
+-- param tabulka s parametry
+function troll_Job(troll, param)
 
-function troll_Finish()
+    info("Nova prace pro tupouna ", param.type)
+    SetMem(troll, "phase", 0)
+    -- nastavit parametry
+    --
+end
 
- -- rohodnout co udela dal
- -- dostane nejake parametry a na jejich zaklade se rozhoduje co dal
- -- troll dostava jen globalni ukol co by mel vse umet
- -- jak to udela zalezi na skriptu
- -- zavest multithreading??
- -- vracet jmeno funkce co se ma zavolat pri finishi?
-  
+-- handler ktery se zavola vzdy pri ukoncene praci
+-- troll handle na tupouna
+function troll_Finish(troll)
+
+    x = GetMem(troll,"x", 30)
+    y = GetMem(troll,"y", -30)
+    -- SendMsg(troll, BMSG_Go, x, y)
+    info("Jdu na ",x,",",y) 
+    SetMem(troll,"x",y)
+    SetMem(troll,"y",-x)
 
 end
 
-function troll_finish_import()
- -- potrebuje jen prinaset, odnaset, prijit, jit do budovy, tezit, pracovat
- -- samotny naprogramovany tupoun, muze jen chodit a cekat
- -- udelat pokusy s nacitanim coroutimes
-end

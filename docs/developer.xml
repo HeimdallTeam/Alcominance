@@ -137,12 +137,10 @@
       default.</para>
 
       <informalexample>
-        <para>function i_kliknabudovu(h)</para>
-
-        <para>i = GetMem(h, "count", 0)</para>
-
-        <para>i = i + 1 info("Pocet kliknuti na tuto budovu je ",i) SetMem(h,
-        "count", i)</para>
+        <programlisting>function i_kliknabudovu(h)
+        i = GetMem(h, "count", 0)</para>
+        i = i + 1 info("Pocet kliknuti na tuto budovu je ",i) SetMem(h,
+        "count", i)</programlisting>
       </informalexample>
 
       <para>Funkce pro ovládání hudu:</para>

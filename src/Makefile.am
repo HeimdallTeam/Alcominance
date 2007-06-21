@@ -20,7 +20,6 @@ dialogs.cpp \
 elements.cpp \
 game.cpp \
 idlist.cpp \
-jobs.cpp \
 level.cpp \
 main.cpp \
 map.cpp \

@@ -179,3 +179,4 @@ bool TerrainMiniMap::Load(BecherMap * map, byte * bmap)
 	delete p;
 	return true;
 }
+

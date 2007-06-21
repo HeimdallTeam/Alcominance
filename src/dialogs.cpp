@@ -52,6 +52,7 @@ bool DialogBuild::Load(const char * fname)
 
 void DialogBuild::OnClick(HoeGame::Gui::Base * sender)
 {
+    TRACE;
 	// click
 	//GetLevel()->SetDialog(NULL);
 	switch (dynamic_cast<HoeGame::Gui::Button*>(sender)->GetID())

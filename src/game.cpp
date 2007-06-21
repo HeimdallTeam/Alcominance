@@ -96,6 +96,8 @@ bool BecherGame::LoadLevel(const char * fpath)
 
 	if (!GetLua()->Load("scripts/main.lua",g_luaconst))
 		return false;
+	if (!GetLua()->Load("scripts/troll.lua",g_luaconst))
+		return false;
 	if (!GetLua()->Load("scripts/sugar.lua",g_luaconst))
 		return false;
 	if (!GetLua()->Load("scripts/alco.lua",g_luaconst))
@@ -210,13 +212,42 @@ int BecherGame::c_map(int argc, const char * argv[], void * param)
 // messages
 static int level = 0;
 
+
+void DbgMsg(int level, int msg, unsigned long id, int npar2)
+{
+    switch (msg)
+    {
+        case BMSG_CursorActive:
+        case BMSG_CursorInactive:
+        case BMSG_SelectPlace:
+            return;
+    default:
+        break;
+    };
+    
+    switch (id)
+    {
+    case 0:
+        GetCon()->Printf("L%d:Message %s to system nump=%d", level, FindIDString(msg), npar2);
+        break;
+    case IDMSG_ALL:
+        GetCon()->Printf("L%d:Message %s to all nump=%d", level, FindIDString(msg), npar2);
+        break;
+    default:
+        GetCon()->Printf("L%d:Message %s to obj %d nump=%d", level, FindIDString(msg), id, npar2);
+        break;
+    };
+}
+
+
+
 int SendGameMsg(BecherObject * o, int msg, int par1, void * par2, uint npar2)
 {
 	if (o == NULL)
         return SendGameMsgId(0, msg, par1, par2, npar2);
 	int ret=0;
 	level++;
-	GetCon()->Printf("L%d:Message %s to obj %d nump=%d", level, FindIDString(msg), o->GetID(), npar2);
+	DbgMsg(level, msg, o->GetID(), npar2);
 	ret = o->GameMsg(msg, par1, par2, npar2);
 	level--;
 	return ret;
@@ -229,10 +260,10 @@ int SendGameMsgId(unsigned long id, int msg, int par1, void * par2, uint npar2)
 		return SendGameMsg(GetLevel()->GetObjFromID(id),msg,par1,par2,npar2);
 	int ret=0;
 	level++;
+	DbgMsg(level, msg, id, npar2);
 	// log message
 	if (id==IDMSG_ALL)
 	{
-		GetCon()->Printf("L%d:Message %s to all nump=%d", level, FindIDString(msg), npar2);
 		for (int i=0;i<GetLevel()->GetNumObj();i++)
 		{
 			GetLevel()->GetObj(i)->GameMsg(msg, par1, par2, npar2);
@@ -240,7 +271,6 @@ int SendGameMsgId(unsigned long id, int msg, int par1, void * par2, uint npar2)
 	}
 	else
 	{
-		GetCon()->Printf("L%d:Message %s to system nump=%d", level, FindIDString(msg), npar2);
 		switch (msg)
 		{
 		case BMSG_Info:
@@ -254,6 +284,21 @@ int SendGameMsgId(unsigned long id, int msg, int par1, void * par2, uint npar2)
 	
 }
 
+BecherObject * GetBecherHandle(HoeGame::LuaParam &lp, int par)
+{
+    BecherObject * bo = NULL;
+	if (lp.IsPointer(par))
+		bo = (BecherObject*)(lp.GetPointer(par));
+	else if (lp.IsNum(-par))
+		bo = GetLevel()->GetObjFromID(lp.GetNum(par));
+	else 
+	{
+		lp.Error("Bad handle parameter");
+		return 0;
+	}
+    return bo;
+}
+
 int l_GetInfo(lua_State * L)
 {
 	HoeGame::LuaParam lp(L);
@@ -263,7 +308,7 @@ int l_GetInfo(lua_State * L)
 		return 0;
 	}
 	int par = lp.GetNumParam();
-	BecherObject * bo = NULL;
+	BecherObject * bo = GetBecherHandle(lp, -par);
 	if (lp.IsPointer(-par))
 		bo = (BecherObject*)(lp.GetPointer(-par));
 	else if (lp.IsNum(-par))
@@ -303,6 +348,8 @@ const char * GetMsgParam(int msg)
 	case BMSG_Chief:
 		// prvni parametr do par1 a zbytek jako stringy do pole
 		return "1:s|*:[s*]"; 
+    case BMSG_Go:
+        return "1:h|2:[dd]";
 	default:
 		return NULL;
 	};
@@ -406,6 +453,9 @@ int l_SendMsg(lua_State * L)
 			case 'p':
 				g_pars[npar2++].p = lp.GetPointer(par);
 				break;
+            case 'h':
+                g_pars[npar2++].p = GetBecherHandle(lp, par);
+                break;
 			case '_':
 				par1 = lp.GetNum(par);
 				break;
@@ -433,6 +483,9 @@ int l_SendMsg(lua_State * L)
 			case '_':
 				par1 = lp.GetNum(par);
 				break;
+            case 'h':
+                par2 = GetBecherHandle(lp, par);
+                break;
 			default:
 				hoe_assert(!"Bad format for lua SendMsg");
 			};

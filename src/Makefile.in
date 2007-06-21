@@ -56,16 +56,15 @@ PROGRAMS = $(bin_PROGRAMS)
 am____Alcominance_OBJECTS = bechapp.$(OBJEXT) buildings.$(OBJEXT) \
 	config.$(OBJEXT) console.$(OBJEXT) crr.$(OBJEXT) \
 	dialogs.$(OBJEXT) elements.$(OBJEXT) game.$(OBJEXT) \
-	idlist.$(OBJEXT) jobs.$(OBJEXT) level.$(OBJEXT) main.$(OBJEXT) \
-	map.$(OBJEXT) minimap.$(OBJEXT) ministry.$(OBJEXT) \
-	obj_coalmine.$(OBJEXT) obj_destilate.$(OBJEXT) \
-	obj_factory.$(OBJEXT) obj_farm.$(OBJEXT) obj_herbe.$(OBJEXT) \
-	obj_saw.$(OBJEXT) obj_shop.$(OBJEXT) obj_stonemine.$(OBJEXT) \
-	obj_store.$(OBJEXT) obj_sugar.$(OBJEXT) \
-	obj_waterhole.$(OBJEXT) object.$(OBJEXT) panels.$(OBJEXT) \
-	path_engine.$(OBJEXT) phys_prov.$(OBJEXT) screens.$(OBJEXT) \
-	sysobjs.$(OBJEXT) terrain.$(OBJEXT) troll.$(OBJEXT) \
-	utils.$(OBJEXT) workspace.$(OBJEXT)
+	idlist.$(OBJEXT) level.$(OBJEXT) main.$(OBJEXT) map.$(OBJEXT) \
+	minimap.$(OBJEXT) ministry.$(OBJEXT) obj_coalmine.$(OBJEXT) \
+	obj_destilate.$(OBJEXT) obj_factory.$(OBJEXT) \
+	obj_farm.$(OBJEXT) obj_herbe.$(OBJEXT) obj_saw.$(OBJEXT) \
+	obj_shop.$(OBJEXT) obj_stonemine.$(OBJEXT) obj_store.$(OBJEXT) \
+	obj_sugar.$(OBJEXT) obj_waterhole.$(OBJEXT) object.$(OBJEXT) \
+	panels.$(OBJEXT) path_engine.$(OBJEXT) phys_prov.$(OBJEXT) \
+	screens.$(OBJEXT) sysobjs.$(OBJEXT) terrain.$(OBJEXT) \
+	troll.$(OBJEXT) utils.$(OBJEXT) workspace.$(OBJEXT)
 ___Alcominance_OBJECTS = $(am____Alcominance_OBJECTS)
 am__DEPENDENCIES_1 =
 ___Alcominance_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -213,7 +212,6 @@ dialogs.cpp \
 elements.cpp \
 game.cpp \
 idlist.cpp \
-jobs.cpp \
 level.cpp \
 main.cpp \
 map.cpp \
@@ -325,7 +323,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/elements.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/game.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/idlist.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jobs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/level.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/map.Po@am__quote@
