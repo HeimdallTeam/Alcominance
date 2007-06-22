@@ -157,7 +157,7 @@ int BecherGame::l_GetMem(lua_State * L)
 		else if (lp.IsNum(-3))
 			id = lp.GetNum(-3);
 		else if (!lp.IsNil(-3))
-			lp.Error("SetMem: first param must be handle."); 
+			lp.Error("GetMem: first param must be handle."); 
 		HoeGame::Mem::Item * i = GetBecher()->m_mem.Get(id, lp.GetString(-2), false);
 		if (i)
 		{
@@ -189,7 +189,12 @@ int BecherGame::l_SetMem(lua_State * L)
 			lp.Error("SetMem: first param must be handle."); 
 		HoeGame::Mem::Item * i = GetBecher()->m_mem.Get(id, lp.GetString(-2), true);
 		// TODO vice hodnot
-		if (lp.IsNum(-1))
+        if (lp.IsPointer(-1))
+        {
+            BecherObject * bo = reinterpret_cast<BecherObject*>(lp.GetPointer(-1));
+            i->Set(bo->GetID());
+        }
+        else if (lp.IsNum(-1))
 			i->Set(lp.GetNum(-1));
 		else
 			i->Set(lp.GetString(-1));
@@ -289,7 +294,7 @@ BecherObject * GetBecherHandle(HoeGame::LuaParam &lp, int par)
     BecherObject * bo = NULL;
 	if (lp.IsPointer(par))
 		bo = (BecherObject*)(lp.GetPointer(par));
-	else if (lp.IsNum(-par))
+	else if (lp.IsNum(par))
 		bo = GetLevel()->GetObjFromID(lp.GetNum(par));
 	else 
 	{
@@ -308,7 +313,7 @@ int l_GetInfo(lua_State * L)
 		return 0;
 	}
 	int par = lp.GetNumParam();
-	BecherObject * bo = GetBecherHandle(lp, -par);
+	BecherObject * bo = NULL;
 	if (lp.IsPointer(-par))
 		bo = (BecherObject*)(lp.GetPointer(-par));
 	else if (lp.IsNum(-par))
@@ -484,7 +489,7 @@ int l_SendMsg(lua_State * L)
 				par1 = lp.GetNum(par);
 				break;
             case 'h':
-                par2 = GetBecherHandle(lp, par);
+                par2 = GetBecherHandle(lp, par);npar2 = 1;
                 break;
 			default:
 				hoe_assert(!"Bad format for lua SendMsg");

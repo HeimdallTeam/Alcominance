@@ -212,6 +212,11 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
     f.PushPointer((BecherObject*)this);
 	f.PushTable();
     f.SetTableInteger("type", 1);
+    f.SetTablePointer("owner", fav->owner);
+    f.SetTablePointer("remote", fav->remote);
+    f.SetTableInteger("num", fav->num);
+    f.SetTableInteger("sur", fav->sur);
+    f.SetTableInteger("locked", fav->locked);
 	f.Run(2);
         
     }   
