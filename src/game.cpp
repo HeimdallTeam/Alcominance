@@ -346,20 +346,6 @@ int l_GetInfo(lua_State * L)
 	return par;
 }
 
-const char * GetMsgParam(int msg)
-{
-	switch (msg)
-	{
-	case BMSG_Chief:
-		// prvni parametr do par1 a zbytek jako stringy do pole
-		return "1:s|*:[s*]"; 
-    case BMSG_Go:
-        return "1:h|2:[dd]";
-	default:
-		return NULL;
-	};
-};
-
 static union MsgParam
 {
 	int d;
@@ -367,18 +353,50 @@ static union MsgParam
 	void * p;
 } g_pars[20];;
 
+int ConvertTable(HoeGame::LuaParam &lp, int pos)
+{
+	size_t s = lua_objlen (lp.GetLua(), pos);
+	for (int i=0;i < s;i++)
+	{
+		lua_rawgeti(lp.GetLua(), pos, i+1);
+		// on stack
+		switch (lp.GetType(-1))
+		{
+		case LUA_TNIL:
+			g_pars[i].p = NULL;break;
+		case LUA_TNUMBER:
+			g_pars[i].d = lp.GetNum(-1);
+			break;
+		case LUA_TSTRING:
+			g_pars[i].s = lp.GetString(-1); break;
+		case LUA_TUSERDATA:
+		case LUA_TLIGHTUSERDATA:
+			g_pars[i].p = lp.GetPointer(-1); break;
+		default:
+			lp.Error("SendMsg: Cannot convert %s to struct item.",lp.GetTypeString(-1));
+			return 0;
+		};
+		lua_pop(lp.GetLua(), 1);
+
+	}
+	return s;
+}
+
 int l_SendMsg(lua_State * L)
 {
 	// zjistit jak se ktery parametr ma ukladat, a ten prekonvertit z luy do pole
-	// nebo do toho formatu, ktery vyzaduje zprava
-	// podle stringu?
-	// "0bsdd"
 	HoeGame::LuaParam lp(L);
 	if (lp.GetNumParam() < 2)
 	{
 		lp.Error("Function SendMsg requied min 2 parameters.");
 		return 0;
 	}
+	if (lp.GetNumParam() > 4)
+	{
+		lp.Error("Too match parameters for SendMsg(id,msg,par1,par2)");
+		return 0;
+	}
+
 	unsigned long id=0;
 	BecherObject * bo = NULL;
 	int msg = 0;
@@ -398,106 +416,52 @@ int l_SendMsg(lua_State * L)
 	par++;
 	msg = lp.GetNum(par++);
 
-	const char * pp = GetMsgParam(msg);
-	if (!pp)
+	// zpracovani prvniho parametru, pointer se prevede na id
+	if (par < 0)
 	{
-		lp.Error("Message %s cannot call from lua.", FindIDString(msg));
-		return 0;
-	}
-
-	// najit pocet parametru
-	while (1)
-	{
-		if (pp[0] == '*')
+		if (lp.IsPointer(par))
+			par1 = reinterpret_cast<BecherObject*>(lp.GetPointer(par))->GetID();
+		else if (lp.IsNum(par))
+			par1 = lp.GetNum(par);
+		else
 		{
-			pp ++; break;
+			lp.Error("SendMsg: Cannot convert par1 from %s to number.",lp.GetTypeString(par));
+			return 0;
 		}
-
-		if (*pp >= '0' && *pp < '9')
+		par++;
+	}
+	if (par < 0)
+	{
+		// konvert from all
+		// cislo na pointer
+		// string na string
+		// pointer
+		// tabulka na pole nebo strukturu
+		switch (lp.GetType(par))
 		{
-			int np = 0;
-			while (*pp >= '0' && *pp < '9')
+		case LUA_TNIL:
+			par2 = NULL;npar2 = 1; break;
+		case LUA_TNUMBER:
+			par2 = GetLevel()->GetObjFromID(lp.GetNum(par));npar2 = 1;
+			if (par2 == NULL)
 			{
-				np = np * 10 + *pp - '0';pp++;
+				lp.Error("SendMsg: Cannot convert par2 from number to pointer.");
+				return 0;
 			}
-			if (np == -par)
-				break;
-
-			while (*pp && *pp != '|') pp++;
-			if (*pp == '|')
-			{
-				pp++; continue;
-			}
-		}
-		lp.Error("Failed params in msg %s.", FindIDString(msg));
-		return 0;
+			break;
+		case LUA_TSTRING:
+			par2 = (void*)lp.GetString(par); npar2 = 1;break;
+		case LUA_TUSERDATA:
+		case LUA_TLIGHTUSERDATA:
+			par2 = lp.GetPointer(par); npar2 = 1;break;
+		case LUA_TTABLE:
+			// scan table
+			par2 = g_pars; npar2 = ConvertTable(lp,par);break;
+		default:
+			lp.Error("SendMsg: Cannot convert par2 from %s to pointer.",lp.GetTypeString(par));
+			return 0;
+		};
 	}
-	hoe_assert(*pp == ':' && "Bad format for lua SendMsg");
-	pp++;
-	// rozparsovat parametry podle stringu
-	// vytvorit pole atd..
-	// parse parameters
-	if (*pp == '[')
-	{
-		pp++;
-		par2 = g_pars;
-		if (par < -10)
-			par = -10;
-		for (;par < 0;par++)
-		{
-			if (!*pp)
-				break;
-			switch (*pp)
-			{
-			case 's':
-				g_pars[npar2++].s = lp.GetString(par);
-				break;
-			case 'd':
-				g_pars[npar2++].d = lp.GetNum(par);
-				break;
-			case 'p':
-				g_pars[npar2++].p = lp.GetPointer(par);
-				break;
-            case 'h':
-                g_pars[npar2++].p = GetBecherHandle(lp, par);
-                break;
-			case '_':
-				par1 = lp.GetNum(par);
-				break;
-			default:
-				hoe_assert(!"Bad format for lua SendMsg");
-			};
-			if (pp[1] != '*')
-				pp++;
-		}
-	}
-	else
-	{
-		for (;par < 0;par++)
-		{
-			if (!*pp)
-				break;
-			switch (*pp)
-			{
-			case 's':
-				par2 = (void*)lp.GetString(par);npar2 = 1;
-				break;
-			case 'p':
-				par2 = lp.GetPointer(par);npar2 = 1;
-				break;
-			case '_':
-				par1 = lp.GetNum(par);
-				break;
-            case 'h':
-                par2 = GetBecherHandle(lp, par);npar2 = 1;
-                break;
-			default:
-				hoe_assert(!"Bad format for lua SendMsg");
-			};
-			pp++;
-		}
-	}
-
 	int ret;
 	if (bo)
 		ret = SendGameMsg(bo, msg, par1, par2, npar2);

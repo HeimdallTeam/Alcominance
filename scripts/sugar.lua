@@ -44,14 +44,14 @@ function i_sugarbuild(h,i)
  -- spocitat pomery
  a,b,c,d = GetInfo(h, BINFO_ReqStone, BINFO_ReqWood, BINFO_CanStone, BINFO_CanWood)
  if i.stone > 0 and i.wood > 0 then
-    SendMsg(h, BMSG_Chief, "F>W")
+    SendMsg(h, BMSG_Chief, 0,"F>W")
  elseif c > 0 and a>0 and (a/i.stone) > (b/i.wood) then
-    if SendMsg(h, BMSG_Chief, "F>IK") == 0 then
-       SendMsg(h, BMSG_Chief, "W>IK")
+    if SendMsg(h, BMSG_Chief, 0,"F>IK") == 0 then
+       SendMsg(h, BMSG_Chief, 0,"W>IK")
     end
  elseif d > 0 and b>0 then
-    if SendMsg(h, BMSG_Chief, "F>ID") == 0 then
-        SendMsg(h, BMSG_Chief, "W>ID")
+    if SendMsg(h, BMSG_Chief, 0,"F>ID") == 0 then
+        SendMsg(h, BMSG_Chief, 0,"W>ID")
     end
  end
   
@@ -63,9 +63,9 @@ function i_sugar(h, i)
 
  s = GetInfo(h, BINFO_CanCane)
  if i.cane > 0 then
-    SendMsg(h, BMSG_Chief, "F>W")
- elseif s > 0 and SendMsg(h, BMSG_Chief, "F>IC") == 0 then
-       SendMsg(h, BMSG_Chief, "W>IC")
+    SendMsg(h, BMSG_Chief, 0,"F>W")
+ elseif s > 0 and SendMsg(h, BMSG_Chief, 0,"F>IC") == 0 then
+       SendMsg(h, BMSG_Chief, 0,"W>IC")
  end
 end
 

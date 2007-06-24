@@ -29,7 +29,7 @@ struct PAR_Favour
 
 struct PAR_Load
 {
-    ESurType sur;
+    uint sur;
     uint num;
 };
 

@@ -21,8 +21,8 @@ function i_alco(h, i)
  s = GetInfo(h, BINFO_CanSugar)
 
  if i.sugar > 0 then
-    SendMsg(h, BMSG_Chief, "F>W")
- elseif s > 0 and SendMsg(h, BMSG_Chief, "F>IS") == 0 then
-       SendMsg(h, BMSG_Chief, "W>IS")
+    SendMsg(h, BMSG_Chief, 0, "F>W")
+ elseif s > 0 and SendMsg(h, BMSG_Chief, 0, "F>IS") == 0 then
+       SendMsg(h, BMSG_Chief, 0, "W>IS")
  end
 end

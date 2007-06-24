@@ -21,11 +21,11 @@ end
 
 -- najmout noveho trolla
 function c_najmout(h)
- SendMsg(h, BMSG_Chief, "N")
+ SendMsg(h, BMSG_Chief, 0,"N")
 end
 
 function c_propustit(h)
- SendMsg(h, BMSG_Chief, "D")
+ SendMsg(h, BMSG_Chief, 0,"D")
 end
 
 function s_studna()
