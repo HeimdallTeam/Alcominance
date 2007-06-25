@@ -21,7 +21,6 @@ map_properties.cpp \
 ../crr.cpp\
 ../elements.cpp\
 ../idlist.cpp\
-../jobs.cpp\
 ../map.cpp\
 ../minimap.cpp\
 ../obj_coalmine.cpp\

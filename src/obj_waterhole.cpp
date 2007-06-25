@@ -88,6 +88,7 @@ bool WaterHole::Select()
 int WaterHole::StatusPlace(float *pos)
 {
 	int ret = SourceBuilding::StatusPlace(pos);
+    return 0; //dbgwater
 	if (ret) return ret;
 
 	// zkontrolovat zdroj vody
@@ -150,7 +151,7 @@ int WaterHole::GetInfo(int type, char * str, size_t n)
 	}
 	switch (type)
 	{
-	case BINFO_NumWater:
+	case BINFO_NumSur|EBS_Water:
 		ret = (int)this->m_water.GetNum();
 		break;
 	default:
@@ -168,6 +169,9 @@ int WaterHole::GameMsg(int msg, int par1, void * par2, uint npar2)
 	case BMSG_Select:
 		Select();
 		break;
+    case BMSG_GetSur:
+        // line register
+        break;
 	};
 	return SourceBuilding::GameMsg(msg, par1, par2, npar2);
 }

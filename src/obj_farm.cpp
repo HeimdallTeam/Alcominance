@@ -65,7 +65,7 @@ int Farm::GetInfo(int type, char * str, size_t n)
 	case BINFO_Production:
 		ret = int(this->m_grow * 100.f);
 		break;
-	case BINFO_NumCane:
+	case BINFO_NumSur|EBS_Cane:
 		ret = int(m_cane.GetNum());
 		break;
 	default:

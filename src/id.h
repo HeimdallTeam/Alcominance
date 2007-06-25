@@ -15,13 +15,18 @@
 #ifndef _ID_H_
 #define _ID_H_
 
-#define ADDID(id) id,
-
+#define ADDID(id) base##id,
 enum {
 #include "../scripts/id.txt"
 };
-
 #undef ADDID
+#define ADDID(id) id=base##id << 16,
+enum {
+#include "../scripts/id.txt"
+};
+#undef ADDID
+
+
 
 enum EObjType
 {

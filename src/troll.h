@@ -28,6 +28,7 @@ class Troll : public BecherObject
 	//TJob m_job; // co ma aktualne na praci
 	TrollPath m_path; // jeho cesta
 	PAR_Load m_load; // naklad (co ma u sebe)
+    // dict <- tabulka ktera preziva s tupounem
 	float anim;
 
 protected:
@@ -39,6 +40,7 @@ protected:
 		EA_None,
 		EA_Wait,
 		EA_Go,
+        EA_Mining,
 	} m_action;
 
    EWorkType m_vocation;

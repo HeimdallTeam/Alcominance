@@ -69,12 +69,11 @@ int CoalMine::GetInfo(int type, char * str, size_t n)
 	register int ret = 0;
 	if (type==BINFO_Custom && str)
 	{
-		if (strcmp(str, "coal") == 0)
-			type = BINFO_NumCoal;
+		type = DefaultCustomInfo(str);
 	}
 	switch (type)
 	{
-	case BINFO_NumCoal:
+	case BINFO_NumSur|EBS_Coal:
 		ret = m_coal.GetNum();
 		if (str)
 			snprintf(str, n, "%d", ret);

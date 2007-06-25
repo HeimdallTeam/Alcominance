@@ -225,6 +225,14 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
 	case BMSG_RightClick:
 
 		return 0;
+    case BMSG_MiningStart:
+        Show(false);
+        m_action = EA_Mining;
+        return 0;
+    case BMSG_MiningFinish:
+        Show(true);
+        Finish();
+        return 0;
 	default:
 		return BecherObject::GameMsg(msg, par1, par2, npar2);
 	};

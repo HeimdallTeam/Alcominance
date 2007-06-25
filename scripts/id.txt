@@ -130,6 +130,8 @@ ADDID(BMSG_Import) // PAR_Favour
 ADDID(BMSG_Export) // PAR_Favour
 ADDID(BMSG_LockSur) // PAR_Favour
 ADDID(BMSG_UnlockSur) // PAR_Favour
+
+/* Vezme surovinu z budovy, pokud vrati -1, surovina se tezi */
 ADDID(BMSG_GetSur) // PAR_SurLoad
 ADDID(BMSG_InsertSur) // PAR_SurLoad
 // tezba
@@ -137,7 +139,6 @@ ADDID(BMSG_MiningRegister) // par1=num req,par2=troll
 ADDID(BMSG_MiningCancel) // par2=troll
 ADDID(BMSG_MiningStart)
 ADDID(BMSG_MiningFinish)
-
 
 ADDID(BMSG_LeftClick)
 ADDID(BMSG_RightClick)
@@ -159,26 +160,9 @@ ADDID(BMSG_TrollIncoming)
 // infos !!!
 ADDID(BINFO_Production)
 ADDID(BINFO_BuildProgress)
-ADDID(BINFO_NumCane)
-ADDID(BINFO_NumSugar)
-ADDID(BINFO_NumAlco)
-ADDID(BINFO_NumCoal)
-ADDID(BINFO_NumStone)
-ADDID(BINFO_NumBecher)
-ADDID(BINFO_NumWood)
-ADDID(BINFO_NumHerbe)
-ADDID(BINFO_NumWater)
-ADDID(BINFO_ReqStone)
-ADDID(BINFO_ReqWood)
-ADDID(BINFO_CanCane)
-ADDID(BINFO_CanSugar)
-ADDID(BINFO_CanAlco)
-ADDID(BINFO_CanCoal)
-ADDID(BINFO_CanStone)
-ADDID(BINFO_CanBecher)
-ADDID(BINFO_CanWood)
-ADDID(BINFO_CanHerbe)
-ADDID(BINFO_CanWater)
+ADDID(BINFO_NumSur)
+ADDID(BINFO_ReqSur)
+ADDID(BINFO_CanSur)
 ADDID(BINFO_MiningWait)
 ADDID(BINFO_Custom)
 

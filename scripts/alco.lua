@@ -18,7 +18,7 @@ end
 
 function i_alco(h, i)
  print("Idiot alco")
- s = GetInfo(h, BINFO_CanSugar)
+ s = GetInfo(h, BINFO_CanSur+EBS_Sugar)
 
  if i.sugar > 0 then
     SendMsg(h, BMSG_Chief, 0, "F>W")

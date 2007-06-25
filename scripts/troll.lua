@@ -25,9 +25,15 @@ function troll_Finish(troll)
 		-- nebo na ne cekat
 		remote = GetMem(troll, "remote",0)
 		n = GetMem(troll, "locked",0)
-		SendMsg(remote, BMSG_GetSur, n, {GetMem(troll, "sur",0),n})
-		SetMem(troll, "phase", 3)
-		SendMsg(troll, BMSG_Go, 0, GetMem(troll, "owner",0))
+		r = SendMsg(remote, BMSG_GetSur, n, {GetMem(troll, "sur",0),n})
+        if r < 0 then
+            -- pockat na vytezeni
+            SetMem(troll, "phase", 4)
+            SendMsg(remote, BMSG_MiningRegister, 10, troll)
+        else
+		    SetMem(troll, "phase", 3)
+		    SendMsg(troll, BMSG_Go, 0, GetMem(troll, "owner",0))
+        end
     end
     if phase == 3 then
 		o = GetMem(troll, "owner",0)
@@ -35,6 +41,10 @@ function troll_Finish(troll)
 			{GetMem(troll, "sur",0),GetMem(troll, "locked",0)})
 		SendMsg(o, BMSG_TrollIncoming, 0, troll)
 		SetMem(troll, "phase", 0)
+    end
+    if phase == 4 then -- vytezeno
+		SendMsg(troll, BMSG_Go, 0, GetMem(troll, "owner",0))
+        SetMem(troll, "phase", 3)
     end
 end
 

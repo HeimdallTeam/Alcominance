@@ -8,6 +8,7 @@ function c_stavtovarna()
  
 
  AddCash(-cost)
+ info("tovarna set")
  SetBuilding(EBO_Factory,cost,wood,stone)
 end
 
@@ -51,7 +52,7 @@ end
 --works_count	pocet pracujicich (vyrabejicich)
 --works_max		max. pocet pracujicich
 function i_factory(h, i)
- a,b,c,d,e = GetInfo(h, BINFO_CanSugar, BINFO_CanAlco, BINFO_CanWater, BINFO_CanHerbe, BINFO_CanCoal )
+ a,b,c,d,e = GetInfo(h, BINFO_CanSur+EBS_Sugar, BINFO_CanSur+EBS_Alco, BINFO_CanSur+EBS_Water, BINFO_CanSur+EBS_Herbe, BINFO_CanSur+EBS_Coal )
 
  if b > 0 and i.alco < 10 and SendMsg(h, BMSG_Chief, 0,"F>IA") == 0 then
        SendMsg(h, BMSG_Chief, 0,"W>IA")

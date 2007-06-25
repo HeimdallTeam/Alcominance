@@ -60,13 +60,13 @@ int Destilate::GetInfo(int type, char * str, size_t n)
 	}
 	switch (type)
 	{
-	case BINFO_NumAlco:
+	case BINFO_NumSur|EBS_Alco:
 		ret = (int)this->m_alco.GetNum();
 		break;
-	case BINFO_NumSugar:
+	case BINFO_NumSur|EBS_Sugar:
 		ret = (int)this->m_sugar.GetNum();
 		break;
-	case BINFO_CanSugar:
+	case BINFO_CanSur|EBS_Sugar:
 		{ ResourceExp * ri = CRR::Get()->Find(EBS_Sugar, this);
 			if (ri) ret = ri->GetAvail();
 		} break;

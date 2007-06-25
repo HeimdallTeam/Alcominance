@@ -42,7 +42,7 @@ function i_sugarbuild(h,i)
  --id = id + 1
  --SetMem(h, "test", id)
  -- spocitat pomery
- a,b,c,d = GetInfo(h, BINFO_ReqStone, BINFO_ReqWood, BINFO_CanStone, BINFO_CanWood)
+ a,b,c,d = GetInfo(h, BINFO_ReqSur+EBS_Stone, BINFO_ReqSur+EBS_Wood, BINFO_CanSur+EBS_Stone, BINFO_CanSur+EBS_Wood)
  if i.stone > 0 and i.wood > 0 then
     SendMsg(h, BMSG_Chief, 0,"F>W")
  elseif c > 0 and a>0 and (a/i.stone) > (b/i.wood) then
@@ -61,7 +61,7 @@ end
 function i_sugar(h, i)
   print("Idiot sugar")
 
- s = GetInfo(h, BINFO_CanCane)
+ s = GetInfo(h, BINFO_CanSur+EBS_Cane)
  if i.cane > 0 then
     SendMsg(h, BMSG_Chief, 0,"F>W")
  elseif s > 0 and SendMsg(h, BMSG_Chief, 0,"F>IC") == 0 then

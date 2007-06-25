@@ -86,7 +86,7 @@ int Store::GetInfo(int type, char * str, size_t n)
 	}
 	switch (type)
 	{
-#define TYPECASE(res) case BINFO_Num##res: \
+#define TYPECASE(res) case BINFO_NumSur|EBS_##res: \
 	ret = (int)this->m_res[EBS_##res].GetNum(); \
 		if (str)\
 			snprintf(str, n, "%d", ret); \

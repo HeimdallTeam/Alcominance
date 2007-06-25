@@ -330,7 +330,9 @@ int l_GetInfo(lua_State * L)
 		if (lp.IsNum(-par))
 		{
 			info = bo->GetInfo(lp.GetNum(-par), NULL, 0);
-			GetCon()->Printf("info: %d=%s(%d)", info, FindIDString(lp.GetNum(-par)), bo->GetID());
+            // dbg
+            int idinfo = lp.GetNum(-par);
+			GetCon()->Printf("info: %d=%s(%d,%s)", info, FindIDString(idinfo&0xffff0000), bo->GetID(),FindIDString(idinfo&0xffff));
 		}
 		else if (lp.IsString(-par))
 		{

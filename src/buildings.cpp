@@ -180,23 +180,23 @@ int ConstructBuilding::GetInfo(int type, char * str, size_t n)
 	}
 	switch (type)
 	{
-	case BINFO_NumStone:
+	case BINFO_NumSur|EBS_Stone:
 		ret = (int)this->m_stone.GetNum();
 		break;
-	case BINFO_NumWood:
+	case BINFO_NumSur|EBS_Wood:
 		ret = (int)this->m_wood.GetNum();
 		break;
-	case BINFO_ReqStone:
+	case BINFO_ReqSur|EBS_Stone:
 		ret = ReqResource(m_build.GetRecept(), m_buildprogress, 'K') - m_stone.GetNum();
 		break;
-	case BINFO_ReqWood:
+	case BINFO_ReqSur|EBS_Wood:
 		ret = ReqResource(m_build.GetRecept(), m_buildprogress, 'D') - m_wood.GetNum();
 		break;
-	case BINFO_CanStone:
+	case BINFO_CanSur|EBS_Stone:
 		{ ResourceExp * ri = CRR::Get()->Find(EBS_Stone, this);
 			if (ri) ret = ri->GetAvail();
 		} break;
-	case BINFO_CanWood:
+	case BINFO_CanSur|EBS_Wood:
 		{ ResourceExp * ri = CRR::Get()->Find(EBS_Wood, this);
 			if (ri) ret = ri->GetAvail();
 		} break;
@@ -382,7 +382,7 @@ int FactoryBuilding::GetInfo(int type, char * str, size_t n)
 	}
 	switch (type)
 	{
-    case BINFO_NumCoal:
+    case BINFO_NumSur|EBS_Coal:
 		ret = (int)this->m_coal.GetNum();
 		break;
 	default:
