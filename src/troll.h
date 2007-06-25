@@ -30,7 +30,7 @@ class Troll : public BecherObject
 	PAR_Load m_load; // naklad (co ma u sebe)
     // dict <- tabulka ktera preziva s tupounem
 	float anim;
-
+	HoeCore::Table m_data; // data
 protected:
     void Finish();
     bool Step(float t);

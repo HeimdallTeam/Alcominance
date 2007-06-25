@@ -14,7 +14,9 @@ static CVar v_cost_bring("troll_cost_bring", 0.1f, TVAR_SAVE);
 static CVar v_cost_wait("troll_cost_wait", 0.1f, TVAR_SAVE);
 static const float scale = 0.35f;
 
-Troll::Troll(IHoeScene * scn) : BecherObject(scn)
+HoeCore::StringPool g_pool;
+
+Troll::Troll(IHoeScene * scn) : BecherObject(scn), m_data(g_pool)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_TROLL));
 	GetCtrl()->SetScale(HoeMath::Vector3(scale,scale,scale));
@@ -122,13 +124,29 @@ void Troll::Update(const float t)
 
 void Troll::Finish()
 {
-    // konec prace
+    // vytvorit tabuli
+	HoeGame::LuaParam t(GetLua()->GetLua());
+	t.PushTable();
+	t.SetTable(m_data);
+	t.SetTablePointer("handle", (BecherObject*)this);
+
 	HoeGame::LuaFunc f(GetLua(), "troll_Finish");
-    f.PushPointer((BecherObject*)this);
-	f.Run(1);
+	// vlozit tabulku nactenych hodnot
+	f.PushFromStack(-2);
+	// iterace pres vsechny ulozene hodnoty
+	f.Run(0);
+	// precist tabulku
+   // table is in the stack at index 't' 
+     lua_pushnil(GetLua()->GetLua());  // first key 
+     while (lua_next(GetLua()->GetLua(), -2) != 0) {
+       // uses 'key' (at index -2) and 'value' (at index -1) 
+	   HoeCore::Universal& u = m_data.Insert(t.GetString(-2));
+	   t.Get(-1, u);
+       // removes 'value'; keeps 'key' for next iteration 
+       t.Pop(1);
+     }
+    t.Pop(2); // tabulka a nil
 
-
-    
 	/*bool repeat = false;
 	do {
 	repeat = false;
@@ -207,9 +225,15 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
 		return 0; 
 	case BMSG_Import:
     {
+    // vytvorit tabuli
+	HoeGame::LuaParam t(GetLua()->GetLua());
+	t.PushTable();
+	t.SetTable(m_data);
+	t.SetTablePointer("handle", (BecherObject*)this);
+
         PAR_Favour * fav = reinterpret_cast<PAR_Favour*>(par2);
 	HoeGame::LuaFunc f(GetLua(), "troll_Job");
-    f.PushPointer((BecherObject*)this);
+    f.PushFromStack(-2);
 	f.PushTable();
     f.SetTableInteger("type", 1);
     f.SetTablePointer("owner", fav->owner);
@@ -217,8 +241,20 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
     f.SetTableInteger("num", fav->num);
     f.SetTableInteger("sur", fav->sur);
     f.SetTableInteger("locked", fav->locked);
-	f.Run(2);
+	f.Run(0);
         
+	// retrieve
+     lua_pushnil(GetLua()->GetLua());  // first key 
+     while (lua_next(GetLua()->GetLua(), -2) != 0) {
+       // uses 'key' (at index -2) and 'value' (at index -1) 
+	   HoeCore::Universal& u = m_data.Insert(t.GetString(-2));
+	   t.Get(-1, u);
+       // removes 'value'; keeps 'key' for next iteration 
+       t.Pop(1);
+     }
+    t.Pop(2); // tabulka a nil
+
+
     }   
 		m_vocation = EBW_ImportStart;
 		return 0;

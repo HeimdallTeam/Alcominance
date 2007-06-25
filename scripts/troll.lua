@@ -6,45 +6,44 @@
 function troll_Job(troll, param)
 
     info("Nova prace pro tupouna ", param.type)
-    SetMem(troll, "phase", 1)
+    troll.phase = 1
     -- nastavit parametry
-    SetMem(troll, "owner", param.owner)
-    SetMem(troll, "remote", param.remote)
-    SetMem(troll, "locked", param.locked)
-    SetMem(troll, "sur", param.sur)
-    SendMsg(troll, BMSG_Go, 0, param.remote)
+    troll.owner = param.owner
+    troll.remote = param.remote
+    troll.locked = param.locked
+    troll.sur = param.sur
+    SendMsg(troll.handle, BMSG_Go, 0, param.remote)
  end
 
 -- handler ktery se zavola vzdy pri ukoncene praci
 -- troll handle na tupouna
+
 function troll_Finish(troll)
 
-	phase = GetMem(troll, "phase",0)
+	phase = troll.phase
     if phase == 1 then
 		-- vzit suroviny
 		-- nebo na ne cekat
-		remote = GetMem(troll, "remote",0)
-		n = GetMem(troll, "locked",0)
-		r = SendMsg(remote, BMSG_GetSur, n, {GetMem(troll, "sur",0),n})
+		r = SendMsg(troll.remote, BMSG_GetSur, troll.locked, {troll.sur,troll.locked})
         if r < 0 then
             -- pockat na vytezeni
-            SetMem(troll, "phase", 4)
-            SendMsg(remote, BMSG_MiningRegister, 10, troll)
+            troll.phase = 4
+            SendMsg(troll.remote, BMSG_MiningRegister, 10, troll.handle)
         else
-		    SetMem(troll, "phase", 3)
-		    SendMsg(troll, BMSG_Go, 0, GetMem(troll, "owner",0))
+		    troll.phase = 3
+		    SendMsg(troll.handle, BMSG_Go, 0, troll.owner)
         end
     end
     if phase == 3 then
-		o = GetMem(troll, "owner",0)
-		SendMsg(o, BMSG_InsertSur, 0, 
-			{GetMem(troll, "sur",0),GetMem(troll, "locked",0)})
-		SendMsg(o, BMSG_TrollIncoming, 0, troll)
-		SetMem(troll, "phase", 0)
+		
+		SendMsg(troll.owner, BMSG_InsertSur, 0, 
+			{troll.sur , troll.locked})
+		SendMsg(troll.owner, BMSG_TrollIncoming, 0, troll.handle)
+		troll.phase = 0
     end
     if phase == 4 then -- vytezeno
-		SendMsg(troll, BMSG_Go, 0, GetMem(troll, "owner",0))
-        SetMem(troll, "phase", 3)
+		SendMsg(troll.handle, BMSG_Go, 0, troll.owner)
+        troll.phase = 3
     end
 end
 
