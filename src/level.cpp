@@ -555,7 +555,7 @@ void BecherLevel::AddBuildObject(unsigned long id, int gold, int wood, int stone
 {
 	if (GetCash()->GetLimitCash() < gold)
 	{
-		//GetPanel()->Add(1);
+		GetLevel()->GetPanel()->GetInfo()->Add(GetLang()->GetString(104));
 		// todo -> limit pro penize
 		return;
 	}

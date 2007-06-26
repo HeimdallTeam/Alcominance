@@ -22,7 +22,7 @@ inline IHoe3DEngine * GetEngine()
 
 inline BechApp * GetApp()
 {
-	assert(BechApp::GetApp<BechApp>());
+	//assert(BechApp::GetApp<BechApp>());
 	return BechApp::GetApp<BechApp>();
 }
 
@@ -105,6 +105,8 @@ inline HoeEditor::PropertyGrid * GetProp()
 
 
 #endif // BECHER_PLUGIN
+
+extern HoeCore::StringPool g_pool;
 
 #endif // _BECHER_H_
 

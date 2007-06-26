@@ -18,7 +18,7 @@ void ResourceBase::SetNum(uint num)
 { 
 	m_actual = num; 
 	assert(m_owner != NULL);
-	m_owner->OnUpdateSur(); 
+	SendGameMsg(m_owner, BMSG_UpdateSur); 
 }
 
 uint ResourceBase::Get(uint req, bool p)
@@ -28,14 +28,14 @@ uint ResourceBase::Get(uint req, bool p)
 	if (m_actual > req)
 	{
 		m_actual -= req;
-		m_owner->OnUpdateSur();
+		SendGameMsg(m_owner, BMSG_UpdateSur);
 		return req;
 	}
 	if (!p) return 0;
 	// odebrat cast
 	req = m_actual;
 	m_actual = 0;
-	m_owner->OnUpdateSur();
+	SendGameMsg(m_owner, BMSG_UpdateSur);
 	return req;
 }
 
@@ -45,14 +45,14 @@ bool ResourceBase::Add(uint *s, int max)
 	if (*s<=(uint)max)
 	{
 		m_actual += *s; 
-		m_owner->OnUpdateSur();
+		SendGameMsg(m_owner, BMSG_UpdateSur);
 		return true;
 	}
 	else
 	{
 		*s = max - m_actual;
 		m_actual += max;
-		m_owner->OnUpdateSur();
+		SendGameMsg(m_owner, BMSG_UpdateSur);
 		return false;
 	}
 }
@@ -429,7 +429,7 @@ void Chief::Incoming(Troll * t)
 }
 
 // lineup
-void LineUp::Register(Troll* troll, uint req)
+void LineUp::Register(BecherObject* troll, uint req)
 {
 	QWorker & wrk = m_queue.Push();
 	wrk.troll = troll;
@@ -467,9 +467,10 @@ void LineUp::Update(float d, ResourceBase &resource, uint maxtroll)
 		// dokonceni
 		if (w.num >= w.req)
 		{
-			SendGameMsg(w.troll, BMSG_MiningFinish, w.num);
+            int num = w.num;
 			m_queue.Remove(np);
 			np--; // hack
+			SendGameMsg(w.troll, BMSG_MiningFinish, w.num);
 			maxtroll--;
 		}
 	}
@@ -483,7 +484,7 @@ void LineUp::End()
 	m_queue.Delete();
 }
 
-void LineUp::Cancel(Troll* troll)
+void LineUp::Cancel(BecherObject* troll)
 {
 	for (int i=0;i < m_queue.Count();i++)
 		if (m_queue[i].troll == troll)

@@ -21,6 +21,7 @@ function troll_Job(troll, param)
 function troll_Finish(troll)
 
 	phase = troll.phase
+    info("jsem ve fazi ",phase)
     if phase == 1 then
 		-- vzit suroviny
 		-- nebo na ne cekat
@@ -31,13 +32,14 @@ function troll_Finish(troll)
             SendMsg(troll.remote, BMSG_MiningRegister, 10, troll.handle)
         else
 		    troll.phase = 3
+            troll.num = troll.locked
 		    SendMsg(troll.handle, BMSG_Go, 0, troll.owner)
         end
     end
     if phase == 3 then
 		
 		SendMsg(troll.owner, BMSG_InsertSur, 0, 
-			{troll.sur , troll.locked})
+			{troll.sur , troll.num})
 		SendMsg(troll.owner, BMSG_TrollIncoming, 0, troll.handle)
 		troll.phase = 0
     end

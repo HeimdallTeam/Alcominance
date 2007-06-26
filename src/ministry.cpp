@@ -11,6 +11,7 @@ MinistryOfJobs::MinistryOfJobs()
 	//
 	m_paytime = v_speed.GetFloat();
 	m_sound = NULL;
+    m_pay = 0.f;
 }
 
 bool MinistryOfJobs::Init()

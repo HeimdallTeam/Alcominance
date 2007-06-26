@@ -14,7 +14,6 @@ static CVar v_cost_bring("troll_cost_bring", 0.1f, TVAR_SAVE);
 static CVar v_cost_wait("troll_cost_wait", 0.1f, TVAR_SAVE);
 static const float scale = 0.35f;
 
-HoeCore::StringPool g_pool;
 
 Troll::Troll(IHoeScene * scn) : BecherObject(scn), m_data(g_pool)
 {
@@ -22,8 +21,6 @@ Troll::Troll(IHoeScene * scn) : BecherObject(scn), m_data(g_pool)
 	GetCtrl()->SetScale(HoeMath::Vector3(scale,scale,scale));
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE|HOF_SCALED);
 	//SetRingParam(.8f,.8f,2.f);
-	m_load.num = 0;
-	m_load.sur = EBS_None;
 	m_action = EA_None;
 	anim = 0.f;
 }
@@ -124,6 +121,7 @@ void Troll::Update(const float t)
 
 void Troll::Finish()
 {
+#ifndef BECHER_EDITOR
     // vytvorit tabuli
 	HoeGame::LuaParam t(GetLua()->GetLua());
 	t.PushTable();
@@ -140,7 +138,7 @@ void Troll::Finish()
      lua_pushnil(GetLua()->GetLua());  // first key 
      while (lua_next(GetLua()->GetLua(), -2) != 0) {
        // uses 'key' (at index -2) and 'value' (at index -1) 
-	   HoeCore::Universal& u = m_data.Insert(t.GetString(-2));
+	   HoeCore::Universal& u = m_data.Get(t.GetString(-2));
 	   t.Get(-1, u);
        // removes 'value'; keeps 'key' for next iteration 
        t.Pop(1);
@@ -190,6 +188,7 @@ void Troll::Finish()
 	};
 	} while (repeat);*/
 	// trol by se mel strcit do lua :)
+#endif
 }
 
 #ifndef BECHER_EDITOR
@@ -210,6 +209,7 @@ bool Troll::Select()
 
 int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
+#ifndef BECHER_EDITOR
 	switch (msg)
 	{
 	case BMSG_Go: 
@@ -247,7 +247,7 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
      lua_pushnil(GetLua()->GetLua());  // first key 
      while (lua_next(GetLua()->GetLua(), -2) != 0) {
        // uses 'key' (at index -2) and 'value' (at index -1) 
-	   HoeCore::Universal& u = m_data.Insert(t.GetString(-2));
+	   HoeCore::Universal& u = m_data.Get(t.GetString(-2));
 	   t.Get(-1, u);
        // removes 'value'; keeps 'key' for next iteration 
        t.Pop(1);
@@ -266,13 +266,16 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
         m_action = EA_Mining;
         return 0;
     case BMSG_MiningFinish:
+        m_action = EA_None;
         Show(true);
+        m_data["num"] = par1;
         Finish();
         return 0;
 	default:
 		return BecherObject::GameMsg(msg, par1, par2, npar2);
 	};
-	return -1;
+#endif
+    return -1;
 }
 
 ////////////////////////////////////////////////

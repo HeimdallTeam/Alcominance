@@ -44,24 +44,7 @@ bool WaterHole::Load(const ChunkDictRead &r)
 
 void WaterHole::Update(const float dtime)
 {
-	for (uint i=0;i<m_worked.Count();i++)
-	{
-		TTrollWorkSlot &slot = m_worked.Get(i);
-		slot.t += v_numzpr.GetFloat() * dtime;
-		uint n = (uint)slot.t;
-		if (n > 0)
-		{
-			slot.t -= n;
-			n = m_water.Get(n, false);
-			slot.num += n;
-			if (slot.num >= slot.req || m_water.GetNum() == 0)
-			{
-				//slot.troll->SurIn(EBS_Water, slot.num);
-				m_worked.Remove(slot);
-				i--;
-			}
-		}
-	}
+    m_line.Update(dtime, m_water, 1);
 	// update vody
 	m_kap += dtime * v_speed.GetFloat(); // jeste vynasobeno silou zdroje
 	uint kap = (uint)m_kap;
@@ -170,7 +153,9 @@ int WaterHole::GameMsg(int msg, int par1, void * par2, uint npar2)
 		Select();
 		break;
     case BMSG_GetSur:
-        // line register
+        return -1;
+    case BMSG_MiningRegister:
+        m_line.Register(reinterpret_cast<BecherObject*>(par2),par1);
         break;
 	};
 	return SourceBuilding::GameMsg(msg, par1, par2, npar2);

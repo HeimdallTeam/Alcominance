@@ -58,12 +58,11 @@ am_______alcosim_OBJECTS = ______alcosim-bechapp.$(OBJEXT) \
 	______alcosim-config.$(OBJEXT) ______alcosim-console.$(OBJEXT) \
 	______alcosim-crr.$(OBJEXT) ______alcosim-dialogs.$(OBJEXT) \
 	______alcosim-elements.$(OBJEXT) ______alcosim-game.$(OBJEXT) \
-	______alcosim-idlist.$(OBJEXT) ______alcosim-jobs.$(OBJEXT) \
-	______alcosim-level.$(OBJEXT) ______alcosim-main.$(OBJEXT) \
-	______alcosim-map.$(OBJEXT) ______alcosim-minimap.$(OBJEXT) \
+	______alcosim-idlist.$(OBJEXT) ______alcosim-level.$(OBJEXT) \
+	______alcosim-main.$(OBJEXT) ______alcosim-map.$(OBJEXT) \
+	______alcosim-minimap.$(OBJEXT) \
 	______alcosim-ministry.$(OBJEXT) \
 	______alcosim-obj_coalmine.$(OBJEXT) \
-	______alcosim-obj_construct.$(OBJEXT) \
 	______alcosim-obj_destilate.$(OBJEXT) \
 	______alcosim-obj_factory.$(OBJEXT) \
 	______alcosim-obj_farm.$(OBJEXT) \
@@ -229,14 +228,12 @@ ______alcosim_SOURCES = \
 ../elements.cpp \
 ../game.cpp \
 ../idlist.cpp \
-../jobs.cpp \
 ../level.cpp \
 main.cpp \
 ../map.cpp \
 ../minimap.cpp \
 ../ministry.cpp \
 ../obj_coalmine.cpp \
-../obj_construct.cpp \
 ../obj_destilate.cpp \
 ../obj_factory.cpp \
 ../obj_farm.cpp \
@@ -343,14 +340,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-elements.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-game.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-idlist.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-jobs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-level.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-map.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-minimap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-ministry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-obj_coalmine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-obj_construct.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-obj_destilate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-obj_factory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______alcosim-obj_farm.Po@am__quote@
@@ -519,20 +514,6 @@ ______alcosim-idlist.obj: ../idlist.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______alcosim-idlist.obj `if test -f '../idlist.cpp'; then $(CYGPATH_W) '../idlist.cpp'; else $(CYGPATH_W) '$(srcdir)/../idlist.cpp'; fi`
 
-______alcosim-jobs.o: ../jobs.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______alcosim-jobs.o -MD -MP -MF "$(DEPDIR)/______alcosim-jobs.Tpo" -c -o ______alcosim-jobs.o `test -f '../jobs.cpp' || echo '$(srcdir)/'`../jobs.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/______alcosim-jobs.Tpo" "$(DEPDIR)/______alcosim-jobs.Po"; else rm -f "$(DEPDIR)/______alcosim-jobs.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../jobs.cpp' object='______alcosim-jobs.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______alcosim-jobs.o `test -f '../jobs.cpp' || echo '$(srcdir)/'`../jobs.cpp
-
-______alcosim-jobs.obj: ../jobs.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______alcosim-jobs.obj -MD -MP -MF "$(DEPDIR)/______alcosim-jobs.Tpo" -c -o ______alcosim-jobs.obj `if test -f '../jobs.cpp'; then $(CYGPATH_W) '../jobs.cpp'; else $(CYGPATH_W) '$(srcdir)/../jobs.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/______alcosim-jobs.Tpo" "$(DEPDIR)/______alcosim-jobs.Po"; else rm -f "$(DEPDIR)/______alcosim-jobs.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../jobs.cpp' object='______alcosim-jobs.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______alcosim-jobs.obj `if test -f '../jobs.cpp'; then $(CYGPATH_W) '../jobs.cpp'; else $(CYGPATH_W) '$(srcdir)/../jobs.cpp'; fi`
-
 ______alcosim-level.o: ../level.cpp
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______alcosim-level.o -MD -MP -MF "$(DEPDIR)/______alcosim-level.Tpo" -c -o ______alcosim-level.o `test -f '../level.cpp' || echo '$(srcdir)/'`../level.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/______alcosim-level.Tpo" "$(DEPDIR)/______alcosim-level.Po"; else rm -f "$(DEPDIR)/______alcosim-level.Tpo"; exit 1; fi
@@ -616,20 +597,6 @@ ______alcosim-obj_coalmine.obj: ../obj_coalmine.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../obj_coalmine.cpp' object='______alcosim-obj_coalmine.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______alcosim-obj_coalmine.obj `if test -f '../obj_coalmine.cpp'; then $(CYGPATH_W) '../obj_coalmine.cpp'; else $(CYGPATH_W) '$(srcdir)/../obj_coalmine.cpp'; fi`
-
-______alcosim-obj_construct.o: ../obj_construct.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______alcosim-obj_construct.o -MD -MP -MF "$(DEPDIR)/______alcosim-obj_construct.Tpo" -c -o ______alcosim-obj_construct.o `test -f '../obj_construct.cpp' || echo '$(srcdir)/'`../obj_construct.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/______alcosim-obj_construct.Tpo" "$(DEPDIR)/______alcosim-obj_construct.Po"; else rm -f "$(DEPDIR)/______alcosim-obj_construct.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../obj_construct.cpp' object='______alcosim-obj_construct.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______alcosim-obj_construct.o `test -f '../obj_construct.cpp' || echo '$(srcdir)/'`../obj_construct.cpp
-
-______alcosim-obj_construct.obj: ../obj_construct.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______alcosim-obj_construct.obj -MD -MP -MF "$(DEPDIR)/______alcosim-obj_construct.Tpo" -c -o ______alcosim-obj_construct.obj `if test -f '../obj_construct.cpp'; then $(CYGPATH_W) '../obj_construct.cpp'; else $(CYGPATH_W) '$(srcdir)/../obj_construct.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/______alcosim-obj_construct.Tpo" "$(DEPDIR)/______alcosim-obj_construct.Po"; else rm -f "$(DEPDIR)/______alcosim-obj_construct.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../obj_construct.cpp' object='______alcosim-obj_construct.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______alcosim-obj_construct.obj `if test -f '../obj_construct.cpp'; then $(CYGPATH_W) '../obj_construct.cpp'; else $(CYGPATH_W) '$(srcdir)/../obj_construct.cpp'; fi`
 
 ______alcosim-obj_destilate.o: ../obj_destilate.cpp
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______alcosim_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______alcosim-obj_destilate.o -MD -MP -MF "$(DEPDIR)/______alcosim-obj_destilate.Tpo" -c -o ______alcosim-obj_destilate.o `test -f '../obj_destilate.cpp' || echo '$(srcdir)/'`../obj_destilate.cpp; \

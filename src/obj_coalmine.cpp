@@ -43,7 +43,7 @@ void CoalMine::Update(const float dtime)
 	// kazdy tupoun kope zvlast, ubiha to podle tupounu
 	// kazdemu tupounovi se pricita naklad zvlast
 	// takze forka pres vsechny tupouny, a kazdy dostane cast dilu co si vykopal
-	for (uint i=0;i<m_worked.Count();i++)
+	/*for (uint i=0;i<m_worked.Count();i++)
 	{
 		TTrollWorkSlot &slot = m_worked.Get(i);
 		slot.t += v_numzpr.GetFloat() * dtime;
@@ -60,7 +60,7 @@ void CoalMine::Update(const float dtime)
 				i--;
 			}
 		}
-	}
+	}*/
 }
 
 
@@ -99,21 +99,6 @@ int CoalMine::GameMsg(int msg, int par1, void * par2, uint npar2)
 }
 
 #ifndef BECHER_EDITOR
-
-bool CoalMine::SetToGet(Troll * t, uint num)
-{
-	// nalezt volny slot
-	if (m_worked.Count()>=(uint)v_numworks.GetInt())
-		return false;
-
-	TTrollWorkSlot slot;
-	slot.troll = t;
-	slot.req = num;
-	slot.num = 0;
-	slot.t = 0.f;
-	m_worked.Add(slot);
-	return true;
-}
 
 #else // BECHER_OBJECT
 

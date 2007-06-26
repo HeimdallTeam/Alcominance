@@ -12,7 +12,6 @@ protected:
 	/// voda
 	ResourceExp m_water;
 	float m_kap; ///< pritekajici voda
-	HoeCore::Set<TTrollWorkSlot> m_worked;
 
 	/** Callback funkce ktera kontroluje jestli je mozno stavet (pozice) */
 	virtual int StatusPlace(float *pos);

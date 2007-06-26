@@ -66,7 +66,6 @@ am_______BecherEditor_OBJECTS = ______BecherEditor-editor.$(OBJEXT) \
 	______BecherEditor-map.$(OBJEXT) \
 	______BecherEditor-minimap.$(OBJEXT) \
 	______BecherEditor-obj_coalmine.$(OBJEXT) \
-	______BecherEditor-obj_construct.$(OBJEXT) \
 	______BecherEditor-obj_destilate.$(OBJEXT) \
 	______BecherEditor-obj_factory.$(OBJEXT) \
 	______BecherEditor-obj_farm.$(OBJEXT) \
@@ -81,8 +80,7 @@ am_______BecherEditor_OBJECTS = ______BecherEditor-editor.$(OBJEXT) \
 	______BecherEditor-sysobjs.$(OBJEXT) \
 	______BecherEditor-terrain.$(OBJEXT) \
 	______BecherEditor-troll.$(OBJEXT) \
-	______BecherEditor-utils.$(OBJEXT) \
-	______BecherEditor-workspace.$(OBJEXT)
+	______BecherEditor-utils.$(OBJEXT)
 ______BecherEditor_OBJECTS = $(am_______BecherEditor_OBJECTS)
 ______BecherEditor_LDADD = $(LDADD)
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -233,7 +231,6 @@ map_properties.cpp \
 ../map.cpp\
 ../minimap.cpp\
 ../obj_coalmine.cpp\
-../obj_construct.cpp\
 ../obj_destilate.cpp\
 ../obj_factory.cpp\
 ../obj_farm.cpp\
@@ -248,8 +245,7 @@ map_properties.cpp \
 ../sysobjs.cpp\
 ../terrain.cpp\
 ../troll.cpp\
-../utils.cpp\
-../workspace.cpp
+../utils.cpp
 
 ______BecherEditor_CPPFLAGS = -DBECHER_EDITOR -I/home/milan/heimdall/Hoe/HoeEditor/include $(WX_CPPFLAGS) $(WX_CXXFLAGS_ONLY) $(WX_CFLAGS_ONLY)
 ______BecherEditor_LDFLAGS = -ll $(HOE_LIBS) -lHoeEditor -lHoeUtils -lHoeCore $(LUA_LIBS) -ldl -lbassmod -lX11 -lfl $(WX_LIB) -lwx_gtk2_propgrid-2.8
@@ -340,7 +336,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-map_properties.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-minimap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-obj_coalmine.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-obj_construct.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-obj_destilate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-obj_factory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-obj_farm.Po@am__quote@
@@ -356,7 +351,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-terrain.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-troll.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-utils.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-workspace.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -560,20 +554,6 @@ ______BecherEditor-obj_coalmine.obj: ../obj_coalmine.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../obj_coalmine.cpp' object='______BecherEditor-obj_coalmine.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______BecherEditor-obj_coalmine.obj `if test -f '../obj_coalmine.cpp'; then $(CYGPATH_W) '../obj_coalmine.cpp'; else $(CYGPATH_W) '$(srcdir)/../obj_coalmine.cpp'; fi`
-
-______BecherEditor-obj_construct.o: ../obj_construct.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______BecherEditor-obj_construct.o -MD -MP -MF "$(DEPDIR)/______BecherEditor-obj_construct.Tpo" -c -o ______BecherEditor-obj_construct.o `test -f '../obj_construct.cpp' || echo '$(srcdir)/'`../obj_construct.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/______BecherEditor-obj_construct.Tpo" "$(DEPDIR)/______BecherEditor-obj_construct.Po"; else rm -f "$(DEPDIR)/______BecherEditor-obj_construct.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../obj_construct.cpp' object='______BecherEditor-obj_construct.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______BecherEditor-obj_construct.o `test -f '../obj_construct.cpp' || echo '$(srcdir)/'`../obj_construct.cpp
-
-______BecherEditor-obj_construct.obj: ../obj_construct.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______BecherEditor-obj_construct.obj -MD -MP -MF "$(DEPDIR)/______BecherEditor-obj_construct.Tpo" -c -o ______BecherEditor-obj_construct.obj `if test -f '../obj_construct.cpp'; then $(CYGPATH_W) '../obj_construct.cpp'; else $(CYGPATH_W) '$(srcdir)/../obj_construct.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/______BecherEditor-obj_construct.Tpo" "$(DEPDIR)/______BecherEditor-obj_construct.Po"; else rm -f "$(DEPDIR)/______BecherEditor-obj_construct.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../obj_construct.cpp' object='______BecherEditor-obj_construct.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______BecherEditor-obj_construct.obj `if test -f '../obj_construct.cpp'; then $(CYGPATH_W) '../obj_construct.cpp'; else $(CYGPATH_W) '$(srcdir)/../obj_construct.cpp'; fi`
 
 ______BecherEditor-obj_destilate.o: ../obj_destilate.cpp
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______BecherEditor-obj_destilate.o -MD -MP -MF "$(DEPDIR)/______BecherEditor-obj_destilate.Tpo" -c -o ______BecherEditor-obj_destilate.o `test -f '../obj_destilate.cpp' || echo '$(srcdir)/'`../obj_destilate.cpp; \
@@ -784,20 +764,6 @@ ______BecherEditor-utils.obj: ../utils.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../utils.cpp' object='______BecherEditor-utils.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______BecherEditor-utils.obj `if test -f '../utils.cpp'; then $(CYGPATH_W) '../utils.cpp'; else $(CYGPATH_W) '$(srcdir)/../utils.cpp'; fi`
-
-______BecherEditor-workspace.o: ../workspace.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______BecherEditor-workspace.o -MD -MP -MF "$(DEPDIR)/______BecherEditor-workspace.Tpo" -c -o ______BecherEditor-workspace.o `test -f '../workspace.cpp' || echo '$(srcdir)/'`../workspace.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/______BecherEditor-workspace.Tpo" "$(DEPDIR)/______BecherEditor-workspace.Po"; else rm -f "$(DEPDIR)/______BecherEditor-workspace.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../workspace.cpp' object='______BecherEditor-workspace.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______BecherEditor-workspace.o `test -f '../workspace.cpp' || echo '$(srcdir)/'`../workspace.cpp
-
-______BecherEditor-workspace.obj: ../workspace.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______BecherEditor-workspace.obj -MD -MP -MF "$(DEPDIR)/______BecherEditor-workspace.Tpo" -c -o ______BecherEditor-workspace.obj `if test -f '../workspace.cpp'; then $(CYGPATH_W) '../workspace.cpp'; else $(CYGPATH_W) '$(srcdir)/../workspace.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/______BecherEditor-workspace.Tpo" "$(DEPDIR)/______BecherEditor-workspace.Po"; else rm -f "$(DEPDIR)/______BecherEditor-workspace.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../workspace.cpp' object='______BecherEditor-workspace.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______BecherEditor-workspace.obj `if test -f '../workspace.cpp'; then $(CYGPATH_W) '../workspace.cpp'; else $(CYGPATH_W) '$(srcdir)/../workspace.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

@@ -134,6 +134,7 @@ ADDID(BMSG_UnlockSur) // PAR_Favour
 /* Vezme surovinu z budovy, pokud vrati -1, surovina se tezi */
 ADDID(BMSG_GetSur) // PAR_SurLoad
 ADDID(BMSG_InsertSur) // PAR_SurLoad
+ADDID(BMSG_UpdateSur) // pocet surovin se zmenilo
 // tezba
 ADDID(BMSG_MiningRegister) // par1=num req,par2=troll
 ADDID(BMSG_MiningCancel) // par2=troll

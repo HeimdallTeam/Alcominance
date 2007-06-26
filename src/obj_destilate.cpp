@@ -80,6 +80,7 @@ int Destilate::GetInfo(int type, char * str, size_t n)
 
 int Destilate::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
+#ifndef BECHER_EDITOR
 	switch (msg)
 	{
 	case BMSG_Select:
@@ -107,7 +108,8 @@ int Destilate::GameMsg(int msg, int par1, void * par2, uint npar2)
 				return m_alco.Lock(f->num);
 			break;
 		} 
-	}
+	};
+#endif
 	return FactoryBuilding::GameMsg(msg, par1, par2, npar2);
 }
 

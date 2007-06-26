@@ -69,7 +69,7 @@ ResourceExp * CRR::Find(ESurType type, BecherObject * owner)
 	return best;
 }
 
-BecherBuilding * CRR::FindAccept(ESurType type, BecherObject * owner)
+BecherObject * CRR::FindAccept(ESurType type, BecherObject * owner)
 {
 	if (GetLevel() == NULL)
 		return NULL;

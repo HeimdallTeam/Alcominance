@@ -10,7 +10,6 @@ class CoalMine : public SourceBuilding
 protected:
 	// panel
 	ResourceExp m_coal;
-	HoeCore::Set<TTrollWorkSlot> m_worked;
 public:
 	CoalMine(IHoeScene * scn);
 
@@ -22,9 +21,7 @@ public:
 	virtual int GetInfo(int type, char * str=NULL, size_t n=0);
 	virtual int GameMsg(int msg, int par1, void * par2, uint npar2);
 
-#ifndef BECHER_EDITOR
-	virtual bool SetToGet(Troll * t, uint num);
-#else
+#ifdef BECHER_EDITOR
 	virtual bool Select();
 	virtual void OnChangeProp(int id, const HoeEditor::PropItem & pi);
 #endif // BECHER_EDITOR

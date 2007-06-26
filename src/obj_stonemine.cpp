@@ -39,7 +39,7 @@ bool StoneMine::Load(const ChunkDictRead &r)
 
 void StoneMine::Update(const float dtime)
 {
-	for (uint i=0;i<m_worked.Count();i++)
+	/*for (uint i=0;i<m_worked.Count();i++)
 	{
 		TTrollWorkSlot &slot = m_worked.Get(i);
 		slot.t += v_numzpr.GetFloat() * dtime;
@@ -56,28 +56,13 @@ void StoneMine::Update(const float dtime)
 				i--;
 			}
 		}
-	}
+	}*/
 }
 
 bool StoneMine::Select()
 {
 	//SourceBuilding::Select();
 	GetLua()->func("s_stonemine");
-	return true;
-}
-
-bool StoneMine::SetToGet(Troll * t, uint num)
-{
-	// nalezt volny slot
-	if (m_worked.Count()>=(uint)v_numworks.GetInt())
-		return false;
-
-	TTrollWorkSlot slot;
-	slot.troll = t;
-	slot.req = num;
-	slot.num = 0;
-	slot.t = 0.f;
-	m_worked.Add(slot);
 	return true;
 }
 

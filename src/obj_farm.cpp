@@ -79,6 +79,7 @@ int Farm::GetInfo(int type, char * str, size_t n)
 
 int Farm::GameMsg(int msg, int par1, void * par2, uint npar2)
 {
+#ifndef BECHER_EDITOR
 	switch (msg)
 	{
 	case BMSG_Select:
@@ -99,6 +100,7 @@ int Farm::GameMsg(int msg, int par1, void * par2, uint npar2)
 			break;
 		} 
 	}
+#endif
 	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
 }
 

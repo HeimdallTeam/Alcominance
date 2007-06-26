@@ -3,7 +3,7 @@
 
 #include "id.h"
 
-class BecherBuilding;
+class BecherObject;
 class Troll;
 
 /**
@@ -30,15 +30,15 @@ class ResourceBase
 {
 protected:
 	uint m_actual;
-	BecherBuilding * m_owner;
+	BecherObject * m_owner;
 	ESurType m_type;
 public:
 	ResourceBase(ESurType type);
 	inline uint GetNum() const { return (int)m_actual; }
 	inline ESurType GetType() { return m_type; }
 	void SetNum(uint num);
-	void SetOwner(BecherBuilding * own) { m_owner = own; }
-	inline BecherBuilding * GetOwner() { assert(m_owner); return m_owner; }
+	void SetOwner(BecherObject * own) { m_owner = own; }
+	inline BecherObject * GetOwner() { assert(m_owner); return m_owner; }
 	bool Add(uint *s, int max);
 	bool Save(ChunkDictWrite &w);
 	bool Load(BecherGameLoad &r);
@@ -126,15 +126,6 @@ public:
 
 typedef HoeCore::Set<Troll*> TrollList;
 
-struct TTrollWorkSlot
-{
-	Troll * troll;
-	float t;
-	uint num;
-	uint req;
-	bool operator == (const TTrollWorkSlot& slot) { return troll == slot.troll; }
-};
-
 class BecherObject;
 /**
  * Chief se stara o tupouny, prideluje praci, propousti, najima
@@ -194,7 +185,7 @@ class LineUp
 {
 	struct QWorker
 	{
-		Troll * troll;
+		BecherObject * troll;
 		uint req;
 		uint num;
 		bool work;
@@ -206,9 +197,9 @@ public:
 	* @param troll Ukazatel na trolla
 	* @param req Kolik potrebuje surovin
 	*/
-	void Register(Troll* troll, uint req);
+	void Register(BecherObject* troll, uint req);
 	/** Stopnuti trolla */
-	void Cancel(Troll* troll);
+	void Cancel(BecherObject* troll);
 	/** Update
 	* @param d kolik natezit (cas * jednotka)
 	* @param resource tezebni surovina

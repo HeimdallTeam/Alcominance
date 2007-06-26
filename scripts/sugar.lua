@@ -59,7 +59,6 @@ function i_sugarbuild(h,i)
 end
 
 function i_sugar(h, i)
-  print("Idiot sugar")
 
  s = GetInfo(h, BINFO_CanSur+EBS_Cane)
  if i.cane > 0 then

@@ -24,7 +24,6 @@ map_properties.cpp \
 ../map.cpp\
 ../minimap.cpp\
 ../obj_coalmine.cpp\
-../obj_construct.cpp\
 ../obj_destilate.cpp\
 ../obj_factory.cpp\
 ../obj_farm.cpp\
@@ -39,8 +38,7 @@ map_properties.cpp \
 ../sysobjs.cpp\
 ../terrain.cpp\
 ../troll.cpp\
-../utils.cpp\
-../workspace.cpp
+../utils.cpp
 
 
 ______BecherEditor_CPPFLAGS = -DBECHER_EDITOR -I/home/milan/heimdall/Hoe/HoeEditor/include $(WX_CPPFLAGS) $(WX_CXXFLAGS_ONLY) $(WX_CFLAGS_ONLY)

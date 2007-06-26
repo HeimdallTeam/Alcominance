@@ -188,7 +188,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-SUBDIRS = src src/editor
+SUBDIRS = src src/editor src/dsim
 all: all-recursive
 
 .SUFFIXES:

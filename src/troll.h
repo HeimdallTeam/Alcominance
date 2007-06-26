@@ -3,7 +3,6 @@
 #define _TUPON_H_
 
 #include "object.h"
-#include "jobs.h"
 
 /**
  Tupoun je zakladni pracovni sila, ve skutecnosti pracuje jen jako nosic
@@ -27,7 +26,7 @@ class Troll : public BecherObject
 {
 	//TJob m_job; // co ma aktualne na praci
 	TrollPath m_path; // jeho cesta
-	PAR_Load m_load; // naklad (co ma u sebe)
+//	PAR_Load m_load; // naklad (co ma u sebe)
     // dict <- tabulka ktera preziva s tupounem
 	float anim;
 	HoeCore::Table m_data; // data

@@ -12,6 +12,9 @@
 
 HoeGame::Lang g_lang;
 BecherResources g_resmgr;
+HoeCore::StringPool g_pool;
+
+static CVar v_debug_msg("debug_msg", false, 0);
 
 IHoeResource * BecherResources::MissingResource(int id)
 {
@@ -71,6 +74,7 @@ bool BecherGame::Init()
 	GetEngine()->RegisterCmd("printvars", CVar::c_printallvars, NULL); 
 	GetEngine()->RegisterCmd("set", CVar::c_setvar, NULL); 
 	GetEngine()->RegisterCmd("map", BecherGame::c_map, NULL); 
+	GetEngine()->RegisterCmd("memstat", BecherGame::c_memstat, NULL); 
 
 	m_music.Init(GetCon());
 
@@ -214,12 +218,30 @@ int BecherGame::c_map(int argc, const char * argv[], void * param)
 	return 0;
 }
 
+int BecherGame::c_memstat(int argc, const char * argv[], void * param)
+{
+	GetCon()->Printf("----- Mem stat -----");
+	GetCon()->Printf("- Pool -");
+    for (uint u=0;u < g_pool.GetKeys().Count();u++)
+    {
+        GetCon()->Printf("%s : %d", g_pool.GetKeys()[u].str, g_pool.GetKeys()[u].ref);
+    }
+    lua_State* L = ::GetLua()->GetLua();
+	GetCon()->Printf("- Lua -");
+    GetCon()->Printf("Size of stack %d", lua_gettop(L));
+    GetCon()->Printf("Stack: %dKb rem %d", lua_gc (L,LUA_GCCOUNT,0), lua_gc (L,LUA_GCCOUNTB,0));
+	GetCon()->Printf("--------------------");
+	return 0;
+}
+
 // messages
 static int level = 0;
 
 
 void DbgMsg(int level, int msg, unsigned long id, int npar2)
 {
+    if (v_debug_msg.GetBool() == false)
+        return;
     switch (msg)
     {
         case BMSG_CursorActive:
@@ -332,7 +354,8 @@ int l_GetInfo(lua_State * L)
 			info = bo->GetInfo(lp.GetNum(-par), NULL, 0);
             // dbg
             int idinfo = lp.GetNum(-par);
-			GetCon()->Printf("info: %d=%s(%d,%s)", info, FindIDString(idinfo&0xffff0000), bo->GetID(),FindIDString(idinfo&0xffff));
+            if (v_debug_msg.GetBool())
+			    GetCon()->Printf("info: %d=%s(%d,%s)", info, FindIDString(idinfo&0xffff0000), bo->GetID(),FindIDString(idinfo&0xffff));
 		}
 		else if (lp.IsString(-par))
 		{
