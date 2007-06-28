@@ -9,7 +9,7 @@
 --os.execute("htex hud.hx hud.dds")
 
 -- hotovo
-AddFile("data/terrain.hx")
+AddFile("./data/terrain.hx")
 AddFile("data/icons.hx")
 AddFile("data/menu.hx")
 AddFile("data/"..GetVar("lang_file")..".hx")
