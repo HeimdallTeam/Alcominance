@@ -5,7 +5,7 @@
 -- param tabulka s parametry
 function troll_Job(troll, param)
 
-    info("Nova prace pro tupouna ", param.type)
+    print("Nova prace pro tupouna ", param.type)
     troll.phase = 1
     -- nastavit parametry
     troll.owner = param.owner
@@ -21,7 +21,7 @@ function troll_Job(troll, param)
 function troll_Finish(troll)
 
 	phase = troll.phase
-    info("jsem ve fazi ",phase)
+    print("jsem ve fazi ",phase)
     if phase == 1 then
 		-- vzit suroviny
 		-- nebo na ne cekat
@@ -29,12 +29,14 @@ function troll_Finish(troll)
         if r < 0 then
             -- pockat na vytezeni
             troll.phase = 4
+            print("jdu tezit")
             SendMsg(troll.remote, BMSG_MiningRegister, 10, troll.handle)
         else
 		    troll.phase = 3
             troll.num = troll.locked
 		    SendMsg(troll.handle, BMSG_Go, 0, troll.owner)
         end
+        return
     end
     if phase == 3 then
 		
@@ -42,10 +44,12 @@ function troll_Finish(troll)
 			{troll.sur , troll.num})
 		SendMsg(troll.owner, BMSG_TrollIncoming, 0, troll.handle)
 		troll.phase = 0
+		return
     end
     if phase == 4 then -- vytezeno
 		SendMsg(troll.handle, BMSG_Go, 0, troll.owner)
         troll.phase = 3
+        return
     end
 end
 

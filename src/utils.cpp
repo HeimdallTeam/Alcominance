@@ -5,6 +5,8 @@
 #include "crr.h"
 #include "buildings.h"
 
+HoeCore::StringPool g_pool;
+
 void BecherGameSave::WriteChunk(unsigned long chunk)
 {
 	MapChunk ch = { chunk, 0 };

@@ -17,9 +17,14 @@ function s_lihovar()
 end
 
 function i_alco(h, i)
- print("Idiot alco")
- s = GetInfo(h, BINFO_CanSur+EBS_Sugar)
+ if i.coal < 3 then
+	if GetInfo(BINFO_CanSur+EBS_Coal) > 0 then
+	   SendMsg(h, BMSG_Chief, 0, "F>IU")
+	   return
+	end
+ end
 
+ s = GetInfo(h, BINFO_CanSur+EBS_Sugar)
  if i.sugar > 0 then
     SendMsg(h, BMSG_Chief, 0, "F>W")
  elseif s > 0 and SendMsg(h, BMSG_Chief, 0, "F>IS") == 0 then

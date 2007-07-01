@@ -158,6 +158,8 @@ ADDID(BMSG_PropertyChange) // jen pro editor
 ADDID(BMSG_Chief)
 ADDID(BMSG_TrollIncoming)
 
+ADDID(BMSG_SetMode)
+
 // infos !!!
 ADDID(BINFO_Production)
 ADDID(BINFO_BuildProgress)
@@ -166,6 +168,7 @@ ADDID(BINFO_ReqSur)
 ADDID(BINFO_CanSur)
 ADDID(BINFO_MiningWait)
 ADDID(BINFO_Custom)
+ADDID(BINFO_GetMode)
 
 // prikazy pro chefa
 ADDID(BCMD_StartWork)

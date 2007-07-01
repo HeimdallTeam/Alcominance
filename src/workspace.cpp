@@ -5,6 +5,7 @@
 #include "buildings.h"
 #include "troll.h"
 #include "panels.h"
+#include "b_msg.h"
 
 ///////////////////////////////////////////
 ResourceBase::ResourceBase(ESurType type)
@@ -426,6 +427,11 @@ void Chief::Incoming(Troll * t)
 			return;
 		}
 	hoe_assert(!"Troll not registered in this building.");
+}
+
+LineUp::LineUp()
+{
+	m_dest = 0.f;
 }
 
 // lineup

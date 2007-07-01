@@ -154,9 +154,6 @@ int WaterHole::GameMsg(int msg, int par1, void * par2, uint npar2)
 		break;
     case BMSG_GetSur:
         return -1;
-    case BMSG_MiningRegister:
-        m_line.Register(reinterpret_cast<BecherObject*>(par2),par1);
-        break;
 	};
 	return SourceBuilding::GameMsg(msg, par1, par2, npar2);
 }

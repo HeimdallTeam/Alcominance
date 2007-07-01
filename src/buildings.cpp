@@ -385,6 +385,10 @@ int FactoryBuilding::GetInfo(int type, char * str, size_t n)
     case BINFO_NumSur|EBS_Coal:
 		ret = (int)this->m_coal.GetNum();
 		break;
+	case BINFO_CanSur|EBS_Coal:
+		{ ResourceExp * ri = CRR::Get()->Find(EBS_Coal, this);
+			if (ri) ret = ri->GetAvail();
+		} break;
 	default:
 		return WorkBuilding::GetInfo(type, str, n);
 	};

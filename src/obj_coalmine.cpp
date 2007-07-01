@@ -4,13 +4,13 @@
 #include "obj_coalmine.h"
 #include "troll.h"
 
-static CVar v_numzpr("coal_mine", 1.f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
+static CVar v_numzpr("coal_mine", 0.5f, TVAR_SAVE); // rychlost zpracovani jedne davky (davek / vterina)
 static CVar v_cena("coal_cost" , 150, TVAR_SAVE);
 /*
 static CVar v_cena_drevo("coal_cost_wood" , 60, TVAR_SAVE);
 static CVar v_cena_kamen("coal_cost_stone", 60, TVAR_SAVE);
 */
-static CVar v_numworks("coal_maxwork", 2, TVAR_SAVE);
+static CVar v_numworks("coal_maxwork", 3, TVAR_SAVE);
 static CVar v_build("coal_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 
 ////////////////////////////////////////////////////////////
@@ -19,6 +19,7 @@ CoalMine::CoalMine(IHoeScene * scn) : SourceBuilding(scn, v_build), m_coal(EBS_C
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_COALMINE));
 	m_coal.SetOwner(this); CRR::Get()->Register(&m_coal);
 	m_coal.SetPriority(EBSP_TimeWork);
+	m_coal.SetNum(100);
 }
 
 bool CoalMine::Save(ChunkDictWrite &w)
@@ -38,29 +39,7 @@ bool CoalMine::Load(BecherGameLoad &r)
 
 void CoalMine::Update(const float dtime)
 {
-	// update cekajicich tupounu
-	// cakajici tupoun dostane dalsi dil do batohu a vypadne
-	// kazdy tupoun kope zvlast, ubiha to podle tupounu
-	// kazdemu tupounovi se pricita naklad zvlast
-	// takze forka pres vsechny tupouny, a kazdy dostane cast dilu co si vykopal
-	/*for (uint i=0;i<m_worked.Count();i++)
-	{
-		TTrollWorkSlot &slot = m_worked.Get(i);
-		slot.t += v_numzpr.GetFloat() * dtime;
-		uint n = (uint)slot.t;
-		if (n > 0)
-		{
-			slot.t -= n;
-			n = m_coal.Get(n, false);
-			slot.num += n;
-			if (slot.num >= slot.req || m_coal.GetNum() == 0)
-			{
-				//slot.troll->SurIn(EBS_Coal, slot.num);
-				m_worked.Remove(slot);
-				i--;
-			}
-		}
-	}*/
+    m_line.Update(dtime * v_numzpr.GetFloat(), m_coal, v_numworks.GetInt());
 }
 
 
@@ -79,7 +58,7 @@ int CoalMine::GetInfo(int type, char * str, size_t n)
 			snprintf(str, n, "%d", ret);
 		return ret;
 	default:
-		return BecherBuilding::GetInfo(type, str, n);
+		return SourceBuilding::GetInfo(type, str, n);
 	};
 	return 0;
 }
@@ -93,9 +72,11 @@ int CoalMine::GameMsg(int msg, int par1, void * par2, uint npar2)
 		GetLevel()->GetPanel()->SetObjectHud("scripts/mine.menu",this);
 		GetLua()->func("s_coalmine");
 		break;
+	case BMSG_GetSur:
+        return -1;
 	}
 #endif
-	return BecherBuilding::GameMsg(msg, par1, par2, npar2);
+	return SourceBuilding::GameMsg(msg, par1, par2, npar2);
 }
 
 #ifndef BECHER_EDITOR

@@ -12,7 +12,6 @@
 
 HoeGame::Lang g_lang;
 BecherResources g_resmgr;
-HoeCore::StringPool g_pool;
 
 static CVar v_debug_msg("debug_msg", false, 0);
 
@@ -75,6 +74,7 @@ bool BecherGame::Init()
 	GetEngine()->RegisterCmd("set", CVar::c_setvar, NULL); 
 	GetEngine()->RegisterCmd("map", BecherGame::c_map, NULL); 
 	GetEngine()->RegisterCmd("memstat", BecherGame::c_memstat, NULL); 
+	GetEngine()->RegisterCmd("reloadlua", BecherGame::c_reloadlua, NULL); 
 
 	m_music.Init(GetCon());
 
@@ -92,12 +92,8 @@ void BecherGame::Destroy()
 	m_music.Destroy();
 }
 
-bool BecherGame::LoadLevel(const char * fpath)
+bool BecherGame::LoadLuaGame()
 {
-	CloseLevel();
-
-	// vymazat luu
-
 	if (!GetLua()->Load("scripts/main.lua",g_luaconst))
 		return false;
 	if (!GetLua()->Load("scripts/troll.lua",g_luaconst))
@@ -113,6 +109,16 @@ bool BecherGame::LoadLevel(const char * fpath)
 	if (!GetLua()->Load("scripts/mine.lua",g_luaconst))
 		return false;
 	if (!GetLua()->Load("scripts/construct.lua",g_luaconst))
+		return false;
+	return true;
+}
+
+bool BecherGame::LoadLevel(const char * fpath)
+{
+	CloseLevel();
+
+	// vymazat luu
+	if (!LoadLuaGame())
 		return false;
 
 	// benchamrk
@@ -231,6 +237,12 @@ int BecherGame::c_memstat(int argc, const char * argv[], void * param)
     GetCon()->Printf("Size of stack %d", lua_gettop(L));
     GetCon()->Printf("Stack: %dKb rem %d", lua_gc (L,LUA_GCCOUNT,0), lua_gc (L,LUA_GCCOUNTB,0));
 	GetCon()->Printf("--------------------");
+	return 0;
+}
+
+int BecherGame::c_reloadlua(int argc, const char * argv[], void * param)
+{
+	GetBecher()->LoadLuaGame();
 	return 0;
 }
 

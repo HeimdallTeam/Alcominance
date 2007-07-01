@@ -30,12 +30,14 @@ public:
 	HoeGame::LuaScript * GetLua() { return &m_lua; }
 
 	ConsoleDialog * GetConDlg() { return &m_condlg; }
+	bool LoadLuaGame();
 
 	LUA_FUNCTION(l_PlaySound);
 	LUA_FUNCTION(l_GetMem);
 	LUA_FUNCTION(l_SetMem);
 	static int c_map(int argc, const char * argv[], void * param);
 	static int c_memstat(int argc, const char * argv[], void * param);
+	static int c_reloadlua(int argc, const char * argv[], void * param);
 };
 
 

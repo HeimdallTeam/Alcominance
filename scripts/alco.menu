@@ -13,6 +13,13 @@ text
 	font = "font 'resource/font.ttf' 16"
 	text = "$alco$ lihu."
 }
+text
+{
+	name = "uhli"
+	rect = (421.119995,554.581665,421.119995,555.776917)
+	font = "font 'resource/font.ttf' 16"
+	text = "$coal$ uhli."
+} 
 static
 {
 	name = "static"

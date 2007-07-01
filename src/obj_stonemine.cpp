@@ -20,6 +20,7 @@ StoneMine::StoneMine(IHoeScene * scn) : SourceBuilding(scn, v_build), m_stone(EB
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_STONEMINE));
 	m_stone.SetOwner(this); CRR::Get()->Register(&m_stone);
 	m_stone.SetPriority(EBSP_TimeWork);
+	m_stone.SetNum(101);
 }
 
 bool StoneMine::Save(ChunkDictWrite &w)
@@ -35,28 +36,49 @@ bool StoneMine::Load(const ChunkDictRead &r)
 	return true;
 }
 
+int StoneMine::GetInfo(int type, char * str, size_t n)
+{
+	register int ret = 0;
+	if (type==BINFO_Custom && str)
+	{
+		type = DefaultCustomInfo(str);
+	}
+	switch (type)
+	{
+	case BINFO_NumSur|EBS_Stone:
+		ret = m_stone.GetNum();
+		break;
+	default:
+		return SourceBuilding::GetInfo(type, str, n);
+	};
+	return 0;
+	if (str)
+		snprintf(str, n, "%d", ret);
+	return ret;
+}
+
+int StoneMine::GameMsg(int msg, int par1, void * par2, uint npar2)
+{
+#ifndef BECHER_EDITOR
+	switch (msg)
+	{
+	case BMSG_Select:
+		GetLevel()->GetPanel()->SetObjectHud("scripts/mine.menu",this);
+		GetLua()->func("s_stonemine");
+		break;
+	case BMSG_GetSur:
+        return -1;
+	}
+#endif
+	return SourceBuilding::GameMsg(msg, par1, par2, npar2);
+}
+
 #ifndef BECHER_EDITOR
 
 void StoneMine::Update(const float dtime)
 {
-	/*for (uint i=0;i<m_worked.Count();i++)
-	{
-		TTrollWorkSlot &slot = m_worked.Get(i);
-		slot.t += v_numzpr.GetFloat() * dtime;
-		uint n = (uint)slot.t;
-		if (n > 0)
-		{
-			slot.t -= n;
-			n = m_stone.Get(n, false);
-			slot.num += n;
-			if (slot.num >= slot.req || m_stone.GetNum() == 0)
-			{
-				//slot.troll->SurIn(EBS_Stone, slot.num);
-				m_worked.Remove(slot);
-				i--;
-			}
-		}
-	}*/
+    m_line.Update(dtime * v_numzpr.GetFloat(), m_stone, v_numworks.GetInt());
+
 }
 
 bool StoneMine::Select()

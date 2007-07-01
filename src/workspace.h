@@ -193,6 +193,7 @@ class LineUp
 	HoeCore::Queue<QWorker> m_queue; ///< fronta vsech tupounu
 	float m_dest; ///< prebytek z posledniho odberu
 public:
+	LineUp();
 	/** Zaregistrovani trolla do fronty
 	* @param troll Ukazatel na trolla
 	* @param req Kolik potrebuje surovin
