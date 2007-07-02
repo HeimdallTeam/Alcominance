@@ -18,7 +18,7 @@ protected:
     HoeCore::Set<BecherSystemObject*> m_sysobj; ///< @todo zmenit styl
     HoeCore::Set<Addon*> m_addon; // doplnky
 
-	unsigned long m_lastid;
+	unsigned int m_lastid;
 
 	// systemove objekty
 	
@@ -61,13 +61,13 @@ public:
 	Addon * GetAddonObj(int index) { return m_addon[index];}
 	BecherObject * GetObject(const int x, const int y);
 
-	unsigned long GenObjectID() { return ++m_lastid; }
+	unsigned int GenObjectID() { return ++m_lastid; }
 	void ComputeLastID();
 	IHoeEnv::GridSurface * GetTerrain() { return m_terrain; };
 	bool SetTerrainData();
 public:
 	// najde objekt podle id
-	BecherObject * GetObjFromID(unsigned long id);
+	BecherObject * GetObjFromID(unsigned int id);
 };
 
 #endif // _BECHER_MAP_H_

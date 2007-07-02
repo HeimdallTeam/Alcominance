@@ -207,8 +207,8 @@ bool BecherMap::LoadMapChunk(BecherGameLoad & r)
 		} break;
 	case ID_CHUNK('o','b','j','s'):
 		{
-			r.Read<unsigned long>();
-			int no = r.Read<unsigned long>();
+			r.Read<unsigned int>();
+			int no = r.Read<unsigned int>();
 			for (int i=0;i < no;i++)
 			{
 				// nacist objekt
@@ -260,8 +260,8 @@ bool BecherMap::SaveAllObjects(BecherGameSave &w)
 	// ulozit hlavicky vsech objektu
 	w.WriteChunk(ID_CHUNK('o','b','j','s'));
 	// ulozit verzi a pocet
-	w.WriteValue<unsigned long>(2);
-	w.WriteValue<unsigned long>((unsigned long)GetNumObj());
+	w.WriteValue<unsigned int>(2);
+	w.WriteValue<unsigned int>((unsigned int)GetNumObj());
 	for (int i=0;i < GetNumObj();i++)
 	{
 		BecherObject * bo = GetObj(i);
@@ -338,7 +338,7 @@ void BecherMap::ComputeLastID()
 }
 
 // najde objekt podle id
-BecherObject * BecherMap::GetObjFromID(unsigned long id)
+BecherObject * BecherMap::GetObjFromID(unsigned int id)
 {
 	for (int i=0;i < m_obj.Count();i++)
 		if (m_obj[i]->id == id)

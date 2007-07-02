@@ -10,12 +10,12 @@ class Troll;
 
 struct TObjectSaveStruct
 {
-	unsigned long id;
-	unsigned long type;
+	unsigned int id;
+	unsigned int type;
 	float x;
 	float y;
 	float angle;
-	unsigned long reserved;
+	unsigned int reserved;
 };
 
 

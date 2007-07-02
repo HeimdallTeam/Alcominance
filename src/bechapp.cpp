@@ -55,9 +55,10 @@ bool BechApp::InitGame()
 
 	HoeGetInfo(GetEngine())->LoadFont("resource/font.ttf",12); 
 
+    TRACE;
 	if (!m_game->Init())
 		return false;
-
+    TRACE;
 	SetScene(NULL);
 
 	return true;
@@ -94,6 +95,7 @@ int BechApp::RunGame()
 		return 0;
 	}
 	// init game
+    TRACE;
 	if (InitGame())
 	{
 		// menu
@@ -104,7 +106,7 @@ int BechApp::RunGame()
 			if (!Frame())
 				return false;
 		}*/
-
+        TRACE;
 		GetBecher()->LoadLevel(v_level.GetString());
 		
 		Run();

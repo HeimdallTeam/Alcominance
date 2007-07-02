@@ -14,22 +14,22 @@ class BecherGameLoad;
 
 struct MapChunk
 {
-	unsigned long chunk;
-	unsigned long size;
+	unsigned int chunk;
+	unsigned int size;
 };
 
 struct BechSaveHeader
 {
-	unsigned long id;
-	unsigned long version;
+	unsigned int id;
+	unsigned int version;
 	/** kde se v souboru nachazi tabulka klicu 
 	format: 
-	unsigned long key[num];
+	unsigned int key[num];
 	byte -> strings[num]
 	*/
-	unsigned long keystab; ///< misto kde se nachazi klice
-	unsigned long keysize; ///< velikost tabulky stringu
-	unsigned long keynum;  ///< pocet klicu
+	unsigned int keystab; ///< misto kde se nachazi klice
+	unsigned int keysize; ///< velikost tabulky stringu
+	unsigned int keynum;  ///< pocet klicu
 };
 
 class StringKeysHash
@@ -51,7 +51,7 @@ class BecherGameSave : public HoeFileWriter
 	StringKeysHash m_str;
 public:
 	BecherGameSave(XHoeFile * f) : HoeFileWriter(f) {}
-	void WriteChunk(unsigned long chunk);
+	void WriteChunk(unsigned int chunk);
 	void WriteChunkEnd();
 	StringKeysHash * GetStringMap() { return &m_str; };
 };

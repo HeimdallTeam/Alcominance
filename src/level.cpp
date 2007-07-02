@@ -277,23 +277,25 @@ bool BecherLevel::LoadGame(const char *path)
 	m_builddlg.Load("scripts/build.menu");
 
 	SetTerrainData();
-
+    TRACE;
 	HoeGame::HoeFile file;
 	if (!file.Open(path))
 	{
 		GetCon()->Printf("Open file %s failed.", path);
 		return false;
 	}
-
+  TRACE;
 	BecherGameLoad r(&file);
 	// nahrat mapu
 	// nejdriv hlavicu
 	if (!r.ReadHeader())
 		return false;
 	// postupne nacitani chunku
+    TRACE;
 	int pos = sizeof(BechSaveHeader);
 	while (1)
 	{
+        TRACE;
 		r.Seek(pos);
 		if (!r.ReadNext())
 			return false;
@@ -303,7 +305,7 @@ bool BecherLevel::LoadGame(const char *path)
 		LoadMapChunk(r);
 		pos += r.Chunk().size + sizeof(MapChunk); 
 	}
-
+  TRACE;
 	/*if (!r.IsSaveGame())
 	{
 		strncpy(m_filename, path, sizeof(m_filename));

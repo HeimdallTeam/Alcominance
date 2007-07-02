@@ -32,6 +32,7 @@ BecherGame::BecherGame() : m_mem(200), m_condlg(*GetCon())
 
 bool BecherGame::Init()
 {
+    TRACE;
 	if (!GetLua()->Init())
 		return false;
 
@@ -57,7 +58,7 @@ bool BecherGame::Init()
 	GetLua()->AddFunc("SendMsg", l_SendMsg);
 	GetLua()->AddFunc("GetMem", BecherGame::l_GetMem);
 	GetLua()->AddFunc("SetMem", BecherGame::l_SetMem);
-
+  TRACE;
 
 	// load skript
 	if (!GetLua()->Load("scripts/load.lua",g_luaconst))
@@ -66,7 +67,7 @@ bool BecherGame::Init()
 	if (!m_condlg.Load(GetEngine()))
 		return false;
 	m_condlg.RegisterCommands(GetEngine());
-
+  TRACE;
 	//if (!LoadInfos())
 	//	return false;
 	GetEngine()->RegisterCmd("pvar", CVar::c_printvar, NULL); 
@@ -83,7 +84,7 @@ bool BecherGame::Init()
 	//m_music.setOffsets(off);
 	m_music.Play();
 	//m_music.setFactor(0);
-
+  TRACE;
 	return true;
 }
 
@@ -124,6 +125,7 @@ bool BecherGame::LoadLevel(const char * fpath)
 	// benchamrk
 	// LuaBenchmark();
 
+    TRACE;
 	if (!m_level.LoadGame(fpath))
 		return false;
 		// set scene
@@ -133,6 +135,7 @@ bool BecherGame::LoadLevel(const char * fpath)
 
 	GetApp()->SetScene(&m_level);
 	m_level.Start();
+    TRACE;
 	return true;
 }
 

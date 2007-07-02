@@ -5,9 +5,11 @@
 #include "crr.h"
 #include "buildings.h"
 
+
 HoeCore::StringPool g_pool;
 
-void BecherGameSave::WriteChunk(unsigned long chunk)
+void BecherGameSave::WriteChunk(unsigned int chunk)
+
 {
 	MapChunk ch = { chunk, 0 };
 	Write(&ch, sizeof(ch));
@@ -17,8 +19,8 @@ void BecherGameSave::WriteChunk(unsigned long chunk)
 void BecherGameSave::WriteChunkEnd()
 {
 	size_t sf = GetFile()->Tell();
-	GetFile()->Seek(m_lastsizepos - sizeof(unsigned long));
-	WriteValue<unsigned long>((unsigned long)sf-m_lastsizepos);
+	GetFile()->Seek(m_lastsizepos - sizeof(unsigned int));
+	WriteValue<unsigned int>((unsigned int)sf-m_lastsizepos);
 	GetFile()->Seek(sf);
 	// save size
 	//WriteValue<dword>(123456789);
@@ -62,17 +64,17 @@ void BecherGameLoad::ReadReservedWords(int num)
 void ChunkDictWrite::Begin()
 {
 	m_nkey = 0;
-	m_bgs.WriteValue<unsigned long>(0); // velikost dat
-	m_bgs.WriteValue<unsigned long>(0); // pocet klicu
+	m_bgs.WriteValue<unsigned int>(0); // velikost dat
+	m_bgs.WriteValue<unsigned int>(0); // pocet klicu
 	m_hdr = m_bgs.GetFile()->Tell();
 }
 
 void ChunkDictWrite::End()
 {
 	size_t act = m_bgs.GetFile()->Tell();
-	m_bgs.GetFile()->Seek(m_hdr-2*sizeof(unsigned long));
-	m_bgs.WriteValue<unsigned long>(act-m_hdr); // velikost dat
-	m_bgs.WriteValue<unsigned long>(m_nkey); // pocet klicu
+	m_bgs.GetFile()->Seek(m_hdr-2*sizeof(unsigned int));
+	m_bgs.WriteValue<unsigned int>(act-m_hdr); // velikost dat
+	m_bgs.WriteValue<unsigned int>(m_nkey); // pocet klicu
 	m_bgs.GetFile()->Seek(act);
 	m_bgs.Write(m_keys, m_nkey * sizeof(SaveKey));
 }
@@ -104,8 +106,8 @@ ChunkDictRead::ChunkDictRead(BecherGameLoad & bgl)
 	: m_bgl(bgl)
 {
 	// read chunks
-	dword datasize = m_bgl.Read<unsigned long>(); // velikost dat
-	m_nkey = (int)m_bgl.Read<unsigned long>(); // pocet klicu
+	dword datasize = m_bgl.Read<unsigned int>(); // velikost dat
+	m_nkey = (int)m_bgl.Read<unsigned int>(); // pocet klicu
 	m_hdr = m_bgl.GetFile()->Tell();
 	// skip
 	m_bgl.Skip(datasize);
@@ -186,18 +188,18 @@ int StringKeysHash::AddStringId(const char * key)
 }
 bool StringKeysHash::WriteToFile(BechSaveHeader * head, BecherGameSave &w)
 {
-	head->keystab = (unsigned long)w.GetFile()->Tell();
+	head->keystab = (unsigned int)w.GetFile()->Tell();
 	head->keynum = m_lastid;
 	for (int i=1;i <= m_lastid;i++)
 		w.Write<int>(i);	
-	head->keysize = (unsigned long)w.GetFile()->Tell();
+	head->keysize = (unsigned int)w.GetFile()->Tell();
 	// save string
 	for (int i=1;i <= m_lastid;i++)
 	{
 		size_t l=strlen(m_ids[i]);
 		w.Write(m_ids[i], l+1);
 	}
-	head->keysize = (unsigned long)w.GetFile()->Tell()-head->keysize;
+	head->keysize = (unsigned int)w.GetFile()->Tell()-head->keysize;
 	return true;
 }
 
