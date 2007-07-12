@@ -60,7 +60,7 @@ end
 
 function i_sugar(h, i)
  if i.coal < 3 then
-	if GetInfo(BINFO_CanSur+EBS_Coal) > 0 then
+	if GetInfo(h, BINFO_CanSur+EBS_Coal) > 0 then
 	   SendMsg(h, BMSG_Chief, 0, "F>IU")
 	   return
 	end

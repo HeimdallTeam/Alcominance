@@ -38,10 +38,11 @@ map_properties.cpp \
 ../sysobjs.cpp\
 ../terrain.cpp\
 ../troll.cpp\
-../utils.cpp
+../utils.cpp \
+../workspace.cpp
 
 
 ______BecherEditor_CPPFLAGS = -DBECHER_EDITOR -I/home/milan/heimdall/Hoe/HoeEditor/include $(WX_CPPFLAGS) $(WX_CXXFLAGS_ONLY) $(WX_CFLAGS_ONLY)
 
-______BecherEditor_LDFLAGS = -ll $(HOE_LIBS) -lHoeEditor -lHoeUtils -lHoeCore $(LUA_LIBS) -ldl -lbassmod -lX11 -lfl $(WX_LIB) -lwx_gtk2_propgrid-2.8
+______BecherEditor_LDFLAGS = -L/usr/local/lib -ll $(HOE_LIBS) -lHoeEditor -lHoeUtils -lHoeCore $(LUA_LIBS) -ldl -lX11 -lfl $(WX_LIB) -lwx_gtk2_propgrid-2.8 -llibwx_gtk2_aui-2.8
 

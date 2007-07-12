@@ -105,6 +105,9 @@ protected:
 	// prace
     Workspace m_work;
 	ResourceImp m_coal;
+    // zpracovani uhli
+    // pri kazdem update se musi odecist prislusne mnozstvi uhli
+    // jenze uhli se odecita po celem mnozstvi -> kotel
 public:
 	FactoryBuilding(IHoeScene * scn, CVar &v_recept, CVar &v_build);
 	virtual int GetInfo(int type, char * str=NULL, size_t n=0);

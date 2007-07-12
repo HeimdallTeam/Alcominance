@@ -76,7 +76,8 @@ am_______BecherEditor_OBJECTS = ______BecherEditor-editor.$(OBJEXT) \
 	______BecherEditor-sysobjs.$(OBJEXT) \
 	______BecherEditor-terrain.$(OBJEXT) \
 	______BecherEditor-troll.$(OBJEXT) \
-	______BecherEditor-utils.$(OBJEXT)
+	______BecherEditor-utils.$(OBJEXT) \
+	______BecherEditor-workspace.$(OBJEXT)
 ______BecherEditor_OBJECTS = $(am_______BecherEditor_OBJECTS)
 ______BecherEditor_LDADD = $(LDADD)
 ______BecherEditor_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
@@ -249,10 +250,11 @@ map_properties.cpp \
 ../sysobjs.cpp\
 ../terrain.cpp\
 ../troll.cpp\
-../utils.cpp
+../utils.cpp \
+../workspace.cpp
 
 ______BecherEditor_CPPFLAGS = -DBECHER_EDITOR -I/home/milan/heimdall/Hoe/HoeEditor/include $(WX_CPPFLAGS) $(WX_CXXFLAGS_ONLY) $(WX_CFLAGS_ONLY)
-______BecherEditor_LDFLAGS = -ll $(HOE_LIBS) -lHoeEditor -lHoeUtils -lHoeCore $(LUA_LIBS) -ldl -lbassmod -lX11 -lfl $(WX_LIB) -lwx_gtk2_propgrid-2.8
+______BecherEditor_LDFLAGS = -L/usr/local/lib -ll $(HOE_LIBS) -lHoeEditor -lHoeUtils -lHoeCore $(LUA_LIBS) -ldl -lX11 -lfl $(WX_LIB) -lwx_gtk2_propgrid-2.8 -llibwx_gtk2_aui-2.8
 all: all-am
 
 .SUFFIXES:
@@ -355,6 +357,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-terrain.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-troll.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-utils.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/______BecherEditor-workspace.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -768,6 +771,20 @@ ______BecherEditor-utils.obj: ../utils.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../utils.cpp' object='______BecherEditor-utils.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______BecherEditor-utils.obj `if test -f '../utils.cpp'; then $(CYGPATH_W) '../utils.cpp'; else $(CYGPATH_W) '$(srcdir)/../utils.cpp'; fi`
+
+______BecherEditor-workspace.o: ../workspace.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______BecherEditor-workspace.o -MD -MP -MF $(DEPDIR)/______BecherEditor-workspace.Tpo -c -o ______BecherEditor-workspace.o `test -f '../workspace.cpp' || echo '$(srcdir)/'`../workspace.cpp
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/______BecherEditor-workspace.Tpo $(DEPDIR)/______BecherEditor-workspace.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../workspace.cpp' object='______BecherEditor-workspace.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______BecherEditor-workspace.o `test -f '../workspace.cpp' || echo '$(srcdir)/'`../workspace.cpp
+
+______BecherEditor-workspace.obj: ../workspace.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ______BecherEditor-workspace.obj -MD -MP -MF $(DEPDIR)/______BecherEditor-workspace.Tpo -c -o ______BecherEditor-workspace.obj `if test -f '../workspace.cpp'; then $(CYGPATH_W) '../workspace.cpp'; else $(CYGPATH_W) '$(srcdir)/../workspace.cpp'; fi`
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/______BecherEditor-workspace.Tpo $(DEPDIR)/______BecherEditor-workspace.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../workspace.cpp' object='______BecherEditor-workspace.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(______BecherEditor_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ______BecherEditor-workspace.obj `if test -f '../workspace.cpp'; then $(CYGPATH_W) '../workspace.cpp'; else $(CYGPATH_W) '$(srcdir)/../workspace.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

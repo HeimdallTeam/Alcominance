@@ -9,7 +9,7 @@ data_old/olaf.hm
 data_old/pic.hx
 data_old/sklad.hm
 data_old/staveniste.hm
-data_old/Studna.hm
+data_old/studna.hm
 data_old/textures.hx
 data_old/dopln.hm
 data_old/terrain.hm

@@ -212,6 +212,21 @@ public:
 	void End();
 };
 
+/**
+ * Kotel - zpracovani uhli 
+ */
+class Cotel
+{
+    // kotel je zavisly na surovine = resource
+    // ma nastavitelnou rychlost spotreby = var
+    // vraci vysledky pro particles
+    // jeho spotreba je zavisla na rychlosti vyroby
+public:
+    float Update(float dt);
+};
+
+
+
 #endif // _WORKSPACE_H_
 
 
