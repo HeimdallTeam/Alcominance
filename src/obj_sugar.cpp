@@ -13,6 +13,7 @@ static CVar v_numworks("sugar_maxwork", 4, TVAR_SAVE); // maximalni pocet pracuj
 static CVar v_recept("sugar_recept", "1.2:C1=1", TVAR_SAVE); // recept pro jednu davku
 static CVar v_build("sugar_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 static CVar v_coalmax("sugar_coal_max", 100, TVAR_SAVE); // maximalni kapacita pro uhli
+static CVar v_coalusage("sugar_coal_usage", 0.21f, TVAR_SAVE); // maximalni kapacita pro uhli
 
 static CVar v_autowork("sugar_auto", 0.f, TVAR_SAVE);
 
@@ -30,6 +31,7 @@ Sugar::Sugar(IHoeScene * scn) : FactoryBuilding(scn, v_recept, v_build),
 	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 
 	m_it.Start(v_idiottime, true);
+	m_cooker.SetUsage(&v_coalusage);
 
 	CRR::Get()->Register(&m_sugar);
 }
@@ -148,8 +150,12 @@ int Sugar::GameMsg(int msg, int par1, void * par2, uint npar2)
 
 void Sugar::Update(const float t)
 {
-	if (!InBuildProcess() 
-            && m_work.BeginPass(m_chief.GetNumWorkers(EBW_Work)+v_autowork.GetFloat(), t))
+	float work = m_cooker.Update(t, m_coal);
+	if (m_cooker.WarmStart()) this->m_part.emitor->Start();
+	if (m_cooker.WarmEnd()) this->m_part.emitor->Stop();
+	if (!InBuildProcess() && work && 
+            m_work.BeginPass(m_chief.GetNumWorkers(EBW_Work)+v_autowork.GetFloat(), 
+									t * work))
 	{
 		m_work << m_cane;
 		m_work >> m_sugar;

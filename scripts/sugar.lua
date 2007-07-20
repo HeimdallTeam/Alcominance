@@ -59,9 +59,12 @@ function i_sugarbuild(h,i)
 end
 
 function i_sugar(h, i)
- if i.coal < 3 then
+ -- zasoba uhli
+ if i.coal < 10 then
 	if GetInfo(h, BINFO_CanSur+EBS_Coal) > 0 then
-	   SendMsg(h, BMSG_Chief, 0, "F>IU")
+	   if SendMsg(h, BMSG_Chief, 0, "F>IU") == 0 then
+	        SendMsg(h, BMSG_Chief, 0, "W>IU")
+	   end
 	   return
 	end
  end

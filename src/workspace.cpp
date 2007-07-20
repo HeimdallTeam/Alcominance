@@ -502,6 +502,42 @@ void LineUp::Cancel(BecherObject* troll)
 		}
 }
 
+// kotel //////////////////////
+Cooker::Cooker()
+{
+	m_prev = m_start = m_end = false;
+	m_coalcache = NULL;
+	m_usage = NULL;
+}
+
+float Cooker::Update(float dt, ResourceBase & coal)
+{
+	float ret = 0.f;
+	if (m_usage)
+	{
+		const float u = dt * m_usage->GetFloat();
+		if (m_coalcache < u) // naplneni
+			m_coalcache += (float)coal.Get((uint)(u > 1.f ? u+1:1),true);
+		if (m_coalcache >= u)
+		{
+			m_coalcache -= u; ret = 1.f;
+		}
+		else
+		{
+			ret = m_coalcache / u; m_coalcache = 0.f;
+		}
+	}
+	if (ret && !m_prev)
+	{
+		m_prev = true; m_end = false; m_start = true;
+	}
+	if (!ret && m_prev)
+	{
+		m_prev = false; m_end = true; m_start = false;
+	}
+	return ret;
+}
+
 
 
 

@@ -206,7 +206,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../../Hoe/bin;../../Common\lib/wx_dll;"
-				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd"
+				IgnoreDefaultLibraryNames="libc;libcmt;libcmtd;libcmt.lib"
 				ProgramDatabaseFile=".\Release/BecherMap.pdb"
 				ImportLibrary=".\Release/BecherMap.lib"
 				TargetMachine="1"

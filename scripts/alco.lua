@@ -17,9 +17,12 @@ function s_lihovar()
 end
 
 function i_alco(h, i)
- if i.coal < 3 then
-	if GetInfo(BINFO_CanSur+EBS_Coal) > 0 then
-	   SendMsg(h, BMSG_Chief, 0, "F>IU")
+ -- zasoba uhli
+ if i.coal < 10 then
+	if GetInfo(h, BINFO_CanSur+EBS_Coal) > 0 then
+	   if SendMsg(h, BMSG_Chief, 0, "F>IU") == 0 then
+	        SendMsg(h, BMSG_Chief, 0, "W>IU")
+	   end
 	   return
 	end
  end

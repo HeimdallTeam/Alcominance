@@ -72,15 +72,17 @@ Section "Game files"
   SetOutPath $INSTDIR
   
   ; exe files
-  File "..\Alcominance_d.exe"
+  ; File "..\Alcominance_d.exe"
   File "..\Alcominance.exe"
-  File "..\BecherEditor_d.exe"
+  ; File "..\BecherEditor_d.exe"
   File "..\BecherEditor.exe"
   File "..\..\Common\bin\BASSMOD.dll"
   File "..\..\Common\bin\OpenAL32.dll"
   File "..\..\Common\bin\wrap_oal.dll"
   ; File "..\..\Hoe\bin\Hoe3Dd_GL.dll"
-  File "..\..\Hoe\bin\Hoe3Dd_D3D9.dll"
+  File "..\..\Hoe\bin\Hoe3D_D3D9.dll"
+  File "..\..\Hoe\bin\Hoe3D_D3D8.dll"
+  File "..\..\Hoe\bin\Hoe3D_GL.dll"
   
   File "install\becher.conf"
   File "..\docs\Readme.txt"
@@ -120,8 +122,8 @@ Section "Start Menu Shortcuts"
 
   CreateDirectory "$SMPROGRAMS\Alcominance"
   CreateShortCut "$SMPROGRAMS\Alcominance\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\Alcominance\Alcominance.lnk" "$INSTDIR\Alcominance_d.exe" "" "$INSTDIR\Alcominance_d.exe" 0
-  CreateShortCut "$SMPROGRAMS\Alcominance\Editor.lnk" "$INSTDIR\BecherEditor_d.exe" "" "$INSTDIR\BecherEditor_d.exe" 0
+  CreateShortCut "$SMPROGRAMS\Alcominance\Alcominance.lnk" "$INSTDIR\Alcominance.exe" "" "$INSTDIR\Alcominance_d.exe" 0
+  CreateShortCut "$SMPROGRAMS\Alcominance\Editor.lnk" "$INSTDIR\BecherEditor.exe" "" "$INSTDIR\BecherEditor_d.exe" 0
   CreateShortCut "$SMPROGRAMS\Alcominance\Nastaveni.lnk" "$INSTDIR\Alcominance_d.exe -h" "" "$INSTDIR\Alcominance_d.exe -h" 0
   CreateShortCut "$SMPROGRAMS\Alcominance\Readme.lnk" "$INSTDIR\readme.txt" "" "$INSTDIR\readme.txt" 0
   CreateShortCut "$SMPROGRAMS\Alcominance\Heimdall on web.lnk" "http://www.gejza.net" "" "http://www.gejza.net" 0

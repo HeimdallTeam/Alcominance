@@ -14,6 +14,7 @@ protected:
 	ResourceExp m_alco;
 	inline const int GetMiniStoreCount() const { return m_alco.GetNum() + m_sugar.GetNum(); }
 
+	THoeSub_Particle m_part;
 	HoeGame::CTimer m_it;
 public:
 	Destilate(IHoeScene * scn);

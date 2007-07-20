@@ -215,14 +215,33 @@ public:
 /**
  * Kotel - zpracovani uhli 
  */
-class Cotel
+class Cooker
 {
     // kotel je zavisly na surovine = resource
     // ma nastavitelnou rychlost spotreby = var
     // vraci vysledky pro particles
     // jeho spotreba je zavisla na rychlosti vyroby
+	bool m_prev;
+	bool m_start;
+	bool m_end;
+	float m_coalcache;
+	CVar * m_usage;
 public:
-    float Update(float dt);
+	Cooker();
+    float Update(float dt, ResourceBase & coal);
+	/** ridici funkce pro partikle */
+	bool WarmStart()
+	{
+		if (m_start) { m_start = false; return true; }
+		return false;
+	}
+	bool WarmEnd()
+	{
+		if (m_end) { m_end = false; return true; }
+		return false;
+	}
+	/** nastaveni spotreby (bez toho kotel nejede) */
+	void SetUsage(CVar * usage) { m_usage = usage; }
 };
 
 

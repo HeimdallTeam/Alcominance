@@ -14,6 +14,8 @@ static CVar v_numworks("dest_maxwork", 4, TVAR_SAVE); // maximalni pocet pracuji
 static CVar v_recept("dest_recept", "1.0:S1=1", TVAR_SAVE); // recept pro jednu davku
 static CVar v_build("dest_build", "1.4:K1+D1=0.011", TVAR_SAVE); // recept pro staveni
 static CVar v_coalmax("dest_coal_max", 120, TVAR_SAVE); // maximalni kapacita pro uhli
+static CVar v_coalusage("dest_coal_usage", 1.21f, TVAR_SAVE); // maximalni kapacita pro uhli
+
 
 ////////////////////////////////////////////////////////
 Destilate::Destilate(IHoeScene * scn) 
@@ -27,11 +29,13 @@ Destilate::Destilate(IHoeScene * scn)
 	m_sugar.SetOwner(this);
 	m_alco.SetOwner(this); 
 
-	//m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
-	//m_part.pos.Set(4.f,13.f,-14.f);
-	//GetCtrl()->Link(THoeSubObject::Particle, &m_part);
+	m_part.emitor = (IHoeParticleEmitor*)GetEngine()->Create("particle");
+	m_part.pos.Set(4.f,13.f,-14.f);
+	GetCtrl()->Link(THoeSubObject::Particle, &m_part);
 	CRR::Get()->Register(&m_alco);
 	m_it.Start(v_idiottime, true);
+	m_cooker.SetUsage(&v_coalusage);
+
 }
 
 Destilate::~Destilate()
@@ -148,8 +152,12 @@ void Destilate::SetMode(EBuildingMode mode)
 
 void Destilate::Update(const float t)
 {
-	if (m_chief.GetNumWorkers(EBW_Work) > 0 
-            && !InBuildProcess() && m_work.BeginPass(m_chief.GetNumWorkers(EBW_Work), t))
+	float work = m_cooker.Update(t, m_coal);
+	if (m_cooker.WarmStart()) this->m_part.emitor->Start();
+	if (m_cooker.WarmEnd()) this->m_part.emitor->Stop();
+
+	if (m_chief.GetNumWorkers(EBW_Work) > 0 && work
+            && !InBuildProcess() && m_work.BeginPass(m_chief.GetNumWorkers(EBW_Work), t*work))
 	{
 		m_work << m_sugar;
 		m_work >> m_alco;
