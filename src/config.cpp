@@ -4,8 +4,39 @@
 #ifdef _WIN32
 #include "resource.h"
 #endif
+#include "../../HoeGame/include/hoe_wx.h"
 
 #define CONFIG_FILE "becher.conf"
+
+#ifdef _WIN32
+class BecherConfigDlg : public HoeGame::wx::Dialog
+{
+public:
+	virtual INT_PTR OnInit() 
+	{ 
+		AnimateWindow(this->GetHWND(),500,AW_BLEND);
+		return TRUE; 
+	}
+	virtual INT_PTR OnCommand(word cmd) 
+	{
+		switch (cmd)
+		{
+		case IDOK:
+			//v_engine.Set(SendDlgItemMessage(hwndDlg, IDC_ENGINE, CB_GETCURSEL, 0, 0));
+			//v_resolution.Set(SendDlgItemMessage(hwndDlg, IDC_RESOLUTION, CB_GETCURSEL, 0, 0));
+			return End(1);
+		case IDCANCEL:
+			return End(0);
+		};
+		return FALSE; 
+	}
+	virtual INT_PTR OnEnd()
+	{
+		AnimateWindow(this->GetHWND(),700,AW_SLIDE|AW_HIDE);
+		return TRUE;
+	}
+};
+#endif
 
 class BecherConfig : public HoeGame::ConfigVars
 {
@@ -24,7 +55,6 @@ public:
 #ifdef _WIN32
 	bool Conf(HINSTANCE hInst);
 	bool ShowConfig(HINSTANCE hInst);
-	static INT_PTR CALLBACK DialogProc(HWND hwndDlg,UINT uMsg,WPARAM wParam,LPARAM lParam);
 #endif
 #ifdef _LINUX
 	bool Conf();
@@ -43,46 +73,11 @@ extern HoeGame::CVar v_level;
 bool BecherConfig::ShowConfig(HINSTANCE hInst)
 {
 	//@todo zde se zjisti dostupne enginy
-
-
-	//HWND wnd = CreateDialog(hInst,MAKEINTRESOURCE(IDD_SETTDLG), GetDesktopWindow(), NULL);
-	if (DialogBox(hInst,MAKEINTRESOURCE(IDD_SETTDLG), GetDesktopWindow(), DialogProc) == 0)
+	BecherConfigDlg dlg;
+	if (dlg.Show(hInst,MAKEINTRESOURCE(IDD_SETTDLG)) == 0)
 		return false;
-	
+
 	return true;
-}
-
-INT_PTR CALLBACK BecherConfig::DialogProc(HWND hwndDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
-{
-
-	switch (uMsg)
-	{
-	case WM_INITDIALOG:
-		// set vars
-
-		AnimateWindow(hwndDlg,200,AW_BLEND);
-		return TRUE;
-	case WM_COMMAND:
-		switch (LOWORD(wParam))
-		{
-//		case IDC_DROP:
-
-//			break;
-		case IDOK:
-			//v_engine.Set(SendDlgItemMessage(hwndDlg, IDC_ENGINE, CB_GETCURSEL, 0, 0));
-			//v_resolution.Set(SendDlgItemMessage(hwndDlg, IDC_RESOLUTION, CB_GETCURSEL, 0, 0));
-
-			AnimateWindow(hwndDlg,200,AW_BLEND|AW_HIDE);
-			EndDialog(hwndDlg,1);
-			break;
-		case IDCANCEL:
-			AnimateWindow(hwndDlg,200,AW_SLIDE|AW_HIDE);
-			EndDialog(hwndDlg,0);
-			break;
-		};
-		return TRUE;
-	};
-	return FALSE;
 }
 
 void BecherConfig::ShowUsage(const char *usage)
