@@ -11,10 +11,17 @@
 #ifdef _WIN32
 class BecherConfigDlg : public HoeGame::wx::Dialog
 {
+	HoeGame::HoeEngineInfo m_info;
 public:
+	BecherConfigDlg(HINSTANCE hInst)
+		: HoeGame::wx::Dialog(hInst) {}
 	virtual INT_PTR OnInit() 
 	{ 
-		AnimateWindow(this->GetHWND(),500,AW_BLEND);
+		// fill informations
+		if (m_info.GetInfo()) {
+			SetDlgItemText(GetHWND(), IDC_STATIC7, 
+				m_info.GetInfo()->GetEngineName());
+		} AnimateWindow(this->GetHWND(),500,AW_BLEND);
 		return TRUE; 
 	}
 	virtual INT_PTR OnCommand(word cmd) 
@@ -27,6 +34,12 @@ public:
 			return End(1);
 		case IDCANCEL:
 			return End(0);
+		case IDC_BUTTON1:
+			{
+				BecherConfigDlg dlg(GetInstance());
+				dlg.Show(MAKEINTRESOURCE(IDD_SETTDLG));
+				return TRUE;
+			}
 		};
 		return FALSE; 
 	}
@@ -34,6 +47,19 @@ public:
 	{
 		AnimateWindow(this->GetHWND(),700,AW_SLIDE|AW_HIDE);
 		return TRUE;
+	}
+	bool Run()
+	{
+		// load
+		if (!m_info.Load(HoeGame::HoeApp::m_enginedll.GetString()))
+		{
+			// show msg
+			return false;
+		}
+		if (Show(MAKEINTRESOURCE(IDD_SETTDLG)) == 0)
+			return false;
+
+		return true;
 	}
 };
 #endif
@@ -73,11 +99,8 @@ extern HoeGame::CVar v_level;
 bool BecherConfig::ShowConfig(HINSTANCE hInst)
 {
 	//@todo zde se zjisti dostupne enginy
-	BecherConfigDlg dlg;
-	if (dlg.Show(hInst,MAKEINTRESOURCE(IDD_SETTDLG)) == 0)
-		return false;
-
-	return true;
+	BecherConfigDlg dlg(hInst);
+	return dlg.Run();
 }
 
 void BecherConfig::ShowUsage(const char *usage)
