@@ -192,7 +192,7 @@ void ToolObjects::OnClick(wxCommandEvent& event)
 {
 	if (!BecherEdit::Get()->IsMapLoaded())
 	{
-		wxMessageBox(_("First must create map."));
+		wxMessageBox(_("You have to create map first."));
 		return;
 	}
 
@@ -281,7 +281,7 @@ void TerrainObject::OnTexturesClick(wxCommandEvent& e)
 {
 	if (!BecherEdit::Get()->IsMapLoaded())
 	{
-		wxMessageBox(_("First must create map."));
+		wxMessageBox(_("You have to create map first."));
 		return;
 	}
 	BecherEdit::Get()->SetTool(new ToolTex(e.GetId()-IDB_TEXTURE));
@@ -292,7 +292,7 @@ void TerrainObject::OnTerrainClick(wxCommandEvent& e)
 {
 	if (!BecherEdit::Get()->IsMapLoaded())
 	{
-		wxMessageBox(_("First must create map."));
+		wxMessageBox(_("You have to create map first."));
 		return;
 	}
 	switch (e.GetId())
