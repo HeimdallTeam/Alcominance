@@ -1,0 +1,130 @@
+body {
+  font-size : 13px;
+  background-color : #000000;
+  font-family : "Lucida Console","Arial CE",sans-serif;
+  color : #ffffff;
+  text-align : center;
+}
+
+.main {
+  position : relative;
+  width : 1024px;
+  height : 768px;
+  margin : auto;
+  top : 15px;
+  background-image: url(./pic/pozadi.jpg);
+  background-repeat: no-repeat;
+  background-color : #ffffff;
+  color : #000000;
+  border : 1px solid #ff6600;
+}
+
+.obsah {
+  position : absolute;
+  left : 485px;
+  top : 186px;
+  width : 462px;
+  height : 507px;
+  border : 1px #ff6600 solid;
+  color : #ffffff;
+  overflow : auto;
+  text-align : left;
+}
+
+.pod-nadpisem {
+  position : relative;
+  top : 130px;
+  text-align: center;
+  color : #ffffff;
+}
+
+p {
+  position : relative;
+  top : 10px;
+  left : 19px;
+  width : 422px;
+  line-height : 18px;
+  text-indent : 20px;
+  text-align : justify;
+}
+
+h3 {
+  text-align : center;
+  text-decoration : underline;
+  color : #ff6600;
+}
+
+table {
+  position : relative;
+  left : 10px;
+}
+
+tr td {
+  font-size : 13px;
+  width : 221px;
+  text-align : center;
+}
+
+.loading-textLightbox {
+  position : relative;
+  top: 66px;
+  margin : auto;
+  text-align : center;
+}
+
+.close-textLightbox {
+  position : relative;
+  left : 585px;
+  top : -5px;
+  width : 20px;
+  height : 20px;
+}
+
+.o-hre {
+  position : absolute;
+  top : 250px;
+  left : 225px;
+}
+
+.snimky-ze-hry {
+  position : absolute;
+  top : 350px;
+  left : 45px;
+}
+
+.forum {
+  position : absolute;
+  top : 450px;
+  left : 225px;
+}
+
+.autori {
+  position : absolute;
+  top : 550px;
+  left : 45px;
+}
+
+a.o-hre {background-image : url(./pic/o-hre.png); background-repeat : no-repeat; width : 218px; height : 67px}
+a.o-hre:hover {background-position : 0% 100%}
+
+a.snimky-ze-hry {background-image : url(./pic/snimky-ze-hry.png); background-repeat : no-repeat; width : 218px; height : 67px}
+a.snimky-ze-hry:hover {background-position : 0% 100%}
+
+a.forum {background-image : url(./pic/forum.png); background-repeat : no-repeat; width : 218px; height : 67px}
+a.forum:hover {background-position : 0% 100%}
+
+a.autori {background-image : url(./pic/autori.png); background-repeat : no-repeat; width : 218px; height : 67px}
+a.autori:hover {background-position : 0% 100%}
+
+a {
+  color : #ff6600;
+  text-decoration: underline;
+}
+
+a:active {
+  color : #ff6600;
+}
+
+a:hover {
+  color : #ffffff;
+}
