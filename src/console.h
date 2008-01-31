@@ -16,7 +16,7 @@ class ConsoleDialog : public HoeGame::GuiConsole
 {
 public:
 	ConsoleDialog(HoeGame::Console & con);
-	virtual bool Load(IHoe3DEngine *);
+	virtual bool Load(IHoeEngine *);
 };
 
 #endif

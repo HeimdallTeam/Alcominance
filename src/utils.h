@@ -45,7 +45,7 @@ public:
 };
 
 // save game
-class BecherGameSave : public HoeFileWriter
+class BecherGameSave : public HoeCore::WriteStream
 {
 	size_t m_lastsizepos;
 	StringKeysHash m_str;

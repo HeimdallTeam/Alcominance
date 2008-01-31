@@ -13,7 +13,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <memory.h>
-
+#include <new>
+#include <wchar.h>
 
 #ifdef _LINUX
 #include <X11/Xlib.h>
@@ -26,38 +27,7 @@
 #endif
 
 #include <assert.h>
-#include <hoe_types.h>
-#include <hoe_math.h>
-#include <hoe_structures.h>
-
-#include <hoe3d.h>
-
-#include "../../Hoe/HoeCore/include/hoe_core.h"
-//
-#include "../../Hoe/HoeGame/include/hoe_console.h"
-#include "../../Hoe/HoeGame/include/hoe_engine.h"
-#include "../../Hoe/HoeGame/include/hoe_app.h"
-#include "../../Hoe/HoeGame/include/hoe_lang.h"
-#include "../../Hoe/HoeGame/include/hoe_resource_mgr.h"
-#include "../../Hoe/HoeGame/include/hoe_view.h"
-#include "../../Hoe/HoeGame/include/lua_script.h"
-#include "../../Hoe/HoeGame/include/hoe_scene.h"
-#include "../../Hoe/HoeGame/include/hoe_object.h"
-#include "../../Hoe/HoeGame/include/hoe_strategy.h"
-#include "../../Hoe/HoeGame/include/hoe_stratmap.h"
-#include "../../Hoe/HoeGame/include/hoe_input.h"
-#include "../../Hoe/HoeGame/include/hoe_music.h"
-#include "../../Hoe/HoeGame/include/lua_script.h"
-#include "../../Hoe/HoeGame/include/hoe_timer.h"
-#include "../../Hoe/HoeGame/include/hoe_vars.h"
-#include "../../Hoe/HoeGame/include/hoe_ai.h"
-#include "../../Hoe/HoeGame/include/hoe_land.h"
-#include "../../Hoe/HoeGame/include/hoe_mem.h"
-
-typedef HoeGame::CVar CVar;
-
 #ifdef BECHER_EDITOR
-
 // wxwindows
 #include <wx/wxprec.h>
 #include <wx/bitmap.h>
@@ -92,17 +62,6 @@ typedef HoeGame::CVar CVar;
 #include <wx/filedlg.h>
 #include <wx/log.h>
 #include "wx/aui/aui.h"
-
-
-#include <he/app.h>
-#include <he/editor.h>
-#include <he/engview.h>
-#include <he/panels.h>
-#include <he/properties.h>
-#include <he/resources.h>
-#include <he/utils.h>
-#include <he/undolist.h>
-
 #endif
 
 extern "C" {
@@ -110,5 +69,50 @@ extern "C" {
 #include <lualib.h>
 #include <lauxlib.h>
 }
+
+#include <HoeCore/hoe_types.h>
+#include <HoeCore/hoe_stream.h>
+#include <HoeCore/hoe_math.h>
+#include <HoeCore/hoe_structures.h>
+#include <HoeCore/hoe_core.h>
+
+#include <hoe3d.h>
+
+//
+#include <HoeGame/hoe_console.h>
+#include <HoeGame/hoe_engine.h>
+#include <HoeGame/hoe_app.h>
+#include <HoeGame/hoe_lang.h>
+#include <HoeGame/hoe_resource_mgr.h>
+#include <HoeGame/hoe_view.h>
+#include <HoeGame/lua_script.h>
+#include <HoeGame/hoe_scene.h>
+#include <HoeGame/hoe_object.h>
+#include <HoeGame/hoe_strategy.h>
+#include <HoeGame/hoe_stratmap.h>
+#include <HoeGame/hoe_input.h>
+#include <HoeGame/hoe_music.h>
+#include <HoeGame/lua_script.h>
+#include <HoeGame/hoe_timer.h>
+#include <HoeGame/hoe_vars.h>
+#include <HoeGame/hoe_ai.h>
+#include <HoeGame/hoe_land.h>
+#include <HoeGame/hoe_mem.h>
+
+typedef HoeGame::CVar CVar;
+
+#ifdef BECHER_EDITOR
+
+#include <HoeEditor/app.h>
+#include <HoeEditor/editor.h>
+#include <HoeEditor/engview.h>
+#include <HoeEditor/panels.h>
+#include <HoeEditor/properties.h>
+#include <HoeEditor/resources.h>
+#include <HoeEditor/utils.h>
+#include <HoeEditor/undolist.h>
+
+#endif
+
 
 #endif // _STDAFX_H_

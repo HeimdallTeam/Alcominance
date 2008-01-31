@@ -19,7 +19,7 @@ struct TrollPath;
 class BecherTime : public HoeGame::Timer
 {
 public:
-	bool Save(HoeFileWriter &w);
+	bool Save(HoeCore::WriteStream &w);
 	bool Load(int ver, HoeFileReader &r);
 };
 
@@ -30,7 +30,7 @@ class BecherCash
 public:
 	BecherCash();
 	void Set(int cash, int limit);
-	bool Save(HoeFileWriter &w);
+	bool Save(HoeCore::WriteStream &w);
 	bool Load(int ver, HoeFileReader &r);
 	bool Add(int m);
 	int GetValue() { return m_cash; }
