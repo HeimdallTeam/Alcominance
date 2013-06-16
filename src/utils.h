@@ -46,26 +46,25 @@ public:
 };
 
 // save game
-class BecherGameSave : public HoeCore::WriteStream
+class BecherGameSave
 {
 	size_t m_lastsizepos;
 	StringKeysHash m_str;
+	HoeCore::File& m_file;
 public:
-	//TODO BecherGameSave(XHoeFile * f) : HoeFileWriter(f) {}
+	//BecherGameSave(XHoeFile* f) : m_file(f) {}
 	void WriteChunk(unsigned int chunk);
 	void WriteChunkEnd();
 	StringKeysHash * GetStringMap() { return &m_str; };
 };
 
-class BecherGameLoad;
-/*
-class BecherGameLoad : public HoeFileReader
+class BecherGameLoad : public HoeCore::FileReader
 {
 	MapChunk chunk;
 	bool m_savegame;
 	StringKeysHash m_str;
 public:
-	BecherGameLoad(XHoeFile * f) : HoeFileReader(f, 0)
+	BecherGameLoad(HoeCore::File& f) : HoeCore::FileReader(f, 0)
 	{
 		chunk.chunk = 0;
 	}
@@ -73,15 +72,27 @@ public:
 	const MapChunk & Chunk() { return chunk; }
 	bool ReadNext() 
 	{
-		if (!this->Read(&chunk, sizeof(chunk)))
+		if (!HoeCore::FileReader::Read(&chunk, sizeof(chunk)))
 			chunk.chunk = 0;
 		return chunk.chunk != 0;
 	}
 	bool ReadHeader();
 	void ReadReservedWords(int num);
 	const StringKeysHash * GetStringMap() { return &m_str; }
+
+	size_t ReadData(void* ptr, size_t size)
+	{
+		return HoeCore::FileReader::Read(ptr, size);
+	}
+
+	template<class T>
+	const T Read()
+	{
+		T obj;
+		HoeCore::FileReader::Read(&obj, sizeof(obj));
+		return obj;
+	}
 };
-*/
 
 struct SaveKey
 {

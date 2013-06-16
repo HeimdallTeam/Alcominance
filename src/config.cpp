@@ -196,7 +196,7 @@ int BecherConfig::Arg(int argc, char *argv[])
         }
         HoeGame::BaseConsole::Printf("Changing directory to '%s'", argv[1]);
         // nastaveni cesty
-        HoeGame::SetRootDir(argv[1]);
+		//TODO HoeGame::SetRootDir(argv[1]);
         return 2;
     }
     

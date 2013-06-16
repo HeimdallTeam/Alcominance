@@ -142,7 +142,7 @@ IHoeScene * BecherMap::CreateScene()
 		m_scene = NULL;
 	}
 	this->Create(GetEngine()->CreateScene(HOETS_GRAPH));
-	HoeGetRef(GetEngine())->SetBackgroundColor(0xffb060ff);
+	GetEngine()->GetRef()->SetBackgroundColor(0xffb060ff);
 	return m_scene;
 }
 
@@ -235,7 +235,7 @@ bool BecherMap::LoadMapChunk(BecherGameLoad & r)
 bool BecherMap::LoadObject(BecherGameLoad & r)
 {
 	TObjectSaveStruct s;
-	r.Read(&s, sizeof(s));
+	r.ReadData(&s, sizeof(s));
 	assert(s.type > EBO_None && s.type < EBO_Max);
 	BecherObject * bo = this->CreateObject((EObjType)s.type);
 	if (!bo)

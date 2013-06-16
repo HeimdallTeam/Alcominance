@@ -6,7 +6,7 @@
 #include "buildings.h"
 #include "obj_sugar.h"
 #include "troll.h"
-#include "../../HoeGame/include/hoe_benchmark.h"
+#include <HoeGame/hoe_benchmark.h>
 
 //HoeGame::OffsetLoop off[] = { MAKELONG(25,0), MAKELONG(26,0),MAKELONG(0,0), MAKELONG(1,0), 0xffffffff, 0xffffffff };
 

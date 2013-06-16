@@ -67,13 +67,13 @@ void SlideShow::OnSet()
 {
 	GetEngine()->SetActiveScene(scene);
 	//HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Foreground, NULL);
-	HoeGetInput(GetEngine())->RegisterKeyboard(this);
+	GetEngine()->GetInput()->RegisterKeyboard(this);
 }
 
 void SlideShow::OnUnset()
 {
 	GetEngine()->SetActiveScene(NULL);
-	HoeGetInput(GetEngine())->RegisterKeyboard(NULL);
+	GetEngine()->GetInput()->RegisterKeyboard(NULL);
 }
 
 void HOEAPI SlideShow::_Paint(IHoe2D * h2d)
@@ -114,7 +114,7 @@ void SlideShow::Update(float dtime)
 void SlideShow::Run()
 {
 	m_lua.Init();
-	m_lua.Connect(GetApp()->GetFS());
+	//TODO m_lua.Connect(GetApp()->GetFS());
 	m_lua.Connect(GetEngine());
 	this->Load("scripts/intro.menu");
 	HoeGame::Gui::StaticPicture * pic = (HoeGame::Gui::StaticPicture*)m_instance->ReqItem("pozadi", HoeGame::Gui::EStatic);

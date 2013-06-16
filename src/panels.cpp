@@ -59,7 +59,7 @@ HoeGame::Gui::Base * HUD::CreateGUI(const char * type)
 	else
 		return Hoe2DFigure::CreateGUI(type);
 
-	m_list.Add(g);
+	//TODO m_list.Add(g);
 	return g;
 }
 
@@ -129,13 +129,16 @@ bool HUD::SetObjectHud(const char * fname, BecherObject * obj)
 	if (!m_selhud->Load(fname))
 		return false;
 	// najit vsechny texty a nastavit jim overlap
-	const HoeCore::List<Gui::Item*> & list = m_selhud->GetItems();
+	//TODO 
+	/*
+	const auto& list = m_selhud->GetItems();
 	for (uint i=0;i < list.Count();i++)
 		if (list.Get(i)->GetType()==HoeGame::Gui::EText)
 		{
 			dynamic_cast<HoeGame::Gui::Font*>(list.Get(i))->SetTextOverlaper(
 				this, H2DC_TEXTOVERLAP(HUD::InfoOverlap));
 		}
+		*/
 	return true;
 }
 

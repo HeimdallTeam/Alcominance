@@ -63,11 +63,11 @@ bool ResourceBase::Save(ChunkDictWrite &w)
 	return true;//w.Write<uint>(m_actual);
 }
 
-bool ResourceBase::Load(BecherGameLoad &r)
+/*bool ResourceBase::Load(BecherGameLoad &r)
 {
 	m_actual = r.Read<uint>();
 	return true;
-}
+}*/
 
 ////////////////////////////////////////////
 ResourceExp::ResourceExp(ESurType type) : ResourceBase(type)

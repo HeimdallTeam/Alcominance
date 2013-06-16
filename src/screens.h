@@ -7,7 +7,7 @@
 class BecherLogo : public HoeGame::Scene, public XHoe2DCallback
 {
 	IHoeFont * font;
-	IHoe3DEngine * engine;
+	IHoeEngine * engine;
 	IHoeScene * scene;
 public:
 	BecherLogo();

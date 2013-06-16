@@ -35,32 +35,32 @@ struct Kruh
 // 
 struct TPathPart
 {
-	HoeMath::Vector2 to;
+	HoeMath::Vector2f to;
 	TPathPart * next;
 	TPathPart * child;
 	float distance;
-	TPathPart * Find(HoeMath::Vector2 from);
+	TPathPart * Find(HoeMath::Vector2f from);
 };
 
 struct TPathBridge
 {
 	byte a;
-	HoeMath::Vector2 pa;
+	HoeMath::Vector2f pa;
 	byte b;
-	HoeMath::Vector2 pb;
+	HoeMath::Vector2f pb;
 };
 
 class PhysGroup
 {
 	byte id;
-	HoeCore::Set<HoeMath::Polygon2*> m_poly;
+	HoeCore::Set<HoeMath::Polygon<float>*> m_poly;
 	HoeCore::Set<Obdelnik*> m_obd;
 	HoeCore::Set<Kruh*> m_kruh;
-	HoeMath::Polygon2 *m_obal;
+	HoeMath::Polygon<float> *m_obal;
 
 public:
 	PhysGroup(byte id);
-	HoeCore::Set<HoeMath::Polygon2*> & GetPolygons() { return m_poly; }
+	HoeCore::Set<HoeMath::Polygon<float>*> & GetPolygons() { return m_poly; }
 	/*bool IsOk(const Obdelnik * o)
 	{
 		for (size_t i=0;i < m_kruh.Count();i++)
@@ -88,7 +88,7 @@ public:
 	static Phys * Get() { return &m_instance; }
 	void ParseLevel(BecherMap * map, TerrainMiniMap * minimap);
 	void ClearAll();
-	TPathPart * Find(HoeMath::Vector2 from, HoeMath::Vector2 to);
+	TPathPart * Find(HoeMath::Vector2f from, HoeMath::Vector2f to);
 	bool IsWater(int x, int y);
 	byte GetGroup(float x, float y);
 	TPathBridge * FindBridge(byte a, byte b);

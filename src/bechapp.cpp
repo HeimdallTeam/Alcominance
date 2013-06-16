@@ -53,7 +53,7 @@ bool BechApp::InitGame()
 	// vytvorit game
 	m_game = new BecherGame();
 
-	HoeGetInfo(GetEngine())->LoadFont("resource/font.ttf",12); 
+	GetEngine()->GetInfo()->LoadFont("resource/font.ttf",12); 
 
     TRACE;
 	if (!m_game->Init())

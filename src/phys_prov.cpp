@@ -87,7 +87,7 @@ void Phys::ParseLevel(BecherMap *map, TerrainMiniMap * minimap)
 		*/
 }
 
-TPathPart * Phys::Find(HoeMath::Vector2 from, HoeMath::Vector2 to)
+TPathPart * Phys::Find(HoeMath::Vector2f from, HoeMath::Vector2f to)
 {
 	//
 	TPathPart * main = new TPathPart;
@@ -244,7 +244,7 @@ void PhysGroup::Parse(BecherMap * map, byte * grids)
 
 /////////////////////////////////////////////
 
-TPathPart * TPathPart::Find(HoeMath::Vector2 from)
+TPathPart * TPathPart::Find(HoeMath::Vector2f from)
 {
 	// nejdriv zcheckovat jestli jsou ve stejne grupe
 	// pokud ne, tak najit most a rozdelit na casti vcetne mostu

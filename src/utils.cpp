@@ -12,23 +12,22 @@ void BecherGameSave::WriteChunk(unsigned int chunk)
 
 {
 	MapChunk ch = { chunk, 0 };
-	Write(&ch, sizeof(ch));
-	m_lastsizepos = GetFile()->Tell();;
+	m_file.Write(&ch, sizeof(ch));
+	m_lastsizepos = m_file.Tell();;
 }
 
 void BecherGameSave::WriteChunkEnd()
 {
-	size_t sf = GetFile()->Tell();
-	GetFile()->Seek(m_lastsizepos - sizeof(unsigned int));
-	WriteValue<unsigned int>((unsigned int)sf-m_lastsizepos);
-	GetFile()->Seek(sf);
+	size_t sf = m_file.Tell();
+	m_file.Seek(m_lastsizepos - sizeof(unsigned int));
+	m_file.WriteValue<unsigned int>((unsigned int)sf-m_lastsizepos);
+	m_file.Seek(sf);
 	// save size
 	//WriteValue<dword>(123456789);
 }
 
 bool BecherGameLoad::ReadHeader()
 {
-	Reset();
 	BechSaveHeader head;
 	if (!Read(&head, sizeof(head)))
 		return false;

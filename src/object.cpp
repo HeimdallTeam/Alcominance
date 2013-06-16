@@ -84,14 +84,14 @@ void BecherObject::SetPosition(const float x, const float y, const float h)
 	assert(GetCtrl());
 	posX = x;
 	posY = y;
-	GetCtrl()->SetPosition(HoeMath::Vector3(x, h, y));
+	GetCtrl()->SetPosition(HoeMath::Vector3f(x, h, y));
 }
 
 void BecherObject::Update(const float u)
 {
 	if (m_infoselect.model)
 	{
-		HoeMath::Matrix m;
+		HoeMath::Matrix4f m;
 		m.RotationY(u);
 		m_infoselect.pos.MultiplyLeft(m);
 	}
@@ -103,7 +103,7 @@ void BecherObject::UpdateRing()
 	int t = (int)GetType();
 	m_infoselect.pos.Scale(
 		v_sizzing.GetFloat(SIZZ(t,ESSZ_ring_x)),1,v_sizzing.GetFloat(SIZZ(t,ESSZ_ring_y)));
-	HoeMath::Matrix m;
+	HoeMath::Matrix4f m;
 	m.Translate(0,v_sizzing.GetFloat(SIZZ(t,ESSZ_ring_h)),0);
 	m_infoselect.pos.Multiply(m);
 }

@@ -61,7 +61,7 @@
 #include <wx/statusbr.h>
 #include <wx/filedlg.h>
 #include <wx/log.h>
-#include "wx/aui/aui.h"
+//TODO #include <wx/aui/aui.h>
 #endif
 
 extern "C" {
@@ -72,6 +72,7 @@ extern "C" {
 
 #include <HoeCore/hoe_types.h>
 #include <HoeCore/hoe_stream.h>
+#include <HoeCore/hoe_file.h>
 #include <HoeCore/hoe_math.h>
 #include <HoeCore/hoe_structures.h>
 #include <HoeCore/hoe_core.h>

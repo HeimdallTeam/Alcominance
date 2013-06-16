@@ -98,7 +98,7 @@ protected:
 	HoeEditor::EngineView m_engview;
 	wxHelpController m_help;
 	HoeEditor::UndoList m_undo;
-    wxAuiManager m_mgr;
+    //wxAuiManager m_mgr;
 public:
 	BecherEdit();
 	virtual ~BecherEdit();

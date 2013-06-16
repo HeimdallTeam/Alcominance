@@ -20,7 +20,7 @@ class BecherTime : public HoeGame::Timer
 {
 public:
 	bool Save(HoeCore::WriteStream &w);
-	bool Load(int ver, HoeFileReader &r);
+	bool Load(int ver, HoeCore::ReadStream &r);
 };
 
 class BecherCash 
@@ -31,7 +31,7 @@ public:
 	BecherCash();
 	void Set(int cash, int limit);
 	bool Save(HoeCore::WriteStream &w);
-	bool Load(int ver, HoeFileReader &r);
+	bool Load(int ver, HoeCore::ReadStream &r);
 	bool Add(int m);
 	int GetValue() { return m_cash; }
 	int GetLimitCash() { return m_cash - m_limit; }
@@ -45,7 +45,7 @@ class BecherLand
 	HoeGame::Land m_land;
 public:
 	bool Create(BecherMap * map);
-	bool FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 &to, TrollPath &path);
+	bool FindPath(const HoeMath::Vector2f &from, const HoeMath::Vector2f &to, TrollPath &path);
 };
 
 class BecherLevel : public BecherMap, 
@@ -136,7 +136,7 @@ public:
 	// hledani cest
 	// vychytavka: vrati to cestu pokud byla nalezena, ale dokaze vratit 
 	// i virtualni cestu, ktera prinut, zeptat se znova
-	bool FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 &to, TrollPath &path);
+	bool FindPath(const HoeMath::Vector2f &from, const HoeMath::Vector2f &to, TrollPath &path);
 	static int l_SetBuilding(lua_State * L);
 	static int l_AddCash(lua_State * L);
 	static int l_GetCash(lua_State * L);

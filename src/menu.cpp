@@ -38,15 +38,16 @@ void BecherMenu::OnSet()
 {
 	Load("scripts/menu.menu");
 	GetEngine()->SetActiveScene(scene);
-	HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Background, this);
-	HoeGetInput(GetEngine())->RegisterKeyboard(this);
+
+	GetEngine()->GetInput()->RegisterMouse(IHoeInput::MT_Background, this);
+	GetEngine()->GetInput()->RegisterKeyboard(this);
 }
 
 void BecherMenu::OnUnset()
 {
 	GetEngine()->SetActiveScene(NULL);
-	HoeGetInput(GetEngine())->RegisterKeyboard(NULL);
-	HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Background, NULL);
+	GetEngine()->GetInput()->RegisterKeyboard(NULL);
+	GetEngine()->GetInput()->RegisterMouse(IHoeInput::MT_Background, NULL);
 }
 
 void HOEAPI BecherMenu::_Paint(IHoe2D * h2d)

@@ -20,12 +20,12 @@ void MiniMap::Draw(IHoe2D * h2d)
 	{ 
 		float sx = m_map->m_sizeX;
 		float sy = m_map->m_sizeY;
-		h2d->BltFast(left, right, top, bottom, m_pic);
+		//TODO h2d->BltFast(left, right, top, bottom, m_pic);
 		if (m_kriz)
 		{
 			float xx = ((m_posx+sx * 0.5f) / sx) * (right-left);
 			float yy = ((m_posy+sy * 0.5f) / sy) * (bottom-top);
-			h2d->BltFast(left-sk+xx, left+sk+xx, top-sk+yy, top+sk+yy, m_kriz);
+			//TODO h2d->BltFast(left-sk+xx, left+sk+xx, top-sk+yy, top+sk+yy, m_kriz);
 
 		}
 	}
@@ -64,7 +64,8 @@ bool WaterMiniMap::Load(BecherMap * map)
 			}
 		}
 	}
-	m_pic = GetEngine()->CreatePicture(sizemap, sizemap, p);
+	throw "not implemented";
+	m_pic = NULL; //TODO GetEngine()->CreatePicture(sizemap, sizemap, p);
 	delete p;
 	return true;
 }
@@ -100,7 +101,8 @@ bool CoalMiniMap::Load(BecherMap * map)
 			}
 		}
 	}
-	m_pic = GetEngine()->CreatePicture(sizemap, sizemap, p);
+	throw "not implemented";
+	m_pic = NULL; //TODO GetEngine()->CreatePicture(sizemap, sizemap, p);
 	delete p;
 	return true;
 }
@@ -136,7 +138,8 @@ bool StoneMiniMap::Load(BecherMap * map)
 			}
 		}
 	}
-	m_pic = GetEngine()->CreatePicture(sizemap, sizemap, p);
+	throw "not implemented";
+	m_pic = NULL; //TODO GetEngine()->CreatePicture(sizemap, sizemap, p);
 	delete p;
 	return true;
 }
@@ -175,7 +178,8 @@ bool TerrainMiniMap::Load(BecherMap * map, byte * bmap)
 			};
 		}
 	}
-	m_pic = GetEngine()->CreatePicture(sx, sy, p);
+	throw "not implemented";
+	m_pic = NULL; //TODO GetEngine()->CreatePicture(sx, sy, p);
 	delete p;
 	return true;
 }

@@ -60,13 +60,13 @@ void BecherLevel::_Paint(IHoe2D * h2d)
 
 void BecherLevel::OnSet()
 {
-	HoeGetRef(GetEngine())->SetBackgroundColor(0x00000000);
-	HoeGetInput(GetEngine())->RegisterKeyboard(this);
+	GetEngine()->GetRef()->SetBackgroundColor(0x00000000);
+	GetEngine()->GetInput()->RegisterKeyboard(this);
 		//if (HoeGetRef(GetEngine())->IsFullscreen())
 		//	HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Cursored, this);
 		//else
-	HoeGetInput(GetEngine())->RegisterMouse(IHoeInput::MT_Background, this);
-	HoeGetInput(GetEngine())->SetWindowRect(800,600);
+	GetEngine()->GetInput()->RegisterMouse(IHoeInput::MT_Background, this);
+	GetEngine()->GetInput()->SetWindowRect(800,600);
 
 	GetScene()->Set2DCallback(this);
 	GetEngine()->SetActiveScene(GetScene());	
@@ -543,7 +543,7 @@ void BecherLevel::OnRightButtonUp()
 		float x,y;
 		if (GetView()->GetPick(GetMouseX(), GetMouseY(), &x, &y))
 		{
-			SendGameMsg(GetSelectedObject(),BMSG_Go,0,&HoeMath::Vector2(x,y),2);
+			SendGameMsg(GetSelectedObject(),BMSG_Go,0,&HoeMath::Vector2f(x,y),2);
 		}
 	}
 }

@@ -19,7 +19,7 @@ struct TrollPath : public HoeGame::LandPath
 	// nastavi vnitrni promeny na chozeni, k urcenemu mistu
 	bool Go(float tx, float ty);
 	bool Go(BecherObject * to);
-	bool Go(const HoeMath::Vector2 & pos) { return Go(pos.x,pos.y); }
+	bool Go(const HoeMath::Vector2f & pos) { return Go(pos.x,pos.y); }
 };
 
 class Troll : public BecherObject

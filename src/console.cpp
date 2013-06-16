@@ -9,7 +9,7 @@ ConsoleDialog::ConsoleDialog(HoeGame::Console & con)
 {
 }
 
-bool ConsoleDialog::Load(IHoe3DEngine *eng)
+bool ConsoleDialog::Load(IHoeEngine *eng)
 {
 	engine = eng;
 	m_fontcolor = 0xffcf0000;

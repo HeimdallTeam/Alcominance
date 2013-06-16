@@ -22,7 +22,7 @@ HerbeWoman::HerbeWoman(IHoeScene * scn)
 	//SetRingParam(1.4f,2.f,2.f);
 	m_info.model = NULL;
 	m_info.pos.Scale(2.f,4.f,2.f);
-	HoeMath::Matrix a;
+	HoeMath::Matrix4f a;
 	a.Translate(0.f,getheight(this->GetModel()) + 3.f,0.f);
 	m_info.pos.Multiply(a);
 	GetCtrl()->Link(THoeSubObject::Object, &m_info);
@@ -35,7 +35,7 @@ HerbeWoman::HerbeWoman(IHoeScene * scn)
 	GetCtrl()->Link(THoeSubObject::Particle, &part);
 	part.emitor->Start();
 
-	m_jaga.GetCtrl()->SetPosition(HoeMath::Vector3(0,30,0));
+	m_jaga.GetCtrl()->SetPosition(HoeMath::Vector3f(0,30,0));
 }
 
 bool HerbeWoman::Save(ChunkDictWrite &w)
@@ -70,7 +70,7 @@ void HerbeWoman::Update(const float dtime)
 	// update misky
 	if (m_info.model)
 	{
-		HoeMath::Matrix m;
+		HoeMath::Matrix4f m;
 		m.RotationY(dtime);
 		m_info.pos.MultiplyLeft(m);
 	}

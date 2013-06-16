@@ -18,7 +18,7 @@ static const float scale = 0.35f;
 Troll::Troll(IHoeScene * scn) : BecherObject(scn), m_data(g_pool)
 {
 	SetModel((IHoeModel*)GetResMgr()->ReqResource(model_TROLL));
-	GetCtrl()->SetScale(HoeMath::Vector3(scale,scale,scale));
+	GetCtrl()->SetScale(HoeMath::Vector3f(scale,scale,scale));
 	GetCtrl()->SetFlags(HOF_SHOW|HOF_UPDATE|HOF_SCALED);
 	//SetRingParam(.8f,.8f,2.f);
 	m_action = EA_None;
@@ -219,7 +219,7 @@ int Troll::GameMsg(int msg, int par1, void * par2, uint npar2)
 		}
 		else
 		{ hoe_assert(npar2 == 2);
-		    m_path.Go(*(HoeMath::Vector2 *)par2);
+		    m_path.Go(*(HoeMath::Vector2f *)par2);
 		}
 		m_action = EA_Go;
 		return 0; 
@@ -348,16 +348,16 @@ bool TrollPath::GetNextPos(float l,float &px, float &py)
 	if (this->m_stack.IsEmpty())
 		return true;
 	
-	const Point &p = m_stack.GetTop();
+	const Point &p = m_stack.Top();
 	if (p.virt)
 	{
 		// cesta je virtualni, musi by se dohledat
 		// napojeni na mapu a ziskani zeme
 		// nejspis u levelu
-        	HoeMath::Vector2 to = p.pos;
+        	HoeMath::Vector2f to = p.pos;
         	m_stack.Pop();
         	// najit cestu k to a vlozit
-        	if (!GetLevel()->FindPath(HoeMath::Vector2(px,py),to,*this))
+        	if (!GetLevel()->FindPath(HoeMath::Vector2f(px,py),to,*this))
 				return true; // todo
 		return false;
 	}
