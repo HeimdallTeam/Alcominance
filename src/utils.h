@@ -5,6 +5,7 @@
 class ResourceExp;
 class BecherGameSave;
 class BecherGameLoad;
+class XHoeFile;
 
 #define ID_CHUNK(a,b,c,d) ((a) | (b) << 8 | (c) << 16 | (d) << 24)
 #define ID_BECHERFILE ID_CHUNK('b','m','a','p')
@@ -50,12 +51,14 @@ class BecherGameSave : public HoeCore::WriteStream
 	size_t m_lastsizepos;
 	StringKeysHash m_str;
 public:
-	BecherGameSave(XHoeFile * f) : HoeFileWriter(f) {}
+	//TODO BecherGameSave(XHoeFile * f) : HoeFileWriter(f) {}
 	void WriteChunk(unsigned int chunk);
 	void WriteChunkEnd();
 	StringKeysHash * GetStringMap() { return &m_str; };
 };
 
+class BecherGameLoad;
+/*
 class BecherGameLoad : public HoeFileReader
 {
 	MapChunk chunk;
@@ -78,6 +81,7 @@ public:
 	void ReadReservedWords(int num);
 	const StringKeysHash * GetStringMap() { return &m_str; }
 };
+*/
 
 struct SaveKey
 {
@@ -174,7 +178,8 @@ public:
 		if (m_color & 0xff000000)
 		{
 			h2d->SetRect(1,1);
-			h2d->PaintRect(0,1,0,1,m_color, true);
+			THoeRect rect = {0,0,1,1};
+			h2d->PaintRect(&rect,m_color, true);
 		}
 	}
 	void ToFade(dword color, float time)
