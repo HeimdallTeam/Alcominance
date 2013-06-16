@@ -9,7 +9,7 @@
 
 /////////////////////////////////////////////
 
-inline IHoe3DEngine * GetEngine()
+inline IHoeEngine * GetEngine()
 {
 	assert(HoeGame::GetHoeEngine());
 	return HoeGame::GetHoeEngine();
