@@ -42,8 +42,9 @@ bool BecherGame::Init()
 		return false;
 	if (!GetLua()->Connect(GetLang()))
 		return false;
-	if (!GetLua()->Connect(GetApp()->GetFS()))
+	/*TODO if (!GetLua()->Connect(GetApp()->GetFS()))
 		return false;
+		*/
 	GetLua()->AddFunc("AddButton",HUD::l_AddButton);
 	GetLua()->AddFunc("ClearButtons",HUD::l_ClearButtons);
 	GetLua()->AddFunc("info",HUD::l_info);

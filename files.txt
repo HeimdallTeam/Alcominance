@@ -32,6 +32,29 @@ data/most.hm
 data/baba.hm
 data/chalupa.hm
 data/krajina.hm
+../BecherGame/data/cukrovar.hm
+../BecherGame/data/czech.hx
+../BecherGame/data/dopln.hm
+../BecherGame/data/drevorubec.hm
+../BecherGame/data/english.hx
+../BecherGame/data/farma.hm
+../BecherGame/data/chalupa.hm
+../BecherGame/data/info.hm
+../BecherGame/data/lihovar.hm
+../BecherGame/data/most.hm
+../BecherGame/data/obchod.hm
+../BecherGame/data/olaf.hm
+../BecherGame/data/pic.hx
+../BecherGame/data/sklad.hm
+../BecherGame/data/staveniste.hm
+../BecherGame/data/stromy.hm
+../BecherGame/data/Studna.hm
+../BecherGame/data/ter.hx
+../BecherGame/data/terrain.hm
+../BecherGame/data/textures.hx
+../BecherGame/data/tovarna.hm
+../BecherGame/data/trava.hm
+../BecherGame/data/utes.hm
 #resources
 model_FACTORY="model tovarna" ; Tovarna
 model_INFO_RING="model info" ; Ring
@@ -57,4 +80,6 @@ model_STROM4="model strom4" ; Strom 4
 model_BABAJAGA="model babajaga" ; Babka
 model_addon_STONE2="model budr" ; Sutr
 model_addon_STONE1="model budriky" ; Sutriky
+ID_OBCHOD="model obchod" ; Shop
+OBCHOD="model obchod" ; O2
 #end

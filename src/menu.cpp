@@ -86,11 +86,11 @@ HoeGame::Gui::Base * BecherMenu::CreateGUI(const char * type)
 #define IS(t) (strcmp(type,t)==0)
 	if (IS("buttonusr"))
 		g = new BecherMenuButton;
-
 	else
 		return Hoe2DFigure::CreateGUI(type);
+
+	g = new (m_list.AddForNew(sizeof(BecherMenuButton))) BecherMenuButton();
 	g->SetHandler(this, static_cast<HoeGame::Hoe2DControl::FUNC_CMD>(&BecherMenu::OnClick));
-	m_list.Add(g);
 	return g;
 }
 

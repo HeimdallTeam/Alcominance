@@ -27,7 +27,7 @@ void Tree::SetHeight(float h)
 	m_height = h;
 	if (h != 1.f)
 	{
-		GetCtrl()->SetScale(HoeMath::Vector3(1,h,1));
+		GetCtrl()->SetScale(HoeMath::Vector3f(1,h,1));
 		GetCtrl()->SetFlags(HOF_SCALED);
 	}
 	else
@@ -231,13 +231,13 @@ int Addon::GameMsg(int msg, int par1, void * par2, uint npar2)
 void Addon::SetScale(float s)
 {
 	m_scale = s;
-	GetCtrl()->SetScale(HoeMath::Vector3(s,s,s));
+	GetCtrl()->SetScale(HoeMath::Vector3f(s,s,s));
 }
 
 #else
 void Addon::SetScale(float s)
 {
-	GetCtrl()->SetScale(HoeMath::Vector3(s,s,s));
+	GetCtrl()->SetScale(HoeMath::Vector3f(s,s,s));
 }
 
 #endif // BECHER_OBJECT

@@ -46,7 +46,7 @@ public:
 };
 
 // save game
-class BecherGameSave
+class BecherGameSave : public HoeCore::WriteStream
 {
 	size_t m_lastsizepos;
 	StringKeysHash m_str;
@@ -56,6 +56,12 @@ public:
 	void WriteChunk(unsigned int chunk);
 	void WriteChunkEnd();
 	StringKeysHash * GetStringMap() { return &m_str; };
+
+	template<class T>
+	void Write(const T& obj)
+	{
+		HoeCore::WriteStream::Write(&obj, sizeof(T));
+	}
 };
 
 class BecherGameLoad : public HoeCore::FileReader

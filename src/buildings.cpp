@@ -119,12 +119,16 @@ int BecherBuilding::BuildPlace(float *pos)
 	return ret;
 }
 
+//TODO
+/*
 float getheight(IHoeModel*m)
 {
+	
 	THoeParameter p;
 	m->GetParameter("boundbox", &p);
 	return p.box.top;
 }
+*/
 
 int BecherBuilding::GameMsg(int msg, int par1, void * par2, uint npar2)
 {

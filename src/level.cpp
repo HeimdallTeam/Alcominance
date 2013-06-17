@@ -278,14 +278,14 @@ bool BecherLevel::LoadGame(const char *path)
 
 	SetTerrainData();
     TRACE;
-	HoeGame::HoeFile file;
+	HoeCore::File file;
 	if (!file.Open(path))
 	{
 		GetCon()->Printf("Open file %s failed.", path);
 		return false;
 	}
   TRACE;
-	BecherGameLoad r(&file);
+	BecherGameLoad r(file);
 	// nahrat mapu
 	// nejdriv hlavicu
 	if (!r.ReadHeader())
@@ -664,7 +664,7 @@ bool BecherLand::Create(BecherMap * map)
 	return true;
 }
 
-bool BecherLand::FindPath(const HoeMath::Vector2 &from, const HoeMath::Vector2 &to, TrollPath &path)
+bool BecherLand::FindPath(const HoeMath::Vector2f &from, const HoeMath::Vector2f &to, TrollPath &path)
 {
 	return m_land.Find(from,to,path);
 }
