@@ -3,8 +3,8 @@
 #include "../../HoeGame/include/hoe_config.h"
 #ifdef _WIN32
 #include "resource.h"
-#endif
 #include "../../HoeGame/include/hoe_wx.h"
+#endif
 
 #define CONFIG_FILE "becher.conf"
 

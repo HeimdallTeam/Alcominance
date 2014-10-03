@@ -265,7 +265,7 @@ TerrainObject::TerrainObject(wxWindow * parent)
 		b = new wxBitmapButton(this,IDB_TEXTURE+i,
 			wxBitmap(g_ter_surfaces[i].icon),BT_P(posx,posy)+wxPoint(10,100),BT_SIZE/*,BS_FLAT*/);
 		if (g_ter_surfaces[i].tt)
-			b->SetToolTip( _(g_ter_surfaces[i].tt) );
+			b->SetToolTip( wxString::FromUTF8(g_ter_surfaces[i].tt) );
 		posx++;
 		if (posx == 4)
 		{
@@ -357,14 +357,14 @@ HoeEditor::BaseEditor * BecherEditApp::CreateEditor()
 {
 	// load lang
 	m_locale.Init(wxLANGUAGE_CZECH);
-	wxLocale::AddCatalogLookupPathPrefix("resource");
-	wxLocale::AddCatalogLookupPathPrefix("../Hoe/HoeEditor/lang");
+	wxLocale::AddCatalogLookupPathPrefix(wxT("resource"));
+	wxLocale::AddCatalogLookupPathPrefix(wxT("../Hoe/HoeEditor/lang"));
 
-	m_locale.AddCatalog("editor_cs");
-	m_locale.AddCatalog("cs_CZ");
+	m_locale.AddCatalog(wxT("editor_cs"));
+	m_locale.AddCatalog(wxT("cs_CZ"));
 
 	BecherEdit * e = new BecherEdit();
-	e->Create("Becher Editor");
+	e->Create(wxT("Becher Editor"));
 
  //   wxBitmap bitmap;
  //   if (bitmap.LoadFile(_T("splash.bmp"), wxBITMAP_TYPE_BMP))
@@ -403,7 +403,7 @@ BecherEdit::~BecherEdit()
 bool BecherEdit::OnPostInit()
 {
 	wxString eng = 	wxConfigBase::Get()->Read(wxT("/engine"),wxT(""));
-	if (eng != "")
+	if (eng != wxT(""))
 	{
 		LoadEngine(eng, HOESDK_VERSION);
 	}
@@ -571,12 +571,12 @@ BecherResources::~BecherResources()
 
 wxString BecherResources::FindId(int id)
 {
-#define ADDID(id) case id: return #id;
+#define ADDID(id) case id: return wxString::FromUTF8( (const char*)  #id );
 	switch (id)
 	{
 #include "../../scripts/id.txt"
 	default:
-			return "";
+			return wxString("",0);
 	};
 #undef ADDID
 }

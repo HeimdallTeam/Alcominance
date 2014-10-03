@@ -543,7 +543,8 @@ void BecherLevel::OnRightButtonUp()
 		float x,y;
 		if (GetView()->GetPick(GetMouseX(), GetMouseY(), &x, &y))
 		{
-			SendGameMsg(GetSelectedObject(),BMSG_Go,0,&HoeMath::Vector2(x,y),2);
+			HoeMath::Vector2 vec(x,y);
+			SendGameMsg(GetSelectedObject(),BMSG_Go,0,&vec,2);
 		}
 	}
 }
