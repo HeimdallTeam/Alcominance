@@ -47,5 +47,5 @@ troll.cpp \
 utils.cpp \
 workspace.cpp
 
-___Alcominance_LDADD = -ll $(HOE_LIB) $(LUA_LIBS) -ldl  -lX11 -lfl
+___Alcominance_LDADD = -ll -lHoe3D $(HOE_LIB) $(LUA_LIBS) -ldl  -lX11 -lfl
 
