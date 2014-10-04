@@ -1,10 +1,10 @@
 
 #include "StdAfx.h"
-#include "../../HoeGame/include/hoe_config.h"
+#include <hoe_config.h>
 #ifdef _WIN32
 #include "resource.h"
+#include <hoe_wx.h>
 #endif
-#include "../../HoeGame/include/hoe_wx.h"
 
 #define CONFIG_FILE "becher.conf"
 
