@@ -32,27 +32,27 @@
 
 #include <hoe3d.h>
 
-#include "../../Hoe/HoeCore/include/hoe_core.h"
+#include <hoe_core.h>
 //
-#include "../../Hoe/HoeGame/include/hoe_console.h"
-#include "../../Hoe/HoeGame/include/hoe_engine.h"
-#include "../../Hoe/HoeGame/include/hoe_app.h"
-#include "../../Hoe/HoeGame/include/hoe_lang.h"
-#include "../../Hoe/HoeGame/include/hoe_resource_mgr.h"
-#include "../../Hoe/HoeGame/include/hoe_view.h"
-#include "../../Hoe/HoeGame/include/lua_script.h"
-#include "../../Hoe/HoeGame/include/hoe_scene.h"
-#include "../../Hoe/HoeGame/include/hoe_object.h"
-#include "../../Hoe/HoeGame/include/hoe_strategy.h"
-#include "../../Hoe/HoeGame/include/hoe_stratmap.h"
-#include "../../Hoe/HoeGame/include/hoe_input.h"
-#include "../../Hoe/HoeGame/include/hoe_music.h"
-#include "../../Hoe/HoeGame/include/lua_script.h"
-#include "../../Hoe/HoeGame/include/hoe_timer.h"
-#include "../../Hoe/HoeGame/include/hoe_vars.h"
-#include "../../Hoe/HoeGame/include/hoe_ai.h"
-#include "../../Hoe/HoeGame/include/hoe_land.h"
-#include "../../Hoe/HoeGame/include/hoe_mem.h"
+#include <hoe_console.h>
+#include <hoe_engine.h>
+#include <hoe_app.h>
+#include <hoe_lang.h>
+#include <hoe_resource_mgr.h>
+#include <hoe_view.h>
+#include <lua_script.h>
+#include <hoe_scene.h>
+#include <hoe_object.h>
+#include <hoe_strategy.h>
+#include <hoe_stratmap.h>
+#include <hoe_input.h>
+#include <hoe_music.h>
+#include <lua_script.h>
+#include <hoe_timer.h>
+#include <hoe_vars.h>
+#include <hoe_ai.h>
+#include <hoe_land.h>
+#include <hoe_mem.h>
 
 typedef HoeGame::CVar CVar;
 
